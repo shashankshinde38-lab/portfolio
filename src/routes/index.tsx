@@ -874,9 +874,11 @@ function SuccessPopup({ onClose }: { onClose: () => void }) {
     const handleEsc = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", handleEsc);
     document.body.style.overflow = "hidden";
+    const autoClose = setTimeout(onClose, 4000);
     return () => {
       document.removeEventListener("keydown", handleEsc);
       document.body.style.overflow = "";
+      clearTimeout(autoClose);
     };
   }, [onClose]);
 
