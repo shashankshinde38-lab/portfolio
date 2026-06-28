@@ -1,24 +1,44 @@
 const nodemailer = require("nodemailer");
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
+/**
+ * Create transporter lazily (env vars are guaranteed to be loaded by call time).
+ */
+let _transporter = null;
 
-// Verify connection on startup
-transporter.verify()
-  .then(() => console.log("✓ Email transporter ready"))
-  .catch((err) => console.error("✕ Email transporter failed:", err.message));
+function getTransporter() {
+  if (!_transporter) {
+    const user = process.env.GMAIL_USER;
+    const pass = process.env.GMAIL_APP_PASSWORD;
+
+    console.log(`[Mailer] GMAIL_USER = ${user ? user : "⚠ NOT SET"}`);
+    console.log(`[Mailer] GMAIL_APP_PASSWORD = ${pass ? "****" + pass.slice(-4) : "⚠ NOT SET"}`);
+
+    if (!user || !pass) {
+      console.error("✕ Email credentials missing — notifications will be skipped");
+      return null;
+    }
+
+    _transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: { user, pass },
+    });
+  }
+  return _transporter;
+}
 
 /**
  * Send email notification for a new contact enquiry.
  */
 async function sendContactNotification(data) {
+  const transporter = getTransporter();
+
+  if (!transporter) {
+    console.error("✕ Skipping email — transporter not configured");
+    return;
+  }
+
   const { full_name, email, mobile, reason, message } = data;
 
   // Format current IST date/time
@@ -103,7 +123,9 @@ async function sendContactNotification(data) {
     `,
   };
 
-  await transporter.sendMail(mailOptions);
+  console.log("[Mailer] Sending email to shashankshinde38@gmail.com...");
+  const info = await transporter.sendMail(mailOptions);
+  console.log("[Mailer] ✓ Email sent — messageId:", info.messageId);
 }
 
 module.exports = { sendContactNotification };
