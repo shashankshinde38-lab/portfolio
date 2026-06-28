@@ -1,8 +1,9 @@
 const nodemailer = require("nodemailer");
+const dns = require("dns").promises;
 
 let _transporter = null;
 
-function getTransporter() {
+async function getTransporter() {
   if (_transporter) return _transporter;
 
   const user = process.env.GMAIL_USER;
@@ -18,8 +19,17 @@ function getTransporter() {
     throw new Error("Missing GMAIL_USER or GMAIL_APP_PASSWORD");
   }
 
+  let smtpHost = "smtp.gmail.com";
+  try {
+    const { address } = await dns.lookup("smtp.gmail.com", { family: 4 });
+    console.log(`[Mailer] Resolved smtp.gmail.com to IPv4: ${address}`);
+    smtpHost = address;
+  } catch (dnsErr) {
+    console.warn(`[Mailer] DNS lookup failed, falling back to hostname: ${dnsErr.message}`);
+  }
+
   _transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: smtpHost,
     port: 587,
     secure: false,
     auth: {
@@ -32,6 +42,7 @@ function getTransporter() {
     socketTimeout: 15000,
 
     tls: {
+      servername: "smtp.gmail.com",
       rejectUnauthorized: false,
       minVersion: "TLSv1.2",
     },
@@ -44,7 +55,7 @@ function getTransporter() {
  * Send email notification for a new contact enquiry.
  */
 async function sendContactNotification(data) {
-  const transporter = getTransporter();
+  const transporter = await getTransporter();
 
   if (!transporter) {
     console.error("✕ Skipping email — transporter not configured");
