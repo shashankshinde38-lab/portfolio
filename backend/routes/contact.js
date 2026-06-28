@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { pool } = require("../config/db");
+const { sendContactNotification } = require("../config/mailer");
 
 // POST /api/contact — Submit a contact message
 router.post("/", async (req, res) => {
@@ -54,6 +55,20 @@ router.post("/", async (req, res) => {
         message.trim(),
       ]
     );
+
+    // Send email notification (non-blocking — don't fail the response)
+    try {
+      await sendContactNotification({
+        full_name: full_name.trim(),
+        email: email.trim(),
+        mobile: mobile ? mobile.trim() : null,
+        reason: reason.trim(),
+        message: message.trim(),
+      });
+      console.log("✓ Email notification sent for contact #" + result.insertId);
+    } catch (emailErr) {
+      console.error("✕ Email notification failed (DB entry saved):", emailErr.message);
+    }
 
     return res.status(201).json({
       success: true,
