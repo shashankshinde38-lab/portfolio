@@ -1,31 +1,42 @@
 const nodemailer = require("nodemailer");
 
-/**
- * Create transporter lazily (env vars are guaranteed to be loaded by call time).
- */
 let _transporter = null;
 
 function getTransporter() {
-  if (!_transporter) {
-    const user = process.env.GMAIL_USER;
-    const pass = process.env.GMAIL_APP_PASSWORD;
+  if (_transporter) return _transporter;
 
-    console.log(`[Mailer] GMAIL_USER = ${user ? user : "⚠ NOT SET"}`);
-    console.log(`[Mailer] GMAIL_APP_PASSWORD = ${pass ? "****" + pass.slice(-4) : "⚠ NOT SET"}`);
+  const user = process.env.GMAIL_USER;
+  const pass = process.env.GMAIL_APP_PASSWORD;
 
-    if (!user || !pass) {
-      console.error("✕ Email credentials missing — notifications will be skipped");
-      return null;
-    }
+  console.log(`[Mailer] GMAIL_USER = ${user || "NOT SET"}`);
+  console.log(
+    `[Mailer] GMAIL_APP_PASSWORD = ${pass ? "****" + pass.slice(-4) : "NOT SET"
+    }`
+  );
 
-    _transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      family: 4,
-      auth: { user, pass },
-    });
+  if (!user || !pass) {
+    throw new Error("Missing GMAIL_USER or GMAIL_APP_PASSWORD");
   }
+
+  _transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user,
+      pass,
+    },
+
+    connectionTimeout: 15000,
+    greetingTimeout: 15000,
+    socketTimeout: 15000,
+
+    tls: {
+      rejectUnauthorized: false,
+      minVersion: "TLSv1.2",
+    },
+  });
+
   return _transporter;
 }
 
