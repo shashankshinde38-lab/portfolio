@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -588,6 +588,7 @@ function Contact() {
   const [touched, setTouched] = useState(false);
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const handleClosePopup = useCallback(() => setShowSuccessPopup(false), []);
 
   const validate = (data: typeof formData) => {
     const errs: Record<string, string> = {};
@@ -861,7 +862,7 @@ function Contact() {
 
       {/* Success Popup */}
       {showSuccessPopup && (
-        <SuccessPopup onClose={() => setShowSuccessPopup(false)} />
+        <SuccessPopup onClose={handleClosePopup} />
       )}
     </section>
   );
