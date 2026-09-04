@@ -130,89 +130,254 @@ Quick Reply: mailto:${email}
 Stored in Supabase table: contact_messages
     `.trim(),
     html: `
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Portfolio Inquiry</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>New Portfolio Enquiry</title>
+
+  <style>
+    html,
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      background: #eef2f7;
+    }
+
+    table,
+    td {
+      border-collapse: collapse !important;
+      mso-table-lspace: 0pt !important;
+      mso-table-rspace: 0pt !important;
+    }
+
+    img {
+      display: block;
+      border: 0;
+      outline: none;
+      text-decoration: none;
+      -ms-interpolation-mode: bicubic;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    @media only screen and (max-width: 640px) {
+      .email-shell {
+        padding: 16px 10px !important;
+      }
+
+      .email-card {
+        border-radius: 14px !important;
+      }
+
+      .content-pad {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+      }
+
+      .header-pad {
+        padding: 26px 20px 24px !important;
+      }
+
+      .hero-title {
+        font-size: 25px !important;
+        line-height: 32px !important;
+      }
+
+      .mobile-block {
+        display: block !important;
+        width: 100% !important;
+      }
+
+      .mobile-hide {
+        display: none !important;
+      }
+
+      .contact-copy {
+        padding: 14px 0 0 !important;
+      }
+
+      .detail-label,
+      .detail-value {
+        display: block !important;
+        width: 100% !important;
+      }
+
+      .detail-label {
+        padding: 0 0 3px !important;
+      }
+
+      .detail-value {
+        padding: 0 0 14px !important;
+      }
+
+      .button-cell {
+        display: block !important;
+        width: 100% !important;
+        padding: 0 0 10px !important;
+      }
+
+      .action-button {
+        display: block !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        text-align: center !important;
+      }
+    }
+  </style>
+
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
 </head>
-<body style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1e293b;">
-  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f1f5f9; padding: 32px 16px;">
+
+<body style="margin:0; padding:0; width:100%; background-color:#eef2f7; color:#172033; -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
+
+  <!-- Hidden inbox preview text -->
+  <div style="display:none; overflow:hidden; visibility:hidden; opacity:0; color:transparent; height:0; width:0; max-height:0; max-width:0; mso-hide:all;">
+    ${safeName} submitted a ${safeReason} enquiry through your portfolio.
+    &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+  </div>
+
+  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="width:100%; background-color:#eef2f7;">
     <tr>
-      <td align="center">
-        <!-- Main Container -->
-        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); border: 1px solid #e2e8f0;">
-          
-          <!-- Header Banner -->
+      <td class="email-shell" align="center" style="padding:36px 16px;">
+
+        <!--[if mso]>
+        <table role="presentation" width="640" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td style="background: linear-gradient(135deg, #070b14 0%, #111c2e 100%); padding: 28px 32px; border-bottom: 3px solid #22c55e;">
+            <td>
+        <![endif]-->
+
+        <table class="email-card" role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="width:100%; max-width:640px; background-color:#ffffff; border:1px solid #dfe6ef; border-radius:18px; overflow:hidden; box-shadow:0 12px 36px rgba(15,23,42,0.08);">
+
+          <!-- Brand accent -->
+          <tr>
+            <td height="5" style="height:5px; background-color:#22c55e; font-size:0; line-height:0;">&nbsp;</td>
+          </tr>
+
+          <!-- Header -->
+          <tr>
+            <td class="header-pad" style="padding:30px 34px 28px; background-color:#08111f; background-image:linear-gradient(135deg,#08111f 0%,#10233d 100%);">
               <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td>
-                    <span style="display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #22c55e; background-color: rgba(34, 197, 94, 0.12); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(34, 197, 94, 0.25); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;">
-                      QA Command Center · Contact Alert
+                  <td valign="middle">
+                    <table role="presentation" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="42" height="42" align="center" valign="middle" style="width:42px; height:42px; border-radius:12px; background-color:#22c55e; color:#052e16; font-family:Arial,Helvetica,sans-serif; font-size:15px; font-weight:800; letter-spacing:-0.3px;">
+                          SS
+                        </td>
+                        <td style="padding-left:12px; font-family:Arial,Helvetica,sans-serif;">
+                          <div style="color:#ffffff; font-size:14px; line-height:19px; font-weight:700;">Shashank Shinde</div>
+                          <div style="color:#91a1b8; font-size:11px; line-height:17px; font-weight:600; letter-spacing:1.1px; text-transform:uppercase;">QA Portfolio</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td class="mobile-hide" align="right" valign="middle" style="font-family:Arial,Helvetica,sans-serif;">
+                    <span style="display:inline-block; padding:7px 11px; border:1px solid #2a3b52; border-radius:999px; color:#9fb0c7; font-size:10px; line-height:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase;">
+                      Contact alert
                     </span>
-                    <h1 style="margin: 12px 0 4px 0; color: #f8fafc; font-size: 22px; font-weight: 700; line-height: 1.3;">
-                      New Portfolio Enquiry
-                    </h1>
-                    <p style="margin: 0; color: #94a3b8; font-size: 13px;">
-                      Received on ${now} (IST)
-                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <div style="height:25px; line-height:25px;">&nbsp;</div>
+
+              <div style="font-family:Arial,Helvetica,sans-serif; color:#3ce982; font-size:11px; line-height:16px; font-weight:800; letter-spacing:1.35px; text-transform:uppercase;">
+                New portfolio enquiry
+              </div>
+              <h1 class="hero-title" style="margin:7px 0 8px; color:#f8fafc; font-family:Arial,Helvetica,sans-serif; font-size:29px; line-height:36px; font-weight:760; letter-spacing:-0.6px;">
+                A new opportunity just landed.
+              </h1>
+              <p style="margin:0; color:#a8b5c7; font-family:Arial,Helvetica,sans-serif; font-size:14px; line-height:22px;">
+                Review the enquiry below and follow up while the conversation is fresh.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Received status -->
+          <tr>
+            <td class="content-pad" style="padding:22px 34px 0; background-color:#ffffff;">
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px;">
+                <tr>
+                  <td width="36" align="center" valign="middle" style="padding:12px 0 12px 14px;">
+                    <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background-color:#22c55e;">&nbsp;</span>
+                  </td>
+                  <td valign="middle" style="padding:11px 14px 11px 8px; color:#166534; font-family:Arial,Helvetica,sans-serif; font-size:12px; line-height:18px; font-weight:700;">
+                    Successfully received <span style="color:#4b5563; font-weight:500;">&nbsp;·&nbsp; ${now} IST</span>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
 
-          <!-- Content Body -->
+          <!-- Main content -->
           <tr>
-            <td style="padding: 28px 32px;">
-              
-              <!-- Sender Overview Card -->
-              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 24px;">
+            <td class="content-pad" style="padding:24px 34px 32px; background-color:#ffffff;">
+
+              <!-- Sender card -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="width:100%; background-color:#f8fafc; border:1px solid #e2e8f0; border-radius:14px;">
                 <tr>
-                  <td style="padding: 20px;">
+                  <td style="padding:21px;">
                     <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
-                      
-                      <!-- Category Pill -->
                       <tr>
-                        <td colspan="2" style="padding-bottom: 14px;">
-                          <span style="display: inline-block; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 6px; background-color: ${badgeBg}; color: ${badgeColor}; border: 1px solid ${badgeBorder};">
-                            🏷️ ${safeReason}
-                          </span>
+                        <td class="mobile-block" width="64" valign="top" style="width:64px;">
+                          <table role="presentation" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="52" height="52" align="center" valign="middle" style="width:52px; height:52px; border-radius:50%; background-color:#dcfce7; border:1px solid #bbf7d0; color:#15803d; font-family:Arial,Helvetica,sans-serif; font-size:20px; line-height:52px; font-weight:800;">
+                                ${safeName.charAt(0).toUpperCase()}
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td class="mobile-block contact-copy" valign="top" style="padding-left:4px; font-family:Arial,Helvetica,sans-serif;">
+                          <div style="color:#667085; font-size:11px; line-height:16px; font-weight:700; letter-spacing:1px; text-transform:uppercase;">
+                            Enquiry from
+                          </div>
+                          <div style="padding-top:2px; color:#101828; font-size:20px; line-height:27px; font-weight:750;">
+                            ${safeName}
+                          </div>
+                          <div style="padding-top:9px;">
+                            <span style="display:inline-block; padding:5px 10px; border-radius:999px; background-color:${badgeBg}; border:1px solid ${badgeBorder}; color:${badgeColor}; font-size:11px; line-height:15px; font-weight:700;">
+                              ${safeReason}
+                            </span>
+                          </div>
                         </td>
                       </tr>
+                    </table>
 
-                      <!-- Name -->
+                    <div style="height:18px; line-height:18px;">&nbsp;</div>
+
+                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-top:1px solid #e2e8f0;">
                       <tr>
-                        <td width="130" style="padding: 6px 0; font-size: 13px; color: #64748b; font-weight: 500; vertical-align: top;">
-                          Full Name
+                        <td class="detail-label" width="126" valign="top" style="width:126px; padding:17px 12px 9px 0; color:#667085; font-family:Arial,Helvetica,sans-serif; font-size:12px; line-height:18px; font-weight:600;">
+                          Email address
                         </td>
-                        <td style="padding: 6px 0; font-size: 15px; color: #0f172a; font-weight: 700;">
-                          ${safeName}
+                        <td class="detail-value" valign="top" style="padding:17px 0 9px; font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:18px; font-weight:700; word-break:break-word;">
+                          <a href="mailto:${safeEmail}" style="color:#2563eb; text-decoration:none;">${safeEmail}</a>
                         </td>
                       </tr>
-
-                      <!-- Email -->
                       <tr>
-                        <td width="130" style="padding: 6px 0; font-size: 13px; color: #64748b; font-weight: 500; vertical-align: top;">
-                          Email Address
+                        <td class="detail-label" width="126" valign="top" style="width:126px; padding:9px 12px 0 0; color:#667085; font-family:Arial,Helvetica,sans-serif; font-size:12px; line-height:18px; font-weight:600;">
+                          Mobile number
                         </td>
-                        <td style="padding: 6px 0; font-size: 14px; font-weight: 600;">
-                          <a href="mailto:${safeEmail}" style="color: #2563eb; text-decoration: none;">
-                            ${safeEmail}
-                          </a>
-                        </td>
-                      </tr>
-
-                      <!-- Mobile -->
-                      <tr>
-                        <td width="130" style="padding: 6px 0; font-size: 13px; color: #64748b; font-weight: 500; vertical-align: top;">
-                          Mobile Number
-                        </td>
-                        <td style="padding: 6px 0; font-size: 14px; color: #334155;">
-                          ${safeMobile ? `<a href="tel:${safeMobile}" style="color: #0f172a; text-decoration: none; font-weight: 600;">${safeMobile}</a>` : '<span style="color: #94a3b8; font-style: italic;">Not provided</span>'}
+                        <td class="detail-value" valign="top" style="padding:9px 0 0; color:#101828; font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:18px; font-weight:700; word-break:break-word;">
+                          ${safeMobile ? `<a href="tel:${safeMobile}" style="color:#101828; text-decoration:none;">${safeMobile}</a>` : '<span style="color:#98a2b3; font-weight:500; font-style:italic;">Not provided</span>'}
                         </td>
                       </tr>
                     </table>
@@ -220,52 +385,81 @@ Stored in Supabase table: contact_messages
                 </tr>
               </table>
 
-              <!-- Message Section -->
-              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 24px;">
-                <tr>
-                  <td>
-                    <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #475569; margin-bottom: 8px;">
-                      Message Content
-                    </div>
-                    <div style="background-color: #ffffff; border-left: 4px solid #22c55e; border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; border-radius: 0 10px 10px 0; padding: 18px 20px; font-size: 14px; line-height: 1.7; color: #1e293b; white-space: pre-wrap; font-family: inherit;">${safeMessage}</div>
-                  </td>
-                </tr>
-              </table>
+              <div style="height:24px; line-height:24px;">&nbsp;</div>
 
-              <!-- Action Buttons -->
-              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 8px; margin-bottom: 8px;">
-                <tr>
-                  <td align="left">
-                    <a href="mailto:${safeEmail}?subject=Re:%20${encodeURIComponent(reason)}%20-%20Shashank%20Shinde" style="display: inline-block; background-color: #0f172a; color: #ffffff; font-size: 13px; font-weight: 600; text-decoration: none; padding: 12px 24px; border-radius: 8px; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2); margin-right: 12px; margin-bottom: 8px;">
-                      ✉️ Reply to ${safeName}
-                    </a>
-                    ${safeMobile ? `
-                    <a href="tel:${safeMobile}" style="display: inline-block; background-color: #f1f5f9; color: #0f172a; font-size: 13px; font-weight: 600; text-decoration: none; padding: 12px 20px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 8px;">
-                      📞 Call ${safeMobile}
-                    </a>
-                    ` : ""}
-                  </td>
-                </tr>
-              </table>
-
-            </td>
-          </tr>
-
-          <!-- Footer Metadata -->
-          <tr>
-            <td style="background-color: #f8fafc; padding: 20px 32px; border-top: 1px solid #e2e8f0; text-align: center;">
+              <!-- Message -->
               <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td style="font-size: 12px; color: #64748b; line-height: 1.6;">
-                    <strong>Shashank Shinde</strong> · Software Test Engineer & QA Automation<br />
-                    Data securely stored in <span style="font-family: monospace; color: #0f172a;">Supabase (contact_messages)</span>
+                  <td style="padding-bottom:9px; color:#475467; font-family:Arial,Helvetica,sans-serif; font-size:11px; line-height:16px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">
+                    Their message
                   </td>
                 </tr>
+                <tr>
+                  <td style="border:1px solid #dfe6ef; border-left:4px solid #22c55e; border-radius:10px; background-color:#ffffff; padding:18px 19px; color:#27364b; font-family:Arial,Helvetica,sans-serif; font-size:14px; line-height:23px; white-space:pre-wrap; word-break:break-word;">${safeMessage}</td>
+                </tr>
               </table>
+
+              <div style="height:24px; line-height:24px;">&nbsp;</div>
+
+              <!-- Actions -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td class="button-cell" valign="top" style="padding-right:10px;">
+                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td align="center" style="border-radius:9px; background-color:#111827;">
+                          <a class="action-button" href="mailto:${safeEmail}?subject=Re%3A%20${encodeURIComponent(reason)}%20%E2%80%94%20Shashank%20Shinde" aria-label="Reply to ${safeName} by email" style="display:inline-block; box-sizing:border-box; width:100%; padding:13px 20px; border:1px solid #111827; border-radius:9px; color:#ffffff; font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:18px; font-weight:750; text-align:center;">
+                            Reply by email&nbsp;&nbsp;&rarr;
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+
+                  ${safeMobile ? `
+                  <td class="button-cell" width="43%" valign="top" style="width:43%;">
+                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td align="center" style="border-radius:9px; background-color:#f8fafc;">
+                          <a class="action-button" href="tel:${safeMobile}" aria-label="Call ${safeName}" style="display:inline-block; box-sizing:border-box; width:100%; padding:13px 18px; border:1px solid #cfd8e5; border-radius:9px; color:#172033; font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:18px; font-weight:750; text-align:center;">
+                            Call ${safeName}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  ` : ''}
+                </tr>
+              </table>
+
+              <p style="margin:13px 0 0; color:#98a2b3; font-family:Arial,Helvetica,sans-serif; font-size:11px; line-height:17px; text-align:center;">
+                Tip: A quick, personalized response creates a stronger first impression.
+              </p>
             </td>
           </tr>
 
+          <!-- Footer -->
+          <tr>
+            <td class="content-pad" style="padding:21px 34px 23px; border-top:1px solid #e2e8f0; background-color:#f8fafc; text-align:center;">
+              <p style="margin:0; color:#344054; font-family:Arial,Helvetica,sans-serif; font-size:12px; line-height:19px; font-weight:700;">
+                Shashank Shinde
+              </p>
+              <p style="margin:1px 0 0; color:#667085; font-family:Arial,Helvetica,sans-serif; font-size:11px; line-height:18px;">
+                Software Test Engineer &amp; QA Automation
+              </p>
+              <p style="margin:9px 0 0; color:#98a2b3; font-family:Arial,Helvetica,sans-serif; font-size:10px; line-height:16px;">
+                Automated notification from your portfolio contact form. Keep this email private.
+              </p>
+            </td>
+          </tr>
         </table>
+
+        <!--[if mso]>
+            </td>
+          </tr>
+        </table>
+        <![endif]-->
+
       </td>
     </tr>
   </table>
