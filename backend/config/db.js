@@ -1,36 +1,136 @@
-const mysql = require("mysql2/promise");
+const path = require("path");
+const { Pool } = require("pg");
+const { createClient } = require("@supabase/supabase-js");
+
+// Load .env from backend folder or current working directory
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 require("dotenv").config();
 
-const pool = process.env.DATABASE_URL
-  ? mysql.createPool({
-    uri: process.env.DATABASE_URL,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-    timezone: '+05:30',
-  })
-  : mysql.createPool({
-    host: process.env.DB_HOST || "localhost",
-    port: parseInt(process.env.DB_PORT || "3306", 10),
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || "",
-    database: process.env.DB_NAME || "portfolio_db",
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-    timezone: '+05:30',
-  });
+const SUPABASE_URL = process.env.SUPABASE_URL || "https://tuxkcnsywuhujoddinhm.supabase.co";
+const SUPABASE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_KEY;
 
-// Test connection on startup
+const connectionString = process.env.DATABASE_URL;
+
+// 1. Initialize Supabase JS client if key is available
+let supabase = null;
+if (SUPABASE_URL && SUPABASE_KEY) {
+  supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  console.log("✓ Supabase Client initialized for:", SUPABASE_URL);
+}
+
+// 2. Initialize PostgreSQL connection pool if DATABASE_URL is available
+let pool = null;
+if (connectionString) {
+  pool = new Pool({
+    connectionString,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+}
+
+// Unified Database Helpers
+async function insertMessage({ full_name, email, mobile, reason, message }) {
+  // If Supabase API client is available
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("contact_messages")
+      .insert([
+        {
+          full_name,
+          email,
+          mobile: mobile || null,
+          reason,
+          message,
+        },
+      ])
+      .select("id");
+
+    if (error) throw error;
+    return { id: data?.[0]?.id || Date.now() };
+  }
+
+  // Fallback to PostgreSQL pool if configured
+  if (pool) {
+    const result = await pool.query(
+      `INSERT INTO contact_messages (full_name, email, mobile, reason, message) VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+      [full_name, email, mobile || null, reason, message]
+    );
+    return { id: result.rows[0]?.id };
+  }
+
+  throw new Error("No database credentials configured. Please set SUPABASE_KEY (or DATABASE_URL) in backend/.env");
+}
+
+async function fetchMessages() {
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("contact_messages")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    return data || [];
+  }
+
+  if (pool) {
+    const result = await pool.query(
+      `SELECT * FROM contact_messages ORDER BY created_at DESC`
+    );
+    return result.rows;
+  }
+
+  throw new Error("No database credentials configured.");
+}
+
+async function deleteMessage(id) {
+  if (supabase) {
+    const { error, count } = await supabase
+      .from("contact_messages")
+      .delete({ count: "exact" })
+      .eq("id", id);
+
+    if (error) throw error;
+    return count > 0;
+  }
+
+  if (pool) {
+    const result = await pool.query(
+      `DELETE FROM contact_messages WHERE id = $1`,
+      [id]
+    );
+    return result.rowCount > 0;
+  }
+
+  throw new Error("No database credentials configured.");
+}
+
 async function testConnection() {
-  try {
-    const connection = await pool.getConnection();
-    console.log("✓ MySQL connected successfully — database:", process.env.DB_NAME);
-    connection.release();
-  } catch (err) {
-    console.error("✕ MySQL connection failed:", err.message);
-    process.exit(1);
+  console.log(`▸ Supabase Project: ${SUPABASE_URL}`);
+  if (supabase) {
+    console.log("✓ Supabase Client is ready to accept queries");
+  } else if (pool) {
+    try {
+      const client = await pool.connect();
+      const res = await client.query("SELECT current_database();");
+      console.log(`✓ PostgreSQL connected via connection pool — Database: ${res.rows[0].current_database}`);
+      client.release();
+    } catch (err) {
+      console.error("✕ PostgreSQL connection failed:", err.message);
+    }
+  } else {
+    console.warn("⚠ Waiting for SUPABASE_ANON_KEY (or DATABASE_URL) in backend/.env");
   }
 }
 
-module.exports = { pool, testConnection };
+module.exports = {
+  supabase,
+  pool,
+  insertMessage,
+  fetchMessages,
+  deleteMessage,
+  testConnection,
+};

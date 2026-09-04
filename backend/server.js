@@ -3,6 +3,8 @@ dns.setDefaultResultOrder("ipv4first");
 
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 require("dotenv").config();
 
 const { testConnection } = require("./config/db");
@@ -14,15 +16,31 @@ const PORT = process.env.PORT || 5000;
 // ── Middleware ──
 const allowedOrigins = [
   "http://localhost:8080",
+  "http://127.0.0.1:8080",
   "http://localhost:3000",
   "http://localhost:5173",
-  ...(process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(",") : []),
+  "https://shashankportfolio-jet.vercel.app",
+  ...(process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(",").map((s) => s.trim()) : []),
 ];
-app.use(cors({
-  origin: allowedOrigins,
-  methods: ["GET", "POST", "DELETE"],
-  credentials: true,
-}));
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app") ||
+        origin.includes("localhost") ||
+        origin.includes("127.0.0.1")
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true);
+    },
+    methods: ["GET", "POST", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

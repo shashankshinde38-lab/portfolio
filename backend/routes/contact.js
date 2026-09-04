@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { pool } = require("../config/db");
+const { insertMessage, fetchMessages, deleteMessage } = require("../config/db");
 const { sendContactNotification } = require("../config/mailer");
 
 // POST /api/contact — Submit a contact message
@@ -44,17 +44,14 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // ── Insert into database ──
-    const [result] = await pool.execute(
-      `INSERT INTO contact_messages (full_name, email, mobile, reason, message) VALUES (?, ?, ?, ?, ?)`,
-      [
-        full_name.trim(),
-        email.trim(),
-        mobile ? mobile.trim() : null,
-        reason.trim(),
-        message.trim(),
-      ]
-    );
+    // ── Insert into Supabase ──
+    const { id: insertedId } = await insertMessage({
+      full_name: full_name.trim(),
+      email: email.trim(),
+      mobile: mobile ? mobile.trim() : null,
+      reason: reason.trim(),
+      message: message.trim(),
+    });
 
     // Send email notification (non-blocking — don't fail the response)
     try {
@@ -65,7 +62,7 @@ router.post("/", async (req, res) => {
         reason: reason.trim(),
         message: message.trim(),
       });
-      console.log("✓ Email notification sent for contact #" + result.insertId);
+      console.log("✓ Email notification sent for contact #" + insertedId);
     } catch (emailErr) {
       console.error("✕ Email notification failed (DB entry saved):", emailErr.message);
     }
@@ -73,13 +70,13 @@ router.post("/", async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "Message sent successfully!",
-      data: { id: result.insertId },
+      data: { id: insertedId },
     });
   } catch (err) {
     console.error("Error inserting contact message:", err);
     return res.status(500).json({
       success: false,
-      message: "Internal server error. Please try again later.",
+      message: err.message || "Internal server error. Please try again later.",
     });
   }
 });
@@ -87,14 +84,12 @@ router.post("/", async (req, res) => {
 // GET /api/contact — Fetch all contact messages (optional: for admin)
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await pool.execute(
-      `SELECT * FROM contact_messages ORDER BY created_at DESC`
-    );
+    const messages = await fetchMessages();
 
     return res.status(200).json({
       success: true,
-      count: rows.length,
-      data: rows,
+      count: messages.length,
+      data: messages,
     });
   } catch (err) {
     console.error("Error fetching contact messages:", err);
@@ -105,43 +100,12 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET /api/contact/:id — Fetch a single message by ID
-router.get("/:id", async (req, res) => {
-  try {
-    const [rows] = await pool.execute(
-      `SELECT * FROM contact_messages WHERE id = ?`,
-      [req.params.id]
-    );
-
-    if (rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Message not found",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      data: rows[0],
-    });
-  } catch (err) {
-    console.error("Error fetching contact message:", err);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error.",
-    });
-  }
-});
-
 // DELETE /api/contact/:id — Delete a message by ID
 router.delete("/:id", async (req, res) => {
   try {
-    const [result] = await pool.execute(
-      `DELETE FROM contact_messages WHERE id = ?`,
-      [req.params.id]
-    );
+    const deleted = await deleteMessage(req.params.id);
 
-    if (result.affectedRows === 0) {
+    if (!deleted) {
       return res.status(404).json({
         success: false,
         message: "Message not found",
