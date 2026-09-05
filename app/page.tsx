@@ -1,11 +1,26 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+import { StationId } from "@/components/3d/HandDrawnWorldCanvas";
 import QualityEngineCanvas, { ViewMode } from "@/components/3d/QualityEngineCanvas";
 import InteractiveTestRunner from "@/components/3d/InteractiveTestRunner";
 import BugSpotterLab from "@/components/sections/BugSpotterLab";
 import FloatingDockNav from "@/components/3d/FloatingDockNav";
 import confetti from "canvas-confetti";
+
+const HandDrawnWorldCanvas = dynamic(
+  () => import("@/components/3d/HandDrawnWorldCanvas"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-screen flex flex-col items-center justify-center bg-[#FAF8F5] text-[#181818] font-mono text-sm space-y-3">
+        <div className="size-10 border-4 border-[#181818] border-t-transparent rounded-full animate-spin" />
+        <p className="font-bold">Inking 3D Hand-Drawn QA World...</p>
+      </div>
+    ),
+  }
+);
 import {
   ShieldCheck,
   Cpu,
@@ -274,6 +289,9 @@ const ALL_SKILLS = [
 ];
 
 export default function PortfolioPage() {
+  const [viewMode, setViewMode] = useState<"world" | "dossier">("world");
+  const [activeStation, setActiveStation] = useState<StationId>("entrance");
+  const [isStationDrawerOpen, setIsStationDrawerOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({});
@@ -391,8 +409,464 @@ export default function PortfolioPage() {
     }
   };
 
+  const renderStationContent = (st: StationId) => {
+    switch (st) {
+      case "entrance":
+      case "atrium":
+        return (
+          <div className="space-y-6 font-sans">
+            <div className="border-b-2 border-[#181818] pb-4">
+              <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
+                01 / QA TESTING LAB · ABOUT SHASHANK
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
+                Quality Engineering Driven by Curiosity &amp; Precision
+              </h2>
+            </div>
+            <p className="font-handwriting text-2xl sm:text-3xl text-[#2563EB]">
+              &quot;I break software before users do.&quot;
+            </p>
+            <p className="text-sm text-[#334155] leading-relaxed">
+              I am a Software Test Engineer based in <strong>Pune, Maharashtra</strong>. I hold a Bachelor of Engineering in Information Technology, along with specialized SDET accreditations from SEED Infotech. Currently serving at <strong>Profcyma Solutions Pvt. Ltd.</strong>, I architect robust test automation frameworks and uncover critical defects before production release.
+            </p>
+            <div className="sketch-card p-5 bg-white space-y-3 font-mono text-xs">
+              <div className="flex justify-between py-1 border-b border-dashed border-[#CBD5E1]">
+                <span className="text-[#64748B]">Current Employer:</span>
+                <span className="font-bold text-[#181818]">Profcyma Solutions Pvt. Ltd.</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-dashed border-[#CBD5E1]">
+                <span className="text-[#64748B]">Role:</span>
+                <span className="font-bold text-[#2563EB]">Software Test Engineer (SDET)</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-dashed border-[#CBD5E1]">
+                <span className="text-[#64748B]">Location:</span>
+                <span className="text-[#181818]">Pune, Maharashtra, India</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-dashed border-[#CBD5E1]">
+                <span className="text-[#64748B]">Education:</span>
+                <span className="text-[#181818]">B.E. Information Technology</span>
+              </div>
+              <div className="flex justify-between py-1 border-b border-dashed border-[#CBD5E1]">
+                <span className="text-[#64748B]">Accreditation:</span>
+                <span className="font-bold text-[#16A34A]">SDET · SEED Infotech</span>
+              </div>
+              <div className="flex justify-between pt-1">
+                <span className="text-[#64748B]">Status:</span>
+                <span className="font-bold text-[#16A34A]">✓ Open to QA Opportunities</span>
+              </div>
+            </div>
+          </div>
+        );
+      case "experience":
+        return (
+          <div className="space-y-6 font-sans">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-[#181818] pb-4 gap-2">
+              <div>
+                <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
+                  02 / WORK HISTORY &amp; EMPLOYMENT
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
+                  Profcyma Solutions Pvt. Ltd.
+                </h2>
+                <p className="text-xs font-mono text-[#64748B] mt-0.5">
+                  Software Test Engineer · Pune, India · Aug 2024 – Present
+                </p>
+              </div>
+              <span className="px-3 py-1 rounded bg-[#16A34A]/15 text-[#16A34A] border-2 border-[#16A34A] font-mono text-xs font-bold w-fit">
+                CURRENT ROLE
+              </span>
+            </div>
+
+            <div>
+              <h4 className="font-mono text-xs uppercase tracking-wider text-[#2563EB] font-bold mb-3">
+                9 Core Engineering Responsibilities
+              </h4>
+              <ul className="grid sm:grid-cols-2 gap-2.5 text-xs text-[#334155]">
+                {[
+                  "Designed end-to-end test strategies and built scalable Selenium + POM automation frameworks",
+                  "Performed manual, functional, regression, smoke, and sanity testing across web and Android apps",
+                  "Validated REST APIs via Postman — schema validation, status codes, and data consistency",
+                  "Performed load and stress testing with Apache JMeter (100k+ virtual users simulated)",
+                  "Documented test cases and tracked defect lifecycle in JIRA with detailed bug reports and logs",
+                  "Collaborated with developers in Agile/Scrum teams across 5+ production client projects",
+                  "Integrated automated suites into CI/CD pipelines, reducing manual regression time by 25%",
+                  "Conducted cross-browser and responsive testing across 5+ browsers and multiple mobile viewports",
+                  "Participated in release verification, build sign-offs, and production deployment validation",
+                ].map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-2 bg-white p-2.5 rounded-lg border border-[#CBD5E1]">
+                    <span className="text-[#16A34A] font-bold">✓</span>
+                    <span className="leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="grid sm:grid-cols-3 gap-3 pt-3">
+              <div className="sketch-card p-4 text-center bg-[#F0FDF4]">
+                <div className="text-2xl font-bold text-[#16A34A] font-sketch">~40%</div>
+                <div className="text-xs text-[#64748B] mt-1">Regression Cycle Cut via Selenium + TestNG</div>
+              </div>
+              <div className="sketch-card p-4 text-center bg-[#EFF6FF]">
+                <div className="text-2xl font-bold text-[#2563EB] font-sketch">100,000+</div>
+                <div className="text-xs text-[#64748B] mt-1">Users Simulated in Apache JMeter</div>
+              </div>
+              <div className="sketch-card p-4 text-center bg-[#FEF2F2]">
+                <div className="text-2xl font-bold text-[#DC2626] font-sketch">240+</div>
+                <div className="text-xs text-[#64748B] mt-1">Defects Logged in JIRA &amp; Resolved</div>
+              </div>
+            </div>
+          </div>
+        );
+      case "projects":
+        return (
+          <div className="space-y-6 font-sans">
+            <div className="border-b-2 border-[#181818] pb-4">
+              <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
+                03 / PRODUCTION CASE STUDIES &amp; BLUEPRINTS
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
+                5 Enterprise Testing Projects
+              </h2>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              {ALL_PROJECTS.map((proj) => {
+                const isExp = expandedProjects[proj.id];
+                return (
+                  <div key={proj.id} className="sketch-card p-5 bg-white space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="px-2 py-0.5 rounded bg-[#2563EB]/15 text-[#2563EB] font-mono text-[11px] font-bold">
+                        {proj.id} · {proj.industry}
+                      </span>
+                      {proj.featured && (
+                        <span className="px-2 py-0.5 rounded bg-[#DC2626]/15 text-[#DC2626] font-mono text-[10px] font-bold">
+                          FEATURED
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-base font-bold text-[#181818] font-sketch">{proj.name}</h3>
+                    <p className="text-xs text-[#64748B] leading-relaxed">{proj.summary}</p>
+                    <div className="grid grid-cols-3 gap-2 py-2 bg-[#FAF8F5] rounded-lg text-center font-mono text-xs border border-[#E2E8F0]">
+                      {proj.metrics.map((m) => (
+                        <div key={m.k}>
+                          <div className="font-bold text-[#181818]">{m.v}</div>
+                          <div className="text-[9px] text-[#64748B]">{m.k}</div>
+                        </div>
+                      ))}
+                    </div>
+                    {isExp && (
+                      <div className="text-xs space-y-2 pt-2 border-t border-[#E2E8F0] text-[#334155]">
+                        <p><strong>Challenge:</strong> {proj.challenge}</p>
+                        <p><strong>Approach:</strong> {proj.approach}</p>
+                        <p className="text-[#DC2626]"><strong>Critical Defect:</strong> {proj.keyDefect}</p>
+                        <p className="text-[#16A34A]"><strong>Outcome:</strong> {proj.outcome}</p>
+                      </div>
+                    )}
+                    <button
+                      onClick={() => toggleProject(proj.id)}
+                      className="w-full py-1.5 rounded-lg border border-[#181818] font-mono text-xs font-bold hover:bg-[#FAF8F5] transition-colors"
+                    >
+                      {isExp ? "Close Details" : "Inspect Case Matrix"}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      case "automation":
+        return (
+          <div className="space-y-6 font-sans">
+            <div className="border-b-2 border-[#181818] pb-4">
+              <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
+                04 / AUTOMATION LAB &amp; SIMULATOR
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
+                Live Test Execution &amp; Bug Spotter
+              </h2>
+            </div>
+            <InteractiveTestRunner />
+            <BugSpotterLab />
+          </div>
+        );
+      case "skills":
+        return (
+          <div className="space-y-6 font-sans">
+            <div className="border-b-2 border-[#181818] pb-4">
+              <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
+                05 / TECHNICAL ARSENAL
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
+                Complete Testing Skills Matrix
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {ALL_SKILLS.map((grp) => (
+                <div key={grp.group} className="sketch-card p-5 bg-white space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">{grp.icon}</span>
+                    <h3 className="font-bold text-sm text-[#181818]">{grp.group}</h3>
+                  </div>
+                  <ul className="space-y-2 font-mono text-xs">
+                    {grp.items.map((item) => (
+                      <li key={item.name} className="flex justify-between border-b border-dashed border-[#CBD5E1] pb-1">
+                        <span className="font-bold text-[#181818]">{item.name}</span>
+                        <span className="text-[10px] text-[#64748B]">{item.desc}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      case "achievements":
+        return (
+          <div className="space-y-6 font-sans">
+            <div className="border-b-2 border-[#181818] pb-4">
+              <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
+                06 / CREDENTIALS &amp; RELEASE GATE
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
+                Verified Professional Accreditations
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-4">
+              <div className="sketch-card p-5 bg-white space-y-2">
+                <span className="text-3xl">🏅</span>
+                <h3 className="font-bold text-base text-[#181818] font-sketch">Salesforce Accredited Professional</h3>
+                <p className="text-xs text-[#64748B]">Platform configuration, validation rules, process flows, and permissions.</p>
+                <span className="inline-block font-mono text-xs text-[#16A34A] font-bold">✓ Verified Accreditation</span>
+              </div>
+              <div className="sketch-card p-5 bg-white space-y-2">
+                <span className="text-3xl">🛡️</span>
+                <h3 className="font-bold text-base text-[#181818] font-sketch">SDET · SEED Infotech</h3>
+                <p className="text-xs text-[#64748B]">Selenium WebDriver, Java, Page Object Model, TestNG, and CI/CD pipelines.</p>
+                <span className="inline-block font-mono text-xs text-[#16A34A] font-bold">✓ Verified Accreditation</span>
+              </div>
+              <div className="sketch-card p-5 bg-white space-y-2">
+                <span className="text-3xl">📈</span>
+                <h3 className="font-bold text-base text-[#181818] font-sketch">Performance &amp; API Testing</h3>
+                <p className="text-xs text-[#64748B]">Apache JMeter 100k+ distributed load generation and Postman REST assertions.</p>
+                <span className="inline-block font-mono text-xs text-[#16A34A] font-bold">✓ Verified Accreditation</span>
+              </div>
+            </div>
+          </div>
+        );
+      case "contact":
+        return (
+          <div className="space-y-6 font-sans">
+            <div className="border-b-2 border-[#181818] pb-4">
+              <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
+                07 / DISPATCH OFFICE &amp; CONTACT
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
+                Let&apos;s Build Reliable Software Together
+              </h2>
+              <p className="text-xs text-[#64748B] mt-1">
+                Messages submit directly to Supabase and notify Shashank via Gmail.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-12 gap-6">
+              <div className="md:col-span-5 space-y-3 font-mono text-xs">
+                <a href="mailto:shashankshinde38@gmail.com" className="sketch-card p-3 flex items-center gap-3 bg-white block">
+                  <span className="text-xl">📧</span>
+                  <div className="truncate">
+                    <div className="text-[10px] text-[#64748B]">EMAIL</div>
+                    <div className="font-bold text-[#181818] truncate">shashankshinde38@gmail.com</div>
+                  </div>
+                </a>
+                <a href="tel:+918080852689" className="sketch-card p-3 flex items-center gap-3 bg-white block">
+                  <span className="text-xl">📞</span>
+                  <div>
+                    <div className="text-[10px] text-[#64748B]">PHONE</div>
+                    <div className="font-bold text-[#181818]">+91 80808 52689</div>
+                  </div>
+                </a>
+                <a href="https://www.linkedin.com/in/shashank-shinde7/" target="_blank" rel="noreferrer" className="sketch-card p-3 flex items-center gap-3 bg-white block">
+                  <span className="text-xl">💼</span>
+                  <div>
+                    <div className="text-[10px] text-[#64748B]">LINKEDIN</div>
+                    <div className="font-bold text-[#181818]">/in/shashank-shinde7</div>
+                  </div>
+                </a>
+                <a href="https://github.com/shashankshinde38-lab" target="_blank" rel="noreferrer" className="sketch-card p-3 flex items-center gap-3 bg-white block">
+                  <span className="text-xl">🐙</span>
+                  <div>
+                    <div className="text-[10px] text-[#64748B]">GITHUB</div>
+                    <div className="font-bold text-[#181818]">/shashankshinde38-lab</div>
+                  </div>
+                </a>
+              </div>
+
+              <div className="md:col-span-7">
+                <form onSubmit={handleFormSubmit} className="sketch-card p-5 bg-white space-y-3 font-mono text-xs">
+                  <div>
+                    <label className="block text-[#181818] font-bold mb-1">Full Name *</label>
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleFormChange}
+                      className="w-full p-2 border-2 border-[#181818] rounded-lg bg-[#FAF8F5] text-[#181818]"
+                      placeholder="Jane Doe"
+                    />
+                    {formErrors.fullName && <p className="text-[#DC2626] text-[10px] mt-0.5">{formErrors.fullName}</p>}
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[#181818] font-bold mb-1">Email *</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleFormChange}
+                        className="w-full p-2 border-2 border-[#181818] rounded-lg bg-[#FAF8F5] text-[#181818]"
+                        placeholder="jane@company.com"
+                      />
+                      {formErrors.email && <p className="text-[#DC2626] text-[10px] mt-0.5">{formErrors.email}</p>}
+                    </div>
+                    <div>
+                      <label className="block text-[#181818] font-bold mb-1">Mobile (Optional)</label>
+                      <input
+                        type="tel"
+                        name="mobile"
+                        value={formData.mobile}
+                        onChange={handleFormChange}
+                        className="w-full p-2 border-2 border-[#181818] rounded-lg bg-[#FAF8F5] text-[#181818]"
+                        placeholder="9876543210"
+                      />
+                      {formErrors.mobile && <p className="text-[#DC2626] text-[10px] mt-0.5">{formErrors.mobile}</p>}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[#181818] font-bold mb-1">Reason for Inquiry *</label>
+                    <select
+                      name="reason"
+                      value={formData.reason}
+                      onChange={handleFormChange}
+                      className="w-full p-2 border-2 border-[#181818] rounded-lg bg-[#FAF8F5] text-[#181818]"
+                    >
+                      <option value="">Select a reason...</option>
+                      <option value="Full-time QA Automation / SDET Role">Full-time QA Automation / SDET Role</option>
+                      <option value="Freelance / Contract QA Project">Freelance / Contract QA Project</option>
+                      <option value="Performance &amp; Load Testing Consultation">Performance &amp; Load Testing Consultation</option>
+                      <option value="General Inquiry / Discussion">General Inquiry / Discussion</option>
+                    </select>
+                    {formErrors.reason && <p className="text-[#DC2626] text-[10px] mt-0.5">{formErrors.reason}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-[#181818] font-bold mb-1">Message *</label>
+                    <textarea
+                      name="message"
+                      rows={3}
+                      value={formData.message}
+                      onChange={handleFormChange}
+                      className="w-full p-2 border-2 border-[#181818] rounded-lg bg-[#FAF8F5] text-[#181818]"
+                      placeholder="Describe your QA engineering requirements..."
+                    />
+                    {formErrors.message && <p className="text-[#DC2626] text-[10px] mt-0.5">{formErrors.message}</p>}
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={formStatus === "sending"}
+                    className="w-full py-2.5 bg-[#2563EB] text-white font-bold text-xs rounded-lg border-2 border-[#181818] shadow-[3px_3px_0px_#181818] hover:bg-[#1D4ED8] disabled:opacity-50 transition-colors"
+                  >
+                    {formStatus === "sending" ? "TRANSMITTING..." : "TRANSMIT MESSAGE TO SUPABASE & GMAIL →"}
+                  </button>
+                  {formStatus === "sent" && (
+                    <p className="text-[#16A34A] font-bold text-center pt-1">✓ Message successfully dispatched!</p>
+                  )}
+                  {formStatus === "error" && (
+                    <p className="text-[#DC2626] font-bold text-center pt-1">⚠ Submission failed. Please try again.</p>
+                  )}
+                </form>
+              </div>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  // ── PHASE 2: PRIMARY HAND-DRAWN 3D WORLD EXPERIENCE ──
+  if (viewMode === "world") {
+    return (
+      <div className="relative w-full h-screen overflow-hidden bg-[#FAF8F5]">
+        {/* Main 3D Hand-Drawn Connected Universe */}
+        <HandDrawnWorldCanvas
+          activeStationId={activeStation}
+          onStationChange={(st) => setActiveStation(st)}
+        />
+
+        {/* Top Control Bar with Mode Switcher & Resume */}
+        <div className="absolute top-4 right-4 z-40 flex items-center gap-2 pointer-events-auto">
+          <a
+            href="/files/Shashank_Shinde_Resume.pdf"
+            download
+            className="sketch-button px-3 py-1.5 bg-[#FAF8F5] text-[#181818] font-bold text-xs flex items-center gap-1.5"
+          >
+            <FileText className="size-3.5 text-[#2563EB]" />
+            <span className="hidden sm:inline">Resume PDF</span>
+          </a>
+
+          <button
+            onClick={() => setViewMode("dossier")}
+            className="sketch-button px-3.5 py-1.5 bg-[#2563EB] text-white font-bold text-xs flex items-center gap-1.5"
+          >
+            <span>📑</span>
+            <span>Blueprint Document</span>
+          </button>
+        </div>
+
+        {/* Room Dossier Inspector Action Button */}
+        <div className="absolute top-16 right-4 z-30 pointer-events-auto">
+          <button
+            onClick={() => setIsStationDrawerOpen(true)}
+            className="sketch-button px-4 py-2 bg-[#FAF8F5] text-[#181818] font-bold text-xs flex items-center gap-2 border-2 border-[#181818] shadow-[3px_3px_0px_#181818]"
+          >
+            <span>🔍</span>
+            <span>Inspect {activeStation.toUpperCase()} Dossier</span>
+          </button>
+        </div>
+
+        {/* Hand-Drawn Room Dossier Drawer / Modal */}
+        {isStationDrawerOpen && (
+          <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="sketch-card max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 bg-[#FAF8F5] relative border-4 border-[#181818]">
+              <button
+                onClick={() => setIsStationDrawerOpen(false)}
+                className="absolute top-4 right-4 size-9 rounded-lg bg-[#181818] text-white flex items-center justify-center font-bold text-sm hover:scale-105 transition-transform"
+                aria-label="Close dossier"
+              >
+                ✕
+              </button>
+              {renderStationContent(activeStation)}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#070B14] text-[#F8FAFC] selection:bg-[#38BDF8]/25 selection:text-[#F8FAFC]">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#181818] selection:bg-[#2563EB]/20 selection:text-[#181818]">
+      {/* ── Top Bar to return to 3D World ── */}
+      <div className="sticky top-0 z-50 bg-[#FAF8F5]/90 backdrop-blur-md border-b-2 border-[#181818] px-4 py-2.5 flex items-center justify-between">
+        <div className="flex items-center gap-2 font-bold text-xs font-mono">
+          <span className="size-2 rounded-full bg-[#16A34A]" />
+          <span>PORTFOLIO BLUEPRINT DOSSIER</span>
+        </div>
+        <button
+          onClick={() => setViewMode("world")}
+          className="sketch-button px-4 py-1.5 bg-[#2563EB] text-white font-bold text-xs flex items-center gap-1.5"
+        >
+          <span>🏛️</span>
+          <span>Return to 3D Hand-Drawn World</span>
+        </button>
+      </div>
       {/* ── Top Header Navigation ── */}
       <header className="fixed top-0 left-0 right-0 z-40 glass-panel border-b border-white/5 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">

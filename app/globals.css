@@ -1,20 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Patrick+Hand&family=Space+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap');
 @import "tailwindcss";
 
 @layer base {
   :root {
-    --background: #070B14;
-    --foreground: #F8FAFC;
-    --surface: #101827;
-    --card: #121C2C;
-    --border: #1E293B;
-    --muted: #1E293B;
-    --muted-foreground: #94A3B8;
-    --primary: #38BDF8;
-    --primary-foreground: #070B14;
-    --pass: #22C55E;
-    --fail: #EF4444;
+    --background: #FAF8F5;
+    --foreground: #181818;
+    --surface: #F5EFE6;
+    --card: #FFFFFF;
+    --border: #181818;
+    --paper-bg: #FAF8F5;
+    --ink-black: #181818;
+    --pencil-gray: #475569;
+    --tape-blue: #2563EB;
+    --stamp-red: #DC2626;
+    --stamp-green: #16A34A;
+    --postit-yellow: #FEF08A;
+    --primary: #2563EB;
+    --primary-foreground: #FFFFFF;
+    --pass: #16A34A;
+    --fail: #DC2626;
     --warn: #F59E0B;
-    --accent: #38BDF8;
+    --accent: #2563EB;
   }
 
   * {
@@ -41,8 +47,8 @@
   }
 
   ::selection {
-    background: rgba(56, 189, 248, 0.25);
-    color: #F8FAFC;
+    background: rgba(37, 99, 235, 0.2);
+    color: #181818;
   }
 
   ::-webkit-scrollbar {
@@ -50,17 +56,66 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #070B14;
+    background: #FAF8F5;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #1E293B;
+    background: #CBD5E1;
     border-radius: 3px;
+    border: 1px solid #181818;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #38BDF8;
+    background: #2563EB;
   }
+}
+
+/* Hand-Drawn Sketch Utilities */
+.font-handwriting {
+  font-family: 'Caveat', cursive;
+}
+
+.font-sketch {
+  font-family: 'Patrick Hand', cursive;
+}
+
+.sketch-card {
+  background: #FFFFFF;
+  border: 2px solid #181818;
+  border-radius: 1rem;
+  box-shadow: 4px 4px 0px #181818;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sketch-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #181818;
+}
+
+.sketch-button {
+  background: #FAF8F5;
+  border: 2px solid #181818;
+  border-radius: 0.75rem;
+  box-shadow: 3px 3px 0px #181818;
+  font-weight: 700;
+  transition: all 0.1s ease;
+}
+
+.sketch-button:hover {
+  background: #F1ECE1;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #181818;
+}
+
+.sketch-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #181818;
+}
+
+.paper-grain {
+  background-color: #FAF8F5;
+  background-image: radial-gradient(#181818 0.75px, transparent 0.75px);
+  background-size: 24px 24px;
 }
 
 /* Fluid Typography */
