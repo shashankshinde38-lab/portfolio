@@ -802,33 +802,33 @@ export default function PortfolioPage() {
         />
 
         {/* Top Control Bar with Mode Switcher & Resume */}
-        <div className="absolute top-4 right-4 z-40 flex items-center gap-2 pointer-events-auto">
+        <div className="absolute top-4 right-4 z-40 flex items-center gap-1.5 sm:gap-2 pointer-events-auto">
           <a
             href="/files/Shashank_Shinde_Resume.pdf"
             download
-            className="sketch-button px-3 py-1.5 bg-[#FAF8F5] text-[#181818] font-bold text-xs flex items-center gap-1.5"
+            className="sketch-button px-2.5 sm:px-3 py-1.5 bg-[#FAF8F5] text-[#181818] font-bold text-xs flex items-center gap-1 sm:gap-1.5 touch-target"
+            title="Download Resume PDF"
           >
             <FileText className="size-3.5 text-[#2563EB]" />
-            <span className="hidden sm:inline">Resume PDF</span>
+            <span className="hidden sm:inline">Resume</span>
           </a>
 
           <button
             onClick={() => setViewMode("dossier")}
-            className="sketch-button px-3.5 py-1.5 bg-[#2563EB] text-white font-bold text-xs flex items-center gap-1.5"
+            className="sketch-button px-2.5 sm:px-3.5 py-1.5 bg-[#2563EB] text-white font-bold text-xs flex items-center gap-1 sm:gap-1.5 touch-target"
+            title="Switch to Blueprint Document View"
           >
             <span>📑</span>
-            <span>Blueprint Document</span>
+            <span className="hidden sm:inline">Blueprint View</span>
           </button>
-        </div>
 
-        {/* Room Dossier Inspector Action Button */}
-        <div className="absolute top-16 right-4 z-30 pointer-events-auto">
           <button
             onClick={() => setIsStationDrawerOpen(true)}
-            className="sketch-button px-4 py-2 bg-[#FAF8F5] text-[#181818] font-bold text-xs flex items-center gap-2 border-2 border-[#181818] shadow-[3px_3px_0px_#181818]"
+            className="sketch-button px-2.5 sm:px-3.5 py-1.5 bg-[#FAF8F5] text-[#181818] font-bold text-xs flex items-center gap-1 sm:gap-1.5 border-2 border-[#181818] shadow-[2px_2px_0px_#181818] touch-target"
+            title="Inspect Station Dossier"
           >
             <span>🔍</span>
-            <span>Inspect {activeStation.toUpperCase()} Dossier</span>
+            <span className="hidden sm:inline">Dossier</span>
           </button>
         </div>
 
