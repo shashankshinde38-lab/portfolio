@@ -847,6 +847,159 @@ export default function PortfolioPage() {
             </div>
           </div>
         )}
+
+        {/* ── Semantic Progressive Enhancement HTML for Search Crawlers & Screen Readers ── */}
+        <main
+          id="seo-crawlable-content"
+          className="sr-only focus-within:not-sr-only p-8 bg-white border-b-2 border-[#181818]"
+          aria-label="Shashank Shinde Portfolio Semantic Content"
+        >
+          <header className="space-y-2">
+            <h1 className="text-3xl font-bold">Shashank Shinde | Software Test Engineer &amp; QA Automation</h1>
+            <p className="text-sm">QA Automation | Software Testing | Quality Engineering</p>
+            <nav aria-label="Portfolio Sections Index" className="flex flex-wrap gap-3 py-2">
+              <a href="#about" className="underline font-bold">About</a>
+              <a href="#testing-lab" className="underline font-bold">Testing Disciplines</a>
+              <a href="#automation" className="underline font-bold">Automation Architecture</a>
+              <a href="#experience" className="underline font-bold">Work Experience</a>
+              <a href="#projects" className="underline font-bold">Production Projects</a>
+              <a href="#skills" className="underline font-bold">Technical Arsenal</a>
+              <a href="#achievements" className="underline font-bold">Accreditations</a>
+              <a href="#contact" className="underline font-bold">Contact &amp; Release Gate</a>
+            </nav>
+          </header>
+
+          <section id="about" className="mt-6 space-y-2">
+            <h2 className="text-2xl font-bold">About Shashank Shinde — Software Test Engineer</h2>
+            <p>
+              I am a Software Test Engineer based in Pune, Maharashtra, India. I hold a Bachelor of Engineering in Information Technology, along with specialized SDET accreditations from SEED Infotech Pune. Currently serving at Profcyma Solutions Pvt. Ltd., I architect robust test automation frameworks and uncover critical defects before production release.
+            </p>
+            <blockquote className="italic font-bold">
+              &ldquo;I break software before users do.&rdquo;
+            </blockquote>
+            <p>Status: Open for Software Test Engineer, QA Automation, and SDET opportunities.</p>
+          </section>
+
+          <section id="testing-lab" className="mt-6 space-y-2">
+            <h2 className="text-2xl font-bold">Testing Expertise &amp; QA Disciplines</h2>
+            <p>Full-cycle testing capabilities applied across high-concurrency production systems:</p>
+            <ul className="list-disc pl-5 space-y-1">
+              <li><strong>Functional Testing:</strong> Validating user stories, checkout journeys, and payment gateway webhooks (DRIWE, Grosido).</li>
+              <li><strong>Regression Testing:</strong> Reducing regression cycle duration by ~40% using Selenium WebDriver, Page Object Model (POM), and TestNG.</li>
+              <li><strong>Smoke Testing:</strong> Verifying build stability and critical paths immediately upon deployment.</li>
+              <li><strong>Sanity Testing:</strong> Targeted verification of defect fixes and payment edge-case validation.</li>
+              <li><strong>API Testing:</strong> Validating REST API contracts, JSON schema compliance, status codes, and tokens across 22 endpoints via Postman and Newman CLI.</li>
+              <li><strong>UI &amp; Cross-Browser Testing:</strong> Responsive rendering parity across Chrome, Firefox, Safari, and Edge.</li>
+              <li><strong>Mobile Testing:</strong> Testing native Android APKs, emulator configurations, and network throttling for DRIWE Customer &amp; Driver applications.</li>
+              <li><strong>Exploratory &amp; Boundary Testing:</strong> Session-based investigative testing uncovering surge pricing race conditions.</li>
+            </ul>
+            <h3 className="text-xl font-bold mt-3">Bug Detection Testing Mindset</h3>
+            <ol className="list-decimal pl-5 space-y-0.5">
+              <li>SYSTEM STABLE — Baseline regression suites running with zero anomalous status codes.</li>
+              <li>BUG DETECTED — Critical anomaly surfaced during surge load simulation.</li>
+              <li>REPRODUCE — Minimal reproducible payload crafted in Postman and JMeter.</li>
+              <li>DOCUMENT — Comprehensive defect ticket logged in JIRA with reproduction steps and logs.</li>
+              <li>FIX — Patch applied with server-side validation floor.</li>
+              <li>RETEST — Regression test suite executed across edge-case permutations.</li>
+              <li>PASS — 100% assertions green; build verified and released.</li>
+            </ol>
+          </section>
+
+          <section id="automation" className="mt-6 space-y-2">
+            <h2 className="text-2xl font-bold">Test Automation Architecture &amp; Pipeline</h2>
+            <p>Five-stage continuous automation pipeline:</p>
+            <p>CODE (Java, TypeScript, Selenium, Playwright) &rarr; TEST (TestNG, Parallel Suites) &rarr; ASSERT (REST Assured, Postman JSON Schema) &rarr; REPORT (JIRA, Execution Logs) &rarr; CI/CD (GitHub Actions PR build verification).</p>
+          </section>
+
+          <section id="experience" className="mt-6 space-y-2">
+            <h2 className="text-2xl font-bold">Professional Work Experience — Profcyma Solutions Pvt. Ltd.</h2>
+            <p><strong>Role:</strong> Software Test Engineer | <strong>Location:</strong> Pune, India | <strong>Period:</strong> Aug 2024 – Present (Current)</p>
+            <h3 className="text-lg font-bold">9 Core Engineering Responsibilities:</h3>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>Designed end-to-end test strategies and built scalable Selenium + POM automation frameworks.</li>
+              <li>Performed manual, functional, regression, smoke, and sanity testing across Web and Android platforms.</li>
+              <li>Validated REST APIs via Postman — contract testing, JSON schemas, status codes, and data consistency.</li>
+              <li>Performed load and stress testing with Apache JMeter simulating 100,000+ virtual concurrent users.</li>
+              <li>Documented test cases and tracked defect lifecycles in JIRA with reproduction steps and server logs.</li>
+              <li>Collaborated with developers in Agile/Scrum sprints across 5+ client production projects.</li>
+              <li>Integrated automated test suites into CI/CD pipelines, reducing manual regression overhead by 25%.</li>
+              <li>Conducted cross-browser and responsive testing across 5+ browsers and mobile viewports.</li>
+              <li>Participated in release verification, build sign-offs, and production deployment validation.</li>
+            </ul>
+            <p><strong>Impact Metrics:</strong> ~40% regression cycle cut via Selenium + TestNG, 100,000+ virtual users simulated in JMeter, 240+ defects logged in JIRA.</p>
+          </section>
+
+          <section id="projects" className="mt-6 space-y-4">
+            <h2 className="text-2xl font-bold">QA Production Case Studies &amp; Projects</h2>
+            
+            <article className="space-y-1">
+              <h3 className="text-xl font-bold">TC-001: DRIWE — Cab &amp; Courier Booking Platform</h3>
+              <p>Full-cycle quality testing of a high-concurrency cab and parcel delivery ecosystem with real-time geospatial driver allocation.</p>
+              <p><strong>Role:</strong> QA Engineer | <strong>Stack:</strong> Manual Testing, API Testing, Apache JMeter, JIRA, Razorpay</p>
+              <p><strong>Testing Approach:</strong> Distributed JMeter thread groups simulating 100,000 peak users, asserting connection pools and API response latencies.</p>
+              <p><strong>Critical Defect Caught:</strong> Negative fare edge case during rapid coupon re-application.</p>
+              <p><strong>Outcome:</strong> 240+ defects logged in JIRA; 99.9% uptime verified under 100k users.</p>
+              <p><strong>Links:</strong> Google Play Customer App &amp; Driver App.</p>
+            </article>
+
+            <article className="space-y-1">
+              <h3 className="text-xl font-bold">TC-002: Grosido — Grocery Delivery Platform</h3>
+              <p>Multi-module grocery delivery platform comprising Customer App, Admin Panel, and Delivery Boy App with end-to-end cart coverage.</p>
+              <p><strong>Role:</strong> QA Engineer | <strong>Stack:</strong> Selenium WebDriver, POM, Manual Testing, JIRA, TestNG</p>
+              <p><strong>Testing Approach:</strong> Automated order processing using Selenium WebDriver + Page Object Model across 8+ sprints.</p>
+              <p><strong>Outcome:</strong> ~40% reduction in regression cycle time.</p>
+              <p><strong>Links:</strong> Website (groscido.com) and Google Play Store App.</p>
+            </article>
+
+            <article className="space-y-1">
+              <h3 className="text-xl font-bold">TC-003: E-Commerce Multi-Vendor Ecosystem</h3>
+              <p>Full-spectrum regression and API validation across multi-vendor storefronts and seller portals.</p>
+              <p><strong>Role:</strong> QA Automation Engineer | <strong>Stack:</strong> Playwright, TypeScript, REST Assured, GitHub Actions</p>
+              <p><strong>Testing Approach:</strong> 120+ Playwright E2E tests executed across 5 browser engines with automated PR gating.</p>
+              <p><strong>Outcome:</strong> 18 critical pre-release defects prevented; 0 checkout regressions in 6 consecutive release cycles.</p>
+            </article>
+
+            <article className="space-y-1">
+              <h3 className="text-xl font-bold">TC-004: Ride Sharing Application</h3>
+              <p>API contract testing and mobile network throttling verification for real-time driver dispatch.</p>
+              <p><strong>Role:</strong> Performance &amp; API Test Engineer | <strong>Stack:</strong> Postman, Newman CLI, Apache JMeter, Charles Proxy</p>
+              <p><strong>Testing Approach:</strong> Automated token refresh and payload contract validation across 22 REST endpoints.</p>
+              <p><strong>Outcome:</strong> 99.8% API contract compliance; 180+ test cases automated.</p>
+            </article>
+
+            <article className="space-y-1">
+              <h3 className="text-xl font-bold">TC-005: Urban Build — Construction Lead Generation</h3>
+              <p>Lead generation funnel validation, lead scoring webhook verification, and quotation calculator testing.</p>
+              <p><strong>Role:</strong> QA Engineer &amp; Functional Lead | <strong>Stack:</strong> Manual Testing, Cross-Browser Testing, Postman, JIRA</p>
+              <p><strong>Testing Approach:</strong> Boundary value analysis (BVA) matrices covering 60+ quotation parameter permutations.</p>
+              <p><strong>Outcome:</strong> 100% quotation accuracy; lead form abandonment reduced by 14%.</p>
+            </article>
+          </section>
+
+          <section id="skills" className="mt-6 space-y-2">
+            <h2 className="text-2xl font-bold">Technical Testing Arsenal</h2>
+            <p>Selenium WebDriver, Playwright, Apache JMeter, Postman, Newman CLI, Java OOP, TestNG, REST Assured, Android Testing, JIRA, Git, GitHub Actions, Boundary Value Analysis, SQL Database Testing.</p>
+          </section>
+
+          <section id="achievements" className="mt-6 space-y-2">
+            <h2 className="text-2xl font-bold">Verified Certifications &amp; Accreditations</h2>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>Salesforce Accredited Professional (Platform Configuration &amp; Business Rules)</li>
+              <li>SDET Professional Certification · SEED Infotech Pune (Selenium, Java, POM, TestNG, CI/CD)</li>
+              <li>Performance &amp; API Testing Specialist (Apache JMeter 100k+ users, Postman REST)</li>
+              <li>Bachelor of Engineering (B.E.) in Information Technology</li>
+            </ul>
+          </section>
+
+          <section id="contact" className="mt-6 space-y-2">
+            <h2 className="text-2xl font-bold">Contact &amp; Release Gate Dispatch</h2>
+            <p>Email: <a href="mailto:shashankshinde38@gmail.com" className="underline">shashankshinde38@gmail.com</a></p>
+            <p>Phone: <a href="tel:+918080852689" className="underline">+91 80808 52689</a></p>
+            <p>LinkedIn: <a href="https://www.linkedin.com/in/shashank-shinde7/" className="underline">linkedin.com/in/shashank-shinde7</a></p>
+            <p>GitHub: <a href="https://github.com/shashankshinde38-lab" className="underline">github.com/shashankshinde38-lab</a></p>
+            <p>Resume: <a href="/files/Shashank_Shinde_Resume.pdf" className="underline">Download Shashank Shinde Resume PDF</a></p>
+          </section>
+        </main>
       </div>
     );
   }

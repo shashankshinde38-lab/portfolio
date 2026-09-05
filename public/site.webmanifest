@@ -4,8 +4,8 @@
   "description": "Portfolio of Shashank Shinde — Software Test Engineer & QA Automation Specialist.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#070B14",
-  "theme_color": "#070B14",
+  "background_color": "#FAF8F5",
+  "theme_color": "#FAF8F5",
   "icons": [
     {
       "src": "/favicon-16x16.png",
