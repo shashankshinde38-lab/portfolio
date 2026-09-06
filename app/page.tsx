@@ -1,299 +1,50 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
-import { StationId } from "@/components/3d/HandDrawnWorldCanvas";
-import QualityEngineCanvas, { ViewMode } from "@/components/3d/QualityEngineCanvas";
+import { useEffect, useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import InteractiveTestRunner from "@/components/3d/InteractiveTestRunner";
 import BugSpotterLab from "@/components/sections/BugSpotterLab";
 import FloatingDockNav from "@/components/3d/FloatingDockNav";
+import QAWorkstation from "@/components/3d/QAWorkstation";
+import TiltCard from "@/components/TiltCard";
+import { ALL_PROJECTS, ALL_SKILLS } from "@/lib/portfolio-data";
 import confetti from "canvas-confetti";
-
-const HandDrawnWorldCanvas = dynamic(
-  () => import("@/components/3d/HandDrawnWorldCanvas"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-screen flex flex-col items-center justify-center bg-[#FAF8F5] text-[#181818] font-mono text-sm space-y-3">
-        <div className="size-10 border-4 border-[#181818] border-t-transparent rounded-full animate-spin" />
-        <p className="font-bold">Inking 3D Hand-Drawn QA World...</p>
-      </div>
-    ),
-  }
-);
 import {
-  ShieldCheck,
-  Cpu,
   Activity,
-  Terminal,
+  ArrowDown,
+  ArrowDownToLine,
+  ArrowUpRight,
   Award,
-  Send,
-  Mail,
-  Phone,
-  Linkedin,
-  Github,
+  Braces,
+  BriefcaseBusiness,
+  Bug,
+  Building2,
+  Check,
   CheckCircle2,
+  Code2,
+  Database,
   ExternalLink,
-  ChevronDown,
-  ChevronUp,
-  Menu,
-  X,
-  FileText,
-  Briefcase,
-  MapPin,
-  Calendar,
-  Building,
+  GitBranch,
+  GitPullRequest,
+  Github,
   Layers,
-  Sparkles,
+  Linkedin,
+  Mail,
+  MapPin,
+  Minus,
+  Navigation,
+  Phone,
+  Route,
+  ShieldCheck,
+  ShoppingBag,
+  Smartphone,
+  Terminal,
+  TestTube2,
 } from "lucide-react";
 
-/* ═══════════════════════════════════════════════════
-   PREVIOUS WEBSITE AUTHENTIC CONTENT & DATA
-   ═══════════════════════════════════════════════════ */
-
-interface Project {
-  id: string;
-  name: string;
-  industry: string;
-  platforms: string[];
-  role: string;
-  stack: string[];
-  summary: string;
-  challenge: string;
-  approach: string;
-  keyDefect: string;
-  outcome: string;
-  bullets: string[];
-  metrics: { k: string; v: string }[];
-  links: { label: string; url: string }[];
-  featured: boolean;
-}
-
-const ALL_PROJECTS: Project[] = [
-  {
-    id: "TC-001",
-    name: "DRIWE — Cab & Courier Booking Platform",
-    industry: "Transportation & Logistics",
-    platforms: ["Android (Customer App)", "Android (Driver App)"],
-    role: "QA Engineer",
-    stack: ["Manual Testing", "API Testing", "JMeter", "JIRA"],
-    summary:
-      "Full-cycle quality testing of a high-concurrency cab and parcel delivery ecosystem with real-time geospatial driver allocation.",
-    challenge:
-      "Surge pricing race conditions caused negative fare calculations during high booking velocity and simultaneous driver acceptances.",
-    approach:
-      "Built Apache JMeter distributed thread groups simulating 100,000 peak users, asserting database connection pool stability and API response latencies.",
-    keyDefect:
-      "Negative fare edge case: rapid coupon re-application allowed riders to book with negative balances and credited their wallets.",
-    outcome:
-      "240+ defects identified and logged in JIRA; verified 99.9% uptime under 100,000 simulated concurrent users.",
-    bullets: [
-      "Simulated 100,000 concurrent virtual users using Apache JMeter",
-      "Logged and tracked 240+ pre-production defects in JIRA",
-      "Validated Razorpay payment gateway webhooks and refund cycles",
-    ],
-    metrics: [
-      { k: "Load users", v: "100k+" },
-      { k: "Defects caught", v: "240+" },
-      { k: "Platforms", v: "2" },
-    ],
-    links: [
-      { label: "Customer App", url: "https://play.google.com/store/apps/details?id=com.driwe" },
-      { label: "Driver App", url: "https://play.google.com/store/apps/details?id=com.driwedriver" },
-    ],
-    featured: true,
-  },
-  {
-    id: "TC-002",
-    name: "Grosido — Grocery Delivery Platform",
-    industry: "E-Commerce / Grocery Delivery",
-    platforms: ["Web (Admin Panel)", "Android (Customer App)", "Android (Delivery App)"],
-    role: "QA Engineer",
-    stack: ["Selenium WebDriver", "POM", "Manual Testing", "JIRA"],
-    summary:
-      "Multi-module grocery delivery platform comprising Customer App, Admin Panel, and Delivery Boy App with end-to-end cart and checkout coverage.",
-    challenge:
-      "Ensuring real-time inventory and pricing consistency across three independently deployed modules.",
-    approach:
-      "Automated end-to-end order processing using Selenium WebDriver + Page Object Model (POM). Smoke and sanity cycles run every sprint.",
-    keyDefect:
-      "Data inconsistency between user UI and admin dashboards: product price updates were not propagating to customer carts in real time.",
-    outcome:
-      "~40% reduction in regression cycle time through Selenium + TestNG automation framework.",
-    bullets: [
-      "End-to-end order processing automated with Selenium WebDriver + POM",
-      "Validated data consistency between user UI and admin dashboards",
-      "Smoke and sanity cycles every sprint to keep critical journeys stable",
-    ],
-    metrics: [
-      { k: "Modules", v: "3" },
-      { k: "Regression cut", v: "~40%" },
-      { k: "Sprints", v: "8+" },
-    ],
-    links: [
-      { label: "Website", url: "https://www.groscido.com/" },
-      { label: "Play Store", url: "https://play.google.com/store/apps/details?id=com.profcymasolutions.groscido_mobile_app" },
-    ],
-    featured: true,
-  },
-  {
-    id: "TC-003",
-    name: "E-Commerce Ecosystem",
-    industry: "E-Commerce / Marketplace",
-    platforms: ["Web (Seller Panel)", "Web (Admin Panel)", "Android (Customer App)", "Android (Delivery App)"],
-    role: "QA Engineer",
-    stack: ["Selenium WebDriver", "Manual Testing", "API Testing"],
-    summary:
-      "Full marketplace ecosystem covering the complete order-to-delivery lifecycle across Customer, Seller, Admin, and Delivery modules.",
-    challenge:
-      "Testing multi-role order-to-delivery workflows where returns, refunds, and seller commissions interact across 4 separate systems.",
-    approach:
-      "Selenium scripts for complete web order workflows. Cross-browser testing across 5 browsers with automated payment regression after every release.",
-    keyDefect:
-      "18 critical bugs identified in checkout and payment workflows, including a refund-processing defect that caused financial balance discrepancies.",
-    outcome:
-      "18 critical bugs caught before production release; verified checkout stability across 5 browser combinations.",
-    bullets: [
-      "Validated checkout, returns/refunds, and seller assignment workflows",
-      "Selenium scripts for complete order-to-delivery web flow",
-      "Cross-browser testing across 5 major browser engines",
-    ],
-    metrics: [
-      { k: "User roles", v: "4" },
-      { k: "Critical bugs", v: "18" },
-      { k: "Browsers", v: "5" },
-    ],
-    links: [
-      { label: "Customer App", url: "https://play.google.com/store/apps/details?id=com.profcymasolutions.urban_prime_mart" },
-      { label: "Driver App", url: "https://play.google.com/store/apps/details?id=com.profcymasolutions.urban_mobile_driver" },
-    ],
-    featured: true,
-  },
-  {
-    id: "TC-004",
-    name: "Ride Sharing Application",
-    industry: "Transportation",
-    platforms: ["Android"],
-    role: "QA Engineer",
-    stack: ["Manual Testing", "API Testing", "JIRA"],
-    summary:
-      "Android ride-sharing app where drivers post available trips and riders request seats with real-time route matching.",
-    challenge: "Validating real-time trip posting and rider-driver matching logic via high-frequency REST APIs.",
-    approach: "Functional, UI, and regression suites for driver and user modules. API response validation for trip CRUD operations.",
-    keyDefect: "Incorrect trip-assignment logic when multiple riders requested the same trip simultaneously.",
-    outcome: "180+ test cases executed; 22 API endpoints validated with full JIRA tracking.",
-    bullets: [
-      "Functional, UI, and regression suites for driver and user modules",
-      "API response validation for trip create / request / assign flows",
-      "Defect lifecycle tracked in JIRA with detailed bug reproduction steps",
-    ],
-    metrics: [
-      { k: "Test cases", v: "180+" },
-      { k: "API endpoints", v: "22" },
-      { k: "Modules", v: "2" },
-    ],
-    links: [{ label: "Play Store", url: "https://play.google.com/store/search?q=icab%20tours&c=apps" }],
-    featured: false,
-  },
-  {
-    id: "TC-005",
-    name: "Urban Build — Lead Generation Platform",
-    industry: "Construction / Real Estate",
-    platforms: ["Android"],
-    role: "QA Engineer",
-    stack: ["Manual Testing", "API Testing", "JIRA"],
-    summary:
-      "Android lead-generation platform connecting customers with material suppliers, construction experts, and property listings.",
-    challenge: "Testing interconnected lead-generation flows across Materials, Experts, Property, and Construction modules.",
-    approach: "Functional, UI, regression, and API testing with defect tracking in JIRA. Verified REST APIs for auth and lead posting.",
-    keyDefect: "Enquiry submission edge case where duplicate leads were created when users tapped the submit button rapidly.",
-    outcome: "15+ API flows validated; 6+ complete test cycles executed.",
-    bullets: [
-      "Validated lead generation and enquiry workflows across 4 modules",
-      "Verified REST APIs for authentication, lead creation, and user interactions",
-      "Performed functional, UI, regression, and API testing with JIRA defect tracking",
-    ],
-    metrics: [
-      { k: "Modules", v: "4" },
-      { k: "API flows", v: "15+" },
-      { k: "Test cycles", v: "6+" },
-    ],
-    links: [{ label: "Play Store", url: "https://play.google.com/store/search?q=URBAN%20BUILD&c=apps" }],
-    featured: false,
-  },
-];
-
-const ALL_SKILLS = [
-  {
-    group: "Automation Testing",
-    icon: "⚡",
-    items: [
-      { name: "Selenium WebDriver", desc: "Core web automation framework" },
-      { name: "Playwright", desc: "Modern fast E2E automation in TS/JS" },
-      { name: "TestNG", desc: "Test runner and assertion suite" },
-      { name: "Cucumber (BDD)", desc: "Gherkin scenario automation" },
-      { name: "Page Object Model (POM)", desc: "Maintainable test architecture" },
-    ],
-  },
-  {
-    group: "API Testing",
-    icon: "⌁",
-    items: [
-      { name: "Postman", desc: "Collection runs and assertion scripts" },
-      { name: "REST APIs", desc: "Payload & schema contract testing" },
-      { name: "Schema Validation", desc: "JSON schema verification" },
-      { name: "Status Code Testing", desc: "HTTP 2xx, 4xx, 5xx edge handling" },
-    ],
-  },
-  {
-    group: "Performance Testing",
-    icon: "◉",
-    items: [
-      { name: "Apache JMeter", desc: "Distributed stress & load simulation" },
-      { name: "Load Testing", desc: "100k+ concurrent virtual users" },
-      { name: "Stress & Spike Testing", desc: "Database threshold bottleneck discovery" },
-    ],
-  },
-  {
-    group: "Mobile Testing",
-    icon: "📱",
-    items: [
-      { name: "Android Testing", desc: "Real devices and emulators" },
-      { name: "Cross-Device Testing", desc: "Resolutions, OS versions, fragmentation" },
-      { name: "App Store Validation", desc: "Pre-submission compliance checks" },
-    ],
-  },
-  {
-    group: "Testing Methodologies",
-    icon: "✓",
-    items: [
-      { name: "Manual & Functional", desc: "Exploratory and scenario-based" },
-      { name: "Regression Testing", desc: "Automated pipeline and sanity runs" },
-      { name: "Cross-Browser Testing", desc: "Chrome, Edge, Firefox, Safari parity" },
-      { name: "Smoke & Sanity", desc: "Sprint build verification testing" },
-      { name: "UI/UX Quality Checks", desc: "Usability and accessibility audits" },
-    ],
-  },
-  {
-    group: "Languages & Tools",
-    icon: "▣",
-    items: [
-      { name: "Java", desc: "Primary language for Selenium test suites" },
-      { name: "JavaScript & TypeScript", desc: "Playwright automation and web scripting" },
-      { name: "JIRA", desc: "Defect lifecycle & sprint tracking" },
-      { name: "Git & GitHub Actions", desc: "Version control and CI/CD integration" },
-      { name: "SQL & Databases", desc: "PostgreSQL, Supabase, MySQL queries" },
-      { name: "Agile / Scrum", desc: "Active participant in sprint ceremonies" },
-    ],
-  },
-];
-
 export default function PortfolioPage() {
-  const [viewMode, setViewMode] = useState<"world" | "dossier">("world");
-  const [activeStation, setActiveStation] = useState<StationId>("entrance");
-  const [isStationDrawerOpen, setIsStationDrawerOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState("home");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({});
 
   // Contact Form State
@@ -308,26 +59,72 @@ export default function PortfolioPage() {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [backendLive, setBackendLive] = useState(false);
+  const [isBooting, setIsBooting] = useState(true);
 
-  // Section Observer for 3D Camera & Floating Dock
   useEffect(() => {
-    const sections = ["home", "about", "experience", "cases", "simulator", "skills", "certs", "contact"];
-    const handleScroll = () => {
-      const scrollPos = window.scrollY + 250;
-      for (const id of sections) {
-        const el = document.getElementById(id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(id);
-            break;
-          }
+    let active = true;
+    const timeout = window.setTimeout(() => {
+      if (active) setIsBooting(false);
+    }, 900);
+
+    fetch("/api/pulse")
+      .then((r) => r.json())
+      .then((d) => {
+        if (active) setBackendLive(Boolean(d?.ok));
+      })
+      .catch(() => {
+        if (active) setBackendLive(false);
+      })
+      .finally(() => {
+        if (active) {
+          window.clearTimeout(timeout);
+          setIsBooting(false);
         }
-      }
+      });
+
+    return () => {
+      active = false;
+      window.clearTimeout(timeout);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const sectionIds = [
+      "home",
+      "about",
+      "experience",
+      "cases",
+      "simulator",
+      "skills",
+      "certs",
+      "contact",
+    ];
+    const visibility = new Map<string, number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          visibility.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+        }
+        const current = [...visibility.entries()].sort((a, b) => b[1] - a[1])[0];
+        if (current?.[1]) setActiveSection(current[0]);
+      },
+      { rootMargin: "-20% 0px -55% 0px", threshold: [0, 0.1, 0.25, 0.5] }
+    );
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => Boolean(section));
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    // Next's development overlay can inject this logo outside the authored UI.
+    const removeNextLogo = () => document.getElementById("next-logo")?.remove();
+    removeNextLogo();
+    const observer = new MutationObserver(removeNextLogo);
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
   }, []);
 
   const toggleProject = (id: string) => {
@@ -335,7 +132,7 @@ export default function PortfolioPage() {
   };
 
   const handleFormChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -348,10 +145,11 @@ export default function PortfolioPage() {
     }
   };
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (formData.website) return;
 
+    setFormErrors({});
     const errs: Record<string, string> = {};
     if (!formData.fullName.trim()) errs.fullName = "Full name is required";
     if (!formData.email.trim()) {
@@ -360,8 +158,7 @@ export default function PortfolioPage() {
       errs.email = "Valid email is required";
     }
     if (formData.mobile.trim()) {
-      const digits = formData.mobile.replace(/\D/g, "");
-      if (digits.length !== 10) errs.mobile = "10 digits required";
+      if (!/^\d{10}$/.test(formData.mobile.trim())) errs.mobile = "Enter exactly 10 digits";
     }
     if (!formData.reason) errs.reason = "Please select a reason";
     if (!formData.message.trim()) errs.message = "Message is required";
@@ -374,19 +171,27 @@ export default function PortfolioPage() {
     setFormStatus("sending");
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch("/api/enquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          full_name: formData.fullName,
+          name: formData.fullName,
           email: formData.email,
           mobile: formData.mobile,
           reason: formData.reason,
           message: formData.message,
+          website: formData.website,
         }),
       });
 
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
+        const apiErrors = data.errors && typeof data.errors === "object" ? data.errors : {};
+        setFormErrors({
+          ...(apiErrors as Record<string, string>),
+          ...(typeof apiErrors.name === "string" ? { fullName: apiErrors.name } : {}),
+          form: data.message || "Your message couldn’t be sent. Please try again.",
+        });
         setFormStatus("error");
         setTimeout(() => setFormStatus("idle"), 4000);
         return;
@@ -396,1493 +201,852 @@ export default function PortfolioPage() {
       setShowSuccessModal(true);
       setFormData({ fullName: "", email: "", mobile: "", reason: "", message: "", website: "" });
       confetti({
-        particleCount: 65,
+        particleCount: 35,
+        disableForReducedMotion: true,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ["#22C55E", "#38BDF8", "#F8FAFC"],
+        colors: ["#9dd7c2", "#c9d9d3", "#f1f3f0"],
       });
       setTimeout(() => setFormStatus("idle"), 3000);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setFormErrors({ form: "The contact channel is unavailable. Please try again shortly." });
       setFormStatus("error");
       setTimeout(() => setFormStatus("idle"), 4000);
     }
   };
 
-  const renderStationContent = (st: StationId) => {
-    switch (st) {
-      case "entrance":
-      case "atrium":
-        return (
-          <div className="space-y-6 font-sans">
-            <div className="border-b-2 border-[#181818] pb-4">
-              <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
-                01 / QA TESTING LAB · ABOUT SHASHANK
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
-                Quality Engineering Driven by Curiosity &amp; Precision
-              </h2>
+  return (
+    <div className={`portfolio-shell ${isBooting ? "is-booting" : ""}`}>
+      {isBooting && (
+        <div className="portfolio-loading-layer" role="status" aria-live="polite">
+          <span className="portfolio-loading-shimmer">Loading portfolio…</span>
+        </div>
+      )}
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
+      <FloatingDockNav activeSection={activeSection} />
+      <main id="main-content">
+        <section id="home" className="hero-section page-container">
+          <div className="hero-copy">
+            <div className="availability">
+              <span className="status-dot" /> Available for QA & SDET opportunities
             </div>
-            <p className="font-handwriting text-2xl sm:text-3xl text-[#2563EB]">
-              &quot;I break software before users do.&quot;
+            <p className="hero-intro">SHASHANK SHINDE / SOFTWARE TEST ENGINEER</p>
+            <h1>
+              Great software.
+              <br />
+              Tested to
+              <br />
+              <span>the last detail.</span>
+            </h1>
+            <p className="hero-description">
+              I find the edge cases, automate the essentials, and help teams ship with confidence.
             </p>
-            <p className="text-sm text-[#334155] leading-relaxed">
-              I am a Software Test Engineer based in <strong>Pune, Maharashtra</strong>. I hold a Bachelor of Engineering in Information Technology, along with specialized SDET accreditations from SEED Infotech. Currently serving at <strong>Profcyma Solutions Pvt. Ltd.</strong>, I architect robust test automation frameworks and uncover critical defects before production release.
-            </p>
-            <div className="sketch-card p-5 bg-white space-y-3 font-mono text-xs">
-              <div className="flex justify-between py-1 border-b border-dashed border-[#CBD5E1]">
-                <span className="text-[#64748B]">Current Employer:</span>
-                <span className="font-bold text-[#181818]">Profcyma Solutions Pvt. Ltd.</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-dashed border-[#CBD5E1]">
-                <span className="text-[#64748B]">Role:</span>
-                <span className="font-bold text-[#2563EB]">Software Test Engineer (SDET)</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-dashed border-[#CBD5E1]">
-                <span className="text-[#64748B]">Location:</span>
-                <span className="text-[#181818]">Pune, Maharashtra, India</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-dashed border-[#CBD5E1]">
-                <span className="text-[#64748B]">Education:</span>
-                <span className="text-[#181818]">B.E. Information Technology</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-dashed border-[#CBD5E1]">
-                <span className="text-[#64748B]">Accreditation:</span>
-                <span className="font-bold text-[#16A34A]">SDET · SEED Infotech</span>
-              </div>
-              <div className="flex justify-between pt-1">
-                <span className="text-[#64748B]">Status:</span>
-                <span className="font-bold text-[#16A34A]">✓ Open to QA Opportunities</span>
-              </div>
+            <div className="hero-actions">
+              <a className="btn-primary" href="#cases">
+                Explore my work <ArrowUpRight size={17} />
+              </a>
+              <a className="btn-secondary" href="/files/Shashank_Shinde_Resume.pdf" download>
+                <ArrowDownToLine size={16} /> Download resume
+              </a>
+            </div>
+            <div className="hero-location">
+              <MapPin size={13} />
+              <span>Pune, India</span>
+              <i />
+              <span>Curiosity meets precision.</span>
             </div>
           </div>
-        );
-      case "experience":
-        return (
-          <div className="space-y-6 font-sans">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-[#181818] pb-4 gap-2">
-              <div>
-                <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
-                  02 / WORK HISTORY &amp; EMPLOYMENT
+          <QAWorkstation />
+          <div className="hero-bottom">
+            <a href="#about">
+              <ArrowDown size={14} /> Scroll to explore
+            </a>
+            <span>BUILT AROUND ONE THING: QUALITY.</span>
+            <span className="hero-index">01 — 08</span>
+          </div>
+        </section>
+
+        <div className="expertise-strip">
+          <div className="page-container">
+            <span className="strip-label">MY EVERYDAY TOOLKIT</span>
+            <div className="tool-names">
+              <span>
+                <Code2 /> Selenium
+              </span>
+              <span>
+                <Layers /> Playwright
+              </span>
+              <span>
+                <Activity /> JMeter
+              </span>
+              <span>
+                <Braces /> Postman
+              </span>
+              <span>
+                <GitBranch /> CI/CD
+              </span>
+              <span>
+                <Bug /> JIRA
+              </span>
+              <span>
+                <TestTube2 /> TestNG
+              </span>
+              <span>
+                <Database /> SQL
+              </span>
+              <span>
+                <GitPullRequest /> GitHub Actions
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <section id="about" className="section page-container">
+          <div className="section-heading">
+            <span className="eyebrow">01 / THE ENGINEER</span>
+            <h2>
+              Curious by nature.
+              <br />
+              <span>Precise by practice.</span>
+            </h2>
+          </div>
+          <div className="about-grid">
+            <div className="about-copy">
+              <p>
+                I’m Shashank, a Software Test Engineer based in <strong>Pune, India</strong>. I turn
+                “it should work” into software people can count on.
+              </p>
+              <p>
+                At <strong>Profcyma Solutions</strong>, I build automation frameworks, validate
+                APIs, and put applications under real pressure. From a customer’s first tap to the
+                final payment, I look for what could go wrong—and make sure it goes right.
+              </p>
+              <p>
+                My foundation is a B.E. in Information Technology and SDET training at SEED
+                Infotech. My approach is simple: stay curious, understand the user, and make quality
+                part of every release.
+              </p>
+              <a className="text-link" href="#experience">
+                A closer look at my experience <ArrowUpRight size={16} />
+              </a>
+            </div>
+            <div className="profile-panel surface">
+              <div className="profile-top">
+                <div className="profile-monogram">
+                  ss<span>.</span>
+                </div>
+                <span className="small-badge">
+                  <span className="status-dot" /> Open to opportunities
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
-                  Profcyma Solutions Pvt. Ltd.
-                </h2>
-                <p className="text-xs font-mono text-[#64748B] mt-0.5">
-                  Software Test Engineer · Pune, India · Aug 2024 – Present
-                </p>
               </div>
-              <span className="px-3 py-1 rounded bg-[#16A34A]/15 text-[#16A34A] border-2 border-[#16A34A] font-mono text-xs font-bold w-fit">
-                CURRENT ROLE
-              </span>
+              <h3>Shashank Shinde</h3>
+              <p>Software Test Engineer · SDET</p>
+              <dl className="profile-details">
+                <div>
+                  <dt>Currently at</dt>
+                  <dd>Profcyma Solutions Pvt. Ltd.</dd>
+                </div>
+                <div>
+                  <dt>Based in</dt>
+                  <dd>Pune, Maharashtra</dd>
+                </div>
+                <div>
+                  <dt>Education</dt>
+                  <dd>B.E. Information Technology</dd>
+                </div>
+                <div>
+                  <dt>Focus</dt>
+                  <dd>Automation · API · Performance</dd>
+                </div>
+              </dl>
+              <div className="profile-footer">
+                <ShieldCheck size={17} />
+                <span>Quality is a mindset, not a final step.</span>
+              </div>
             </div>
+          </div>
+          <div className="impact-grid">
+            {[
+              {
+                value: "100k+",
+                label: "Virtual users simulated",
+                detail: "Performance tested with JMeter",
+              },
+              { value: "300+", label: "Test cases executed", detail: "Across web and mobile apps" },
+              {
+                value: "240+",
+                label: "Defects caught early",
+                detail: "Before reaching production",
+              },
+              {
+                value: "~40%",
+                label: "Faster regression cycles",
+                detail: "With Selenium + TestNG",
+              },
+            ].map((stat) => (
+              <div key={stat.value} className="impact-item">
+                <strong>{stat.value}</strong>
+                <span>{stat.label}</span>
+                <p>{stat.detail}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
+        <section id="experience" className="section section-lined page-container">
+          <div className="section-heading section-heading-split">
             <div>
-              <h4 className="font-mono text-xs uppercase tracking-wider text-[#2563EB] font-bold mb-3">
-                9 Core Engineering Responsibilities
-              </h4>
-              <ul className="grid sm:grid-cols-2 gap-2.5 text-xs text-[#334155]">
+              <span className="eyebrow">02 / IN PRACTICE</span>
+              <h2>
+                Making quality
+                <br />
+                <span>part of the process.</span>
+              </h2>
+            </div>
+            <p>
+              Hands-on engineering. Real production systems.
+              <br />A little more confidence with every release.
+            </p>
+          </div>
+          <article className="experience-panel surface">
+            <div className="experience-identity">
+              <div className="company-icon">
+                <BriefcaseBusiness size={25} strokeWidth={1.5} />
+              </div>
+              <span className="small-badge">
+                <span className="status-dot" /> Current role
+              </span>
+              <h3>
+                Software Test
+                <br />
+                Engineer
+              </h3>
+              <a href="#cases" className="company-name">
+                Profcyma Solutions Pvt. Ltd. <ArrowUpRight size={14} />
+              </a>
+              <p>Pune, Maharashtra · Full-time</p>
+              <div className="experience-date">
+                <span>Aug 2024 — Present</span>
+                <span>QA ENGINEERING</span>
+              </div>
+            </div>
+            <div className="experience-content">
+              <h4>From the first test plan to release day.</h4>
+              <div className="responsibility-grid">
                 {[
-                  "Designed end-to-end test strategies and built scalable Selenium + POM automation frameworks",
-                  "Performed manual, functional, regression, smoke, and sanity testing across web and Android apps",
-                  "Validated REST APIs via Postman — schema validation, status codes, and data consistency",
-                  "Performed load and stress testing with Apache JMeter (100k+ virtual users simulated)",
-                  "Documented test cases and tracked defect lifecycle in JIRA with detailed bug reports and logs",
-                  "Collaborated with developers in Agile/Scrum teams across 5+ production client projects",
-                  "Integrated automated suites into CI/CD pipelines, reducing manual regression time by 25%",
-                  "Conducted cross-browser and responsive testing across 5+ browsers and multiple mobile viewports",
-                  "Participated in release verification, build sign-offs, and production deployment validation",
-                ].map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2 bg-white p-2.5 rounded-lg border border-[#CBD5E1]">
-                    <span className="text-[#16A34A] font-bold">✓</span>
-                    <span className="leading-relaxed">{item}</span>
-                  </li>
+                  [
+                    "Build for repeatability",
+                    "Designed scalable Selenium + POM frameworks and end-to-end test strategies.",
+                  ],
+                  [
+                    "Test the whole journey",
+                    "Manual, functional, regression, smoke and sanity testing across web and Android.",
+                  ],
+                  [
+                    "Go beyond the interface",
+                    "Validated REST API schemas, status codes and data consistency with Postman.",
+                  ],
+                  [
+                    "Find the breaking point",
+                    "Ran distributed JMeter load and stress tests with 100k+ virtual users.",
+                  ],
+                  [
+                    "Make defects actionable",
+                    "Tracked the complete defect lifecycle in JIRA with reproducible reports and logs.",
+                  ],
+                  [
+                    "Collaborate through delivery",
+                    "Worked with Agile/Scrum teams across 5+ production client projects.",
+                  ],
+                  [
+                    "Keep releases moving",
+                    "Integrated suites into CI/CD, reducing manual verification overhead by 25%.",
+                  ],
+                  [
+                    "Check every screen",
+                    "Cross-browser and responsive testing across 5+ browsers and mobile viewports.",
+                  ],
+                  [
+                    "Own the final check",
+                    "Release verification, build sign-offs and production deployment validation.",
+                  ],
+                ].map(([title, text]) => (
+                  <div key={title}>
+                    <Check size={15} />
+                    <div>
+                      <h5>{title}</h5>
+                      <p>{text}</p>
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
+              <div className="experience-stack">
+                {[
+                  "Selenium",
+                  "Playwright",
+                  "TestNG",
+                  "JMeter",
+                  "Postman",
+                  "Java",
+                  "JavaScript",
+                  "JIRA",
+                  "Git",
+                  "CI/CD",
+                ].map((tool) => (
+                  <span className="skill-pill" key={tool}>
+                    {tool}
+                  </span>
+                ))}
+              </div>
             </div>
+          </article>
+        </section>
 
-            <div className="grid sm:grid-cols-3 gap-3 pt-3">
-              <div className="sketch-card p-4 text-center bg-[#F0FDF4]">
-                <div className="text-2xl font-bold text-[#16A34A] font-sketch">~40%</div>
-                <div className="text-xs text-[#64748B] mt-1">Regression Cycle Cut via Selenium + TestNG</div>
-              </div>
-              <div className="sketch-card p-4 text-center bg-[#EFF6FF]">
-                <div className="text-2xl font-bold text-[#2563EB] font-sketch">100,000+</div>
-                <div className="text-xs text-[#64748B] mt-1">Users Simulated in Apache JMeter</div>
-              </div>
-              <div className="sketch-card p-4 text-center bg-[#FEF2F2]">
-                <div className="text-2xl font-bold text-[#DC2626] font-sketch">240+</div>
-                <div className="text-xs text-[#64748B] mt-1">Defects Logged in JIRA &amp; Resolved</div>
-              </div>
-            </div>
-          </div>
-        );
-      case "projects":
-        return (
-          <div className="space-y-6 font-sans">
-            <div className="border-b-2 border-[#181818] pb-4">
-              <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
-                03 / PRODUCTION CASE STUDIES &amp; BLUEPRINTS
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
-                5 Enterprise Testing Projects
+        <section id="skills" className="section section-lined page-container">
+          <div className="section-heading section-heading-split">
+            <div>
+              <span className="eyebrow">03 / THE TOOLKIT</span>
+              <h2>
+                The right tools.
+                <br />
+                <span>The testing mindset.</span>
               </h2>
             </div>
-
-            <div className="grid sm:grid-cols-2 gap-4">
-              {ALL_PROJECTS.map((proj) => {
-                const isExp = expandedProjects[proj.id];
-                return (
-                  <div key={proj.id} className="sketch-card p-5 bg-white space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="px-2 py-0.5 rounded bg-[#2563EB]/15 text-[#2563EB] font-mono text-[11px] font-bold">
-                        {proj.id} · {proj.industry}
-                      </span>
-                      {proj.featured && (
-                        <span className="px-2 py-0.5 rounded bg-[#DC2626]/15 text-[#DC2626] font-mono text-[10px] font-bold">
-                          FEATURED
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="text-base font-bold text-[#181818] font-sketch">{proj.name}</h3>
-                    <p className="text-xs text-[#64748B] leading-relaxed">{proj.summary}</p>
-                    <div className="grid grid-cols-3 gap-2 py-2 bg-[#FAF8F5] rounded-lg text-center font-mono text-xs border border-[#E2E8F0]">
-                      {proj.metrics.map((m) => (
-                        <div key={m.k}>
-                          <div className="font-bold text-[#181818]">{m.v}</div>
-                          <div className="text-[9px] text-[#64748B]">{m.k}</div>
-                        </div>
-                      ))}
-                    </div>
-                    {isExp && (
-                      <div className="text-xs space-y-2 pt-2 border-t border-[#E2E8F0] text-[#334155]">
-                        <p><strong>Challenge:</strong> {proj.challenge}</p>
-                        <p><strong>Approach:</strong> {proj.approach}</p>
-                        <p className="text-[#DC2626]"><strong>Critical Defect:</strong> {proj.keyDefect}</p>
-                        <p className="text-[#16A34A]"><strong>Outcome:</strong> {proj.outcome}</p>
-                      </div>
-                    )}
-                    <button
-                      onClick={() => toggleProject(proj.id)}
-                      className="w-full py-1.5 rounded-lg border border-[#181818] font-mono text-xs font-bold hover:bg-[#FAF8F5] transition-colors"
-                    >
-                      {isExp ? "Close Details" : "Inspect Case Matrix"}
-                    </button>
+            <p>
+              From browser journeys to database assertions,
+              <br />a practical toolkit for reliable software.
+            </p>
+          </div>
+          <div className="skills-grid">
+            {ALL_SKILLS.map((group, index) => {
+              const Icon = [Code2, Braces, Activity, Smartphone, ShieldCheck, Terminal][index];
+              return (
+                <article className="skill-card" key={group.group}>
+                  <div className="skill-card-heading">
+                    <span className="icon-tile">
+                      <Icon size={20} strokeWidth={1.5} />
+                    </span>
+                    <span className="card-number">0{index + 1}</span>
                   </div>
-                );
-              })}
-            </div>
-          </div>
-        );
-      case "automation":
-        return (
-          <div className="space-y-6 font-sans">
-            <div className="border-b-2 border-[#181818] pb-4">
-              <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
-                04 / AUTOMATION LAB &amp; SIMULATOR
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
-                Live Test Execution &amp; Bug Spotter
-              </h2>
-            </div>
-            <InteractiveTestRunner />
-            <BugSpotterLab />
-          </div>
-        );
-      case "skills":
-        return (
-          <div className="space-y-6 font-sans">
-            <div className="border-b-2 border-[#181818] pb-4">
-              <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
-                05 / TECHNICAL ARSENAL
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
-                Complete Testing Skills Matrix
-              </h2>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {ALL_SKILLS.map((grp) => (
-                <div key={grp.group} className="sketch-card p-5 bg-white space-y-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xl">{grp.icon}</span>
-                    <h3 className="font-bold text-sm text-[#181818]">{grp.group}</h3>
-                  </div>
-                  <ul className="space-y-2 font-mono text-xs">
-                    {grp.items.map((item) => (
-                      <li key={item.name} className="flex justify-between border-b border-dashed border-[#CBD5E1] pb-1">
-                        <span className="font-bold text-[#181818]">{item.name}</span>
-                        <span className="text-[10px] text-[#64748B]">{item.desc}</span>
+                  <h3>{group.group}</h3>
+                  <ul>
+                    {group.items.map((item) => (
+                      <li key={item.name}>
+                        <strong>{item.name}</strong>
+                        <span>{item.desc}</span>
                       </li>
                     ))}
                   </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      case "achievements":
-        return (
-          <div className="space-y-6 font-sans">
-            <div className="border-b-2 border-[#181818] pb-4">
-              <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
-                06 / CREDENTIALS &amp; RELEASE GATE
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
-                Verified Professional Accreditations
-              </h2>
-            </div>
-            <div className="grid sm:grid-cols-3 gap-4">
-              <div className="sketch-card p-5 bg-white space-y-2">
-                <span className="text-3xl">🏅</span>
-                <h3 className="font-bold text-base text-[#181818] font-sketch">Salesforce Accredited Professional</h3>
-                <p className="text-xs text-[#64748B]">Platform configuration, validation rules, process flows, and permissions.</p>
-                <span className="inline-block font-mono text-xs text-[#16A34A] font-bold">✓ Verified Accreditation</span>
-              </div>
-              <div className="sketch-card p-5 bg-white space-y-2">
-                <span className="text-3xl">🛡️</span>
-                <h3 className="font-bold text-base text-[#181818] font-sketch">SDET · SEED Infotech</h3>
-                <p className="text-xs text-[#64748B]">Selenium WebDriver, Java, Page Object Model, TestNG, and CI/CD pipelines.</p>
-                <span className="inline-block font-mono text-xs text-[#16A34A] font-bold">✓ Verified Accreditation</span>
-              </div>
-              <div className="sketch-card p-5 bg-white space-y-2">
-                <span className="text-3xl">📈</span>
-                <h3 className="font-bold text-base text-[#181818] font-sketch">Performance &amp; API Testing</h3>
-                <p className="text-xs text-[#64748B]">Apache JMeter 100k+ distributed load generation and Postman REST assertions.</p>
-                <span className="inline-block font-mono text-xs text-[#16A34A] font-bold">✓ Verified Accreditation</span>
-              </div>
-            </div>
-          </div>
-        );
-      case "contact":
-        return (
-          <div className="space-y-6 font-sans">
-            <div className="border-b-2 border-[#181818] pb-4">
-              <span className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider">
-                07 / DISPATCH OFFICE &amp; CONTACT
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#181818] font-sketch mt-1">
-                Let&apos;s Build Reliable Software Together
-              </h2>
-              <p className="text-xs text-[#64748B] mt-1">
-                Messages submit directly to Supabase and notify Shashank via Gmail.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-12 gap-6">
-              <div className="md:col-span-5 space-y-3 font-mono text-xs">
-                <a href="mailto:shashankshinde38@gmail.com" className="sketch-card p-3 flex items-center gap-3 bg-white block">
-                  <span className="text-xl">📧</span>
-                  <div className="truncate">
-                    <div className="text-[10px] text-[#64748B]">EMAIL</div>
-                    <div className="font-bold text-[#181818] truncate">shashankshinde38@gmail.com</div>
-                  </div>
-                </a>
-                <a href="tel:+918080852689" className="sketch-card p-3 flex items-center gap-3 bg-white block">
-                  <span className="text-xl">📞</span>
-                  <div>
-                    <div className="text-[10px] text-[#64748B]">PHONE</div>
-                    <div className="font-bold text-[#181818]">+91 80808 52689</div>
-                  </div>
-                </a>
-                <a href="https://www.linkedin.com/in/shashank-shinde7/" target="_blank" rel="noreferrer" className="sketch-card p-3 flex items-center gap-3 bg-white block">
-                  <span className="text-xl">💼</span>
-                  <div>
-                    <div className="text-[10px] text-[#64748B]">LINKEDIN</div>
-                    <div className="font-bold text-[#181818]">/in/shashank-shinde7</div>
-                  </div>
-                </a>
-                <a href="https://github.com/shashankshinde38-lab" target="_blank" rel="noreferrer" className="sketch-card p-3 flex items-center gap-3 bg-white block">
-                  <span className="text-xl">🐙</span>
-                  <div>
-                    <div className="text-[10px] text-[#64748B]">GITHUB</div>
-                    <div className="font-bold text-[#181818]">/shashankshinde38-lab</div>
-                  </div>
-                </a>
-              </div>
-
-              <div className="md:col-span-7">
-                <form onSubmit={handleFormSubmit} className="sketch-card p-5 bg-white space-y-3 font-mono text-xs">
-                  <div>
-                    <label className="block text-[#181818] font-bold mb-1">Full Name *</label>
-                    <input
-                      type="text"
-                      name="fullName"
-                      value={formData.fullName}
-                      onChange={handleFormChange}
-                      className="w-full p-2 border-2 border-[#181818] rounded-lg bg-[#FAF8F5] text-[#181818]"
-                      placeholder="Jane Doe"
-                    />
-                    {formErrors.fullName && <p className="text-[#DC2626] text-[10px] mt-0.5">{formErrors.fullName}</p>}
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-[#181818] font-bold mb-1">Email *</label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleFormChange}
-                        className="w-full p-2 border-2 border-[#181818] rounded-lg bg-[#FAF8F5] text-[#181818]"
-                        placeholder="jane@company.com"
-                      />
-                      {formErrors.email && <p className="text-[#DC2626] text-[10px] mt-0.5">{formErrors.email}</p>}
-                    </div>
-                    <div>
-                      <label className="block text-[#181818] font-bold mb-1">Mobile (Optional)</label>
-                      <input
-                        type="tel"
-                        name="mobile"
-                        value={formData.mobile}
-                        onChange={handleFormChange}
-                        className="w-full p-2 border-2 border-[#181818] rounded-lg bg-[#FAF8F5] text-[#181818]"
-                        placeholder="9876543210"
-                      />
-                      {formErrors.mobile && <p className="text-[#DC2626] text-[10px] mt-0.5">{formErrors.mobile}</p>}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-[#181818] font-bold mb-1">Reason for Inquiry *</label>
-                    <select
-                      name="reason"
-                      value={formData.reason}
-                      onChange={handleFormChange}
-                      className="w-full p-2 border-2 border-[#181818] rounded-lg bg-[#FAF8F5] text-[#181818]"
-                    >
-                      <option value="">Select a reason...</option>
-                      <option value="Full-time QA Automation / SDET Role">Full-time QA Automation / SDET Role</option>
-                      <option value="Freelance / Contract QA Project">Freelance / Contract QA Project</option>
-                      <option value="Performance &amp; Load Testing Consultation">Performance &amp; Load Testing Consultation</option>
-                      <option value="General Inquiry / Discussion">General Inquiry / Discussion</option>
-                    </select>
-                    {formErrors.reason && <p className="text-[#DC2626] text-[10px] mt-0.5">{formErrors.reason}</p>}
-                  </div>
-                  <div>
-                    <label className="block text-[#181818] font-bold mb-1">Message *</label>
-                    <textarea
-                      name="message"
-                      rows={3}
-                      value={formData.message}
-                      onChange={handleFormChange}
-                      className="w-full p-2 border-2 border-[#181818] rounded-lg bg-[#FAF8F5] text-[#181818]"
-                      placeholder="Describe your QA engineering requirements..."
-                    />
-                    {formErrors.message && <p className="text-[#DC2626] text-[10px] mt-0.5">{formErrors.message}</p>}
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={formStatus === "sending"}
-                    className="w-full py-2.5 bg-[#2563EB] text-white font-bold text-xs rounded-lg border-2 border-[#181818] shadow-[3px_3px_0px_#181818] hover:bg-[#1D4ED8] disabled:opacity-50 transition-colors"
-                  >
-                    {formStatus === "sending" ? "TRANSMITTING..." : "TRANSMIT MESSAGE TO SUPABASE & GMAIL →"}
-                  </button>
-                  {formStatus === "sent" && (
-                    <p className="text-[#16A34A] font-bold text-center pt-1">✓ Message successfully dispatched!</p>
-                  )}
-                  {formStatus === "error" && (
-                    <p className="text-[#DC2626] font-bold text-center pt-1">⚠ Submission failed. Please try again.</p>
-                  )}
-                </form>
-              </div>
-            </div>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
-
-  // ── PHASE 2: PRIMARY HAND-DRAWN 3D WORLD EXPERIENCE ──
-  if (viewMode === "world") {
-    return (
-      <div className="relative w-full h-screen overflow-hidden bg-[#FAF8F5]">
-        {/* Main 3D Hand-Drawn Connected Universe */}
-        <HandDrawnWorldCanvas
-          activeStationId={activeStation}
-          onStationChange={(st) => setActiveStation(st)}
-        />
-
-        {/* Top Control Bar with Mode Switcher & Resume */}
-        <div className="absolute top-4 right-4 z-40 flex items-center gap-1.5 sm:gap-2 pointer-events-auto">
-          <a
-            href="/files/Shashank_Shinde_Resume.pdf"
-            download
-            className="sketch-button px-2.5 sm:px-3 py-1.5 bg-[#FAF8F5] text-[#181818] font-bold text-xs flex items-center gap-1 sm:gap-1.5 touch-target"
-            title="Download Resume PDF"
-          >
-            <FileText className="size-3.5 text-[#2563EB]" />
-            <span className="hidden sm:inline">Resume</span>
-          </a>
-
-          <button
-            onClick={() => setViewMode("dossier")}
-            className="sketch-button px-2.5 sm:px-3.5 py-1.5 bg-[#2563EB] text-white font-bold text-xs flex items-center gap-1 sm:gap-1.5 touch-target"
-            title="Switch to Blueprint Document View"
-          >
-            <span>📑</span>
-            <span className="hidden sm:inline">Blueprint View</span>
-          </button>
-
-          <button
-            onClick={() => setIsStationDrawerOpen(true)}
-            className="sketch-button px-2.5 sm:px-3.5 py-1.5 bg-[#FAF8F5] text-[#181818] font-bold text-xs flex items-center gap-1 sm:gap-1.5 border-2 border-[#181818] shadow-[2px_2px_0px_#181818] touch-target"
-            title="Inspect Station Dossier"
-          >
-            <span>🔍</span>
-            <span className="hidden sm:inline">Dossier</span>
-          </button>
-        </div>
-
-        {/* Hand-Drawn Room Dossier Drawer / Modal */}
-        {isStationDrawerOpen && (
-          <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="sketch-card max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 bg-[#FAF8F5] relative border-4 border-[#181818]">
-              <button
-                onClick={() => setIsStationDrawerOpen(false)}
-                className="absolute top-4 right-4 size-9 rounded-lg bg-[#181818] text-white flex items-center justify-center font-bold text-sm hover:scale-105 transition-transform"
-                aria-label="Close dossier"
-              >
-                ✕
-              </button>
-              {renderStationContent(activeStation)}
-            </div>
-          </div>
-        )}
-
-        {/* ── Semantic Progressive Enhancement HTML for Search Crawlers & Screen Readers ── */}
-        <main
-          id="seo-crawlable-content"
-          className="sr-only focus-within:not-sr-only p-8 bg-white border-b-2 border-[#181818]"
-          aria-label="Shashank Shinde Portfolio Semantic Content"
-        >
-          <header className="space-y-2">
-            <h1 className="text-3xl font-bold">Shashank Shinde | Software Test Engineer &amp; QA Automation</h1>
-            <p className="text-sm">QA Automation | Software Testing | Quality Engineering</p>
-            <nav aria-label="Portfolio Sections Index" className="flex flex-wrap gap-3 py-2">
-              <a href="#about" className="underline font-bold">About</a>
-              <a href="#testing-lab" className="underline font-bold">Testing Disciplines</a>
-              <a href="#automation" className="underline font-bold">Automation Architecture</a>
-              <a href="#experience" className="underline font-bold">Work Experience</a>
-              <a href="#projects" className="underline font-bold">Production Projects</a>
-              <a href="#skills" className="underline font-bold">Technical Arsenal</a>
-              <a href="#achievements" className="underline font-bold">Accreditations</a>
-              <a href="#contact" className="underline font-bold">Contact &amp; Release Gate</a>
-            </nav>
-          </header>
-
-          <section id="about" className="mt-6 space-y-2">
-            <h2 className="text-2xl font-bold">About Shashank Shinde — Software Test Engineer</h2>
-            <p>
-              I am a Software Test Engineer based in Pune, Maharashtra, India. I hold a Bachelor of Engineering in Information Technology, along with specialized SDET accreditations from SEED Infotech Pune. Currently serving at Profcyma Solutions Pvt. Ltd., I architect robust test automation frameworks and uncover critical defects before production release.
-            </p>
-            <blockquote className="italic font-bold">
-              &ldquo;I break software before users do.&rdquo;
-            </blockquote>
-            <p>Status: Open for Software Test Engineer, QA Automation, and SDET opportunities.</p>
-          </section>
-
-          <section id="testing-lab" className="mt-6 space-y-2">
-            <h2 className="text-2xl font-bold">Testing Expertise &amp; QA Disciplines</h2>
-            <p>Full-cycle testing capabilities applied across high-concurrency production systems:</p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li><strong>Functional Testing:</strong> Validating user stories, checkout journeys, and payment gateway webhooks (DRIWE, Grosido).</li>
-              <li><strong>Regression Testing:</strong> Reducing regression cycle duration by ~40% using Selenium WebDriver, Page Object Model (POM), and TestNG.</li>
-              <li><strong>Smoke Testing:</strong> Verifying build stability and critical paths immediately upon deployment.</li>
-              <li><strong>Sanity Testing:</strong> Targeted verification of defect fixes and payment edge-case validation.</li>
-              <li><strong>API Testing:</strong> Validating REST API contracts, JSON schema compliance, status codes, and tokens across 22 endpoints via Postman and Newman CLI.</li>
-              <li><strong>UI &amp; Cross-Browser Testing:</strong> Responsive rendering parity across Chrome, Firefox, Safari, and Edge.</li>
-              <li><strong>Mobile Testing:</strong> Testing native Android APKs, emulator configurations, and network throttling for DRIWE Customer &amp; Driver applications.</li>
-              <li><strong>Exploratory &amp; Boundary Testing:</strong> Session-based investigative testing uncovering surge pricing race conditions.</li>
-            </ul>
-            <h3 className="text-xl font-bold mt-3">Bug Detection Testing Mindset</h3>
-            <ol className="list-decimal pl-5 space-y-0.5">
-              <li>SYSTEM STABLE — Baseline regression suites running with zero anomalous status codes.</li>
-              <li>BUG DETECTED — Critical anomaly surfaced during surge load simulation.</li>
-              <li>REPRODUCE — Minimal reproducible payload crafted in Postman and JMeter.</li>
-              <li>DOCUMENT — Comprehensive defect ticket logged in JIRA with reproduction steps and logs.</li>
-              <li>FIX — Patch applied with server-side validation floor.</li>
-              <li>RETEST — Regression test suite executed across edge-case permutations.</li>
-              <li>PASS — 100% assertions green; build verified and released.</li>
-            </ol>
-          </section>
-
-          <section id="automation" className="mt-6 space-y-2">
-            <h2 className="text-2xl font-bold">Test Automation Architecture &amp; Pipeline</h2>
-            <p>Five-stage continuous automation pipeline:</p>
-            <p>CODE (Java, TypeScript, Selenium, Playwright) &rarr; TEST (TestNG, Parallel Suites) &rarr; ASSERT (REST Assured, Postman JSON Schema) &rarr; REPORT (JIRA, Execution Logs) &rarr; CI/CD (GitHub Actions PR build verification).</p>
-          </section>
-
-          <section id="experience" className="mt-6 space-y-2">
-            <h2 className="text-2xl font-bold">Professional Work Experience — Profcyma Solutions Pvt. Ltd.</h2>
-            <p><strong>Role:</strong> Software Test Engineer | <strong>Location:</strong> Pune, India | <strong>Period:</strong> Aug 2024 – Present (Current)</p>
-            <h3 className="text-lg font-bold">9 Core Engineering Responsibilities:</h3>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>Designed end-to-end test strategies and built scalable Selenium + POM automation frameworks.</li>
-              <li>Performed manual, functional, regression, smoke, and sanity testing across Web and Android platforms.</li>
-              <li>Validated REST APIs via Postman — contract testing, JSON schemas, status codes, and data consistency.</li>
-              <li>Performed load and stress testing with Apache JMeter simulating 100,000+ virtual concurrent users.</li>
-              <li>Documented test cases and tracked defect lifecycles in JIRA with reproduction steps and server logs.</li>
-              <li>Collaborated with developers in Agile/Scrum sprints across 5+ client production projects.</li>
-              <li>Integrated automated test suites into CI/CD pipelines, reducing manual regression overhead by 25%.</li>
-              <li>Conducted cross-browser and responsive testing across 5+ browsers and mobile viewports.</li>
-              <li>Participated in release verification, build sign-offs, and production deployment validation.</li>
-            </ul>
-            <p><strong>Impact Metrics:</strong> ~40% regression cycle cut via Selenium + TestNG, 100,000+ virtual users simulated in JMeter, 240+ defects logged in JIRA.</p>
-          </section>
-
-          <section id="projects" className="mt-6 space-y-4">
-            <h2 className="text-2xl font-bold">QA Production Case Studies &amp; Projects</h2>
-            
-            <article className="space-y-1">
-              <h3 className="text-xl font-bold">TC-001: DRIWE — Cab &amp; Courier Booking Platform</h3>
-              <p>Full-cycle quality testing of a high-concurrency cab and parcel delivery ecosystem with real-time geospatial driver allocation.</p>
-              <p><strong>Role:</strong> QA Engineer | <strong>Stack:</strong> Manual Testing, API Testing, Apache JMeter, JIRA, Razorpay</p>
-              <p><strong>Testing Approach:</strong> Distributed JMeter thread groups simulating 100,000 peak users, asserting connection pools and API response latencies.</p>
-              <p><strong>Critical Defect Caught:</strong> Negative fare edge case during rapid coupon re-application.</p>
-              <p><strong>Outcome:</strong> 240+ defects logged in JIRA; 99.9% uptime verified under 100k users.</p>
-              <p><strong>Links:</strong> Google Play Customer App &amp; Driver App.</p>
-            </article>
-
-            <article className="space-y-1">
-              <h3 className="text-xl font-bold">TC-002: Grosido — Grocery Delivery Platform</h3>
-              <p>Multi-module grocery delivery platform comprising Customer App, Admin Panel, and Delivery Boy App with end-to-end cart coverage.</p>
-              <p><strong>Role:</strong> QA Engineer | <strong>Stack:</strong> Selenium WebDriver, POM, Manual Testing, JIRA, TestNG</p>
-              <p><strong>Testing Approach:</strong> Automated order processing using Selenium WebDriver + Page Object Model across 8+ sprints.</p>
-              <p><strong>Outcome:</strong> ~40% reduction in regression cycle time.</p>
-              <p><strong>Links:</strong> Website (groscido.com) and Google Play Store App.</p>
-            </article>
-
-            <article className="space-y-1">
-              <h3 className="text-xl font-bold">TC-003: E-Commerce Multi-Vendor Ecosystem</h3>
-              <p>Full-spectrum regression and API validation across multi-vendor storefronts and seller portals.</p>
-              <p><strong>Role:</strong> QA Automation Engineer | <strong>Stack:</strong> Playwright, TypeScript, REST Assured, GitHub Actions</p>
-              <p><strong>Testing Approach:</strong> 120+ Playwright E2E tests executed across 5 browser engines with automated PR gating.</p>
-              <p><strong>Outcome:</strong> 18 critical pre-release defects prevented; 0 checkout regressions in 6 consecutive release cycles.</p>
-            </article>
-
-            <article className="space-y-1">
-              <h3 className="text-xl font-bold">TC-004: Ride Sharing Application</h3>
-              <p>API contract testing and mobile network throttling verification for real-time driver dispatch.</p>
-              <p><strong>Role:</strong> Performance &amp; API Test Engineer | <strong>Stack:</strong> Postman, Newman CLI, Apache JMeter, Charles Proxy</p>
-              <p><strong>Testing Approach:</strong> Automated token refresh and payload contract validation across 22 REST endpoints.</p>
-              <p><strong>Outcome:</strong> 99.8% API contract compliance; 180+ test cases automated.</p>
-            </article>
-
-            <article className="space-y-1">
-              <h3 className="text-xl font-bold">TC-005: Urban Build — Construction Lead Generation</h3>
-              <p>Lead generation funnel validation, lead scoring webhook verification, and quotation calculator testing.</p>
-              <p><strong>Role:</strong> QA Engineer &amp; Functional Lead | <strong>Stack:</strong> Manual Testing, Cross-Browser Testing, Postman, JIRA</p>
-              <p><strong>Testing Approach:</strong> Boundary value analysis (BVA) matrices covering 60+ quotation parameter permutations.</p>
-              <p><strong>Outcome:</strong> 100% quotation accuracy; lead form abandonment reduced by 14%.</p>
-            </article>
-          </section>
-
-          <section id="skills" className="mt-6 space-y-2">
-            <h2 className="text-2xl font-bold">Technical Testing Arsenal</h2>
-            <p>Selenium WebDriver, Playwright, Apache JMeter, Postman, Newman CLI, Java OOP, TestNG, REST Assured, Android Testing, JIRA, Git, GitHub Actions, Boundary Value Analysis, SQL Database Testing.</p>
-          </section>
-
-          <section id="achievements" className="mt-6 space-y-2">
-            <h2 className="text-2xl font-bold">Verified Certifications &amp; Accreditations</h2>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>Salesforce Accredited Professional (Platform Configuration &amp; Business Rules)</li>
-              <li>SDET Professional Certification · SEED Infotech Pune (Selenium, Java, POM, TestNG, CI/CD)</li>
-              <li>Performance &amp; API Testing Specialist (Apache JMeter 100k+ users, Postman REST)</li>
-              <li>Bachelor of Engineering (B.E.) in Information Technology</li>
-            </ul>
-          </section>
-
-          <section id="contact" className="mt-6 space-y-2">
-            <h2 className="text-2xl font-bold">Contact &amp; Release Gate Dispatch</h2>
-            <p>Email: <a href="mailto:shashankshinde38@gmail.com" className="underline">shashankshinde38@gmail.com</a></p>
-            <p>Phone: <a href="tel:+918080852689" className="underline">+91 80808 52689</a></p>
-            <p>LinkedIn: <a href="https://www.linkedin.com/in/shashank-shinde7/" className="underline">linkedin.com/in/shashank-shinde7</a></p>
-            <p>GitHub: <a href="https://github.com/shashankshinde38-lab" className="underline">github.com/shashankshinde38-lab</a></p>
-            <p>Resume: <a href="/files/Shashank_Shinde_Resume.pdf" className="underline">Download Shashank Shinde Resume PDF</a></p>
-          </section>
-        </main>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#181818] selection:bg-[#2563EB]/20 selection:text-[#181818]">
-      {/* ── Top Bar to return to 3D World ── */}
-      <div className="sticky top-0 z-50 bg-[#FAF8F5]/90 backdrop-blur-md border-b-2 border-[#181818] px-4 py-2.5 flex items-center justify-between">
-        <div className="flex items-center gap-2 font-bold text-xs font-mono">
-          <span className="size-2 rounded-full bg-[#16A34A]" />
-          <span>PORTFOLIO BLUEPRINT DOSSIER</span>
-        </div>
-        <button
-          onClick={() => setViewMode("world")}
-          className="sketch-button px-4 py-1.5 bg-[#2563EB] text-white font-bold text-xs flex items-center gap-1.5"
-        >
-          <span>🏛️</span>
-          <span>Return to 3D Hand-Drawn World</span>
-        </button>
-      </div>
-      {/* ── Top Header Navigation ── */}
-      <header className="fixed top-0 left-0 right-0 z-40 glass-panel border-b border-white/5 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-2.5 group">
-            <div className="size-9 rounded-xl bg-gradient-to-br from-[#22C55E] to-[#38BDF8] flex items-center justify-center font-display font-extrabold text-[#070B14] text-sm shadow-[0_0_15px_rgba(56,189,248,0.4)] group-hover:scale-105 transition-transform">
-              SS
-            </div>
-            <div>
-              <div className="font-display font-bold text-sm tracking-tight text-[#F8FAFC]">
-                Shashank Shinde
-              </div>
-              <div className="font-mono text-[10px] text-[#38BDF8] tracking-widest uppercase">
-                Software Test Engineer
-              </div>
-            </div>
-          </a>
-
-          {/* Header Quick Links */}
-          <nav className="hidden lg:flex items-center gap-6 font-mono text-xs text-[#94A3B8]">
-            <a href="#about" className="hover:text-[#38BDF8] transition-colors">01/ABOUT</a>
-            <a href="#experience" className="hover:text-[#38BDF8] transition-colors">02/EXPERIENCE</a>
-            <a href="#cases" className="hover:text-[#38BDF8] transition-colors">03/PROJECTS</a>
-            <a href="#simulator" className="hover:text-[#38BDF8] transition-colors">04/QA SIMULATOR</a>
-            <a href="#skills" className="hover:text-[#38BDF8] transition-colors">05/ARSENAL</a>
-            <a href="#contact" className="hover:text-[#38BDF8] transition-colors">06/CONTACT</a>
-          </nav>
-
-          {/* Action CTAs */}
-          <div className="hidden sm:flex items-center gap-3">
-            <a
-              href="/files/Shashank_Shinde_Resume.pdf"
-              download
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-white/10 hover:border-[#38BDF8]/40 text-xs font-mono text-[#F8FAFC] transition-colors"
-            >
-              <FileText className="size-3.5 text-[#38BDF8]" />
-              <span>Resume</span>
-            </a>
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-[#22C55E] text-[#052E16] text-xs font-mono font-bold hover:bg-[#22C55E]/90 transition-all shadow-[0_0_15px_rgba(34,197,94,0.3)]"
-            >
-              Hire QA
-            </a>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden size-11 flex items-center justify-center rounded-lg border border-white/10 text-[#94A3B8] hover:text-[#F8FAFC]"
-            aria-label="Toggle navigation"
-          >
-            {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-        </div>
-      </header>
-
-      {/* ── Floating macOS Dock Navigation (Inspired by adeguzm.com) ── */}
-      <FloatingDockNav activeSection={activeSection} />
-
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-[#070B14]/95 backdrop-blur-2xl flex flex-col justify-center px-8 space-y-6 font-display text-xl">
-          <button
-            onClick={() => setMobileMenuOpen(false)}
-            className="absolute top-5 right-6 size-10 rounded-full bg-white/10 flex items-center justify-center text-[#F8FAFC]"
-          >
-            <X className="size-5" />
-          </button>
-          <a href="#" onClick={() => setMobileMenuOpen(false)} className="text-[#94A3B8] hover:text-[#38BDF8]">
-            00. Home (3D Lab)
-          </a>
-          <a href="#about" onClick={() => setMobileMenuOpen(false)} className="text-[#94A3B8] hover:text-[#38BDF8]">
-            01. About &amp; Profile
-          </a>
-          <a href="#experience" onClick={() => setMobileMenuOpen(false)} className="text-[#94A3B8] hover:text-[#38BDF8]">
-            02. Professional Experience
-          </a>
-          <a href="#cases" onClick={() => setMobileMenuOpen(false)} className="text-[#94A3B8] hover:text-[#38BDF8]">
-            03. QA Case Studies &amp; Projects
-          </a>
-          <a href="#simulator" onClick={() => setMobileMenuOpen(false)} className="text-[#94A3B8] hover:text-[#38BDF8]">
-            04. Live Test Runner Simulator
-          </a>
-          <a href="#skills" onClick={() => setMobileMenuOpen(false)} className="text-[#94A3B8] hover:text-[#38BDF8]">
-            05. Testing Arsenal Matrix
-          </a>
-          <a href="#certs" onClick={() => setMobileMenuOpen(false)} className="text-[#94A3B8] hover:text-[#38BDF8]">
-            06. Certifications
-          </a>
-          <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-[#22C55E]">
-            07. Contact Shashank &rarr;
-          </a>
-        </div>
-      )}
-
-      <main className="pt-16 pb-24">
-        {/* ═══════════════════════════════════════════════════
-            HERO SECTION with 3D QA WORKSTATION LAB
-            ═══════════════════════════════════════════════════ */}
-        <section id="home" className="relative min-h-[92vh] flex items-center justify-center py-10 px-4 sm:px-6 qa-grid-bg overflow-hidden">
-          <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-8 items-center">
-            {/* Left Narrative */}
-            <div className="lg:col-span-6 space-y-6 z-10">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-[#22C55E]/30 text-xs font-mono text-[#22C55E]">
-                <span className="size-2 rounded-full bg-[#22C55E] animate-ping" />
-                <span>OPEN FOR QA &amp; SDET OPPORTUNITIES</span>
-              </div>
-
-              <h1 className="hero-fluid-title font-display font-extrabold text-[#F8FAFC] tracking-tight leading-tight">
-                Shashank Shinde.
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#22C55E] via-[#38BDF8] to-[#60A5FA]">
-                  Software Test Engineer.
-                </span>
-              </h1>
-
-              <p className="font-mono text-xs sm:text-sm text-[#38BDF8] italic">
-                &quot;I break software before users do.&quot;
-              </p>
-
-              <p className="text-sm sm:text-base text-[#94A3B8] max-w-xl leading-relaxed">
-                Specialized in Selenium, Playwright, Apache JMeter, and REST API quality engineering. I architect robust automation frameworks and uncover critical defects before production release.
-              </p>
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <a
-                  href="#simulator"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#22C55E] text-[#052E16] font-mono text-xs sm:text-sm font-bold hover:bg-[#22C55E]/90 transition-all shadow-[0_0_25px_rgba(34,197,94,0.4)]"
-                >
-                  <Terminal className="size-4" />
-                  <span>RUN TEST SUITE</span>
-                </a>
-
-                <a
-                  href="#cases"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl glass-card border border-white/10 hover:border-[#38BDF8]/50 text-[#F8FAFC] font-mono text-xs sm:text-sm font-medium transition-colors"
-                >
-                  <Layers className="size-4 text-[#38BDF8]" />
-                  <span>VIEW 5 QA PROJECTS</span>
-                </a>
-              </div>
-
-              {/* Verified Skills Pills */}
-              <div className="flex flex-wrap items-center gap-1.5 pt-2">
-                {["Selenium WebDriver", "Playwright", "JMeter (100k+)", "Postman", "TestNG", "CI/CD", "JIRA"].map((s) => (
-                  <span
-                    key={s}
-                    className="font-mono text-[11px] px-3 py-1 rounded-full border border-white/10 bg-[#121C2C] text-[#94A3B8]"
-                  >
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Interactive 3D Workstation (Inspired by adeguzm.com) */}
-            <div className="lg:col-span-6 relative w-full h-[450px] sm:h-[540px] lg:h-[620px]">
-              <QualityEngineCanvas currentSection={activeSection} />
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════
-            IMPACT METRICS
-            ═══════════════════════════════════════════════════ */}
-        <section className="border-y border-white/5 bg-[#0C1322]/60 py-8 px-4 sm:px-6">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="glass-card p-5 rounded-xl border border-white/5">
-              <div className="font-mono text-xs text-[#22C55E] uppercase tracking-widest">Load Tested</div>
-              <div className="text-3xl sm:text-4xl font-display font-extrabold text-[#F8FAFC] mt-1">100,000+</div>
-              <div className="text-xs text-[#94A3B8] mt-1">Virtual users in Apache JMeter</div>
-            </div>
-            <div className="glass-card p-5 rounded-xl border border-white/5">
-              <div className="font-mono text-xs text-[#38BDF8] uppercase tracking-widest">Test Cases</div>
-              <div className="text-3xl sm:text-4xl font-display font-extrabold text-[#F8FAFC] mt-1">300+</div>
-              <div className="text-xs text-[#94A3B8] mt-1">Authored &amp; executed across web &amp; apps</div>
-            </div>
-            <div className="glass-card p-5 rounded-xl border border-white/5">
-              <div className="font-mono text-xs text-[#22C55E] uppercase tracking-widest">Defects Prevented</div>
-              <div className="text-3xl sm:text-4xl font-display font-extrabold text-[#F8FAFC] mt-1">240+</div>
-              <div className="text-xs text-[#94A3B8] mt-1">Pre-production defects caught</div>
-            </div>
-            <div className="glass-card p-5 rounded-xl border border-white/5">
-              <div className="font-mono text-xs text-[#38BDF8] uppercase tracking-widest">Regression Speed</div>
-              <div className="text-3xl sm:text-4xl font-display font-extrabold text-[#F8FAFC] mt-1">~40%</div>
-              <div className="text-xs text-[#94A3B8] mt-1">Faster test cycle with Selenium + POM</div>
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════
-            01. ABOUT & PROFILE DETAILS
-            ═══════════════════════════════════════════════════ */}
-        <section id="about" className="py-20 sm:py-28 px-4 sm:px-6 max-w-7xl mx-auto">
-          <div className="mb-10">
-            <span className="font-mono text-xs text-[#38BDF8] tracking-widest uppercase font-bold">
-              01 / ABOUT SHASHANK
-            </span>
-            <h2 className="section-fluid-title font-display font-bold text-[#F8FAFC] mt-1">
-              Quality engineering driven by curiosity and precision.
-            </h2>
-          </div>
-
-          <div className="grid lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-7 space-y-5 text-sm sm:text-base text-[#94A3B8] leading-relaxed">
-              <p>
-                I am a Software Test Engineer based in <strong className="text-[#F8FAFC]">Pune, Maharashtra</strong>. I hold a Bachelor of Engineering in Information Technology, along with specialized SDET accreditations from SEED Infotech.
-              </p>
-              <p>
-                I currently serve at <strong className="text-[#F8FAFC]">Profcyma Solutions Pvt. Ltd.</strong>, where I own test automation architectures, API verification, and performance load tests. I collaborate closely with engineering teams in Agile/Scrum sprints to integrate regression suites into CI/CD pipelines, reducing manual verification overhead by 25%.
-              </p>
-              <p>
-                Whether diagnosing dynamic surge pricing edge cases in ride-sharing systems, testing multi-vendor checkout carts across 12 browser combinations, or securing role-based permissions in Salesforce CRM, I take pride in releasing software that never fails the user.
-              </p>
-            </div>
-
-            {/* Profile Card from previous website */}
-            <div className="lg:col-span-5 glass-card p-6 rounded-2xl border border-white/10 space-y-4">
-              <div className="flex items-center gap-3.5 pb-4 border-b border-white/10">
-                <div className="size-14 rounded-xl bg-gradient-to-br from-[#22C55E]/20 to-[#38BDF8]/20 border border-[#38BDF8]/30 flex items-center justify-center font-display text-xl font-bold text-[#38BDF8]">
-                  SS
-                </div>
-                <div>
-                  <h3 className="font-display font-bold text-lg text-[#F8FAFC]">Shashank Shinde</h3>
-                  <p className="text-xs text-[#94A3B8]">Software Test Engineer · SDET</p>
-                </div>
-              </div>
-
-              <div className="space-y-3 font-mono text-xs">
-                <div className="flex items-center justify-between py-1 border-b border-white/5">
-                  <span className="text-[#94A3B8]">Current Company:</span>
-                  <span className="text-[#F8FAFC] font-semibold">Profcyma Solutions Pvt. Ltd.</span>
-                </div>
-                <div className="flex items-center justify-between py-1 border-b border-white/5">
-                  <span className="text-[#94A3B8]">Location:</span>
-                  <span className="text-[#F8FAFC]">Pune, Maharashtra</span>
-                </div>
-                <div className="flex items-center justify-between py-1 border-b border-white/5">
-                  <span className="text-[#94A3B8]">Education:</span>
-                  <span className="text-[#F8FAFC]">B.E. Information Technology</span>
-                </div>
-                <div className="flex items-center justify-between py-1 border-b border-white/5">
-                  <span className="text-[#94A3B8]">Certification:</span>
-                  <span className="text-[#22C55E] font-bold">SDET · SEED Infotech</span>
-                </div>
-                <div className="flex items-center justify-between py-1 border-b border-white/5">
-                  <span className="text-[#94A3B8]">Experience:</span>
-                  <span className="text-[#38BDF8]">1+ Year (Automation &amp; Manual)</span>
-                </div>
-                <div className="flex items-center justify-between pt-1">
-                  <span className="text-[#94A3B8]">Status:</span>
-                  <span className="text-[#22C55E] font-bold flex items-center gap-1.5">
-                    <span className="size-1.5 rounded-full bg-[#22C55E] animate-ping" />
-                    Open to Opportunities
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════
-            02. PROFESSIONAL EXPERIENCE (ADDED FROM PREVIOUS WEBSITE)
-            ═══════════════════════════════════════════════════ */}
-        <section id="experience" className="py-20 sm:py-28 px-4 sm:px-6 bg-[#080E1B]/70 border-y border-white/5">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-12">
-              <span className="font-mono text-xs text-[#22C55E] tracking-widest uppercase font-bold">
-                02 / WORK HISTORY &amp; EMPLOYMENT
-              </span>
-              <h2 className="section-fluid-title font-display font-bold text-[#F8FAFC] mt-1">
-                Professional Experience
-              </h2>
-            </div>
-
-            {/* Timeline Item */}
-            <div className="relative pl-6 sm:pl-10 border-l-2 border-[#22C55E]/30">
-              {/* Timeline dot */}
-              <div className="absolute -left-[9px] top-0 size-4 rounded-full bg-[#070B14] border-2 border-[#22C55E] flex items-center justify-center">
-                <div className="size-1.5 rounded-full bg-[#22C55E]" />
-              </div>
-
-              <div className="glass-card rounded-2xl border border-white/10 overflow-hidden">
-                {/* Header */}
-                <div className="p-6 sm:p-8 bg-[#0C1424] border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div>
-                    <span className="px-2.5 py-1 rounded bg-[#22C55E]/15 text-[#22C55E] border border-[#22C55E]/30 text-xs font-mono font-bold">
-                      CURRENT ROLE
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-bold font-display text-[#F8FAFC] mt-2">
-                      Software Test Engineer
-                    </h3>
-                    <p className="text-sm text-[#38BDF8] font-mono mt-0.5">
-                      Profcyma Solutions Pvt. Ltd. · Pune, Maharashtra
-                    </p>
-                  </div>
-
-                  <div className="text-xs font-mono text-[#94A3B8] sm:text-right">
-                    <div className="text-[#F8FAFC] font-semibold">Aug 2024 – Present</div>
-                    <div>Full-time · QA Engineering</div>
-                  </div>
-                </div>
-
-                {/* Key Responsibilities */}
-                <div className="p-6 sm:p-8 space-y-6">
-                  <div>
-                    <h4 className="font-mono text-xs text-[#38BDF8] uppercase tracking-wider mb-3 font-bold">
-                      Key Engineering Responsibilities
-                    </h4>
-                    <ul className="grid sm:grid-cols-2 gap-3 text-xs sm:text-sm text-[#94A3B8]">
-                      {[
-                        "Designed end-to-end test strategies and built scalable Selenium + POM automation frameworks",
-                        "Performed manual, functional, regression, smoke, and sanity testing across web and Android apps",
-                        "Validated REST APIs via Postman — schema validation, status codes, and data consistency",
-                        "Performed load and stress testing with Apache JMeter (100k+ virtual users simulated)",
-                        "Documented test cases and tracked defect lifecycle in JIRA with detailed bug reports and logs",
-                        "Collaborated with developers in Agile/Scrum teams across 5+ production client projects",
-                        "Integrated automated suites into CI/CD pipelines, reducing manual regression time by 25%",
-                        "Conducted cross-browser and responsive testing across 5+ browsers and multiple mobile viewports",
-                        "Participated in release verification, build sign-offs, and production deployment validation",
-                      ].map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <span className="text-[#22C55E] font-mono shrink-0 mt-0.5">▸</span>
-                          <span className="leading-relaxed">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Verified Achievements */}
-                  <div className="pt-4 border-t border-white/10">
-                    <h4 className="font-mono text-xs text-[#22C55E] uppercase tracking-wider mb-3 font-bold">
-                      Verified Impact &amp; Achievements
-                    </h4>
-                    <div className="grid sm:grid-cols-3 gap-3">
-                      <div className="p-4 rounded-xl bg-[#070B14] border border-white/5">
-                        <div className="font-display text-2xl font-bold text-[#22C55E]">~40%</div>
-                        <p className="text-xs text-[#94A3B8] mt-1">Regression cycle time cut via Selenium + TestNG</p>
-                      </div>
-                      <div className="p-4 rounded-xl bg-[#070B14] border border-white/5">
-                        <div className="font-display text-2xl font-bold text-[#38BDF8]">100,000+</div>
-                        <p className="text-xs text-[#94A3B8] mt-1">Users simulated in JMeter surfacing bottlenecks</p>
-                      </div>
-                      <div className="p-4 rounded-xl bg-[#070B14] border border-white/5">
-                        <div className="font-display text-2xl font-bold text-[#22C55E]">240+</div>
-                        <p className="text-xs text-[#94A3B8] mt-1">Critical bugs reported and fixed pre-production</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Tech stack */}
-                  <div className="pt-4 border-t border-white/10 flex flex-wrap items-center gap-2 font-mono text-xs">
-                    <span className="text-white/40">Tools Used:</span>
-                    {["Selenium", "Playwright", "TestNG", "JMeter", "Postman", "Java", "JavaScript", "JIRA", "Git", "CI/CD"].map((t) => (
-                      <span key={t} className="px-2.5 py-1 rounded bg-[#070B14] border border-white/5 text-[#94A3B8]">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════
-            03. ALL 5 PROJECTS & QA CASE STUDIES
-            ═══════════════════════════════════════════════════ */}
-        <section id="cases" className="py-20 sm:py-28 px-4 sm:px-6 max-w-7xl mx-auto">
-          <div className="mb-12">
-            <span className="font-mono text-xs text-[#38BDF8] tracking-widest uppercase font-bold">
-              03 / QA CASE STUDIES
-            </span>
-            <h2 className="section-fluid-title font-display font-bold text-[#F8FAFC] mt-1">
-              5 Production Projects Tested &amp; Automated
-            </h2>
-            <p className="text-sm text-[#94A3B8] mt-2">
-              All 5 projects from my professional portfolio covering Transportation, Multi-vendor E-Commerce, Enterprise CRM, and Lead Generation.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ALL_PROJECTS.map((proj) => {
-              const isExpanded = expandedProjects[proj.id];
-
-              return (
-                <div
-                  key={proj.id}
-                  className={`glass-card rounded-2xl p-6 border transition-all flex flex-col justify-between ${
-                    proj.featured
-                      ? "border-[#38BDF8]/25 hover:border-[#38BDF8]/50"
-                      : "border-white/10 hover:border-white/30"
-                  }`}
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-3">
-                      <span className="px-2.5 py-1 rounded bg-[#22C55E]/15 text-[#22C55E] border border-[#22C55E]/30 text-[11px] font-mono font-bold">
-                        {proj.id} · {proj.industry}
-                      </span>
-                      {proj.featured && (
-                        <span className="px-2 py-0.5 rounded bg-[#38BDF8]/15 text-[#38BDF8] text-[10px] font-mono font-semibold">
-                          FEATURED
-                        </span>
-                      )}
-                    </div>
-
-                    <h3 className="text-lg font-bold font-display text-[#F8FAFC]">{proj.name}</h3>
-
-                    <div className="flex flex-wrap gap-1 mt-1.5">
-                      {proj.platforms.map((p) => (
-                        <span key={p} className="text-[10px] font-mono text-[#38BDF8] bg-[#38BDF8]/10 px-2 py-0.5 rounded">
-                          {p}
-                        </span>
-                      ))}
-                    </div>
-
-                    <p className="text-xs sm:text-sm text-[#94A3B8] mt-3 leading-relaxed">
-                      {proj.summary}
-                    </p>
-
-                    {/* Metrics row */}
-                    <div className="grid grid-cols-3 gap-2 mt-4 p-2.5 rounded-xl bg-[#070B14] border border-white/5 text-center">
-                      {proj.metrics.map((m) => (
-                        <div key={m.k}>
-                          <div className="font-display font-bold text-sm text-[#F8FAFC]">{m.v}</div>
-                          <div className="font-mono text-[9px] text-[#94A3B8]">{m.k}</div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {isExpanded && (
-                      <div className="mt-4 pt-4 border-t border-white/10 space-y-3 text-xs text-[#94A3B8] leading-relaxed">
-                        <div>
-                          <strong className="text-[#F8FAFC]">Challenge:</strong> {proj.challenge}
-                        </div>
-                        <div>
-                          <strong className="text-[#38BDF8]">My Approach:</strong> {proj.approach}
-                        </div>
-                        <div className="p-2.5 rounded-lg bg-[#EF4444]/10 border border-[#EF4444]/20 text-[#F8FAFC]">
-                          <strong className="text-[#EF4444]">Critical Defect Caught:</strong> {proj.keyDefect}
-                        </div>
-                        <div className="text-[#22C55E]">
-                          <strong>Outcome:</strong> {proj.outcome}
-                        </div>
-                        <div className="flex flex-wrap gap-2 pt-2">
-                          {proj.links.map((link) => (
-                            <a
-                              key={link.label}
-                              href={link.url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-1 px-3 py-1 rounded-md bg-[#121C2C] text-[#38BDF8] hover:underline font-mono text-[11px]"
-                            >
-                              <span>{link.label}</span>
-                              <ExternalLink className="size-3" />
-                            </a>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <button
-                    onClick={() => toggleProject(proj.id)}
-                    className="mt-5 w-full py-2 rounded-lg bg-[#121C2C] hover:bg-[#1E293B] border border-white/10 font-mono text-xs text-[#F8FAFC] flex items-center justify-center gap-1.5 transition-colors"
-                  >
-                    <span>{isExpanded ? "Close Details" : "Inspect Case Details"}</span>
-                    {isExpanded ? <ChevronUp className="size-3.5" /> : <ChevronDown className="size-3.5" />}
-                  </button>
-                </div>
+                </article>
               );
             })}
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════
-            04. LIVE TEST RUNNER & BUG SPOTTER LAB
-            ═══════════════════════════════════════════════════ */}
-        <section id="simulator" className="py-20 sm:py-28 px-4 sm:px-6 max-w-7xl mx-auto space-y-12">
-          <div>
-            <span className="font-mono text-xs text-[#22C55E] tracking-widest uppercase font-bold">
-              04 / INTERACTIVE QA TERMINAL
-            </span>
-            <h2 className="section-fluid-title font-display font-bold text-[#F8FAFC] mt-1">
-              Live Test Execution &amp; Bug Spotter Lab
-            </h2>
-            <p className="text-sm text-[#94A3B8] mt-2">
-              Execute simulated test automation scripts in the terminal below or inspect production bug injection scenarios.
+        <section id="cases" className="section section-lined page-container">
+          <div className="section-heading section-heading-split">
+            <div>
+              <span className="eyebrow">04 / SELECTED WORK</span>
+              <h2>
+                Real systems.
+                <br />
+                <span>Measurable confidence.</span>
+              </h2>
+            </div>
+            <p>
+              Five projects. Different challenges.
+              <br />
+              The same uncompromising attention to detail.
             </p>
           </div>
-
-          <InteractiveTestRunner />
-          <BugSpotterLab />
-        </section>
-
-        {/* ═══════════════════════════════════════════════════
-            05. TECHNICAL SKILLS MATRIX (FULL PREVIOUS SET)
-            ═══════════════════════════════════════════════════ */}
-        <section id="skills" className="py-20 sm:py-28 px-4 sm:px-6 bg-[#080E1A]/70 border-y border-white/5">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-12">
-              <span className="font-mono text-xs text-[#38BDF8] tracking-widest uppercase font-bold">
-                05 / TECHNICAL ARSENAL
-              </span>
-              <h2 className="section-fluid-title font-display font-bold text-[#F8FAFC] mt-1">
-                Complete Testing Skills &amp; Tools Matrix
-              </h2>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {ALL_SKILLS.map((grp) => (
-                <div key={grp.group} className="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{grp.icon}</span>
-                    <h3 className="font-display font-bold text-lg text-[#F8FAFC]">{grp.group}</h3>
+          <div className="project-grid">
+            {ALL_PROJECTS.map((project, index) => {
+              const expanded = Boolean(expandedProjects[project.id]);
+              const Icon = [Navigation, ShoppingBag, Layers, Route, Building2][index];
+              return (
+                <TiltCard
+                  as="article"
+                  maxTilt={3}
+                  key={project.id}
+                  className={`project-card surface project-${index + 1}`}
+                >
+                  <div className="project-preview" aria-hidden="true">
+                    <div className="project-preview-top">
+                      <span>{project.id} / QUALITY REPORT</span>
+                      <span>
+                        <Check size={11} /> RELEASE VERIFIED
+                      </span>
+                    </div>
+                    <div className="project-symbol">
+                      <Icon size={35} strokeWidth={1.2} />
+                    </div>
+                    <div className="project-preview-bottom">
+                      <span>{project.industry}</span>
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                    </div>
                   </div>
-
-                  <ul className="space-y-3 font-mono text-xs">
-                    {grp.items.map((item) => (
-                      <li key={item.name} className="flex items-start justify-between gap-2 border-b border-white/5 pb-2">
-                        <span className="text-[#F8FAFC] font-semibold flex items-center gap-1.5">
-                          <span className="size-1 rounded-full bg-[#22C55E]" />
-                          {item.name}
-                        </span>
-                        <span className="text-[#94A3B8] text-[11px] text-right">{item.desc}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+                  <div className="project-content">
+                    <div className="project-meta">
+                      <span>{project.role}</span>
+                      {project.featured && <span>Featured case study</span>}
+                    </div>
+                    <h3>{project.name}</h3>
+                    <p className="project-summary">{project.summary}</p>
+                    <div className="project-platforms">
+                      {project.platforms.map((platform) => (
+                        <span key={platform}>{platform}</span>
+                      ))}
+                    </div>
+                    <div className="project-metrics">
+                      {project.metrics.map((metric) => (
+                        <div key={metric.k}>
+                          <strong>{metric.v}</strong>
+                          <span>{metric.k}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      className="case-toggle"
+                      onClick={() => toggleProject(project.id)}
+                      aria-expanded={expanded}
+                      aria-controls={`details-${project.id}`}
+                    >
+                      <span>{expanded ? "Close case study" : "Explore case study"}</span>
+                      {expanded ? <Minus size={17} /> : <ArrowUpRight size={17} />}
+                    </button>
+                    <div id={`details-${project.id}`} hidden={!expanded} className="case-details">
+                      <div>
+                        <h4>The challenge</h4>
+                        <p>{project.challenge}</p>
+                      </div>
+                      <div>
+                        <h4>My approach</h4>
+                        <p>{project.approach}</p>
+                      </div>
+                      <div className="defect-callout">
+                        <h4>
+                          <Bug size={14} /> The defect that mattered
+                        </h4>
+                        <p>{project.keyDefect}</p>
+                      </div>
+                      <div>
+                        <h4>The outcome</h4>
+                        <p>{project.outcome}</p>
+                      </div>
+                      <div className="case-tools">
+                        {project.stack.map((tool) => (
+                          <span className="skill-pill" key={tool}>
+                            {tool}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="project-links">
+                        {project.links.map((link) => (
+                          <a
+                            className="text-link"
+                            key={link.label}
+                            href={link.url}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {link.label} <ExternalLink size={13} />
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </TiltCard>
+              );
+            })}
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════
-            06. CERTIFICATIONS & ACCREDITATIONS
-            ═══════════════════════════════════════════════════ */}
-        <section id="certs" className="py-20 sm:py-28 px-4 sm:px-6 max-w-7xl mx-auto">
-          <div className="mb-12">
-            <span className="font-mono text-xs text-[#22C55E] tracking-widest uppercase font-bold">
-              06 / CREDENTIALS &amp; CERTIFICATIONS
+        <section id="simulator" className="section section-lined page-container">
+          <div className="section-heading section-heading-split">
+            <div>
+              <span className="eyebrow">05 / THE TESTING LAB</span>
+              <h2>
+                Don’t just read about it.
+                <br />
+                <span>Put quality to the test.</span>
+              </h2>
+            </div>
+            <p>
+              Run a simulated test suite, then investigate
+              <br />
+              the kind of edge cases that hide in plain sight.
+            </p>
+          </div>
+          <div className="lab-intro">
+            <span className="small-badge">
+              <Terminal size={13} /> Interactive demonstrations
             </span>
-            <h2 className="section-fluid-title font-display font-bold text-[#F8FAFC] mt-1">
-              Verified Professional Accreditations
-            </h2>
+            <span>Simulated runs · No production systems affected</span>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="glass-card p-6 rounded-2xl border border-white/10 space-y-3 hover:border-[#38BDF8]/40 transition-colors">
-              <Award className="size-8 text-[#38BDF8]" />
-              <h3 className="font-display font-bold text-lg text-[#F8FAFC]">
-                Salesforce Accredited Professional
-              </h3>
-              <p className="text-xs text-[#94A3B8] leading-relaxed">
-                Salesforce platform configuration, custom validation rules, workflow processes, and field-level permissions architecture.
-              </p>
-              <div className="font-mono text-[11px] text-[#22C55E]">✓ Verified Credential</div>
-            </div>
-
-            <div className="glass-card p-6 rounded-2xl border border-white/10 space-y-3 hover:border-[#22C55E]/40 transition-colors">
-              <ShieldCheck className="size-8 text-[#22C55E]" />
-              <h3 className="font-display font-bold text-lg text-[#F8FAFC]">
-                SDET · SEED Infotech
-              </h3>
-              <p className="text-xs text-[#94A3B8] leading-relaxed">
-                Intensive Software Development Engineer in Test (SDET) training: Selenium WebDriver, Java, Page Object Model, TestNG, and CI/CD pipelines.
-              </p>
-              <div className="font-mono text-[11px] text-[#22C55E]">✓ Verified Credential</div>
-            </div>
-
-            <div className="glass-card p-6 rounded-2xl border border-white/10 space-y-3 hover:border-[#38BDF8]/40 transition-colors">
-              <Activity className="size-8 text-[#38BDF8]" />
-              <h3 className="font-display font-bold text-lg text-[#F8FAFC]">
-                Performance &amp; API Testing
-              </h3>
-              <p className="text-xs text-[#94A3B8] leading-relaxed">
-                Hands-on accreditation in Apache JMeter distributed thread group load generation and Postman RESTful API assertion design.
-              </p>
-              <div className="font-mono text-[11px] text-[#22C55E]">✓ Verified Credential</div>
-            </div>
+          <div className="testing-lab">
+            <InteractiveTestRunner />
+            <BugSpotterLab />
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════
-            07. CONTACT (CONNECTED TO SUPABASE + GMAIL)
-            ═══════════════════════════════════════════════════ */}
-        <section id="contact" className="py-20 sm:py-28 px-4 sm:px-6 bg-[#070D18]/90 border-t border-white/5">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-12">
-              <span className="font-mono text-xs text-[#38BDF8] tracking-widest uppercase font-bold">
-                07 / GET IN TOUCH
-              </span>
-              <h2 className="section-fluid-title font-display font-bold text-[#F8FAFC] mt-1">
-                Let&apos;s build reliable software together.
+        <section id="certs" className="section section-lined page-container">
+          <div className="section-heading section-heading-split">
+            <div>
+              <span className="eyebrow">06 / ALWAYS LEARNING</span>
+              <h2>
+                A strong foundation.
+                <br />
+                <span>An open mind.</span>
               </h2>
-              <p className="text-sm text-[#94A3B8] mt-2">
-                Messages submitted below save directly to Supabase and notify me instantly via Gmail.
-              </p>
             </div>
-
-            <div className="grid lg:grid-cols-12 gap-10">
-              <div className="lg:col-span-5 space-y-6">
-                <div className="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
-                  <h3 className="font-display font-bold text-lg text-[#F8FAFC]">Direct Contact</h3>
-
-                  <a
-                    href="mailto:shashankshinde38@gmail.com"
-                    className="flex items-center gap-3 p-3 rounded-xl bg-[#070B14] border border-white/5 hover:border-[#38BDF8]/40 transition-colors"
-                  >
-                    <Mail className="size-5 text-[#38BDF8] shrink-0" />
-                    <div className="min-w-0">
-                      <div className="font-mono text-[10px] uppercase text-[#94A3B8]">Email</div>
-                      <div className="text-sm font-semibold truncate text-[#F8FAFC]">
-                        shashankshinde38@gmail.com
-                      </div>
-                    </div>
-                  </a>
-
-                  <a
-                    href="tel:+918080852689"
-                    className="flex items-center gap-3 p-3 rounded-xl bg-[#070B14] border border-white/5 hover:border-[#22C55E]/40 transition-colors"
-                  >
-                    <Phone className="size-5 text-[#22C55E] shrink-0" />
-                    <div className="min-w-0">
-                      <div className="font-mono text-[10px] uppercase text-[#94A3B8]">Phone</div>
-                      <div className="text-sm font-semibold truncate text-[#F8FAFC]">
-                        +91 80808 52689
-                      </div>
-                    </div>
-                  </a>
-
-                  <a
-                    href="https://www.linkedin.com/in/shashank-shinde7/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-3 p-3 rounded-xl bg-[#070B14] border border-white/5 hover:border-[#38BDF8]/40 transition-colors"
-                  >
-                    <Linkedin className="size-5 text-[#38BDF8] shrink-0" />
-                    <div className="min-w-0">
-                      <div className="font-mono text-[10px] uppercase text-[#94A3B8]">LinkedIn</div>
-                      <div className="text-sm font-semibold truncate text-[#F8FAFC]">
-                        /in/shashank-shinde7
-                      </div>
-                    </div>
-                  </a>
-
-                  <a
-                    href="https://github.com/shashankshinde38-lab"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-3 p-3 rounded-xl bg-[#070B14] border border-white/5 hover:border-[#22C55E]/40 transition-colors"
-                  >
-                    <Github className="size-5 text-[#22C55E] shrink-0" />
-                    <div className="min-w-0">
-                      <div className="font-mono text-[10px] uppercase text-[#94A3B8]">GitHub</div>
-                      <div className="text-sm font-semibold truncate text-[#F8FAFC]">
-                        /shashankshinde38-lab
-                      </div>
-                    </div>
-                  </a>
+            <p>
+              Professional training that supports
+              <br />
+              thoughtful, hands-on engineering.
+            </p>
+          </div>
+          <div className="cert-grid">
+            {[
+              {
+                Icon: Award,
+                title: "Salesforce Accredited Professional",
+                area: "SALESFORCE",
+                desc: "Platform configuration, validation rules, workflow processes and field-level permissions architecture.",
+              },
+              {
+                Icon: ShieldCheck,
+                title: "SDET · SEED Infotech",
+                area: "TEST AUTOMATION",
+                desc: "Software Development Engineer in Test training in Selenium, Java, Page Object Model, TestNG and CI/CD.",
+              },
+              {
+                Icon: Activity,
+                title: "Performance & API Testing",
+                area: "SPECIALIST TRAINING",
+                desc: "Hands-on training in Apache JMeter distributed load generation and Postman RESTful API assertion design.",
+              },
+            ].map((cert) => (
+              <article className="cert-card surface" key={cert.title}>
+                <div className="cert-top">
+                  <cert.Icon size={28} strokeWidth={1.4} />
+                  <span>{cert.area}</span>
                 </div>
+                <h3>{cert.title}</h3>
+                <p>{cert.desc}</p>
+                <span className="cert-footer">
+                  <CheckCircle2 size={14} /> Professional credential
+                </span>
+              </article>
+            ))}
+          </div>
+        </section>
 
-                <div className="p-4 rounded-xl bg-[#22C55E]/10 border border-[#22C55E]/20 text-xs text-[#94A3B8] space-y-1">
-                  <div className="text-[#22C55E] font-mono font-bold flex items-center gap-1.5">
-                    <CheckCircle2 className="size-4" />
-                    <span>Real-Time Dispatch Active</span>
-                  </div>
-                  <p>
-                    I typically review and reply to all QA &amp; SDET opportunities within 24 hours.
-                  </p>
-                </div>
+        <section id="contact" className="section section-lined page-container">
+          <div className="contact-grid">
+            <div className="contact-copy">
+              <span className="eyebrow">07 / LET’S CONNECT</span>
+              <h2>
+                Your next release.
+                <br />
+                <span>
+                  A little more
+                  <br />
+                  confidence.
+                </span>
+              </h2>
+              <p>
+                Have an opportunity, a challenging product, or a quality problem worth solving? I’d
+                love to hear about it.
+              </p>
+              <div className="contact-availability">
+                <span className="status-dot" /> Open to QA & SDET opportunities
               </div>
-
-              {/* Form */}
-              <div className="lg:col-span-7 glass-card p-6 sm:p-8 rounded-2xl border border-white/10">
-                <form onSubmit={handleFormSubmit} noValidate className="space-y-4">
-                  <input
-                    type="text"
-                    name="website"
-                    value={formData.website}
-                    onChange={handleFormChange}
-                    className="sr-only hidden"
-                    tabIndex={-1}
-                    autoComplete="off"
-                  />
-
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label className="font-mono text-xs text-[#94A3B8] uppercase tracking-wider">
-                        Full Name <span className="text-[#EF4444]">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="fullName"
-                        value={formData.fullName}
-                        onChange={handleFormChange}
-                        placeholder="Your Name"
-                        className={`w-full px-4 py-3 rounded-xl bg-[#070B14] border ${
-                          formErrors.fullName ? "border-[#EF4444]" : "border-white/10"
-                        } text-sm text-[#F8FAFC] font-mono outline-none focus:border-[#38BDF8]`}
-                      />
-                      {formErrors.fullName && (
-                        <p className="text-[11px] font-mono text-[#EF4444]">{formErrors.fullName}</p>
-                      )}
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label className="font-mono text-xs text-[#94A3B8] uppercase tracking-wider">
-                        Email Address <span className="text-[#EF4444]">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleFormChange}
-                        placeholder="you@company.com"
-                        className={`w-full px-4 py-3 rounded-xl bg-[#070B14] border ${
-                          formErrors.email ? "border-[#EF4444]" : "border-white/10"
-                        } text-sm text-[#F8FAFC] font-mono outline-none focus:border-[#38BDF8]`}
-                      />
-                      {formErrors.email && (
-                        <p className="text-[11px] font-mono text-[#EF4444]">{formErrors.email}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label className="font-mono text-xs text-[#94A3B8] uppercase tracking-wider">
-                        Mobile Number <span className="text-white/30">(Optional)</span>
-                      </label>
-                      <input
-                        type="tel"
-                        name="mobile"
-                        maxLength={10}
-                        value={formData.mobile}
-                        onChange={handleFormChange}
-                        placeholder="10-digit mobile"
-                        className={`w-full px-4 py-3 rounded-xl bg-[#070B14] border ${
-                          formErrors.mobile ? "border-[#EF4444]" : "border-white/10"
-                        } text-sm text-[#F8FAFC] font-mono outline-none focus:border-[#38BDF8]`}
-                      />
-                      {formErrors.mobile && (
-                        <p className="text-[11px] font-mono text-[#EF4444]">{formErrors.mobile}</p>
-                      )}
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label className="font-mono text-xs text-[#94A3B8] uppercase tracking-wider">
-                        Reason for Contact <span className="text-[#EF4444]">*</span>
-                      </label>
-                      <select
-                        name="reason"
-                        value={formData.reason}
-                        onChange={handleFormChange}
-                        className={`w-full px-4 py-3 rounded-xl bg-[#070B14] border ${
-                          formErrors.reason ? "border-[#EF4444]" : "border-white/10"
-                        } text-sm text-[#F8FAFC] font-mono outline-none focus:border-[#38BDF8]`}
-                      >
-                        <option value="">Select a reason</option>
-                        <option value="Job Opportunity">Job Opportunity (QA / SDET)</option>
-                        <option value="Freelance Project">Freelance / Automation Project</option>
-                        <option value="Technical Consultation">Technical Consultation</option>
-                        <option value="General Inquiry">General Inquiry</option>
-                      </select>
-                      {formErrors.reason && (
-                        <p className="text-[11px] font-mono text-[#EF4444]">{formErrors.reason}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="font-mono text-xs text-[#94A3B8] uppercase tracking-wider">
-                      Message <span className="text-[#EF4444]">*</span>
+              <div className="contact-links">
+                {[
+                  {
+                    Icon: Mail,
+                    label: "Email",
+                    value: "shashankshinde38@gmail.com",
+                    href: "mailto:shashankshinde38@gmail.com",
+                  },
+                  {
+                    Icon: Phone,
+                    label: "Phone",
+                    value: "+91 80808 52689",
+                    href: "tel:+918080852689",
+                  },
+                  {
+                    Icon: Linkedin,
+                    label: "LinkedIn",
+                    value: "Let’s connect professionally",
+                    href: "https://www.linkedin.com/in/shashank-shinde7/",
+                  },
+                  {
+                    Icon: Github,
+                    label: "GitHub",
+                    value: "Explore my repositories",
+                    href: "https://github.com/shashankshinde38-lab",
+                  },
+                ].map(({ Icon, label, value, href }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel={href.startsWith("http") ? "noreferrer" : undefined}
+                  >
+                    <Icon size={18} strokeWidth={1.5} />
+                    <span>
+                      <small>{label}</small>
+                      <strong>{value}</strong>
+                    </span>
+                    <ArrowUpRight size={15} />
+                  </a>
+                ))}
+              </div>
+              <p className="contact-note">I typically respond within 24 hours.</p>
+            </div>
+            <div className="contact-form-panel surface">
+              <div className="form-heading">
+                <h3>Let’s start a conversation.</h3>
+                <span>Tell me a little about what you have in mind.</span>
+              </div>
+              <form onSubmit={handleFormSubmit} noValidate className="contact-form">
+                <input
+                  type="text"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleFormChange}
+                  className="hidden"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                />
+                <div className="form-row">
+                  <div className="form-field">
+                    <label htmlFor="fullName">
+                      Full name <span>*</span>
                     </label>
-                    <textarea
-                      name="message"
-                      rows={5}
-                      maxLength={1000}
-                      value={formData.message}
+                    <input
+                      id="fullName"
+                      type="text"
+                      name="fullName"
+                      autoComplete="name"
+                      value={formData.fullName}
                       onChange={handleFormChange}
-                      placeholder="Describe your QA requirement, project scope, or opportunity..."
-                      className={`w-full px-4 py-3 rounded-xl bg-[#070B14] border ${
-                        formErrors.message ? "border-[#EF4444]" : "border-white/10"
-                      } text-sm text-[#F8FAFC] font-mono outline-none focus:border-[#38BDF8] resize-none`}
+                      placeholder="Your name"
+                      aria-required="true"
+                      aria-invalid={Boolean(formErrors.fullName)}
+                      aria-describedby={formErrors.fullName ? "fullName-error" : undefined}
+                      className="form-input"
                     />
-                    <div className="flex justify-between items-center text-[11px] font-mono">
-                      {formErrors.message ? (
-                        <span className="text-[#EF4444]">{formErrors.message}</span>
-                      ) : (
-                        <span className="text-white/30">Max 1000 characters</span>
-                      )}
-                      <span className="text-[#94A3B8]">{formData.message.length}/1000</span>
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={formStatus === "sending"}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-[#22C55E] text-[#052E16] font-mono text-sm font-bold hover:bg-[#22C55E]/90 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {formStatus === "sending" ? (
-                      <>
-                        <span className="size-4 border-2 border-[#052E16] border-t-transparent rounded-full animate-spin" />
-                        <span>DISPATCHING...</span>
-                      </>
-                    ) : formStatus === "sent" ? (
-                      <span>✓ MESSAGE SENT!</span>
-                    ) : (
-                      <>
-                        <Send className="size-4" />
-                        <span>SEND MESSAGE</span>
-                      </>
+                    {formErrors.fullName && (
+                      <p id="fullName-error" className="field-error">
+                        {formErrors.fullName}
+                      </p>
                     )}
-                  </button>
-                </form>
-              </div>
+                  </div>
+                  <div className="form-field">
+                    <label htmlFor="email">
+                      Email address <span>*</span>
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      value={formData.email}
+                      onChange={handleFormChange}
+                      placeholder="you@company.com"
+                      aria-required="true"
+                      aria-invalid={Boolean(formErrors.email)}
+                      aria-describedby={formErrors.email ? "email-error" : undefined}
+                      className="form-input"
+                    />
+                    {formErrors.email && (
+                      <p id="email-error" className="field-error">
+                        {formErrors.email}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-field">
+                    <label htmlFor="mobile">
+                      Mobile number <small>(optional)</small>
+                    </label>
+                    <input
+                      id="mobile"
+                      type="tel"
+                      name="mobile"
+                      autoComplete="tel-national"
+                      inputMode="numeric"
+                      maxLength={10}
+                      value={formData.mobile}
+                      onChange={handleFormChange}
+                      placeholder="10-digit mobile number"
+                      aria-invalid={Boolean(formErrors.mobile)}
+                      aria-describedby={formErrors.mobile ? "mobile-error" : undefined}
+                      className="form-input"
+                    />
+                    {formErrors.mobile && (
+                      <p id="mobile-error" className="field-error">
+                        {formErrors.mobile}
+                      </p>
+                    )}
+                  </div>
+                  <div className="form-field">
+                    <label htmlFor="reason">
+                      Reason for contact <span>*</span>
+                    </label>
+                    <select
+                      id="reason"
+                      name="reason"
+                      value={formData.reason}
+                      onChange={handleFormChange}
+                      aria-required="true"
+                      aria-invalid={Boolean(formErrors.reason)}
+                      aria-describedby={formErrors.reason ? "reason-error" : undefined}
+                      className="form-input"
+                    >
+                      <option value="">Select a reason</option>
+                      <option value="Job Opportunity">Job Opportunity (QA / SDET)</option>
+                      <option value="Freelance Project">Freelance / Automation Project</option>
+                      <option value="Technical Consultation">Technical Consultation</option>
+                      <option value="General Inquiry">General Inquiry</option>
+                    </select>
+                    {formErrors.reason && (
+                      <p id="reason-error" className="field-error">
+                        {formErrors.reason}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="form-field">
+                  <label htmlFor="message">
+                    Your message <span>*</span>
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={5}
+                    maxLength={500}
+                    value={formData.message}
+                    onChange={handleFormChange}
+                    placeholder="Tell me about the opportunity, your project, or what you’re working on..."
+                    aria-required="true"
+                    aria-invalid={Boolean(formErrors.message)}
+                    aria-describedby={
+                      formErrors.message ? "message-error message-count" : "message-count"
+                    }
+                    className="form-input"
+                  />
+                  <div className="message-meta">
+                    {formErrors.message ? (
+                      <span id="message-error" className="field-error">
+                        {formErrors.message}
+                      </span>
+                    ) : (
+                      <span>A few details go a long way.</span>
+                    )}
+                    <span id="message-count">{formData.message.length}/500</span>
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  className="btn-primary form-submit"
+                  disabled={formStatus === "sending"}
+                >
+                  {formStatus === "sending" ? (
+                    <>
+                      <span className="loading-spinner" /> Sending message…
+                    </>
+                  ) : formStatus === "sent" ? (
+                    <>
+                      <Check size={16} /> Message sent!
+                    </>
+                  ) : (
+                    <>
+                      Send message <ArrowUpRight size={17} />
+                    </>
+                  )}
+                </button>
+                <div aria-live="polite">
+                  {formStatus === "error" && (
+                    <p className="field-error" role="alert">
+                      {formErrors.form ||
+                        "Your message couldn’t be sent. Please try again or email me directly."}
+                    </p>
+                  )}
+                </div>
+                <p className="form-footnote">
+                  <ShieldCheck size={13} /> Your details stay private and are only used to reply.
+                </p>
+              </form>
             </div>
           </div>
         </section>
       </main>
 
-      {/* ── Success Confirmation Modal ── */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="glass-card max-w-md w-full p-6 sm:p-8 rounded-2xl border border-[#22C55E]/40 text-center space-y-4">
-            <div className="size-16 rounded-full bg-[#22C55E]/20 text-[#22C55E] mx-auto flex items-center justify-center">
-              <CheckCircle2 className="size-8" />
+      <Dialog.Root open={showSuccessModal} onOpenChange={setShowSuccessModal}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="dialog-overlay" />
+          <Dialog.Content className="success-dialog surface">
+            <div className="success-icon">
+              <CheckCircle2 size={28} />
             </div>
-            <h3 className="text-xl font-bold font-display text-[#F8FAFC]">
-              Message Dispatched Successfully!
-            </h3>
-            <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
-              Thank you for reaching out! Your message has been saved to the Supabase database and forwarded to Shashank Shinde&apos;s personal inbox.
-            </p>
-            <button
-              onClick={() => setShowSuccessModal(false)}
-              className="w-full py-3 rounded-xl bg-[#22C55E] text-[#052E16] font-mono text-sm font-bold hover:bg-[#22C55E]/90 transition-colors"
-            >
-              GOT IT
-            </button>
-          </div>
-        </div>
-      )}
+            <Dialog.Title>Message received.</Dialog.Title>
+            <Dialog.Description>
+              Thanks for reaching out. I’ll review your message and get back to you soon.
+            </Dialog.Description>
+            <Dialog.Close className="btn-primary">
+              Got it <Check size={15} />
+            </Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
 
-      {/* ── Footer ── */}
-      <footer className="border-t border-white/5 bg-[#050810] py-8 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-[#94A3B8]">
-          <div>
-            &copy; {new Date().getFullYear()}{" "}
-            <strong className="text-[#F8FAFC]">Shashank Shinde</strong> · Software Test Engineer
+      <footer className="site-footer">
+        <div className="page-container">
+          <div className="footer-top">
+            <a className="brand" href="#home">
+              <span className="brand-mark">
+                s<span>.</span>
+              </span>
+              <span>
+                shashank shinde<span className="brand-period">.</span>
+              </span>
+            </a>
+            <p>Thoughtful testing. Better software.</p>
+            <a href="#home" className="text-link">
+              Back to top <ArrowUpRight size={16} />
+            </a>
           </div>
-          <div className="flex items-center gap-6">
-            <a href="https://github.com/shashankshinde38-lab" target="_blank" rel="noreferrer" className="hover:text-[#38BDF8] transition-colors">
-              GitHub
-            </a>
-            <a href="https://www.linkedin.com/in/shashank-shinde7/" target="_blank" rel="noreferrer" className="hover:text-[#38BDF8] transition-colors">
-              LinkedIn
-            </a>
-            <a href="mailto:shashankshinde38@gmail.com" className="hover:text-[#38BDF8] transition-colors">
-              Email
-            </a>
+          <div className="footer-bottom">
+            <span>
+              © {new Date().getFullYear()}{" "}
+              <a className="footer-admin-entry" href="/admin/login">
+                Shashank Shinde
+              </a>
+            </span>
+            <span className="footer-status">
+              <span className="status-dot" />
+              {backendLive ? "Contact channel online" : "Let’s connect"}
+            </span>
+            <div>
+              <a href="https://github.com/shashankshinde38-lab" target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              <a
+                href="https://www.linkedin.com/in/shashank-shinde7/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                LinkedIn
+              </a>
+              <a href="mailto:shashankshinde38@gmail.com">Email</a>
+            </div>
           </div>
         </div>
       </footer>

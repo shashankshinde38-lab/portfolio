@@ -1,7 +1,23 @@
 const express = require("express");
+const { timingSafeEqual } = require("crypto");
 const router = express.Router();
 const { insertMessage, fetchMessages, deleteMessage } = require("../config/db");
 const { sendContactNotification } = require("../config/mailer");
+
+function requireLegacyAdmin(req, res, next) {
+  const expected = process.env.LEGACY_ADMIN_API_TOKEN || "";
+  const supplied = (req.get("authorization") || "").replace(/^Bearer\s+/i, "");
+  const expectedBytes = Buffer.from(expected);
+  const suppliedBytes = Buffer.from(supplied);
+  if (
+    !expected ||
+    expectedBytes.length !== suppliedBytes.length ||
+    !timingSafeEqual(expectedBytes, suppliedBytes)
+  ) {
+    return res.status(401).json({ success: false, message: "Unauthorized" });
+  }
+  next();
+}
 
 // POST /api/contact — Submit a contact message
 router.post("/", async (req, res) => {
@@ -76,13 +92,13 @@ router.post("/", async (req, res) => {
     console.error("Error inserting contact message:", err);
     return res.status(500).json({
       success: false,
-      message: err.message || "Internal server error. Please try again later.",
+      message: "Internal server error. Please try again later.",
     });
   }
 });
 
 // GET /api/contact — Fetch all contact messages (optional: for admin)
-router.get("/", async (req, res) => {
+router.get("/", requireLegacyAdmin, async (req, res) => {
   try {
     const messages = await fetchMessages();
 
@@ -101,7 +117,7 @@ router.get("/", async (req, res) => {
 });
 
 // DELETE /api/contact/:id — Delete a message by ID
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", requireLegacyAdmin, async (req, res) => {
   try {
     const deleted = await deleteMessage(req.params.id);
 

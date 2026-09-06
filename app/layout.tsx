@@ -79,7 +79,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FAF8F5",
+  themeColor: "#0b0e11",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -153,22 +153,23 @@ const jsonLdData = {
   ],
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
+        <link
+          rel="preload"
+          href="/fonts/inter-latin-variable.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
         />
       </head>
-      <body className="bg-[#FAF8F5] text-[#181818] antialiased min-h-screen selection:bg-[#2563EB]/20 selection:text-[#181818]">
-        {children}
-      </body>
+      <body className="antialiased min-h-screen">{children}</body>
     </html>
   );
 }

@@ -7,10 +7,7 @@ require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 require("dotenv").config();
 
 const SUPABASE_URL = process.env.SUPABASE_URL || "https://tuxkcnsywuhujoddinhm.supabase.co";
-const SUPABASE_KEY =
-  process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  process.env.SUPABASE_ANON_KEY ||
-  process.env.SUPABASE_KEY;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -27,7 +24,7 @@ if (connectionString) {
   pool = new Pool({
     connectionString,
     ssl: {
-      rejectUnauthorized: false,
+      rejectUnauthorized: true,
     },
   });
 }
@@ -45,6 +42,7 @@ async function insertMessage({ full_name, email, mobile, reason, message }) {
           mobile: mobile || null,
           reason,
           message,
+          status: "new",
         },
       ])
       .select("id");
@@ -56,20 +54,20 @@ async function insertMessage({ full_name, email, mobile, reason, message }) {
   // Fallback to PostgreSQL pool if configured
   if (pool) {
     const result = await pool.query(
-      `INSERT INTO contact_messages (full_name, email, mobile, reason, message) VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+      `INSERT INTO contact_messages (full_name, email, mobile, reason, message, status) VALUES ($1, $2, $3, $4, $5, 'new') RETURNING id`,
       [full_name, email, mobile || null, reason, message]
     );
     return { id: result.rows[0]?.id };
   }
 
-  throw new Error("No database credentials configured. Please set SUPABASE_KEY (or DATABASE_URL) in backend/.env");
+  throw new Error("No database credentials configured. Please set SUPABASE_SERVICE_ROLE_KEY (or DATABASE_URL) in backend/.env");
 }
 
 async function fetchMessages() {
   if (supabase) {
     const { data, error } = await supabase
       .from("contact_messages")
-      .select("*")
+      .select("id,full_name,email,mobile,reason,message,status,created_at")
       .order("created_at", { ascending: false });
 
     if (error) throw error;
@@ -78,7 +76,7 @@ async function fetchMessages() {
 
   if (pool) {
     const result = await pool.query(
-      `SELECT * FROM contact_messages ORDER BY created_at DESC`
+      `SELECT id, full_name, email, mobile, reason, message, status, created_at FROM contact_messages ORDER BY created_at DESC`
     );
     return result.rows;
   }
@@ -122,7 +120,7 @@ async function testConnection() {
       console.error("✕ PostgreSQL connection failed:", err.message);
     }
   } else {
-    console.warn("⚠ Waiting for SUPABASE_ANON_KEY (or DATABASE_URL) in backend/.env");
+    console.warn("⚠ Waiting for SUPABASE_SERVICE_ROLE_KEY (or DATABASE_URL) in backend/.env");
   }
 }
 
