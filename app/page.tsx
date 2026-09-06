@@ -428,7 +428,7 @@ export default function PortfolioPage() {
               </a>
               <p>Pune, Maharashtra · Full-time</p>
               <div className="experience-date">
-                <span>Aug 2024 — Present</span>
+                <span>June 2025 — Present</span>
                 <span>QA ENGINEERING</span>
               </div>
             </div>

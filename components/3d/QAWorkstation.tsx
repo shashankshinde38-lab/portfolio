@@ -54,8 +54,16 @@ export default function QAWorkstation() {
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}
       >
-        {/* Main Playwright Automation Dashboard */}
-        <div className="qa-window browser-window" style={{ "--rotate-y": "-9deg", "--rotate-x": "7deg", "--rotate-z": "-5deg" } as React.CSSProperties}>
+        {/* Main Playwright & Automation Command Center */}
+        <div
+          className="qa-window browser-window"
+          style={{
+            "--rotate-y": "-8deg",
+            "--rotate-x": "6deg",
+            "--rotate-z": "-3deg",
+            "--tz": "0px",
+          } as React.CSSProperties}
+        >
           <div className="window-chrome">
             <div className="window-dots">
               <i />
@@ -63,25 +71,32 @@ export default function QAWorkstation() {
               <i />
             </div>
             <span>
-              <Zap size={11} /> Playwright Dashboard
+              <Zap size={12} className="accent-icon" /> Playwright Automation Center
             </span>
-            <Layers size={13} />
+            <div className="window-tags">
+              <span>
+                <GitBranch size={10} /> main
+              </span>
+              <span>
+                <Layers size={11} /> E2E
+              </span>
+            </div>
           </div>
           <div className="workspace-toolbar">
             <span>
-              <Code2 size={16} /> E2E Test Suite
+              <Code2 size={15} /> E2E Regression Suite
             </span>
-            <span className="muted">
-              <GitBranch size={11} /> main
+            <span className="tiny-status">
+              <CheckCheck size={11} /> 24/24 Passed (2.4s)
             </span>
           </div>
           <div className="workspace-inner">
             <div className="workspace-intro">
               <div>
-                <span className="micro-label">AUTOMATION / E2E</span>
+                <span className="micro-label">AUTOMATION / QUALITY GATE</span>
                 <h3>Confidence. On every release.</h3>
               </div>
-              <span className="tiny-status">All passed</span>
+              <span className="tiny-status-chip">All Passed</span>
             </div>
             <div className="workspace-metrics">
               <div>
@@ -108,9 +123,9 @@ export default function QAWorkstation() {
               <span>RESULT</span>
             </div>
             {[
-              ["Authentication & permissions", "0.6s"],
-              ["Checkout & payment flow", "1.2s"],
-              ["API contract validation", "0.4s"],
+              ["Authentication & RBAC permissions", "0.6s"],
+              ["Checkout & payment gateway flow", "1.2s"],
+              ["API contract & schema validation", "0.4s"],
             ].map(([name, duration]) => (
               <div className="workspace-test" key={name}>
                 <Check size={13} />
@@ -119,9 +134,72 @@ export default function QAWorkstation() {
                 <span className="test-result">Passed</span>
               </div>
             ))}
+
+            {/* Integrated Live Telemetry: JMeter Load & DB Performance */}
+            <div className="workspace-telemetry">
+              <div className="telemetry-card telemetry-jmeter">
+                <div className="telemetry-header">
+                  <span className="telemetry-title">
+                    <Cpu size={12} /> JMeter Load Test
+                  </span>
+                  <span className="telemetry-badge">100k Users</span>
+                </div>
+                <div className="telemetry-metrics">
+                  <div>
+                    <span>Throughput</span>
+                    <strong>
+                      25k<span>/s</span>
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Latency</span>
+                    <strong>
+                      42<span>ms</span>
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Error</span>
+                    <strong className="telemetry-optimal">
+                      0<span>%</span>
+                    </strong>
+                  </div>
+                </div>
+              </div>
+
+              <div className="telemetry-card telemetry-db">
+                <div className="telemetry-header">
+                  <span className="telemetry-title">
+                    <Database size={12} /> DB Performance
+                  </span>
+                  <span className="telemetry-badge telemetry-badge-cyan">Connected</span>
+                </div>
+                <div className="telemetry-metrics">
+                  <div>
+                    <span>Pool Size</span>
+                    <strong>
+                      12<span>/20</span>
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Queries</span>
+                    <strong>
+                      8.4k<span>/s</span>
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Status</span>
+                    <strong className="telemetry-optimal">Optimal</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="workspace-bottom">
               <span>
-                <Globe size={11} /> Chromium
+                <Globe size={11} /> Chromium · WebKit · Firefox
+              </span>
+              <span>
+                <Terminal size={11} /> Selenium Grid: 12 nodes
               </span>
               <span>
                 <CheckCheck size={12} /> Ready for release
@@ -130,8 +208,16 @@ export default function QAWorkstation() {
           </div>
         </div>
 
-        {/* Postman API Testing Panel */}
-        <div className="qa-window api-window" style={{ "--rotate-y": "-12deg", "--rotate-x": "7deg", "--rotate-z": "5deg" } as React.CSSProperties}>
+        {/* Satellite 1: Postman API Inspector (Top-Right, Above Phone) */}
+        <div
+          className="qa-window api-window"
+          style={{
+            "--rotate-y": "-12deg",
+            "--rotate-x": "7deg",
+            "--rotate-z": "3deg",
+            "--tz": "30px",
+          } as React.CSSProperties}
+        >
           <div className="mini-panel-heading">
             <span>
               <Activity size={13} /> Postman API
@@ -150,7 +236,7 @@ export default function QAWorkstation() {
             <em>"healthy"</em>
             {","}
             {"\n"}
-            {'  "errors": '}
+            {'  "regressions": '}
             <em>0</em>
             {","}
             {"\n"}
@@ -161,54 +247,16 @@ export default function QAWorkstation() {
           </pre>
         </div>
 
-        {/* Selenium Terminal Panel */}
-        <div className="qa-window terminal-window" style={{ "--rotate-y": "-8deg", "--rotate-x": "5deg", "--rotate-z": "-4deg" } as React.CSSProperties}>
-          <div className="mini-panel-heading">
-            <span>
-              <Terminal size={13} /> Selenium Grid
-            </span>
-            <span className="terminal-indicator" />
-          </div>
-          <div className="terminal-command">
-            <ChevronRight size={13} /> pytest tests/regression/
-          </div>
-          <div className="terminal-line">
-            <Check size={12} /> 12 passed <span>(6.4s)</span>
-          </div>
-          <div className="terminal-prompt">
-            ~/selenium <span className="terminal-cursor">▍</span>
-          </div>
-        </div>
-
-        {/* JMeter Performance Panel */}
-        <div className="qa-window jmeter-window" style={{ "--rotate-y": "10deg", "--rotate-x": "-5deg", "--rotate-z": "3deg" } as React.CSSProperties}>
-          <div className="mini-panel-heading">
-            <span>
-              <Cpu size={13} /> JMeter Load
-            </span>
-            <span className="response-code">100k Users</span>
-          </div>
-          <div className="jmeter-stats">
-            <div>
-              <span>Throughput</span>
-              <strong>25k<span>/s</span></strong>
-            </div>
-            <div>
-              <span>Avg Latency</span>
-              <strong>42<span>ms</span></strong>
-            </div>
-            <div>
-              <span>Error Rate</span>
-              <strong>0<span>%</span></strong>
-            </div>
-          </div>
-          <div className="jmeter-status">
-            <CheckCheck size={12} /> Load test passed
-          </div>
-        </div>
-
-        {/* Mobile Device Mockup */}
-        <div className="device-mockup">
+        {/* Satellite 2: Mobile Device Mockup (Center-Right, Below API Window) */}
+        <div
+          className="device-mockup"
+          style={{
+            "--rotate-y": "-14deg",
+            "--rotate-x": "4deg",
+            "--rotate-z": "6deg",
+            "--tz": "45px",
+          } as React.CSSProperties}
+        >
           <div className="device-camera" />
           <div className="device-header">
             <span>9:41</span>
@@ -237,31 +285,16 @@ export default function QAWorkstation() {
           <div className="device-home" />
         </div>
 
-        {/* Database Status Panel */}
-        <div className="qa-window database-window" style={{ "--rotate-y": "8deg", "--rotate-x": "-3deg", "--rotate-z": "-2deg" } as React.CSSProperties}>
-          <div className="mini-panel-heading">
-            <span>
-              <Database size={13} /> Database
-            </span>
-            <span className="response-code">Connected</span>
-          </div>
-          <div className="db-stats">
-            <div>
-              <span>Pool Size</span>
-              <strong>12<span>/20</span></strong>
-            </div>
-            <div>
-              <span>Queries</span>
-              <strong>8.4k<span>/s</span></strong>
-            </div>
-          </div>
-          <div className="db-status">
-            <CheckCheck size={12} /> Optimal performance
-          </div>
-        </div>
-
-        {/* Bug Tracking Window */}
-        <div className="qa-window bug-window" style={{ "--rotate-y": "-6deg", "--rotate-z": "3deg" } as React.CSSProperties}>
+        {/* Satellite 3: Defect Hunter Badge (Bottom-Right Foreground) */}
+        <div
+          className="qa-window bug-window"
+          style={{
+            "--rotate-y": "-6deg",
+            "--rotate-x": "3deg",
+            "--rotate-z": "2deg",
+            "--tz": "65px",
+          } as React.CSSProperties}
+        >
           <span className="bug-icon">
             <Bug size={18} />
           </span>
@@ -270,9 +303,9 @@ export default function QAWorkstation() {
               BUG-024 <span>Resolved</span>
             </span>
             <strong>Edge case. Caught.</strong>
-            <span className="bug-note">Before your users found it.</span>
+            <span className="bug-note">Zero defects escaped to production.</span>
           </div>
-          <Check size={16} />
+          <CheckCheck size={16} className="bug-check" />
         </div>
       </div>
       <figcaption>
