@@ -61,30 +61,33 @@ export default function BugSpotterLab() {
       disableForReducedMotion: true,
       spread: 50,
       origin: { y: 0.8 },
-      colors: ["#a6d9c5", "#c9d9d3"],
+      colors: ["#7fffd4", "#00f5ff", "#20b2aa", "#f8fcf9"],
     });
   };
 
   return (
-    <div className="w-full glass-card rounded-2xl p-6 sm:p-8 border border-white/10 relative overflow-hidden">
+    <div className="w-full glass-card rounded-2xl p-6 sm:p-8 border border-[rgba(127,255,212,0.2)] relative overflow-hidden backdrop-blur-xl" style={{
+      background: 'linear-gradient(145deg, rgba(20, 35, 38, 0.8), rgba(8, 14, 16, 0.9))',
+      boxShadow: '0 25px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(127, 255, 212, 0.1), 0 0 40px rgba(0, 245, 255, 0.08)'
+    }}>
       <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {revealed
           ? `Fix revealed for ${activeBug.id}: ${activeBug.fix}`
           : `Inspecting ${activeBug.id}: ${activeBug.title}. The fix is hidden.`}
       </p>
 
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-6 border-b border-white/10">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-6 border-b border-[rgba(127,255,212,0.15)]">
         <div>
           <div className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-[#EF4444] animate-ping" />
-            <span className="font-mono text-xs text-[#EF4444] uppercase tracking-widest font-bold">
-              Defect Investigation Lab
+            <span className="size-2 rounded-full bg-[#EF4444] animate-ping" style={{ boxShadow: '0 0 10px rgba(239,68,68,0.6)' }} />
+            <span className="font-mono text-xs text-[#EF4444] uppercase tracking-widest font-bold" style={{ textShadow: '0 0 10px rgba(239,68,68,0.4)' }}>
+              Holographic Defect Lab
             </span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold font-display mt-1 text-[#F8FAFC]">
+          <h3 className="text-xl sm:text-2xl font-bold font-display mt-1 text-[#f8fcf9]">
             Spot the Edge-Case Defect
           </h3>
-          <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">
+          <p className="text-xs sm:text-sm text-[#b8c9c2] mt-1">
             Real production defects caught and resolved by Shashank Shinde during test automation.
           </p>
         </div>
@@ -98,10 +101,10 @@ export default function BugSpotterLab() {
               aria-pressed={activeBug.id === b.id}
               aria-controls="bug-case-details"
               aria-label={`Inspect ${b.id}: ${b.title}`}
-              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all backdrop-blur-md ${
                 activeBug.id === b.id
-                  ? "bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/40"
-                  : "bg-[#101827] text-[#94A3B8] border border-white/5 hover:border-white/20"
+                  ? "bg-[rgba(239,68,68,0.2)] text-[#EF4444] border border-[rgba(239,68,68,0.4)] shadow-[0_0_15px_rgba(239,68,68,0.3)]"
+                  : "bg-[rgba(6,12,14,0.8)] text-[#aabbb4] border border-[rgba(127,255,212,0.1)] hover:border-[rgba(127,255,212,0.3)] hover:bg-[rgba(127,255,212,0.05)]"
               }`}
             >
               {b.id}
@@ -114,22 +117,22 @@ export default function BugSpotterLab() {
       <div id="bug-case-details" className="grid md:grid-cols-12 gap-6">
         <div className="md:col-span-7 space-y-4">
           <div className="bug-metadata flex items-center gap-3">
-            <span className="px-2.5 py-1 rounded bg-[#EF4444]/15 border border-[#EF4444]/30 text-[#EF4444] text-xs font-mono font-bold">
+            <span className="px-2.5 py-1 rounded bg-[rgba(239,68,68,0.15)] border border-[rgba(239,68,68,0.3)] text-[#EF4444] text-xs font-mono font-bold" style={{ textShadow: '0 0 8px rgba(239,68,68,0.3)' }}>
               SEVERITY: {activeBug.severity}
             </span>
-            <span className="px-2.5 py-1 rounded bg-[#38BDF8]/15 border border-[#38BDF8]/30 text-[#38BDF8] text-xs font-mono font-semibold">
+            <span className="px-2.5 py-1 rounded bg-[rgba(0,245,255,0.15)] border border-[rgba(0,245,255,0.3)] text-[#00f5ff] text-xs font-mono font-semibold" style={{ textShadow: '0 0 8px rgba(0,245,255,0.3)' }}>
               {activeBug.category}
             </span>
           </div>
 
-          <h4 className="text-lg font-bold text-[#F8FAFC]">{activeBug.title}</h4>
+          <h4 className="text-lg font-bold text-[#f8fcf9]">{activeBug.title}</h4>
 
-          <div className="space-y-2 text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
+          <div className="space-y-2 text-xs sm:text-sm text-[#b8c9c2] leading-relaxed">
             <p>
-              <strong className="text-[#F8FAFC]">Scenario:</strong> {activeBug.scenario}
+              <strong className="text-[#f8fcf9]">Scenario:</strong> {activeBug.scenario}
             </p>
             <p>
-              <strong className="text-[#EF4444]">Bug Symptom:</strong> {activeBug.symptom}
+              <strong className="text-[#EF4444]" style={{ textShadow: '0 0 8px rgba(239,68,68,0.3)' }}>Bug Symptom:</strong> {activeBug.symptom}
             </p>
           </div>
 
@@ -139,36 +142,36 @@ export default function BugSpotterLab() {
                 onClick={handleResolve}
                 aria-controls="bug-resolution"
                 aria-expanded={revealed}
-                className="inline-flex items-center gap-2 bg-[#38BDF8] text-[#070B14] px-5 py-2.5 rounded-lg font-mono text-xs font-bold hover:bg-[#38BDF8]/90 transition-all shadow-[0_0_20px_rgba(56,189,248,0.3)]"
+                className="inline-flex items-center gap-2 bg-[rgba(0,245,255,0.9)] text-[#0a1a16] px-5 py-2.5 rounded-lg font-mono text-xs font-bold hover:bg-[#00f5ff] transition-all shadow-[0_0_25px_rgba(0,245,255,0.4),0_0_50px_rgba(127,255,212,0.2)]"
               >
                 🔍 REVEAL QA ROOT CAUSE &amp; FIX
               </button>
             ) : (
               <div
                 id="bug-resolution"
-                className="p-4 rounded-xl bg-[#22C55E]/10 border border-[#22C55E]/30 text-xs sm:text-sm"
+                className="p-4 rounded-xl bg-[rgba(34,197,94,0.1)] border border-[rgba(34,197,94,0.3)] text-xs sm:text-sm backdrop-blur-md"
               >
-                <div className="flex items-center gap-2 text-[#22C55E] font-mono font-bold mb-1">
+                <div className="flex items-center gap-2 text-[#7fffd4] font-mono font-bold mb-1" style={{ textShadow: '0 0 10px rgba(127,255,212,0.4)' }}>
                   <span>✓ QA TEST FIX IMPLEMENTED:</span>
                 </div>
-                <p className="text-[#F8FAFC] leading-relaxed">{activeBug.fix}</p>
+                <p className="text-[#f8fcf9] leading-relaxed">{activeBug.fix}</p>
               </div>
             )}
           </div>
         </div>
 
-        <div className="bug-snippet md:col-span-5 bg-[#070B14] p-4 rounded-xl border border-white/5 font-mono text-xs space-y-2">
-          <div className="text-[#38BDF8] pb-2 border-b border-white/5 font-bold">
-            // QA Assertion Script snippet
+        <div className="bug-snippet md:col-span-5 bg-[rgba(6,12,14,0.9)] p-4 rounded-xl border border-[rgba(127,255,212,0.1)] font-mono text-xs space-y-2 backdrop-blur-xl">
+          <div className="text-[#00f5ff] pb-2 border-b border-[rgba(127,255,212,0.1)] font-bold" style={{ textShadow: '0 0 8px rgba(0,245,255,0.3)' }}>
+            // Holographic QA Assertion Script
           </div>
-          <p className="text-[#94A3B8] leading-relaxed">
+          <p className="text-[#b8c9c2] leading-relaxed">
             expect(calculatedFare).toBeGreaterThanOrEqual(0);
             <br />
             expect(walletCredit).not.toBeLessThan(0);
             <br />
             await page.waitForResponse(r =&gt; r.status() === 200);
           </p>
-          <div className="text-[#22C55E] pt-2 border-t border-white/5 flex items-center justify-between">
+          <div className="text-[#7fffd4] pt-2 border-t border-[rgba(127,255,212,0.1)] flex items-center justify-between" style={{ textShadow: '0 0 8px rgba(127,255,212,0.3)' }}>
             <span>Regression Check:</span>
             <span className="font-bold">PASSED (0.12s)</span>
           </div>

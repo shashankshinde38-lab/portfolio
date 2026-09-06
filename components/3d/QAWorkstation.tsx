@@ -9,11 +9,14 @@ import {
   CheckCheck,
   ChevronRight,
   Code2,
+  Cpu,
+  Database,
   GitBranch,
   Globe,
   Layers,
   ShieldCheck,
   Terminal,
+  Zap,
 } from "lucide-react";
 
 export default function QAWorkstation() {
@@ -27,8 +30,8 @@ export default function QAWorkstation() {
     const rect = el.getBoundingClientRect();
     const px = (event.clientX - rect.left) / rect.width - 0.5;
     const py = (event.clientY - rect.top) / rect.height - 0.5;
-    el.style.setProperty("--scene-rx", `${(py * -6).toFixed(2)}deg`);
-    el.style.setProperty("--scene-ry", `${(px * 8).toFixed(2)}deg`);
+    el.style.setProperty("--scene-rx", `${(py * -8).toFixed(2)}deg`);
+    el.style.setProperty("--scene-ry", `${(px * 10).toFixed(2)}deg`);
   }, []);
 
   const onPointerLeave = useCallback(() => {
@@ -41,7 +44,7 @@ export default function QAWorkstation() {
   return (
     <figure
       className="qa-workstation"
-      aria-label="Illustrative QA workstation with browser automation, mobile checks, an API response and a resolved bug"
+      aria-label="Holographic QA command center with Playwright, Postman, JMeter, Selenium dashboards and test results"
     >
       <div className="workstation-halo" />
       <div
@@ -51,7 +54,8 @@ export default function QAWorkstation() {
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}
       >
-        <div className="qa-window browser-window">
+        {/* Main Playwright Automation Dashboard */}
+        <div className="qa-window browser-window" style={{ "--rotate-y": "-9deg", "--rotate-x": "7deg", "--rotate-z": "-5deg" } as React.CSSProperties}>
           <div className="window-chrome">
             <div className="window-dots">
               <i />
@@ -59,13 +63,13 @@ export default function QAWorkstation() {
               <i />
             </div>
             <span>
-              <ShieldCheck size={11} /> quality.workspace
+              <Zap size={11} /> Playwright Dashboard
             </span>
             <Layers size={13} />
           </div>
           <div className="workspace-toolbar">
             <span>
-              <Code2 size={16} /> Test overview
+              <Code2 size={16} /> E2E Test Suite
             </span>
             <span className="muted">
               <GitBranch size={11} /> main
@@ -126,10 +130,11 @@ export default function QAWorkstation() {
           </div>
         </div>
 
-        <div className="qa-window api-window">
+        {/* Postman API Testing Panel */}
+        <div className="qa-window api-window" style={{ "--rotate-y": "-12deg", "--rotate-x": "7deg", "--rotate-z": "5deg" } as React.CSSProperties}>
           <div className="mini-panel-heading">
             <span>
-              <Activity size={13} /> API response
+              <Activity size={13} /> Postman API
             </span>
             <span className="response-code">200 OK</span>
           </div>
@@ -156,24 +161,53 @@ export default function QAWorkstation() {
           </pre>
         </div>
 
-        <div className="qa-window terminal-window">
+        {/* Selenium Terminal Panel */}
+        <div className="qa-window terminal-window" style={{ "--rotate-y": "-8deg", "--rotate-x": "5deg", "--rotate-z": "-4deg" } as React.CSSProperties}>
           <div className="mini-panel-heading">
             <span>
-              <Terminal size={13} /> regression.spec.ts
+              <Terminal size={13} /> Selenium Grid
             </span>
             <span className="terminal-indicator" />
           </div>
           <div className="terminal-command">
-            <ChevronRight size={13} /> npx playwright test
+            <ChevronRight size={13} /> pytest tests/regression/
           </div>
           <div className="terminal-line">
-            <Check size={12} /> 24 passed <span>(2.4s)</span>
+            <Check size={12} /> 12 passed <span>(6.4s)</span>
           </div>
           <div className="terminal-prompt">
-            ~/quality <span className="terminal-cursor">▍</span>
+            ~/selenium <span className="terminal-cursor">▍</span>
           </div>
         </div>
 
+        {/* JMeter Performance Panel */}
+        <div className="qa-window jmeter-window" style={{ "--rotate-y": "10deg", "--rotate-x": "-5deg", "--rotate-z": "3deg" } as React.CSSProperties}>
+          <div className="mini-panel-heading">
+            <span>
+              <Cpu size={13} /> JMeter Load
+            </span>
+            <span className="response-code">100k Users</span>
+          </div>
+          <div className="jmeter-stats">
+            <div>
+              <span>Throughput</span>
+              <strong>25k<span>/s</span></strong>
+            </div>
+            <div>
+              <span>Avg Latency</span>
+              <strong>42<span>ms</span></strong>
+            </div>
+            <div>
+              <span>Error Rate</span>
+              <strong>0<span>%</span></strong>
+            </div>
+          </div>
+          <div className="jmeter-status">
+            <CheckCheck size={12} /> Load test passed
+          </div>
+        </div>
+
+        {/* Mobile Device Mockup */}
         <div className="device-mockup">
           <div className="device-camera" />
           <div className="device-header">
@@ -203,7 +237,31 @@ export default function QAWorkstation() {
           <div className="device-home" />
         </div>
 
-        <div className="qa-window bug-window">
+        {/* Database Status Panel */}
+        <div className="qa-window database-window" style={{ "--rotate-y": "8deg", "--rotate-x": "-3deg", "--rotate-z": "-2deg" } as React.CSSProperties}>
+          <div className="mini-panel-heading">
+            <span>
+              <Database size={13} /> Database
+            </span>
+            <span className="response-code">Connected</span>
+          </div>
+          <div className="db-stats">
+            <div>
+              <span>Pool Size</span>
+              <strong>12<span>/20</span></strong>
+            </div>
+            <div>
+              <span>Queries</span>
+              <strong>8.4k<span>/s</span></strong>
+            </div>
+          </div>
+          <div className="db-status">
+            <CheckCheck size={12} /> Optimal performance
+          </div>
+        </div>
+
+        {/* Bug Tracking Window */}
+        <div className="qa-window bug-window" style={{ "--rotate-y": "-6deg", "--rotate-z": "3deg" } as React.CSSProperties}>
           <span className="bug-icon">
             <Bug size={18} />
           </span>
@@ -219,7 +277,7 @@ export default function QAWorkstation() {
       </div>
       <figcaption>
         <span className="status-dot" /> A little curiosity. A lot of quality.
-        <span className="scene-label">ILLUSTRATIVE WORKSPACE</span>
+        <span className="scene-label">HOLOGRAPHIC QA COMMAND CENTER</span>
       </figcaption>
     </figure>
   );
