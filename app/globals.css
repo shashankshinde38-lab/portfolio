@@ -250,8 +250,9 @@ section[id] {
 }
 
 .btn-primary {
-  background: var(--accent);
+  background: #505fe8;
   color: #fff;
+  font-weight: 600;
   box-shadow:
     0 3px 0 rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -2252,7 +2253,7 @@ section[id] {
   font-family: var(--font-mono);
   font-size: 0.625rem;
 
-  color: rgba(110, 124, 251, 0.45);
+  color: #8b9cfd;
 }
 
 .timeline-stack-list {
@@ -4074,7 +4075,7 @@ section[id] {
 .contact-copy>.contact-note {
   margin-top: 18px;
   font-size: 12px;
-  color: rgba(141, 153, 166, 0.6);
+  color: var(--text-secondary);
 }
 
 .contact-form-panel {
@@ -4353,7 +4354,7 @@ textarea.form-input {
   gap: 20px;
   padding-top: 20px;
   font-size: 12px;
-  color: rgba(141, 153, 166, 0.6);
+  color: var(--text-secondary);
 }
 
 .footer-status {
@@ -4392,7 +4393,7 @@ textarea.form-input {
 
 .footer-admin-link {
   font-size: 12px;
-  color: rgba(141, 153, 166, 0.45);
+  color: var(--text-secondary);
   transition: color var(--duration-micro) ease;
 }
 

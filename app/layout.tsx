@@ -26,28 +26,10 @@ const siteUrl = "https://shashankportfolio-jet.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Shashank Shinde | Software Test Engineer | QA Automation Portfolio",
+  title: "Shashank Shinde | QA Engineer & Test Automation",
   description:
-    "Official portfolio of Shashank Shinde, Software Test Engineer & SDET specializing in Selenium WebDriver, Playwright, Apache JMeter, REST API testing, and CI/CD quality engineering pipelines.",
-  keywords: [
-    "Shashank Shinde",
-    "Software Test Engineer",
-    "QA Automation Engineer",
-    "Software Testing Engineer",
-    "Test Automation Engineer",
-    "SDET",
-    "Quality Engineer",
-    "Selenium Testing",
-    "Playwright Testing",
-    "API Testing",
-    "Manual Testing",
-    "Apache JMeter",
-    "Profcyma Solutions",
-    "Software QA Engineer portfolio",
-  ],
+    "QA Engineer specializing in software testing, test automation, API testing, and quality engineering. Explore projects, testing labs, and expertise.",
   authors: [{ name: "Shashank Shinde", url: siteUrl }],
-  creator: "Shashank Shinde",
-  publisher: "Shashank Shinde",
   alternates: {
     canonical: siteUrl,
   },
@@ -62,9 +44,9 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   openGraph: {
-    title: "Shashank Shinde | Software Test Engineer | QA Automation Portfolio",
+    title: "Shashank Shinde | QA Engineer & Test Automation",
     description:
-      "Explore interactive QA automation case studies, 240+ pre-production defects prevented, 100k+ concurrent user load test suites, and SDET frameworks.",
+      "Software Test Engineer portfolio — test automation, API testing, performance testing, and quality engineering projects.",
     type: "profile",
     url: siteUrl,
     siteName: "Shashank Shinde Portfolio",
@@ -74,16 +56,16 @@ export const metadata: Metadata = {
         url: `${siteUrl}/images/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "Shashank Shinde — Software Test Engineer & QA Automation Portfolio",
+        alt: "Shashank Shinde — QA Engineer & Test Automation Portfolio",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shashank Shinde | Software Test Engineer | QA Automation Portfolio",
+    title: "Shashank Shinde | QA Engineer & Test Automation",
     description:
-      "Interactive 3D Hand-Drawn QA Portfolio: Explore test automation frameworks, 240+ defects prevented, and API & performance testing suites.",
+      "Software Test Engineer portfolio — test automation, API testing, performance testing, and quality engineering projects.",
     images: [`${siteUrl}/images/og-image.png`],
   },
   robots: {

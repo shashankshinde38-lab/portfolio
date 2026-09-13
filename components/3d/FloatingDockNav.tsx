@@ -146,7 +146,6 @@ export default function FloatingDockNav({
         <a
           href="#home"
           className="brand"
-          aria-label="Shashank Shinde - Home"
           onClick={closeMenu}
         >
           <span className="brand-mark" aria-hidden="true">
