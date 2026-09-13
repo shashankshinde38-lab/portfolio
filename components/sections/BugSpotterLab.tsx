@@ -2,26 +2,32 @@
 
 import { useState } from "react";
 import confetti from "canvas-confetti";
+import { Bug, CheckCircle2, Sparkles, Trophy } from "lucide-react";
+import DefectCallout, { type DefectSeverity } from "@/components/DefectCallout";
+import TiltCard from "@/components/TiltCard";
 
 interface BugCase {
   id: string;
   title: string;
-  category: "Boundary Value" | "Race Condition" | "State Mutation" | "Security/Auth";
+  category: "Boundary Value" | "Race Condition" | "Security/Auth";
   scenario: string;
   symptom: string;
   fix: string;
-  severity: "CRITICAL" | "HIGH" | "MEDIUM";
+  assertionSnippet: string;
+  severity: DefectSeverity;
 }
 
 const BUG_CASES: BugCase[] = [
   {
     id: "BUG-01",
-    title: "Fare Surge Multiplier Negative Value Glitch",
+    title: "Fare Surge Multiplier Negative Balance Glitch",
     category: "Boundary Value",
     scenario:
-      "In DRIWE booking system, calculating dynamic fare when discount code exceeded base ride amount.",
-    symptom: "Negative balance allowed user to checkout without paying and credited user wallet.",
-    fix: "Added Math.max(0, baseFare - discount) boundary assertion and server-side payment floor check.",
+      "In the DRIWE ride booking engine, applying dynamic promo codes that exceed the base ride fare during rapid payment retry requests.",
+    symptom:
+      "Negative total allowed users to book trips without debit, erroneously crediting positive cashback to their platform wallet.",
+    fix: "Implemented Math.max(0, baseFare - discount) boundary assertion and enforced server-side payment floor validation before checkout authorization.",
+    assertionSnippet: "expect(calculatedFare).toBeGreaterThanOrEqual(0);\nexpect(walletAdjustment).not.toBeLessThan(0);\nawait page.waitForResponse(r => r.status() === 200);",
     severity: "CRITICAL",
   },
   {
@@ -29,154 +35,129 @@ const BUG_CASES: BugCase[] = [
     title: "Concurrent Inventory Allocation Race Condition",
     category: "Race Condition",
     scenario:
-      "In Grosido multi-vendor grocery app, 2 users placing orders for the last stock item simultaneously.",
-    symptom: "Inventory count decremented to -1 with both payment transactions captured.",
-    fix: "Implemented distributed Redis mutex locks and database row-level locking for atomic checkouts.",
+      "In Grosido grocery platform, multiple shoppers simultaneously checkout the final remaining inventory item in different browser sessions.",
+    symptom:
+      "Stock inventory count was decremented to -1 with duplicate payment authorizations processed across both client orders.",
+    fix: "Enforced distributed Redis mutex locks paired with database row-level locking (SELECT FOR UPDATE) to ensure atomic transaction isolation.",
+    assertionSnippet: "const inventoryAfter = await db.query('SELECT stock FROM items WHERE id = ?');\nexpect(inventoryAfter.stock).toBeGreaterThanOrEqual(0);\nexpect(successfulOrders.length).toBe(1);",
     severity: "CRITICAL",
   },
   {
     id: "BUG-03",
     title: "Session Role Privilege Escalation via Query Param",
     category: "Security/Auth",
-    scenario: "Salesforce CRM custom portal passing user role ID in unencrypted request state.",
-    symptom: "Standard user could view executive pipeline dashboards by altering role ID.",
-    fix: "Enforced strict server-side JWT session validation with Role-Based Access Control (RBAC).",
+    scenario:
+      "In a Salesforce-connected enterprise portal, custom dashboard routes parsed user role identifiers from unencrypted URL query state.",
+    symptom:
+      "Standard portal users could access confidential financial analytics and executive dashboards simply by appending ?role=admin.",
+    fix: "Strictly removed URL role overrides in favor of signed, server-side JWT session validation with cryptographically verified Role-Based Access Control (RBAC).",
+    assertionSnippet: "const res = await api.get('/admin/analytics', { headers: standardUserToken });\nexpect(res.status).toBe(403);\nexpect(res.data.error).toBe('INSUFFICIENT_PERMISSIONS');",
     severity: "HIGH",
   },
 ];
 
 export default function BugSpotterLab() {
-  const [activeBug, setActiveBug] = useState<BugCase>(BUG_CASES[0]);
-  const [revealed, setRevealed] = useState(false);
+  const [selectedBugId, setSelectedBugId] = useState<string>("BUG-01");
+  const [resolvedBugs, setResolvedBugs] = useState<Set<string>>(new Set());
 
-  const handleInspect = (bug: BugCase) => {
-    setActiveBug(bug);
-    setRevealed(false);
+  const activeBug = BUG_CASES.find((b) => b.id === selectedBugId) || BUG_CASES[0];
+  const isResolved = resolvedBugs.has(activeBug.id);
+  const resolvedCount = resolvedBugs.size;
+  const allResolved = resolvedCount === BUG_CASES.length;
+
+  const handleInspect = (bugId: string) => {
+    setSelectedBugId(bugId);
   };
 
-  const handleResolve = () => {
-    setRevealed(true);
+  const handleResolveBug = () => {
+    if (resolvedBugs.has(activeBug.id)) return;
+
+    setResolvedBugs((prev) => {
+      const next = new Set(prev);
+      next.add(activeBug.id);
+      return next;
+    });
+
     confetti({
-      particleCount: 20,
+      particleCount: 24,
       disableForReducedMotion: true,
-      spread: 50,
-      origin: { y: 0.8 },
-      colors: ["#7fffd4", "#00f5ff", "#20b2aa", "#f8fcf9"],
+      spread: 60,
+      origin: { y: 0.75 },
+      colors: ["#6E7CFB", "#35D48A", "#EDF1F4"],
     });
   };
 
   return (
-    <div className="w-full glass-card rounded-2xl p-6 sm:p-8 border border-[rgba(127,255,212,0.2)] relative overflow-hidden backdrop-blur-xl" style={{
-      background: 'linear-gradient(145deg, rgba(20, 35, 38, 0.8), rgba(8, 14, 16, 0.9))',
-      boxShadow: '0 25px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(127, 255, 212, 0.1), 0 0 40px rgba(0, 245, 255, 0.08)'
-    }}>
-      <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-        {revealed
-          ? `Fix revealed for ${activeBug.id}: ${activeBug.fix}`
-          : `Inspecting ${activeBug.id}: ${activeBug.title}. The fix is hidden.`}
-      </p>
-
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-6 border-b border-[rgba(127,255,212,0.15)]">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-[#EF4444] animate-ping" style={{ boxShadow: '0 0 10px rgba(239,68,68,0.6)' }} />
-            <span className="font-mono text-xs text-[#EF4444] uppercase tracking-widest font-bold" style={{ textShadow: '0 0 10px rgba(239,68,68,0.4)' }}>
-              Holographic Defect Lab
-            </span>
+    <TiltCard as="div" maxTilt={3} className="defect-lab-card surface">
+      {/* Top Header & Progress */}
+      <div className="defect-lab-header">
+        <div className="defect-lab-title-group">
+          <div className="defect-lab-eyebrow depth-badge">
+            <span className="status-dot animate-pulse" />
+            <span>HOLOGRAPHIC DEFECT LAB</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold font-display mt-1 text-[#f8fcf9]">
-            Spot the Edge-Case Defect
-          </h3>
-          <p className="text-xs sm:text-sm text-[#b8c9c2] mt-1">
-            Real production defects caught and resolved by Shashank Shinde during test automation.
+          <h3 className="depth-content">Spot the Edge-Case Defect</h3>
+          <p className="defect-lab-subtitle depth-content">
+            Real production bugs isolated, diagnosed, and resolved with automated QA assertions.
           </p>
         </div>
 
-        {/* Bug Selectors */}
-        <div className="flex items-center gap-2">
-          {BUG_CASES.map((b) => (
+        {/* Interactive Progress Counter */}
+        <div className="defect-progress-tracker depth-badge">
+          {allResolved ? (
+            <div className="defect-progress-complete">
+              <Trophy size={16} className="text-accent" />
+              <span>3 of 3 resolved!</span>
+            </div>
+          ) : (
+            <div className="defect-progress-count">
+              <Sparkles size={14} className="text-accent" />
+              <span>{resolvedCount} of 3 resolved</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Bug Selectors / Tablist */}
+      <div className="defect-selector-bar depth-content" role="tablist" aria-label="Edge-case defect cases">
+        {BUG_CASES.map((b) => {
+          const isSelected = activeBug.id === b.id;
+          const isBugSolved = resolvedBugs.has(b.id);
+          return (
             <button
               key={b.id}
-              onClick={() => handleInspect(b)}
-              aria-pressed={activeBug.id === b.id}
-              aria-controls="bug-case-details"
-              aria-label={`Inspect ${b.id}: ${b.title}`}
-              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all backdrop-blur-md ${
-                activeBug.id === b.id
-                  ? "bg-[rgba(239,68,68,0.2)] text-[#EF4444] border border-[rgba(239,68,68,0.4)] shadow-[0_0_15px_rgba(239,68,68,0.3)]"
-                  : "bg-[rgba(6,12,14,0.8)] text-[#aabbb4] border border-[rgba(127,255,212,0.1)] hover:border-[rgba(127,255,212,0.3)] hover:bg-[rgba(127,255,212,0.05)]"
-              }`}
+              role="tab"
+              id={`defect-tab-${b.id}`}
+              aria-selected={isSelected}
+              aria-controls={`defect-panel-${b.id}`}
+              onClick={() => handleInspect(b.id)}
+              className={`defect-tab-btn ${isSelected ? "is-active" : ""}`}
             >
-              {b.id}
+              <span className="defect-tab-id">{b.id}</span>
+              <span className="defect-tab-cat">{b.category}</span>
+              {isBugSolved && (
+                <CheckCircle2 size={13} className="defect-tab-check text-pass" aria-label="Resolved" />
+              )}
             </button>
-          ))}
-        </div>
+          );
+        })}
       </div>
 
-      {/* Case Details */}
-      <div id="bug-case-details" className="grid md:grid-cols-12 gap-6">
-        <div className="md:col-span-7 space-y-4">
-          <div className="bug-metadata flex items-center gap-3">
-            <span className="px-2.5 py-1 rounded bg-[rgba(239,68,68,0.15)] border border-[rgba(239,68,68,0.3)] text-[#EF4444] text-xs font-mono font-bold" style={{ textShadow: '0 0 8px rgba(239,68,68,0.3)' }}>
-              SEVERITY: {activeBug.severity}
-            </span>
-            <span className="px-2.5 py-1 rounded bg-[rgba(0,245,255,0.15)] border border-[rgba(0,245,255,0.3)] text-[#00f5ff] text-xs font-mono font-semibold" style={{ textShadow: '0 0 8px rgba(0,245,255,0.3)' }}>
-              {activeBug.category}
-            </span>
-          </div>
-
-          <h4 className="text-lg font-bold text-[#f8fcf9]">{activeBug.title}</h4>
-
-          <div className="space-y-2 text-xs sm:text-sm text-[#b8c9c2] leading-relaxed">
-            <p>
-              <strong className="text-[#f8fcf9]">Scenario:</strong> {activeBug.scenario}
-            </p>
-            <p>
-              <strong className="text-[#EF4444]" style={{ textShadow: '0 0 8px rgba(239,68,68,0.3)' }}>Bug Symptom:</strong> {activeBug.symptom}
-            </p>
-          </div>
-
-          <div className="pt-2">
-            {!revealed ? (
-              <button
-                onClick={handleResolve}
-                aria-controls="bug-resolution"
-                aria-expanded={revealed}
-                className="inline-flex items-center gap-2 bg-[rgba(0,245,255,0.9)] text-[#0a1a16] px-5 py-2.5 rounded-lg font-mono text-xs font-bold hover:bg-[#00f5ff] transition-all shadow-[0_0_25px_rgba(0,245,255,0.4),0_0_50px_rgba(127,255,212,0.2)]"
-              >
-                🔍 REVEAL QA ROOT CAUSE &amp; FIX
-              </button>
-            ) : (
-              <div
-                id="bug-resolution"
-                className="p-4 rounded-xl bg-[rgba(34,197,94,0.1)] border border-[rgba(34,197,94,0.3)] text-xs sm:text-sm backdrop-blur-md"
-              >
-                <div className="flex items-center gap-2 text-[#7fffd4] font-mono font-bold mb-1" style={{ textShadow: '0 0 10px rgba(127,255,212,0.4)' }}>
-                  <span>✓ QA TEST FIX IMPLEMENTED:</span>
-                </div>
-                <p className="text-[#f8fcf9] leading-relaxed">{activeBug.fix}</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="bug-snippet md:col-span-5 bg-[rgba(6,12,14,0.9)] p-4 rounded-xl border border-[rgba(127,255,212,0.1)] font-mono text-xs space-y-2 backdrop-blur-xl">
-          <div className="text-[#00f5ff] pb-2 border-b border-[rgba(127,255,212,0.1)] font-bold" style={{ textShadow: '0 0 8px rgba(0,245,255,0.3)' }}>
-            // Holographic QA Assertion Script
-          </div>
-          <p className="text-[#b8c9c2] leading-relaxed">
-            expect(calculatedFare).toBeGreaterThanOrEqual(0);
-            <br />
-            expect(walletCredit).not.toBeLessThan(0);
-            <br />
-            await page.waitForResponse(r =&gt; r.status() === 200);
-          </p>
-          <div className="text-[#7fffd4] pt-2 border-t border-[rgba(127,255,212,0.1)] flex items-center justify-between" style={{ textShadow: '0 0 8px rgba(127,255,212,0.3)' }}>
-            <span>Regression Check:</span>
-            <span className="font-bold">PASSED (0.12s)</span>
-          </div>
-        </div>
+      {/* Reusable DefectCallout */}
+      <div id={`defect-panel-${activeBug.id}`} role="tabpanel" aria-labelledby={`defect-tab-${activeBug.id}`}>
+        <DefectCallout
+          severity={activeBug.severity}
+          title={activeBug.title}
+          scenario={activeBug.scenario}
+          symptom={activeBug.symptom}
+          fix={activeBug.fix}
+          assertionSnippet={activeBug.assertionSnippet}
+          interactive={true}
+          isRevealed={isResolved}
+          onToggleReveal={handleResolveBug}
+          revealButtonLabel="🔍 Tap to reveal QA root cause &amp; fix"
+        />
       </div>
-    </div>
+    </TiltCard>
   );
 }

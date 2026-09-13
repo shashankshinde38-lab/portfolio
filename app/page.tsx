@@ -1,51 +1,76 @@
 "use client";
 
+
 import { useEffect, useState } from "react";
-import type { ChangeEvent, FormEvent } from "react";
+import type { ChangeEvent, FormEvent, FocusEvent } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import InteractiveTestRunner from "@/components/3d/InteractiveTestRunner";
 import BugSpotterLab from "@/components/sections/BugSpotterLab";
 import FloatingDockNav from "@/components/3d/FloatingDockNav";
-import QAWorkstation from "@/components/3d/QAWorkstation";
+import TestConsole from "@/components/TestConsole";
 import TiltCard from "@/components/TiltCard";
-import { ALL_PROJECTS, ALL_SKILLS } from "@/lib/portfolio-data";
+import DefectCallout from "@/components/DefectCallout";
+import { ALL_PROJECTS, ALL_SKILLS, ABOUT_STATS, EXPERIENCE_ROLES } from "@/lib/portfolio-data";
 import confetti from "canvas-confetti";
 import {
   Activity,
-  ArrowDown,
   ArrowDownToLine,
-  ArrowUpRight,
   Award,
   Braces,
-  BriefcaseBusiness,
+  // BriefcaseBusiness,
   Bug,
   Building2,
-  Check,
-  CheckCircle2,
-  Code2,
+  // Check,
+  // CheckCircle2,
+  // CheckSquare,
+  ChevronDown,
+  // Code2,
   Database,
   ExternalLink,
+  // Gauge,
   GitBranch,
   GitPullRequest,
   Github,
   Layers,
   Linkedin,
   Mail,
-  MapPin,
   Minus,
   Navigation,
   Phone,
+  // Plug,
   Route,
-  ShieldCheck,
+  Shield,
+  // ShieldCheck,
   ShoppingBag,
-  Smartphone,
+  // Smartphone,
+  Sparkles,
   Terminal,
   TestTube2,
+  // Wrench,
+  ArrowUpRight,
+  BriefcaseBusiness,
+  Check,
+  CheckCircle2,
+  Code2,
+  Gauge,
+  Plug,
+  Smartphone,
+  Wrench,
+  CheckSquare,
+  ShieldCheck,
+  Workflow,
+  Rocket
 } from "lucide-react";
 
 export default function PortfolioPage() {
   const [activeSection, setActiveSection] = useState("home");
-  const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({});
+  const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({
+    "TC-001": true,
+  });
+  const [expandedSkills, setExpandedSkills] = useState<Record<number, boolean>>({
+    0: true,
+    1: true,
+  });
 
   // Contact Form State
   const [formData, setFormData] = useState({
@@ -56,8 +81,9 @@ export default function PortfolioPage() {
     message: "",
     website: "",
   });
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [formStatus, setFormStatus] = useState<"idle" | "validating" | "sending" | "sent" | "error">("idle");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [backendLive, setBackendLive] = useState(false);
   const [isBooting, setIsBooting] = useState(true);
@@ -131,40 +157,84 @@ export default function PortfolioPage() {
     setExpandedProjects((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const toggleSkill = (index: number) => {
+    setExpandedSkills((prev) => ({ ...prev, [index]: !prev[index] }));
+  };
+
+  const validateField = (name: string, value: string): string => {
+    switch (name) {
+      case "fullName":
+        if (!value.trim()) return "Full name is required";
+        if (value.trim().length < 2) return "Please enter at least 2 characters";
+        return "";
+      case "email":
+        if (!value.trim()) return "Email address is required";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) return "Valid email address is required";
+        return "";
+      case "mobile":
+        if (value.trim() && !/^\d{10}$/.test(value.trim())) return "Enter exactly 10 digits";
+        return "";
+      case "reason":
+        if (!value) return "Please select a reason";
+        return "";
+      case "message":
+        if (!value.trim()) return "Message is required";
+        return "";
+      default:
+        return "";
+    }
+  };
+
+  const handleBlur = (
+    e: FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    const err = validateField(name, value);
+    setFormErrors((prev) => ({ ...prev, [name]: err }));
+  };
+
   const handleFormChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (formErrors[name]) {
-      setFormErrors((prev) => {
-        const next = { ...prev };
-        delete next[name];
-        return next;
-      });
+    if (touched[name]) {
+      const err = validateField(name, value);
+      setFormErrors((prev) => ({ ...prev, [name]: err }));
     }
   };
 
   const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (formData.website) return;
+    if (formStatus === "sending" || formStatus === "validating") return;
 
-    setFormErrors({});
+    setFormStatus("validating");
+    const allTouched = {
+      fullName: true,
+      email: true,
+      mobile: true,
+      reason: true,
+      message: true,
+    };
+    setTouched(allTouched);
+
     const errs: Record<string, string> = {};
-    if (!formData.fullName.trim()) errs.fullName = "Full name is required";
-    if (!formData.email.trim()) {
-      errs.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      errs.email = "Valid email is required";
-    }
-    if (formData.mobile.trim()) {
-      if (!/^\d{10}$/.test(formData.mobile.trim())) errs.mobile = "Enter exactly 10 digits";
-    }
-    if (!formData.reason) errs.reason = "Please select a reason";
-    if (!formData.message.trim()) errs.message = "Message is required";
+    const nameErr = validateField("fullName", formData.fullName);
+    if (nameErr) errs.fullName = nameErr;
+    const emailErr = validateField("email", formData.email);
+    if (emailErr) errs.email = emailErr;
+    const mobileErr = validateField("mobile", formData.mobile);
+    if (mobileErr) errs.mobile = mobileErr;
+    const reasonErr = validateField("reason", formData.reason);
+    if (reasonErr) errs.reason = reasonErr;
+    const messageErr = validateField("message", formData.message);
+    if (messageErr) errs.message = messageErr;
 
     if (Object.keys(errs).length > 0) {
       setFormErrors(errs);
+      setFormStatus("idle");
       return;
     }
 
@@ -200,6 +270,8 @@ export default function PortfolioPage() {
       setFormStatus("sent");
       setShowSuccessModal(true);
       setFormData({ fullName: "", email: "", mobile: "", reason: "", message: "", website: "" });
+      setTouched({});
+      setFormErrors({});
       confetti({
         particleCount: 35,
         disableForReducedMotion: true,
@@ -232,7 +304,6 @@ export default function PortfolioPage() {
             <div className="availability">
               <span className="status-dot" /> Available for QA & SDET opportunities
             </div>
-            <p className="hero-intro">SHASHANK SHINDE / SOFTWARE TEST ENGINEER</p>
             <h1>
               Great software.
               <br />
@@ -251,61 +322,104 @@ export default function PortfolioPage() {
                 <ArrowDownToLine size={16} /> Download resume
               </a>
             </div>
-            <div className="hero-location">
-              <MapPin size={13} />
-              <span>Pune, India</span>
-              <i />
-              <span>Curiosity meets precision.</span>
-            </div>
           </div>
-          <QAWorkstation />
-          <div className="hero-bottom">
-            <a href="#about">
-              <ArrowDown size={14} /> Scroll to explore
-            </a>
-            <span>BUILT AROUND ONE THING: QUALITY.</span>
-            <span className="hero-index">01 — 08</span>
-          </div>
+          <TestConsole />
         </section>
 
         <div className="expertise-strip">
           <div className="page-container">
-            <span className="strip-label">MY EVERYDAY TOOLKIT</span>
+            <div className="strip-heading">
+              <span className="strip-dot" />
+              <span className="strip-label">MY EVERYDAY TOOLKIT</span>
+            </div>
+
             <div className="tool-names">
-              <span>
-                <Code2 /> Selenium
-              </span>
-              <span>
-                <Layers /> Playwright
-              </span>
-              <span>
-                <Activity /> JMeter
-              </span>
-              <span>
-                <Braces /> Postman
-              </span>
-              <span>
-                <GitBranch /> CI/CD
-              </span>
-              <span>
-                <Bug /> JIRA
-              </span>
-              <span>
-                <TestTube2 /> TestNG
-              </span>
-              <span>
-                <Database /> SQL
-              </span>
-              <span>
-                <GitPullRequest /> GitHub Actions
-              </span>
+              <div className="tool-track">
+                {/* First set */}
+                <div className="tool-group">
+                  <span>
+                    <Code2 /> Selenium
+                  </span>
+
+                  <span>
+                    <Layers /> Playwright
+                  </span>
+
+                  <span>
+                    <Activity /> JMeter
+                  </span>
+
+                  <span>
+                    <Braces /> Postman
+                  </span>
+
+                  <span>
+                    <GitBranch /> CI/CD
+                  </span>
+
+                  <span>
+                    <Bug /> JIRA
+                  </span>
+
+                  <span>
+                    <TestTube2 /> TestNG
+                  </span>
+
+                  <span>
+                    <Database /> SQL
+                  </span>
+
+                  <span>
+                    <GitPullRequest /> GitHub Actions
+                  </span>
+                </div>
+
+                {/* Duplicate set for seamless scrolling */}
+                <div className="tool-group" aria-hidden="true">
+                  <span>
+                    <Code2 /> Selenium
+                  </span>
+
+                  <span>
+                    <Layers /> Playwright
+                  </span>
+
+                  <span>
+                    <Activity /> JMeter
+                  </span>
+
+                  <span>
+                    <Braces /> Postman
+                  </span>
+
+                  <span>
+                    <GitBranch /> CI/CD
+                  </span>
+
+                  <span>
+                    <Bug /> JIRA
+                  </span>
+
+                  <span>
+                    <TestTube2 /> TestNG
+                  </span>
+
+                  <span>
+                    <Database /> SQL
+                  </span>
+
+                  <span>
+                    <GitPullRequest /> GitHub Actions
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <section id="about" className="section page-container">
           <div className="section-heading">
-            <span className="eyebrow">01 / THE ENGINEER</span>
+            <span className="eyebrow">THE ENGINEER</span>
             <h2>
               Curious by nature.
               <br />
@@ -345,11 +459,11 @@ export default function PortfolioPage() {
               <p>Software Test Engineer · SDET</p>
               <dl className="profile-details">
                 <div>
-                  <dt>Currently at</dt>
+                  <dt>Current role</dt>
                   <dd>Profcyma Solutions Pvt. Ltd.</dd>
                 </div>
                 <div>
-                  <dt>Based in</dt>
+                  <dt>Location</dt>
                   <dd>Pune, Maharashtra</dd>
                 </div>
                 <div>
@@ -368,24 +482,7 @@ export default function PortfolioPage() {
             </div>
           </div>
           <div className="impact-grid">
-            {[
-              {
-                value: "100k+",
-                label: "Virtual users simulated",
-                detail: "Performance tested with JMeter",
-              },
-              { value: "300+", label: "Test cases executed", detail: "Across web and mobile apps" },
-              {
-                value: "240+",
-                label: "Defects caught early",
-                detail: "Before reaching production",
-              },
-              {
-                value: "~40%",
-                label: "Faster regression cycles",
-                detail: "With Selenium + TestNG",
-              },
-            ].map((stat) => (
+            {ABOUT_STATS.map((stat) => (
               <div key={stat.value} className="impact-item">
                 <strong>{stat.value}</strong>
                 <span>{stat.label}</span>
@@ -395,151 +492,407 @@ export default function PortfolioPage() {
           </div>
         </section>
 
-        <section id="experience" className="section section-lined page-container">
+        {/* ================================================================ */}
+        {/* EXPERIENCE                                                       */}
+        {/* ================================================================ */}
+
+        <section
+          id="experience"
+          className="section section-lined page-container"
+          aria-labelledby="experience-heading"
+        >
+          {/* Section Heading */}
           <div className="section-heading section-heading-split">
             <div>
-              <span className="eyebrow">02 / IN PRACTICE</span>
-              <h2>
+              <span className="eyebrow">IN PRACTICE</span>
+
+              <h2 id="experience-heading">
                 Making quality
                 <br />
                 <span>part of the process.</span>
               </h2>
             </div>
+
             <p>
               Hands-on engineering. Real production systems.
-              <br />A little more confidence with every release.
+              <br />
+              A little more confidence with every release.
             </p>
           </div>
-          <article className="experience-panel surface">
-            <div className="experience-identity">
-              <div className="company-icon">
-                <BriefcaseBusiness size={25} strokeWidth={1.5} />
-              </div>
-              <span className="small-badge">
-                <span className="status-dot" /> Current role
-              </span>
-              <h3>
-                Software Test
-                <br />
-                Engineer
-              </h3>
-              <a href="#cases" className="company-name">
-                Profcyma Solutions Pvt. Ltd. <ArrowUpRight size={14} />
-              </a>
-              <p>Pune, Maharashtra · Full-time</p>
-              <div className="experience-date">
-                <span>June 2025 — Present</span>
-                <span>QA ENGINEERING</span>
-              </div>
-            </div>
-            <div className="experience-content">
-              <h4>From the first test plan to release day.</h4>
-              <div className="responsibility-grid">
-                {[
-                  [
-                    "Build for repeatability",
-                    "Designed scalable Selenium + POM frameworks and end-to-end test strategies.",
-                  ],
-                  [
-                    "Test the whole journey",
-                    "Manual, functional, regression, smoke and sanity testing across web and Android.",
-                  ],
-                  [
-                    "Go beyond the interface",
-                    "Validated REST API schemas, status codes and data consistency with Postman.",
-                  ],
-                  [
-                    "Find the breaking point",
-                    "Ran distributed JMeter load and stress tests with 100k+ virtual users.",
-                  ],
-                  [
-                    "Make defects actionable",
-                    "Tracked the complete defect lifecycle in JIRA with reproducible reports and logs.",
-                  ],
-                  [
-                    "Collaborate through delivery",
-                    "Worked with Agile/Scrum teams across 5+ production client projects.",
-                  ],
-                  [
-                    "Keep releases moving",
-                    "Integrated suites into CI/CD, reducing manual verification overhead by 25%.",
-                  ],
-                  [
-                    "Check every screen",
-                    "Cross-browser and responsive testing across 5+ browsers and mobile viewports.",
-                  ],
-                  [
-                    "Own the final check",
-                    "Release verification, build sign-offs and production deployment validation.",
-                  ],
-                ].map(([title, text]) => (
-                  <div key={title}>
-                    <Check size={15} />
-                    <div>
-                      <h5>{title}</h5>
-                      <p>{text}</p>
+
+          {/* Timeline */}
+          <div className="experience-timeline">
+            {EXPERIENCE_ROLES.map((role, roleIndex) => {
+              const clusterIcons = [
+                ShieldCheck,
+                Workflow,
+                Rocket,
+              ];
+
+              return (
+                <div
+                  className={`timeline-role ${role.current ? "is-current-role" : ""
+                    }`}
+                  key={role.id}
+                  data-role-index={roleIndex + 1}
+                >
+                  {/* ====================================================== */}
+                  {/* Vertical timeline rail                                 */}
+                  {/* ====================================================== */}
+
+                  <div className="timeline-rail" aria-hidden="true">
+                    <div
+                      className={`timeline-node ${role.current ? "is-current" : ""
+                        }`}
+                    >
+                      {role.current ? (
+                        <>
+                          <div className="timeline-node-pulse" />
+
+                          <span className="timeline-node-ring" />
+                        </>
+                      ) : (
+                        <BriefcaseBusiness
+                          size={15}
+                          strokeWidth={1.8}
+                        />
+                      )}
                     </div>
+
+                    <div className="timeline-line" />
                   </div>
-                ))}
-              </div>
-              <div className="experience-stack">
-                {[
-                  "Selenium",
-                  "Playwright",
-                  "TestNG",
-                  "JMeter",
-                  "Postman",
-                  "Java",
-                  "JavaScript",
-                  "JIRA",
-                  "Git",
-                  "CI/CD",
-                ].map((tool) => (
-                  <span className="skill-pill" key={tool}>
-                    {tool}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </article>
+
+                  {/* ====================================================== */}
+                  {/* Experience Card                                        */}
+                  {/* ====================================================== */}
+
+                  <article className="timeline-card">
+                    {/* Header */}
+                    <header className="timeline-card-header">
+                      <div className="timeline-role-info">
+                        {/* Badges */}
+                        <div className="timeline-badges">
+                          {role.current && (
+                            <span className="small-badge">
+                              <span
+                                className="status-dot"
+                                aria-hidden="true"
+                              />
+                              Current role
+                            </span>
+                          )}
+
+                          <span className="cluster-tag">
+                            {role.track}
+                          </span>
+                        </div>
+
+                        {/* Role */}
+                        <h3>{role.role}</h3>
+
+                        {/* Company */}
+                        {role.companyUrl ? (
+                          <a
+                            href={role.companyUrl}
+                            className="timeline-company"
+                            target={
+                              role.companyUrl.startsWith("http")
+                                ? "_blank"
+                                : undefined
+                            }
+                            rel={
+                              role.companyUrl.startsWith("http")
+                                ? "noopener noreferrer"
+                                : undefined
+                            }
+                          >
+                            <span>{role.company}</span>
+
+                            <ArrowUpRight
+                              size={14}
+                              strokeWidth={1.8}
+                              aria-hidden="true"
+                            />
+                          </a>
+                        ) : (
+                          <span className="timeline-company">
+                            {role.company}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Meta */}
+                      <div className="timeline-meta">
+                        <span className="timeline-period">
+                          {role.period}
+                        </span>
+
+                        <span className="timeline-location">
+                          {role.location} · {role.type}
+                        </span>
+
+                        <span
+                          className="timeline-role-number"
+                          aria-hidden="true"
+                        >
+                          {String(roleIndex + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                    </header>
+
+                    {/* ==================================================== */}
+                    {/* Role summary                                         */}
+                    {/* ==================================================== */}
+
+                    {role.summary && (
+                      <div className="timeline-summary">
+                        <span
+                          className="timeline-summary-quote"
+                          aria-hidden="true"
+                        >
+                          “
+                        </span>
+
+                        <span>{role.summary}</span>
+                      </div>
+                    )}
+
+                    {/* ==================================================== */}
+                    {/* Experience clusters                                   */}
+                    {/* ==================================================== */}
+
+                    <div className="timeline-clusters">
+                      {role.clusters.map((cluster, clusterIndex) => {
+                        const ClusterIcon =
+                          clusterIcons[
+                          clusterIndex % clusterIcons.length
+                          ];
+
+                        return (
+                          <section
+                            className="cluster-card"
+                            key={cluster.title}
+                            aria-label={cluster.title}
+                          >
+                            {/* Cluster Header */}
+                            <div className="cluster-header">
+                              <div className="cluster-header-title">
+                                <span
+                                  className="cluster-header-icon"
+                                  aria-hidden="true"
+                                >
+                                  <ClusterIcon
+                                    size={15}
+                                    strokeWidth={1.8}
+                                  />
+                                </span>
+
+                                <h4>{cluster.title}</h4>
+                              </div>
+
+                              <span className="cluster-tag">
+                                {cluster.tag}
+                              </span>
+                            </div>
+
+                            {/* Cluster Items */}
+                            <div className="cluster-items">
+                              {cluster.items.map(
+                                (item, itemIndex) => (
+                                  <div
+                                    className="cluster-item"
+                                    key={item.title}
+                                  >
+                                    <span
+                                      className="cluster-item-icon"
+                                      aria-hidden="true"
+                                    >
+                                      <Check
+                                        size={14}
+                                        strokeWidth={2.5}
+                                      />
+                                    </span>
+
+                                    <div className="cluster-item-body">
+                                      <div className="cluster-item-title-row">
+                                        <h5>{item.title}</h5>
+
+                                        <span
+                                          className="cluster-item-index"
+                                          aria-hidden="true"
+                                        >
+                                          {String(
+                                            itemIndex + 1
+                                          ).padStart(2, "0")}
+                                        </span>
+                                      </div>
+
+                                      <p>{item.description}</p>
+                                    </div>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </section>
+                        );
+                      })}
+                    </div>
+
+                    {/* ==================================================== */}
+                    {/* Technology Stack                                      */}
+                    {/* ==================================================== */}
+
+                    {role.stack.length > 0 && (
+                      <footer className="timeline-card-footer">
+                        <span className="timeline-stack-label">Tech Stack</span>
+
+                        <ul className="timeline-stack-list">
+                          {role.stack.map((tool) => (
+                            <li className="timeline-stack-item" key={tool}>
+                              {tool}
+                            </li>
+                          ))}
+                        </ul>
+                      </footer>
+                    )}
+                  </article>
+                </div>
+              );
+            })}
+          </div>
         </section>
 
-        <section id="skills" className="section section-lined page-container">
+
+        {/* ================================================================ */}
+        {/* SKILLS                                                           */}
+        {/* ================================================================ */}
+
+        <section
+          id="skills"
+          className="section section-lined page-container"
+          aria-labelledby="skills-heading"
+        >
+          {/* Section Heading */}
           <div className="section-heading section-heading-split">
             <div>
-              <span className="eyebrow">03 / THE TOOLKIT</span>
-              <h2>
+              <span className="eyebrow">
+                THE TOOLKIT
+              </span>
+
+              <h2 id="skills-heading">
                 The right tools.
                 <br />
                 <span>The testing mindset.</span>
               </h2>
             </div>
+
             <p>
               From browser journeys to database assertions,
-              <br />a practical toolkit for reliable software.
+              <br />
+              a practical toolkit for reliable software.
             </p>
           </div>
+
+          {/* Skills Grid */}
           <div className="skills-grid">
             {ALL_SKILLS.map((group, index) => {
-              const Icon = [Code2, Braces, Activity, Smartphone, ShieldCheck, Terminal][index];
+              const skillIcons = [
+                Wrench,
+                Plug,
+                Gauge,
+                Smartphone,
+                CheckSquare,
+                Code2,
+              ];
+
+              const Icon =
+                skillIcons[index % skillIcons.length];
+
               return (
-                <article className="skill-card" key={group.group}>
+                <TiltCard
+                  as="article"
+                  className="skill-card surface"
+                  maxTilt={4}
+                  key={group.group}
+                >
+                  {/* ====================================================== */}
+                  {/* Card Top                                               */}
+                  {/* ====================================================== */}
+
                   <div className="skill-card-heading">
-                    <span className="icon-tile">
-                      <Icon size={20} strokeWidth={1.5} />
+                    {/* Icon — Upper Left */}
+                    <span
+                      className="icon-tile depth-icon"
+                      aria-hidden="true"
+                    >
+                      <Icon
+                        size={20}
+                        strokeWidth={1.6}
+                      />
                     </span>
-                    <span className="card-number">0{index + 1}</span>
+
+                    {/* Tool Count — Upper Right */}
+                    <span className="tool-count-badge depth-badge">
+                      {String(group.items.length).padStart(2, "0")}{" "}
+                      {group.items.length === 1
+                        ? "tool"
+                        : "tools"}
+                    </span>
                   </div>
-                  <h3>{group.group}</h3>
-                  <ul>
-                    {group.items.map((item) => (
-                      <li key={item.name}>
-                        <strong>{item.name}</strong>
-                        <span>{item.desc}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </article>
+
+                  {/* ====================================================== */}
+                  {/* Category Heading                                       */}
+                  {/* ====================================================== */}
+
+                  <div className="skill-card-header-text">
+                    <h3 className="depth-content">
+                      {group.group}
+                    </h3>
+                  </div>
+
+                  {/* ====================================================== */}
+                  {/* Skill Items — Always Visible                           */}
+                  {/* ====================================================== */}
+
+                  <div className="skill-items-container depth-surface">
+                    <ul
+                      aria-label={`${group.group} tools`}
+                    >
+                      {group.items.map(
+                        (item, itemIndex) => (
+                          <li key={item.name}>
+                            <div className="skill-item-main">
+                              <div className="skill-item-copy">
+                                <strong>
+                                  {item.name}
+                                </strong>
+
+                                <span>
+                                  {item.desc}
+                                </span>
+                              </div>
+
+                              <span
+                                className="skill-item-number"
+                                aria-hidden="true"
+                              >
+                                {String(
+                                  itemIndex + 1
+                                ).padStart(2, "0")}
+                              </span>
+                            </div>
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </div>
+
+                  {/* Decorative bottom accent */}
+                  <div
+                    className="skill-card-accent"
+                    aria-hidden="true"
+                  />
+                </TiltCard>
               );
             })}
           </div>
@@ -548,113 +901,199 @@ export default function PortfolioPage() {
         <section id="cases" className="section section-lined page-container">
           <div className="section-heading section-heading-split">
             <div>
-              <span className="eyebrow">04 / SELECTED WORK</span>
+              <span className="eyebrow">SELECTED WORK</span>
+
               <h2>
                 Real systems.
                 <br />
                 <span>Measurable confidence.</span>
               </h2>
             </div>
+
             <p>
               Five projects. Different challenges.
               <br />
               The same uncompromising attention to detail.
             </p>
           </div>
+
           <div className="project-grid">
             {ALL_PROJECTS.map((project, index) => {
-              const expanded = Boolean(expandedProjects[project.id]);
-              const Icon = [Navigation, ShoppingBag, Layers, Route, Building2][index];
+              const Icon = [
+                Navigation,
+                ShoppingBag,
+                Layers,
+                Route,
+                Building2,
+              ][index % 5];
+
               return (
                 <TiltCard
                   as="article"
-                  maxTilt={3}
+                  maxTilt={4}
                   key={project.id}
                   className={`project-card surface project-${index + 1}`}
                 >
+                  {/* PROJECT PREVIEW */}
                   <div className="project-preview" aria-hidden="true">
                     <div className="project-preview-top">
-                      <span>{project.id} / QUALITY REPORT</span>
                       <span>
-                        <Check size={11} /> RELEASE VERIFIED
+                        {project.id} / QUALITY REPORT
+                      </span>
+
+                      <span className="depth-badge">
+                        <Check size={11} />
+                        RELEASE VERIFIED
                       </span>
                     </div>
-                    <div className="project-symbol">
+
+                    <div className="project-symbol depth-symbol">
                       <Icon size={35} strokeWidth={1.2} />
                     </div>
+
                     <div className="project-preview-bottom">
                       <span>{project.industry}</span>
-                      <span>{String(index + 1).padStart(2, "0")}</span>
+
+                      <span>
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
                     </div>
                   </div>
+
+                  {/* PROJECT CONTENT */}
                   <div className="project-content">
+                    {/* META */}
                     <div className="project-meta">
-                      <span>{project.role}</span>
-                      {project.featured && <span>Featured case study</span>}
+                      <span className="depth-content">
+                        {project.role}
+                      </span>
+
+                      {project.featured && (
+                        <span className="depth-badge">
+                          Featured case study
+                        </span>
+                      )}
                     </div>
-                    <h3>{project.name}</h3>
-                    <p className="project-summary">{project.summary}</p>
-                    <div className="project-platforms">
+
+                    {/* PROJECT TITLE */}
+                    <h3 className="depth-icon">
+                      {project.name}
+                    </h3>
+
+                    {/* SUMMARY */}
+                    <p className="project-summary depth-content">
+                      {project.summary}
+                    </p>
+
+                    {/* PLATFORMS */}
+                    <div className="project-platforms depth-content">
                       {project.platforms.map((platform) => (
-                        <span key={platform}>{platform}</span>
+                        <span key={platform}>
+                          {platform}
+                        </span>
                       ))}
                     </div>
-                    <div className="project-metrics">
+
+                    {/* METRICS */}
+                    <div className="project-metrics depth-badge">
                       {project.metrics.map((metric) => (
                         <div key={metric.k}>
-                          <strong>{metric.v}</strong>
-                          <span>{metric.k}</span>
+                          <strong>
+                            {metric.v}
+                          </strong>
+
+                          <span>
+                            {metric.k}
+                          </span>
                         </div>
                       ))}
                     </div>
-                    <button
-                      className="case-toggle"
-                      onClick={() => toggleProject(project.id)}
-                      aria-expanded={expanded}
-                      aria-controls={`details-${project.id}`}
+
+                    {/* CASE STUDY DETAILS - ALWAYS VISIBLE */}
+                    <div
+                      id={`details-${project.id}`}
+                      className="case-details"
                     >
-                      <span>{expanded ? "Close case study" : "Explore case study"}</span>
-                      {expanded ? <Minus size={17} /> : <ArrowUpRight size={17} />}
-                    </button>
-                    <div id={`details-${project.id}`} hidden={!expanded} className="case-details">
-                      <div>
-                        <h4>The challenge</h4>
-                        <p>{project.challenge}</p>
-                      </div>
-                      <div>
-                        <h4>My approach</h4>
-                        <p>{project.approach}</p>
-                      </div>
-                      <div className="defect-callout">
+                      {/* CHALLENGE */}
+                      <div className="case-detail-block">
                         <h4>
-                          <Bug size={14} /> The defect that mattered
+                          The challenge
                         </h4>
-                        <p>{project.keyDefect}</p>
+
+                        <p>
+                          {project.challenge}
+                        </p>
                       </div>
-                      <div>
-                        <h4>The outcome</h4>
-                        <p>{project.outcome}</p>
+
+                      {/* APPROACH */}
+                      <div className="case-detail-block">
+                        <h4>
+                          My approach
+                        </h4>
+
+                        <p>
+                          {project.approach}
+                        </p>
                       </div>
+
+                      {/* DEFECT CALLOUT */}
+                      <div className="project-defect-wrap">
+                        <DefectCallout
+                          severity={project.defect.severity}
+                          title={project.defect.title}
+                          scenario={project.defect.scenario}
+                          symptom={project.defect.symptom}
+                          fix={project.defect.fix}
+                          assertionSnippet={
+                            project.defect.assertionSnippet
+                          }
+                          interactive={false}
+                          isRevealed={true}
+                        />
+                      </div>
+
+                      {/* OUTCOME */}
+                      <div className="case-detail-block">
+                        <h4>
+                          The outcome
+                        </h4>
+
+                        <p>
+                          {project.outcome}
+                        </p>
+                      </div>
+
+                      {/* TOOLS */}
                       <div className="case-tools">
                         {project.stack.map((tool) => (
-                          <span className="skill-pill" key={tool}>
+                          <span
+                            className="skill-pill"
+                            key={tool}
+                          >
                             {tool}
                           </span>
                         ))}
                       </div>
-                      <div className="project-links">
-                        {project.links.map((link) => (
-                          <a
-                            className="text-link"
-                            key={link.label}
-                            href={link.url}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {link.label} <ExternalLink size={13} />
-                          </a>
-                        ))}
-                      </div>
+
+                      {/* PROJECT LINKS */}
+                      {project.links?.length > 0 && (
+                        <div className="project-links">
+                          {project.links.map((link) => (
+                            <a
+                              className="text-link"
+                              key={link.label}
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label={`${project.name} - ${link.label} (opens in new tab)`}
+                            >
+                              {link.label}
+
+                              <ExternalLink size={13} />
+                            </a>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </TiltCard>
@@ -666,7 +1105,7 @@ export default function PortfolioPage() {
         <section id="simulator" className="section section-lined page-container">
           <div className="section-heading section-heading-split">
             <div>
-              <span className="eyebrow">05 / THE TESTING LAB</span>
+              <span className="eyebrow">THE TESTING LAB</span>
               <h2>
                 Don’t just read about it.
                 <br />
@@ -694,7 +1133,7 @@ export default function PortfolioPage() {
         <section id="certs" className="section section-lined page-container">
           <div className="section-heading section-heading-split">
             <div>
-              <span className="eyebrow">06 / ALWAYS LEARNING</span>
+              <span className="eyebrow">ALWAYS LEARNING</span>
               <h2>
                 A strong foundation.
                 <br />
@@ -713,32 +1152,60 @@ export default function PortfolioPage() {
                 Icon: Award,
                 title: "Salesforce Accredited Professional",
                 area: "SALESFORCE",
-                desc: "Platform configuration, validation rules, workflow processes and field-level permissions architecture.",
+                issuer: "Salesforce Trailhead",
+                desc: "Platform configuration, validation rules, workflow processes, security governance, and field-level permissions architecture.",
+                verifyUrl: "https://trailblazer.me/id/shashankshinde",
               },
               {
                 Icon: ShieldCheck,
                 title: "SDET · SEED Infotech",
                 area: "TEST AUTOMATION",
-                desc: "Software Development Engineer in Test training in Selenium, Java, Page Object Model, TestNG and CI/CD.",
+                issuer: "SEED Infotech",
+                desc: "Software Development Engineer in Test training in Selenium WebDriver, Java, Page Object Model, TestNG, and CI/CD automation pipelines.",
+                verifyUrl: "https://www.seedinfotech.com/",
               },
               {
                 Icon: Activity,
                 title: "Performance & API Testing",
                 area: "SPECIALIST TRAINING",
-                desc: "Hands-on training in Apache JMeter distributed load generation and Postman RESTful API assertion design.",
+                issuer: "Specialist Training",
+                desc: "Hands-on engineering in Apache JMeter distributed load generation (100k+ virtual users) and Postman RESTful API assertion design.",
+                verifyUrl: undefined,
               },
             ].map((cert) => (
-              <article className="cert-card surface" key={cert.title}>
-                <div className="cert-top">
-                  <cert.Icon size={28} strokeWidth={1.4} />
-                  <span>{cert.area}</span>
+              <TiltCard as="article" className="cert-card surface" maxTilt={5} key={cert.title}>
+                <div className="cert-seal-wrap">
+                  <div className="cert-seal depth-symbol" aria-hidden="true">
+                    <cert.Icon size={24} strokeWidth={1.5} />
+                  </div>
+                  <span className="cert-verified-tag depth-badge">
+                    <CheckCircle2 size={12} /> VERIFIED SEAL
+                  </span>
                 </div>
-                <h3>{cert.title}</h3>
-                <p>{cert.desc}</p>
-                <span className="cert-footer">
-                  <CheckCircle2 size={14} /> Professional credential
-                </span>
-              </article>
+                <div className="cert-meta depth-content">
+                  <span className="cert-track-pill">{cert.area}</span>
+                  <h3>{cert.title}</h3>
+                  <p>{cert.desc}</p>
+                </div>
+                <div className="cert-footer depth-content">
+                  <span className="cert-issuer">
+                    <Shield size={13} /> {cert.issuer}
+                  </span>
+                  {cert.verifyUrl ? (
+                    <a
+                      href={cert.verifyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cert-verify-link text-link"
+                      aria-label={`Verify ${cert.title} credential on ${cert.issuer}`}
+                    >
+                      Verify credential <ArrowUpRight size={12} />
+                    </a>
+                  ) : (
+                    <span className="cert-status-tag">Verified on record</span>
+                  )}
+                </div>
+              </TiltCard>
             ))}
           </div>
         </section>
@@ -746,7 +1213,7 @@ export default function PortfolioPage() {
         <section id="contact" className="section section-lined page-container">
           <div className="contact-grid">
             <div className="contact-copy">
-              <span className="eyebrow">07 / LET’S CONNECT</span>
+              <span className="eyebrow">LET’S CONNECT</span>
               <h2>
                 Your next release.
                 <br />
@@ -794,7 +1261,7 @@ export default function PortfolioPage() {
                     key={label}
                     href={href}
                     target={href.startsWith("http") ? "_blank" : undefined}
-                    rel={href.startsWith("http") ? "noreferrer" : undefined}
+                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   >
                     <Icon size={18} strokeWidth={1.5} />
                     <span>
@@ -835,14 +1302,15 @@ export default function PortfolioPage() {
                       autoComplete="name"
                       value={formData.fullName}
                       onChange={handleFormChange}
+                      onBlur={handleBlur}
                       placeholder="Your name"
                       aria-required="true"
-                      aria-invalid={Boolean(formErrors.fullName)}
-                      aria-describedby={formErrors.fullName ? "fullName-error" : undefined}
+                      aria-invalid={Boolean(touched.fullName && formErrors.fullName)}
+                      aria-describedby={touched.fullName && formErrors.fullName ? "fullName-error" : undefined}
                       className="form-input"
                     />
-                    {formErrors.fullName && (
-                      <p id="fullName-error" className="field-error">
+                    {touched.fullName && formErrors.fullName && (
+                      <p id="fullName-error" className="field-error" role="alert">
                         {formErrors.fullName}
                       </p>
                     )}
@@ -858,14 +1326,15 @@ export default function PortfolioPage() {
                       autoComplete="email"
                       value={formData.email}
                       onChange={handleFormChange}
+                      onBlur={handleBlur}
                       placeholder="you@company.com"
                       aria-required="true"
-                      aria-invalid={Boolean(formErrors.email)}
-                      aria-describedby={formErrors.email ? "email-error" : undefined}
+                      aria-invalid={Boolean(touched.email && formErrors.email)}
+                      aria-describedby={touched.email && formErrors.email ? "email-error" : undefined}
                       className="form-input"
                     />
-                    {formErrors.email && (
-                      <p id="email-error" className="field-error">
+                    {touched.email && formErrors.email && (
+                      <p id="email-error" className="field-error" role="alert">
                         {formErrors.email}
                       </p>
                     )}
@@ -885,13 +1354,14 @@ export default function PortfolioPage() {
                       maxLength={10}
                       value={formData.mobile}
                       onChange={handleFormChange}
+                      onBlur={handleBlur}
                       placeholder="10-digit mobile number"
-                      aria-invalid={Boolean(formErrors.mobile)}
-                      aria-describedby={formErrors.mobile ? "mobile-error" : undefined}
+                      aria-invalid={Boolean(touched.mobile && formErrors.mobile)}
+                      aria-describedby={touched.mobile && formErrors.mobile ? "mobile-error" : undefined}
                       className="form-input"
                     />
-                    {formErrors.mobile && (
-                      <p id="mobile-error" className="field-error">
+                    {touched.mobile && formErrors.mobile && (
+                      <p id="mobile-error" className="field-error" role="alert">
                         {formErrors.mobile}
                       </p>
                     )}
@@ -905,19 +1375,21 @@ export default function PortfolioPage() {
                       name="reason"
                       value={formData.reason}
                       onChange={handleFormChange}
+                      onBlur={handleBlur}
                       aria-required="true"
-                      aria-invalid={Boolean(formErrors.reason)}
-                      aria-describedby={formErrors.reason ? "reason-error" : undefined}
+                      aria-invalid={Boolean(touched.reason && formErrors.reason)}
+                      aria-describedby={touched.reason && formErrors.reason ? "reason-error" : undefined}
                       className="form-input"
                     >
                       <option value="">Select a reason</option>
-                      <option value="Job Opportunity">Job Opportunity (QA / SDET)</option>
-                      <option value="Freelance Project">Freelance / Automation Project</option>
-                      <option value="Technical Consultation">Technical Consultation</option>
-                      <option value="General Inquiry">General Inquiry</option>
+                      <option value="Project collaboration">Project collaboration</option>
+                      <option value="QA opportunity">QA opportunity</option>
+                      <option value="Freelance work">Freelance work</option>
+                      <option value="General enquiry">General enquiry</option>
+                      <option value="Other">Other</option>
                     </select>
-                    {formErrors.reason && (
-                      <p id="reason-error" className="field-error">
+                    {touched.reason && formErrors.reason && (
+                      <p id="reason-error" className="field-error" role="alert">
                         {formErrors.reason}
                       </p>
                     )}
@@ -934,37 +1406,48 @@ export default function PortfolioPage() {
                     maxLength={500}
                     value={formData.message}
                     onChange={handleFormChange}
+                    onBlur={handleBlur}
                     placeholder="Tell me about the opportunity, your project, or what you’re working on..."
                     aria-required="true"
-                    aria-invalid={Boolean(formErrors.message)}
+                    aria-invalid={Boolean(touched.message && formErrors.message)}
                     aria-describedby={
-                      formErrors.message ? "message-error message-count" : "message-count"
+                      touched.message && formErrors.message ? "message-error message-count" : "message-count"
                     }
                     className="form-input"
                   />
                   <div className="message-meta">
-                    {formErrors.message ? (
-                      <span id="message-error" className="field-error">
+                    {touched.message && formErrors.message ? (
+                      <span id="message-error" className="field-error" role="alert">
                         {formErrors.message}
                       </span>
                     ) : (
                       <span>A few details go a long way.</span>
                     )}
-                    <span id="message-count">{formData.message.length}/500</span>
+                    <span
+                      id="message-count"
+                      className={`message-counter ${formData.message.length === 500 ? "char-fail" : formData.message.length > 450 ? "char-warn" : ""}`}
+                      aria-live="polite"
+                    >
+                      {formData.message.length} / 500
+                    </span>
                   </div>
                 </div>
                 <button
                   type="submit"
                   className="btn-primary form-submit"
-                  disabled={formStatus === "sending"}
+                  disabled={formStatus === "sending" || formStatus === "validating"}
                 >
-                  {formStatus === "sending" ? (
+                  {formStatus === "sending" || formStatus === "validating" ? (
                     <>
-                      <span className="loading-spinner" /> Sending message…
+                      <span className="loading-spinner" /> Sending...
                     </>
                   ) : formStatus === "sent" ? (
                     <>
-                      <Check size={16} /> Message sent!
+                      <Check size={16} /> Message sent
+                    </>
+                  ) : formStatus === "error" ? (
+                    <>
+                      Try again <ArrowUpRight size={17} />
                     </>
                   ) : (
                     <>
@@ -1025,27 +1508,27 @@ export default function PortfolioPage() {
           </div>
           <div className="footer-bottom">
             <span>
-              © {new Date().getFullYear()}{" "}
-              <a className="footer-admin-entry" href="/admin/login">
-                Shashank Shinde
-              </a>
+              © {new Date().getFullYear()} Shashank Shinde
             </span>
             <span className="footer-status">
               <span className="status-dot" />
               {backendLive ? "Contact channel online" : "Let’s connect"}
             </span>
             <div>
-              <a href="https://github.com/shashankshinde38-lab" target="_blank" rel="noreferrer">
+              <a href="https://github.com/shashankshinde38-lab" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
               <a
                 href="https://www.linkedin.com/in/shashank-shinde7/"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
               >
                 LinkedIn
               </a>
               <a href="mailto:shashankshinde38@gmail.com">Email</a>
+              <a href="/admin/login" className="footer-admin-link">
+                Admin
+              </a>
             </div>
           </div>
         </div>

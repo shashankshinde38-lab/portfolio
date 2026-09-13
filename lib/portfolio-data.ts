@@ -1,3 +1,12 @@
+export interface ProjectDefect {
+  severity: "CRITICAL" | "HIGH" | "MEDIUM";
+  title: string;
+  scenario: string;
+  symptom: string;
+  fix: string;
+  assertionSnippet?: string;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -9,6 +18,7 @@ export interface Project {
   challenge: string;
   approach: string;
   keyDefect: string;
+  defect: ProjectDefect;
   outcome: string;
   bullets: string[];
   metrics: { k: string; v: string }[];
@@ -32,6 +42,14 @@ export const ALL_PROJECTS: Project[] = [
       "Built Apache JMeter distributed thread groups simulating 100,000 peak users, asserting database connection pool stability and API response latencies.",
     keyDefect:
       "Negative fare edge case: rapid coupon re-application allowed riders to book with negative balances and credited their wallets.",
+    defect: {
+      severity: "CRITICAL",
+      title: "Negative Fare Race Condition on High Velocity Bookings",
+      scenario: "Simultaneous driver acceptance paired with rapid coupon re-application during surge demand.",
+      symptom: "Fares calculated with negative balances (-₹45), erroneously crediting rider wallets.",
+      fix: "Introduced atomic checkout locking, server-side promo idempotency keys, and JMeter concurrency assertions.",
+      assertionSnippet: "expect(response.body.finalFare).toBeGreaterThanOrEqual(0.00);\nexpect(dbRiderWallet.isNegative()).toBe(false);",
+    },
     outcome:
       "240+ defects identified and logged in JIRA; verified 99.9% uptime under 100,000 simulated concurrent users.",
     bullets: [
@@ -65,6 +83,14 @@ export const ALL_PROJECTS: Project[] = [
       "Automated end-to-end order processing using Selenium WebDriver + Page Object Model (POM). Smoke and sanity cycles run every sprint.",
     keyDefect:
       "Data inconsistency between user UI and admin dashboards: product price updates were not propagating to customer carts in real time.",
+    defect: {
+      severity: "HIGH",
+      title: "Distributed Cache Desync Between Admin Updates and Active Carts",
+      scenario: "Admin discounted item prices while active shopper sessions had the items held in checkout cart.",
+      symptom: "Cart UI showed stale baseline price while payment gateway billed the updated promotional amount.",
+      fix: "Added automated cache eviction hooks on product price updates and Selenium POM assertion on price delta sync.",
+      assertionSnippet: "cartPage.refreshPriceCheck(itemId);\nassertThat(cartPage.getSubtotal()).isEqualTo(adminPanel.getLivePrice(itemId));",
+    },
     outcome:
       "~40% reduction in regression cycle time through Selenium + TestNG automation framework.",
     bullets: [
@@ -106,6 +132,14 @@ export const ALL_PROJECTS: Project[] = [
       "Selenium scripts for complete web order workflows. Cross-browser testing across 5 browsers with automated payment regression after every release.",
     keyDefect:
       "18 critical bugs identified in checkout and payment workflows, including a refund-processing defect that caused financial balance discrepancies.",
+    defect: {
+      severity: "CRITICAL",
+      title: "Multi-Role Refund Webhook Double-Deduction",
+      scenario: "Partial return processing across 4 isolated micro-modules with unstable webhook retry schedules.",
+      symptom: "Seller commissions deducted twice on retry receipts, creating unbalanced settlement ledgers.",
+      fix: "Engineered idempotency check on webhook intake and built 5-browser automated payment regression suite.",
+      assertionSnippet: "assertWebhookProcessedOnce(transactionId);\nexpect(sellerLedger.getDeductionsCount(transactionId)).toBe(1);",
+    },
     outcome:
       "18 critical bugs caught before production release; verified checkout stability across 5 browser combinations.",
     bullets: [
@@ -143,6 +177,14 @@ export const ALL_PROJECTS: Project[] = [
     approach:
       "Functional, UI, and regression suites for driver and user modules. API response validation for trip CRUD operations.",
     keyDefect: "Incorrect trip-assignment logic when multiple riders requested the same trip simultaneously.",
+    defect: {
+      severity: "HIGH",
+      title: "Concurrent Seat Reservation Race Condition",
+      scenario: "Two riders requesting the final remaining seat on an active route within 12ms window.",
+      symptom: "Over-allocation bug where vehicle occupancy reached 5/4 with two conflicting booking confirmations.",
+      fix: "Enforced database-level pessimistic locking on seat inventory and created concurrent Postman test scripts.",
+      assertionSnippet: "pm.test('Capacity cannot exceed physical max vehicle seats', () => {\n  pm.expect(pm.response.json().passengerCount).toBeLessThanOrEqual(4);\n});",
+    },
     outcome: "180+ test cases executed; 22 API endpoints validated with full JIRA tracking.",
     bullets: [
       "Functional, UI, and regression suites for driver and user modules",
@@ -172,6 +214,14 @@ export const ALL_PROJECTS: Project[] = [
       "Functional, UI, regression, and API testing with defect tracking in JIRA. Verified REST APIs for auth and lead posting.",
     keyDefect:
       "Enquiry submission edge case where duplicate leads were created when users tapped the submit button rapidly.",
+    defect: {
+      severity: "MEDIUM",
+      title: "Rapid Multi-Tap Duplicate Lead Generation",
+      scenario: "Users on high-latency mobile networks tapping 'Submit Enquiry' multiple times while awaiting response.",
+      symptom: "Multiple duplicate lead entries persisted in database, firing duplicate SMS & CRM notifications.",
+      fix: "Debounced client submit button with disabled state and added backend lead idempotency fingerprinting.",
+      assertionSnippet: "expect(await getLeadCountByFingerprint(userToken)).toBe(1);\nexpect(submitBtn.getAttribute('disabled')).toBe('true');",
+    },
     outcome: "15+ API flows validated; 6+ complete test cycles executed.",
     bullets: [
       "Validated lead generation and enquiry workflows across 4 modules",
@@ -249,6 +299,151 @@ export const ALL_SKILLS = [
       { name: "Git & GitHub Actions", desc: "Version control and CI/CD integration" },
       { name: "SQL & Databases", desc: "PostgreSQL, Supabase, MySQL queries" },
       { name: "Agile / Scrum", desc: "Active participant in sprint ceremonies" },
+    ],
+  },
+];
+
+export interface StatItem {
+  value: string;
+  label: string;
+  detail: string;
+}
+
+export const ABOUT_STATS: StatItem[] = [
+  {
+    value: "100k+",
+    label: "Virtual users simulated",
+    detail: "Performance tested with JMeter",
+  },
+  {
+    value: "300+",
+    label: "Test cases executed",
+    detail: "Across web and mobile apps",
+  },
+  {
+    value: "240+",
+    label: "Defects caught early",
+    detail: "Before reaching production",
+  },
+  {
+    value: "~40%",
+    label: "Faster regression cycles",
+    detail: "With Selenium + TestNG",
+  },
+];
+
+export interface RoleHighlightCluster {
+  title: string;
+  tag: string;
+  items: {
+    title: string;
+    description: string;
+  }[];
+}
+
+export interface ExperienceRole {
+  id: string;
+  role: string;
+  company: string;
+  companyUrl?: string;
+  location: string;
+  type: string;
+  period: string;
+  current?: boolean;
+  track: string;
+  summary: string;
+  clusters: RoleHighlightCluster[];
+  stack: string[];
+}
+
+export const EXPERIENCE_ROLES: ExperienceRole[] = [
+  {
+    id: "profcyma",
+    role: "Software Test Engineer",
+    company: "Profcyma Solutions Pvt. Ltd.",
+    companyUrl: "#cases",
+    location: "Pune, Maharashtra",
+    type: "Full-time",
+    period: "June 2025 — Present",
+    current: true,
+    track: "QA ENGINEERING",
+    summary: "From the first test plan to release day.",
+    clusters: [
+      {
+        title: "Plan & build",
+        tag: "01",
+        items: [
+          {
+            title: "Build for repeatability",
+            description:
+              "Designed scalable Selenium + POM frameworks and end-to-end test strategies.",
+          },
+          {
+            title: "Collaborate through delivery",
+            description:
+              "Worked with Agile/Scrum teams across 5+ production client projects.",
+          },
+          {
+            title: "Keep releases moving",
+            description:
+              "Integrated suites into CI/CD, reducing manual verification overhead by 25%.",
+          },
+        ],
+      },
+      {
+        title: "Test & validate",
+        tag: "02",
+        items: [
+          {
+            title: "Test the whole journey",
+            description:
+              "Manual, functional, regression, smoke and sanity testing across web and Android.",
+          },
+          {
+            title: "Go beyond the interface",
+            description:
+              "Validated REST API schemas, status codes and data consistency with Postman.",
+          },
+          {
+            title: "Check every screen",
+            description:
+              "Cross-browser and responsive testing across 5+ browsers and mobile viewports.",
+          },
+        ],
+      },
+      {
+        title: "Ship & verify",
+        tag: "03",
+        items: [
+          {
+            title: "Find the breaking point",
+            description:
+              "Ran distributed JMeter load and stress tests under peak concurrent load scenarios.",
+          },
+          {
+            title: "Make defects actionable",
+            description:
+              "Tracked the complete defect lifecycle in JIRA with reproducible reports and logs.",
+          },
+          {
+            title: "Own the final check",
+            description:
+              "Release verification, build sign-offs and production deployment validation.",
+          },
+        ],
+      },
+    ],
+    stack: [
+      "Selenium",
+      "Playwright",
+      "TestNG",
+      "JMeter",
+      "Postman",
+      "Java",
+      "JavaScript",
+      "JIRA",
+      "Git",
+      "CI/CD",
     ],
   },
 ];

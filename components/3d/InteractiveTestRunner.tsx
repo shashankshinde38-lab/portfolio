@@ -2,321 +2,313 @@
 
 import { useEffect, useRef, useState } from "react";
 import confetti from "canvas-confetti";
+import { Play, RotateCcw, CheckCircle2, AlertTriangle, XCircle, Terminal, Check } from "lucide-react";
+import StatusBadge from "@/components/StatusBadge";
 
 interface TestLog {
   text: string;
-  type: "info" | "pass" | "warn" | "cmd";
+  type: "info" | "pass" | "warn" | "fail" | "cmd";
   delay: number;
 }
 
-const TEST_SUITES = {
+interface TestSuite {
+  id: string;
+  name: string;
+  command: string;
+  targetDuration: string;
+  logs: TestLog[];
+  finalStatus: "pass" | "fail";
+  triageNote?: string;
+}
+
+const TEST_SUITES: Record<string, TestSuite> = {
   playwright: {
+    id: "playwright",
     name: "Playwright E2E",
-    command: "npx playwright test tests/e2e/driwe-booking.spec.ts --headed",
+    command: "npx playwright test tests/e2e/checkout-flow.spec.ts --headed",
+    targetDuration: "2.4s",
+    finalStatus: "pass",
     logs: [
-      { text: "> npx playwright test tests/e2e/driwe-booking.spec.ts", type: "cmd", delay: 100 },
-      {
-        text: "⚡ [BrowserLaunch] Initialized Chromium instance (v124.0.6367)",
-        type: "info",
-        delay: 400,
-      },
-      { text: "✓ [Navigation] Route /book-ride loaded in 420ms", type: "pass", delay: 700 },
-      {
-        text: "✓ [Geolocation] Pickup & Dropoff coordinates calculated",
-        type: "pass",
-        delay: 1000,
-      },
-      {
-        text: "✓ [FareEstimate] Fare API validated against surge matrix [1.2x]",
-        type: "pass",
-        delay: 1300,
-      },
-      {
-        text: "✓ [Payment] Razorpay mock gateway checkout completed [200 OK]",
-        type: "pass",
-        delay: 1700,
-      },
-      {
-        text: "✓ [DriverMatch] Webhook dispatched to Driver App via WebSocket",
-        type: "pass",
-        delay: 2100,
-      },
-      { text: "═══════════════════════════════════════════════════", type: "info", delay: 2400 },
-      {
-        text: "✨ 6 passed, 0 failed (2.41s) — Zero regressions detected!",
-        type: "pass",
-        delay: 2600,
-      },
-    ] as TestLog[],
+      { text: "> npx playwright test tests/e2e/checkout-flow.spec.ts", type: "cmd", delay: 80 },
+      { text: "⚡ [BrowserLaunch] Chromium v124 initialized in isolated context", type: "info", delay: 260 },
+      { text: "✓ [Auth] Bearer session token validated (200 OK)", type: "pass", delay: 480 },
+      { text: "✓ [Navigation] Route /checkout loaded and interactive in 380ms", type: "pass", delay: 720 },
+      { text: "✓ [CartState] Multi-vendor item quantity & price checksums verified", type: "pass", delay: 960 },
+      { text: "✓ [Payment] Razorpay webhook response validated (payload signature OK)", type: "pass", delay: 1200 },
+      { text: "✓ [OrderConfirmation] Invoice generated, inventory atomically decremented", type: "pass", delay: 1440 },
+      { text: "═════════════════════════════════════════════════════════════════", type: "info", delay: 1600 },
+      { text: "✨ 6 passed in 2.41s — All regression assertions satisfied", type: "pass", delay: 1780 },
+    ],
+  },
+  triage: {
+    id: "triage",
+    name: "Failure Triage Lab",
+    command: "npx playwright test tests/e2e/dashboard-auth.spec.ts",
+    targetDuration: "3.1s",
+    finalStatus: "fail",
+    triageNote: "Diagnosed whitespace discrepancy between DOM textContent and API payload. Normalized assertion regex resolved flaky test.",
+    logs: [
+      { text: "> npx playwright test tests/e2e/dashboard-auth.spec.ts", type: "cmd", delay: 80 },
+      { text: "⚡ [Setup] Mounting authenticated session fixture on Grid node #3", type: "info", delay: 260 },
+      { text: "✓ [Route] Dashboard endpoint reached (HTTP 200)", type: "pass", delay: 480 },
+      { text: "❌ [ASSERTION FAILED] Heading text assertion mismatch:", type: "fail", delay: 750 },
+      { text: "   Expected: \"Welcome, Shashank\"", type: "fail", delay: 920 },
+      { text: "   Received: \"Welcome, Shashank \" (trailing whitespace in DOM node)", type: "fail", delay: 1100 },
+      { text: "⚡ [QA TRIAGE ENGINE] Inspecting failure context...", type: "warn", delay: 1350 },
+      { text: "→ Compared DOM textContent vs innerText: identified unstripped backend template token", type: "info", delay: 1600 },
+      { text: "→ Applied whitespace-normalizing assertion: expect(heading).toHaveText(/Welcome,\\s*Shashank/)", type: "info", delay: 1850 },
+      { text: "→ Hot re-run with normalized assertion: PASS (0.18s)", type: "pass", delay: 2100 },
+      { text: "═════════════════════════════════════════════════════════════════", type: "info", delay: 2280 },
+      { text: "🔧 Defect diagnosed and assertion fix validated successfully", type: "pass", delay: 2450 },
+    ],
   },
   jmeter: {
+    id: "jmeter",
     name: "JMeter 100k Load",
-    command: "jmeter -n -t driwe_stress_plan.jmx -l results.jtl -e -o ./report",
+    command: "jmeter -n -t distributed_stress_plan.jmx -l results.jtl",
+    targetDuration: "2.8s",
+    finalStatus: "pass",
     logs: [
-      { text: "> jmeter -n -t driwe_stress_plan.jmx -l results.jtl", type: "cmd", delay: 100 },
-      {
-        text: "⚡ [Thread Group] Spawning 100,000 virtual users over 60s ramp-up",
-        type: "info",
-        delay: 400,
-      },
-      {
-        text: "✓ [Target: /api/v1/ride/request] 25,000 req/s — Avg Latency: 42ms",
-        type: "pass",
-        delay: 800,
-      },
-      {
-        text: "✓ [Database Pool] PostgreSQL connection pool stable (12% CPU)",
-        type: "pass",
-        delay: 1200,
-      },
-      {
-        text: "⚠ [Redis Cache] Cache hit ratio 98.4% — Memory usage 4.2GB",
-        type: "warn",
-        delay: 1600,
-      },
-      {
-        text: "✓ [Stress Assertion] Zero 5xx server errors detected during peak load",
-        type: "pass",
-        delay: 2000,
-      },
-      { text: "═══════════════════════════════════════════════════", type: "info", delay: 2300 },
-      {
-        text: "✨ Load Test Complete: 100,000 users sustained with 99.9% uptime!",
-        type: "pass",
-        delay: 2600,
-      },
-    ] as TestLog[],
-  },
-  selenium: {
-    name: "Selenium Grid",
-    command: "pytest tests/regression/grosido_cart.py --workers 4",
-    logs: [
-      { text: "> pytest tests/regression/grosido_cart.py --workers 4", type: "cmd", delay: 100 },
-      {
-        text: "⚡ [Selenium Grid Hub] 4 parallel nodes registered (Chrome, Edge, Firefox)",
-        type: "info",
-        delay: 400,
-      },
-      {
-        text: "✓ [Chrome] Test multi-vendor cart item combination: PASS (1.8s)",
-        type: "pass",
-        delay: 800,
-      },
-      {
-        text: "✓ [Firefox] Test discount coupon apply & tax computation: PASS (2.1s)",
-        type: "pass",
-        delay: 1200,
-      },
-      {
-        text: "✓ [Edge] Test guest checkout with address autofill: PASS (1.9s)",
-        type: "pass",
-        delay: 1600,
-      },
-      {
-        text: "✓ [Cross-Browser] Responsive layout verified on 3 viewports: PASS",
-        type: "pass",
-        delay: 2000,
-      },
-      { text: "═══════════════════════════════════════════════════", type: "info", delay: 2300 },
-      {
-        text: "✨ 12 passed in 6.42s — Cross-browser parity confirmed!",
-        type: "pass",
-        delay: 2600,
-      },
-    ] as TestLog[],
+      { text: "> jmeter -n -t distributed_stress_plan.jmx -l results.jtl", type: "cmd", delay: 80 },
+      { text: "⚡ [RampUp] Distributed threads initializing across load engines", type: "info", delay: 260 },
+      { text: "✓ [PeakThroughput] 25,000 req/s sustained — Avg Latency: 42ms", type: "pass", delay: 520 },
+      { text: "✓ [DB Pool] Connection pool healthy (14% active, 0 queued timeouts)", type: "pass", delay: 780 },
+      { text: "⚠ [Cache] Redis hit ratio 98.2% — Memory buffer utilization stable", type: "warn", delay: 1040 },
+      { text: "✓ [ErrorRate] 0.00% 5xx server errors during peak concurrent load", type: "pass", delay: 1300 },
+      { text: "═════════════════════════════════════════════════════════════════", type: "info", delay: 1500 },
+      { text: "✨ Load Test Complete: 99.9% uptime SLA verified under peak pressure", type: "pass", delay: 1700 },
+    ],
   },
 };
 
-type SuiteKey = keyof typeof TEST_SUITES;
+type State = "STANDBY" | "RUNNING" | "PASSED" | "FAILED";
 
 export default function InteractiveTestRunner() {
-  const [selectedSuite, setSelectedSuite] = useState<SuiteKey>("playwright");
-  const [isRunning, setIsRunning] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("playwright");
+  const [state, setState] = useState<State>("STANDBY");
   const [displayedLogs, setDisplayedLogs] = useState<TestLog[]>([]);
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [liveAnnouncement, setLiveAnnouncement] = useState<string>("Test simulator ready.");
   const timeoutIds = useRef<Array<ReturnType<typeof setTimeout>>>([]);
+  const logContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const activeSuite = TEST_SUITES[selectedSuite];
+  const suite = TEST_SUITES[activeTab];
 
+  // Cleanup timers on unmount
   useEffect(() => {
     return () => {
-      timeoutIds.current.forEach((timeoutId) => clearTimeout(timeoutId));
+      timeoutIds.current.forEach(clearTimeout);
       timeoutIds.current = [];
     };
   }, []);
 
-  const handleRun = () => {
-    if (isRunning) return;
+  // Auto-scroll logs as they appear
+  useEffect(() => {
+    if (logContainerRef.current) {
+      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
+    }
+  }, [displayedLogs]);
 
-    timeoutIds.current.forEach((timeoutId) => clearTimeout(timeoutId));
+  const switchTab = (tabKey: string) => {
+    timeoutIds.current.forEach(clearTimeout);
     timeoutIds.current = [];
-    setIsRunning(true);
-    setIsCompleted(false);
+    setActiveTab(tabKey);
+    setState("STANDBY");
     setDisplayedLogs([]);
+    setLiveAnnouncement(`Switched to ${TEST_SUITES[tabKey].name}. Press Run Test Suite to execute.`);
+  };
 
-    const suiteLogs = activeSuite.logs;
-    suiteLogs.forEach((log) => {
-      const timeoutId = setTimeout(() => {
+  const runSuite = () => {
+    if (state === "RUNNING") return;
+
+    timeoutIds.current.forEach(clearTimeout);
+    timeoutIds.current = [];
+    setState("RUNNING");
+    setDisplayedLogs([]);
+    setLiveAnnouncement(`Test execution started for ${suite.name}...`);
+
+    suite.logs.forEach((log) => {
+      const tid = setTimeout(() => {
         setDisplayedLogs((prev) => [...prev, log]);
       }, log.delay);
-      timeoutIds.current.push(timeoutId);
+      timeoutIds.current.push(tid);
     });
 
-    const maxDelay = suiteLogs[suiteLogs.length - 1].delay;
-    const completionTimeoutId = setTimeout(() => {
-      setIsRunning(false);
-      setIsCompleted(true);
-      confetti({
-        particleCount: 20,
-        disableForReducedMotion: true,
-        spread: 60,
-        origin: { y: 0.7 },
-        colors: ["#a6d9c5", "#c9d9d3", "#f1f3f0"],
-      });
-    }, maxDelay + 200);
-    timeoutIds.current.push(completionTimeoutId);
+    const maxDelay = suite.logs[suite.logs.length - 1].delay;
+    const finishTid = setTimeout(() => {
+      if (suite.finalStatus === "pass" || suite.id === "triage") {
+        setState("PASSED");
+        setLiveAnnouncement(`Test execution passed. All checks satisfied.`);
+        confetti({
+          particleCount: 22,
+          disableForReducedMotion: true,
+          spread: 55,
+          origin: { y: 0.7 },
+          colors: ["#6E7CFB", "#35D48A", "#EDF1F4"],
+        });
+      } else {
+        setState("FAILED");
+        setLiveAnnouncement(`Assertion failed on ${suite.name}. Triage available.`);
+      }
+    }, maxDelay + 220);
+
+    timeoutIds.current.push(finishTid);
+  };
+
+  const resetSimulator = () => {
+    timeoutIds.current.forEach(clearTimeout);
+    timeoutIds.current = [];
+    setState("STANDBY");
+    setDisplayedLogs([]);
+    setLiveAnnouncement("Simulator reset to standby.");
   };
 
   return (
-    <div className="w-full glass-card rounded-2xl border border-[rgba(127,255,212,0.2)] overflow-hidden shadow-2xl backdrop-blur-xl" style={{
-      background: 'linear-gradient(145deg, rgba(20, 35, 38, 0.8), rgba(8, 14, 16, 0.9))',
-      boxShadow: '0 25px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(127, 255, 212, 0.1), 0 0 40px rgba(0, 245, 255, 0.08)'
-    }}>
-      {/* Terminal Title Bar */}
-      <div className="runner-toolbar bg-[#0a1418]/90 px-4 py-3 border-b border-[rgba(127,255,212,0.15)] flex flex-wrap items-center justify-between gap-3 backdrop-blur-lg">
-        <div className="flex items-center gap-2">
-          <div className="size-3 rounded-full bg-[#EF4444]/80 shadow-[0_0_10px_rgba(239,68,68,0.4)]" />
-          <div className="size-3 rounded-full bg-[#F59E0B]/80 shadow-[0_0_10px_rgba(245,158,11,0.4)]" />
-          <div className="size-3 rounded-full bg-[#22C55E]/80 shadow-[0_0_10px_rgba(34,197,94,0.4)]" />
-          <span className="font-mono text-xs text-[#b8c9c2] ml-2">
-            shashank@holographic-qa-lab:~
-          </span>
+    <div className="simulator-console-frame">
+      {/* Screen Reader Live Region */}
+      <div className="sr-only" aria-live="polite" role="status">
+        {liveAnnouncement}
+      </div>
+
+      {/* Terminal Toolbar */}
+      <div className="simulator-toolbar">
+        <div className="simulator-window-dots" aria-hidden="true">
+          <span className="dot dot-red" />
+          <span className="dot dot-yellow" />
+          <span className="dot dot-green" />
+          <span className="simulator-terminal-name">shashank@qa-automation-lab:~</span>
         </div>
 
-        {/* Suite Selector Tabs */}
-        <div className="runner-tabs flex items-center gap-1 bg-[#060c0e]/80 p-1 rounded-lg border border-[rgba(127,255,212,0.1)] backdrop-blur-md">
-          {(Object.keys(TEST_SUITES) as SuiteKey[]).map((key) => (
+        {/* Accessible Tab List */}
+        <div className="simulator-tabs" role="tablist" aria-label="Testing suites">
+          {Object.values(TEST_SUITES).map((s) => {
+            const isSelected = activeTab === s.id;
+            return (
+              <button
+                key={s.id}
+                role="tab"
+                id={`tab-${s.id}`}
+                aria-selected={isSelected}
+                aria-controls={`panel-${s.id}`}
+                tabIndex={isSelected ? 0 : -1}
+                onClick={() => switchTab(s.id)}
+                className={`simulator-tab ${isSelected ? "is-active" : ""}`}
+                disabled={state === "RUNNING"}
+              >
+                {s.name}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Console Subheader Bar */}
+      <div className="simulator-subbar">
+        <div className="simulator-command-wrap">
+          <span className="simulator-prompt">$</span>
+          <code className="simulator-command-text">{suite.command}</code>
+        </div>
+        <div className="simulator-status-indicator">
+          {state === "STANDBY" && (
+            <span className="simulator-state-chip standby">STANDBY</span>
+          )}
+          {state === "RUNNING" && (
+            <span className="simulator-state-chip running">
+              <span className="status-dot animate-pulse" /> RUNNING...
+            </span>
+          )}
+          {state === "PASSED" && (
+            <StatusBadge status="pass" label="SUITE PASSED" />
+          )}
+          {state === "FAILED" && (
+            <StatusBadge status="fail" label="ASSERTION FAILED" />
+          )}
+        </div>
+      </div>
+
+      {/* Console Output Display */}
+      <div
+        id={`panel-${suite.id}`}
+        role="tabpanel"
+        aria-labelledby={`tab-${suite.id}`}
+        ref={logContainerRef}
+        className="simulator-screen"
+      >
+        {state === "STANDBY" && (
+          <div className="simulator-standby-screen">
+            <Terminal size={32} className="text-accent opacity-50 mb-2" />
+            <p className="simulator-standby-title">Interactive Test Suite: {suite.name}</p>
+            <p className="simulator-standby-desc">
+              Click “Run Test Suite” to trigger a live sequential test run with realistic assertions.
+            </p>
+            {suite.id === "triage" && (
+              <div className="simulator-triage-badge">
+                <AlertTriangle size={13} className="text-warn" />
+                <span>Simulates real diagnostic triage of a failing assertion</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {displayedLogs.map((log, index) => (
+          <div key={index} className={`simulator-log-line log-${log.type}`}>
+            {log.text}
+          </div>
+        ))}
+      </div>
+
+      {/* Triage Note (if completed on Triage tab) */}
+      {suite.triageNote && state === "PASSED" && (
+        <div className="simulator-triage-card">
+          <div className="simulator-triage-title">
+            <CheckCircle2 size={15} />
+            <span>QA Root Cause Diagnosis &amp; Resolution</span>
+          </div>
+          <p className="simulator-triage-desc">{suite.triageNote}</p>
+        </div>
+      )}
+
+      {/* Controls Bar */}
+      <div className="simulator-actions-bar">
+        <div className="simulator-meta-info">
+          <span>Target Runtime: ~{suite.targetDuration}</span>
+          <span className="separator">·</span>
+          <span>Assertions: {suite.logs.filter((l) => l.type === "pass" || l.type === "fail").length} total</span>
+        </div>
+
+        <div className="simulator-btn-group">
+          {state !== "STANDBY" && (
             <button
-              key={key}
-              onClick={() => {
-                if (!isRunning) {
-                  setSelectedSuite(key);
-                  setDisplayedLogs([]);
-                  setIsCompleted(false);
-                }
-              }}
-              disabled={isRunning}
-              className={`px-2.5 py-1 rounded text-xs font-mono transition-all ${
-                selectedSuite === key
-                  ? "bg-[rgba(0,245,255,0.15)] text-[#00f5ff] font-bold border border-[rgba(0,245,255,0.3)] shadow-[0_0_15px_rgba(0,245,255,0.2)]"
-                  : "text-[#aabbb4] hover:text-[#f8fcf9] hover:bg-[rgba(127,255,212,0.05)]"
-              } disabled:opacity-50`}
+              type="button"
+              onClick={resetSimulator}
+              disabled={state === "RUNNING"}
+              className="simulator-btn secondary"
+              aria-label="Reset simulator"
             >
-              {TEST_SUITES[key].name}
+              <RotateCcw size={14} /> Reset
             </button>
-          ))}
-        </div>
-
-        {/* Action Button */}
-        <button
-          onClick={handleRun}
-          disabled={isRunning}
-          className="inline-flex items-center gap-2 bg-[rgba(127,255,212,0.9)] text-[#0a1a16] px-4 py-1.5 rounded-lg text-xs font-mono font-bold hover:bg-[#7fffd4] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(127,255,212,0.3),0_0_40px_rgba(0,245,255,0.15)]"
-        >
-          {isRunning ? (
-            <>
-              <span className="size-3 border-2 border-[#0a1a16] border-t-transparent rounded-full animate-spin" />
-              EXECUTING...
-            </>
-          ) : (
-            <>
-              <span>▶ RUN TEST SUITE</span>
-            </>
           )}
-        </button>
-      </div>
 
-      {/* Terminal Screen */}
-      <div className="runner-screen p-4 sm:p-6 bg-[#060c0e]/95 min-h-[260px] max-h-[360px] overflow-y-auto font-mono text-xs sm:text-sm leading-relaxed space-y-1.5 backdrop-blur-xl">
-        <div className="text-[#aabbb4]/60 pb-2 border-b border-[rgba(127,255,212,0.1)] flex items-center justify-between">
-          <span>Active Command: {activeSuite.command}</span>
-          <span
-            className="text-xs text-[#00f5ff]"
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
-            style={{ textShadow: '0 0 10px rgba(0,245,255,0.5)' }}
+          <button
+            type="button"
+            onClick={runSuite}
+            disabled={state === "RUNNING"}
+            className="simulator-btn primary"
           >
-            {isRunning ? "● Running" : isCompleted ? "✓ Finished" : "Ready"}
-          </span>
+            {state === "RUNNING" ? (
+              <>
+                <span className="loading-spinner" /> Running suite…
+              </>
+            ) : state === "PASSED" ? (
+              <>
+                <Check size={14} /> Re-run Suite
+              </>
+            ) : (
+              <>
+                <Play size={14} fill="currentColor" /> Run Test Suite
+              </>
+            )}
+          </button>
         </div>
-
-        <div
-          role="log"
-          aria-live="polite"
-          aria-relevant="additions"
-          aria-busy={isRunning}
-          aria-label={`${activeSuite.name} execution log`}
-        >
-          {displayedLogs.length === 0 && !isRunning && (
-            <div className="py-12 text-center text-[#aabbb4]">
-              <p className="text-[#00f5ff] font-mono text-sm mb-1" style={{ textShadow: '0 0 15px rgba(0,245,255,0.4)' }}>[Holographic QA Engine Idle]</p>
-              <p className="text-xs text-[#aabbb4]/80">
-                Click &quot;▶ RUN TEST SUITE&quot; above to simulate real-time Playwright, JMeter,
-                or Selenium test runs with holographic visualization.
-              </p>
-            </div>
-          )}
-
-          {displayedLogs.map((log, index) => (
-            <div
-              key={index}
-              className={`flex items-start gap-2 ${
-                log.type === "cmd"
-                  ? "text-[#f8fcf9] font-bold"
-                  : log.type === "pass"
-                    ? "text-[#7fffd4]"
-                    : log.type === "warn"
-                      ? "text-[#f59e0b]"
-                      : "text-[#00f5ff]"
-              }`}
-              style={log.type === "pass" ? { textShadow: '0 0 8px rgba(127,255,212,0.3)' } : log.type === "warn" ? { textShadow: '0 0 8px rgba(245,158,11,0.3)' } : log.type !== "cmd" ? { textShadow: '0 0 8px rgba(0,245,255,0.3)' } : {}}
-            >
-              <span className="text-[#aabbb4]/40 select-none" aria-hidden="true">
-                {(index + 1).toString().padStart(2, "0")}
-              </span>
-              <span className="break-all">{log.text}</span>
-            </div>
-          ))}
-
-          {isRunning && (
-            <div className="flex items-center gap-2 text-[#00f5ff] pt-1">
-              <span className="animate-pulse" aria-hidden="true" style={{ textShadow: '0 0 10px rgba(0,245,255,0.6)' }}>
-                ▍
-              </span>
-              <span className="text-xs text-[#aabbb4]">Processing holographic assertions...</span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Terminal Footer Metrics Bar */}
-      <div className="runner-footer bg-[#0a1418]/90 px-4 py-2.5 border-t border-[rgba(127,255,212,0.1)] flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-[#aabbb4] backdrop-blur-lg">
-        <div className="runner-stats flex items-center gap-4">
-          <span>
-            STATUS:{" "}
-            <strong className={isCompleted ? "text-[#7fffd4]" : "text-[#00f5ff]"} style={isCompleted ? { textShadow: '0 0 10px rgba(127,255,212,0.4)' } : { textShadow: '0 0 10px rgba(0,245,255,0.4)' }}>
-              {isCompleted ? "PASSED" : isRunning ? "RUNNING" : "STANDBY"}
-            </strong>
-          </span>
-          <span>
-            COVERAGE: <strong className="text-[#f8fcf9]">100%</strong>
-          </span>
-          <span>
-            ASSERTIONS: <strong className="text-[#7fffd4]" style={{ textShadow: '0 0 8px rgba(127,255,212,0.3)' }}>24/24 PASS</strong>
-          </span>
-        </div>
-        <div className="text-[#00f5ff]" style={{ textShadow: '0 0 8px rgba(0,245,255,0.3)' }}>STACK: Playwright · Selenium · JMeter · Postman</div>
       </div>
     </div>
   );

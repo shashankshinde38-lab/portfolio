@@ -16,14 +16,7 @@ export const enquiryCreateSchema = z.object({
     .transform((v) => (v ? v.replace(/\D/g, "") : ""))
     .refine((v) => !v || v.length === 10, "Mobile number must be 10 digits"),
   message: z.string().trim().min(1, "Message is required").max(1000),
-  reason: z
-    .enum([
-      "Job Opportunity",
-      "Freelance Project",
-      "Technical Consultation",
-      "General Inquiry",
-    ])
-    .optional(),
+  reason: z.string().trim().max(100).optional(),
   website: z.string().trim().max(0).optional(),
 });
 

@@ -6,19 +6,23 @@ import {
   type CSSProperties,
   type ReactNode,
   type PointerEvent as ReactPointerEvent,
+  type HTMLAttributes,
 } from "react";
+
+interface TiltCardProps extends HTMLAttributes<HTMLElement> {
+  children: ReactNode;
+  className?: string;
+  maxTilt?: number;
+  as?: "div" | "article" | "section" | "button";
+}
 
 export default function TiltCard({
   children,
   className = "",
-  maxTilt = 7,
+  maxTilt = 6,
   as: Tag = "div",
-}: {
-  children: ReactNode;
-  className?: string;
-  maxTilt?: number;
-  as?: "div" | "article";
-}) {
+  ...rest
+}: TiltCardProps) {
   const ref = useRef<HTMLElement | null>(null);
 
   const reset = useCallback(() => {
@@ -51,9 +55,11 @@ export default function TiltCard({
     [maxTilt]
   );
 
+  const Component = Tag as any;
+
   return (
-    <Tag
-      ref={(node) => {
+    <Component
+      ref={(node: HTMLElement | null) => {
         ref.current = node;
       }}
       className={`tilt-card ${className}`.trim()}
@@ -69,8 +75,9 @@ export default function TiltCard({
           "--tilt-glow-y": "50%",
         } as CSSProperties
       }
+      {...rest}
     >
       {children}
-    </Tag>
+    </Component>
   );
 }
