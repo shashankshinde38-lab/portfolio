@@ -100,6 +100,9 @@ export const metadata: Metadata = {
     },
   },
   category: "technology",
+  verification: {
+    google: "googlebcc3fd247517937d",
+  },
 };
 
 export const viewport: Viewport = {
