@@ -26,17 +26,27 @@ const siteUrl = "https://shashankportfolio-jet.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Shashank Shinde | Software Test Engineer & QA Automation | Selenium, Playwright & API Testing",
+  title: {
+    default: "Shashank Shinde | Software Test Engineer & QA Automation",
+    template: "%s | Shashank Shinde",
+  },
   description:
-    "Software Test Engineer portfolio of Shashank Shinde. Specializing in QA automation, Selenium WebDriver, Playwright, REST API testing, JMeter load testing, and CI/CD quality engineering in Pune, India.",
+    "Software Test Engineer portfolio of Shashank Shinde in Pune, India. Specializing in QA automation, Selenium, Playwright, REST API testing, JMeter & CI/CD.",
   keywords: [
     "Software Test Engineer",
+    "QA Engineer",
     "QA Automation Engineer",
+    "Automation Testing",
     "SDET",
     "Selenium WebDriver",
+    "Selenium",
     "Playwright",
     "REST API Testing",
+    "API Testing",
     "Apache JMeter",
+    "JMeter",
+    "Java",
+    "SQL",
     "Postman",
     "TestNG",
     "Cucumber BDD",

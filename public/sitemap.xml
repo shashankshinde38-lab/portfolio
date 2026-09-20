@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://shashankportfolio-jet.vercel.app/</loc>
+    <loc>https://shashankportfolio-jet.vercel.app</loc>
     <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://shashankportfolio-jet.vercel.app/images/og-image.png</image:loc>
+      <image:title>Shashank Shinde — Software Test Engineer &amp; QA Automation Portfolio</image:title>
+      <image:caption>Portfolio of Shashank Shinde specializing in QA Automation, Selenium WebDriver, Playwright, REST API Testing, and Performance Engineering.</image:caption>
+    </image:image>
   </url>
 </urlset>
