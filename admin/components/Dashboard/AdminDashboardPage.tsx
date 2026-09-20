@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import AdminShell from "@/admin/components/Shell/AdminShell";
+import "./AdminDashboard.css";
 
 type Stats = {
   total_enquiries: number;

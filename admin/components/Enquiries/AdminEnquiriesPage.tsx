@@ -6,6 +6,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import AdminShell from "@/admin/components/Shell/AdminShell";
 import type { Enquiry, EnquiryStatus } from "@/api/schemas/enquiry-schema";
 import { Search, X } from "lucide-react";
+import "./AdminEnquiries.css";
 
 const FILTERS: Array<"all" | EnquiryStatus> = ["all", "new", "read", "resolved"];
 const PREVIEW_LENGTH = 90;

@@ -31,6 +31,7 @@ import { AdminVerificationState } from "./types";
 import { AdminVerificationRing } from "./AdminVerificationRing";
 import { AdminSuccessCheck } from "./AdminSuccessCheck";
 import { AdminParticleBurst } from "./AdminParticleBurst";
+import "./AdminLogin.css";
 
 const PIN_LENGTH = 6;
 

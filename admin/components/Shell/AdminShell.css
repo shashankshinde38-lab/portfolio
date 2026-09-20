@@ -1,0 +1,255 @@
+/* ==========================================================================
+   ADMIN SHELL & NAVIGATION DRAWER (admin/components/Shell/AdminShell.css)
+   ========================================================================== */
+
+:root {
+  --bg-primary: #08090d;
+  --accent-cyan: #22d3ee;
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.admin-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(117, 231, 243, 0.06), transparent 28rem),
+    #080b0e;
+}
+
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px 18px;
+  border-right: 1px solid rgba(167, 239, 208, 0.14);
+  background: linear-gradient(180deg, rgba(12, 23, 24, 0.94), rgba(7, 13, 16, 0.98));
+  box-shadow: 22px 0 60px rgba(0, 0, 0, 0.14);
+}
+
+.admin-brand {
+  padding: 8px 8px 14px;
+  border-bottom: 1px solid rgba(167, 239, 208, 0.11);
+}
+
+.admin-brand span {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+
+.admin-brand strong {
+  font-size: 15px;
+}
+
+.admin-sidebar nav {
+  display: grid;
+  gap: 6px;
+}
+
+.admin-sidebar a,
+.admin-logout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 14px;
+  transition:
+    transform 180ms var(--ease-out),
+    background 180ms var(--ease-out),
+    color 180ms var(--ease-out),
+    border-color 180ms var(--ease-out);
+}
+
+.admin-sidebar a.active {
+  border: 1px solid rgba(167, 239, 208, 0.16);
+  background: linear-gradient(90deg, rgba(167, 239, 208, 0.14), rgba(117, 231, 243, 0.04));
+  color: var(--text-primary);
+  box-shadow:
+    inset 3px 0 0 var(--accent),
+    0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.admin-sidebar a:hover,
+.admin-logout:hover {
+  transform: translateX(3px);
+  background: rgba(167, 239, 208, 0.06);
+  color: var(--text-primary);
+}
+
+.admin-logout {
+  margin-top: auto;
+  cursor: pointer;
+}
+
+.admin-logout-error {
+  min-height: 18px;
+  padding: 0 12px;
+  color: #ffd0c7;
+  font-size: 11px;
+}
+
+.admin-main {
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+.admin-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 22px;
+  border-bottom: 1px solid rgba(167, 239, 208, 0.14);
+  background: rgba(8, 13, 16, 0.74);
+  backdrop-filter: blur(20px);
+}
+
+.admin-menu {
+  display: none;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+.admin-site-link {
+  font-size: 13px;
+  color: var(--accent);
+}
+
+.admin-content {
+  padding: 24px;
+  max-width: 1380px;
+}
+
+.admin-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-title {
+  font-size: 28px;
+  margin-bottom: 18px;
+  letter-spacing: -0.05em;
+  text-shadow: 0 12px 30px rgba(0, 0, 0, 0.26);
+}
+
+.admin-kicker {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent, #f97316);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.admin-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary, #94a3b8);
+  margin-top: -12px;
+  margin-bottom: 20px;
+}
+
+.admin-button-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-button-loading .loading-spinner {
+  width: 13px;
+  height: 13px;
+  border-width: 2px;
+}
+
+.admin-logout .loading-spinner {
+  border-color: #bce1ca42;
+  border-top-color: #dff7e8;
+}
+
+.admin-backdrop {
+  display: none;
+}
+
+/* Responsive Shell Breakpoints */
+@media (max-width: 860px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(280px, 86vw);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    z-index: 70;
+    transform: translateX(-105%);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      transform 0.2s ease,
+      visibility 0s linear 0.2s;
+  }
+
+  .admin-sidebar.open {
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+
+  .admin-menu {
+    display: grid;
+  }
+
+  .admin-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: #00000066;
+    z-index: 60;
+    border: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-content {
+    padding: 16px;
+  }
+
+  .admin-heading-row {
+    align-items: flex-start;
+  }
+
+  .admin-heading-row .btn-secondary {
+    min-height: 40px;
+  }
+}
