@@ -308,6 +308,21 @@ const FAQ_ITEMS: FaqItem[] = [
     a: "You can reach Shashank directly by email at shashankshinde38@gmail.com, phone at +91 80808 52689, connect on LinkedIn (linkedin.com/in/shashank-shinde7), or submit an inquiry through the contact form on this portfolio. He typically responds within 24 hours.",
     tags: ["Email", "Phone", "LinkedIn", "Response within 24h"],
   },
+  {
+    q: "What does Shashank Shinde do as a Software Test Engineer?",
+    a: "Shashank designs test strategies, builds automation frameworks, validates REST APIs, and performs load testing for web and mobile applications. His day-to-day work includes writing Selenium WebDriver and Playwright scripts, running Apache JMeter load simulations, tracking defects in JIRA, and integrating test suites into CI/CD pipelines. He works across the full software testing lifecycle — from test planning to release sign-off.",
+    tags: ["Test Strategy", "Automation Frameworks", "Release Sign-off", "Full STLC"],
+  },
+  {
+    q: "Does Shashank Shinde use Selenium WebDriver?",
+    a: "Yes. Selenium WebDriver is one of Shashank's primary automation tools. He builds maintainable test frameworks using Selenium with Java, following the Page Object Model (POM) design pattern. He has used Selenium for end-to-end regression suites across projects like Grosido Grocery and the E-Commerce Ecosystem, achieving approximately 40% reduction in regression cycle time.",
+    tags: ["Selenium WebDriver", "Java", "Page Object Model", "Regression Automation"],
+  },
+  {
+    q: "Does Shashank have experience with CI/CD and test pipeline integration?",
+    a: "Yes. Shashank integrates automated test suites into CI/CD pipelines using GitHub Actions. His approach includes running smoke and regression tests on every build, enabling teams to catch defects early in the development cycle. He has reduced manual verification overhead by approximately 25% through pipeline automation at Profcyma Solutions.",
+    tags: ["CI/CD", "GitHub Actions", "Pipeline Automation", "Continuous Testing"],
+  },
 ];
 
 export default function PortfolioPage() {
@@ -1362,11 +1377,11 @@ export default function PortfolioPage() {
 
         <div className="faq-grid">
           {FAQ_ITEMS.map((item, idx) => (
-            <details className="faq-item surface-glass" key={item.q} open={idx === 0}>
+            <details className="faq-item surface-glass" key={item.q} open>
               <summary className="faq-question">
                 <span className="faq-question-title">
                   <HelpCircle size={16} className="faq-icon" aria-hidden="true" />
-                  <span className="faq-question-text">{item.q}</span>
+                  <h3 className="faq-question-text">{item.q}</h3>
                 </span>
                 <ChevronDown size={16} className="faq-chevron" aria-hidden="true" />
               </summary>

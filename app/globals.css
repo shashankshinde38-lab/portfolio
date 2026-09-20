@@ -6198,6 +6198,7 @@ textarea.form-input {
   font-weight: 600;
   color: #F3F4F6;
   line-height: 1.35;
+  margin: 0;
 }
 
 .faq-chevron {
