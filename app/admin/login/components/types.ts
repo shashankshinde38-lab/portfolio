@@ -7,11 +7,21 @@ export type AdminVerificationState =
 
 export interface BurstParticle {
   id: number;
+
   x: number;
+
   y: number;
+
   rotate: number;
+
   size: number;
-  shape: "circle" | "square" | "dot";
+
+  shape:
+  | "circle"
+  | "square"
+  | "dot";
+
   delay: number;
+
   duration: number;
 }

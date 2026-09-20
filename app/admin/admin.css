@@ -1,509 +1,1087 @@
 /* ==========================================================================
-   ADMIN PIN VERIFICATION — Exact Video Recreation
+   SECTION 1: ADMIN LOGIN PAGE & PIN VERIFICATION (UP)
+   ========================================================================== */
+
+/* ==========================================================================
+   ADMIN PIN LOGIN
+   6-Digit PIN → Circular Verification → Success
    ========================================================================== */
 
 .admin-pin-screen {
   min-height: 100vh;
   width: 100%;
+
+  position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative;
+
   overflow: hidden;
-  background: #08090d;
+
   padding: 24px 16px;
-  font-family: var(--font-space-grotesk, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+
+  background:
+    radial-gradient(circle at 50% -8%,
+      rgba(249, 115, 22, 0.11),
+      transparent 420px),
+    radial-gradient(circle at 15% 85%,
+      rgba(249, 115, 22, 0.025),
+      transparent 380px),
+    #08090d;
+
+  font-family:
+    var(--font-space-grotesk,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif);
 }
 
-/* Subtle amber top ambient glow matching reference video */
+
+/* ==========================================================================
+   AMBIENT GLOW
+   ========================================================================== */
+
 .admin-pin-ambient-glow {
   position: absolute;
-  top: -100px;
+
+  top: -155px;
   left: 50%;
+
+  width: 650px;
+  height: 360px;
+
   transform: translateX(-50%);
-  width: 500px;
-  height: 260px;
-  background: radial-gradient(ellipse at 50% 30%, rgba(234, 88, 12, 0.13) 0%, rgba(249, 115, 22, 0.04) 50%, transparent 75%);
+
+  background:
+    radial-gradient(ellipse at center,
+      rgba(249, 115, 22, 0.18) 0%,
+      rgba(249, 115, 22, 0.07) 35%,
+      rgba(249, 115, 22, 0.02) 58%,
+      transparent 75%);
+
+  filter: blur(12px);
+
   pointer-events: none;
-  z-index: 1;
+
+  z-index: 0;
 }
 
-/* Verification Card */
+
+/* ==========================================================================
+   CARD
+   ========================================================================== */
+
 .admin-pin-card {
   position: relative;
+
   z-index: 2;
+
   width: min(440px, 100%);
-  min-height: 480px;
-  background: #11141d;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 26px;
-  padding: 38px 30px 32px;
-  box-shadow:
-    0 30px 90px rgba(0, 0, 0, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.02);
-  text-align: center;
+
+  min-height: 510px;
+
+  padding: 38px 30px 30px;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  animation: adminCardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  text-align: center;
+
+  overflow: visible;
+
+  border-radius: 26px;
+
+  border: 1px solid rgba(255, 255, 255, 0.075);
+
+  background:
+    linear-gradient(145deg,
+      rgba(19, 22, 31, 0.985),
+      rgba(12, 14, 21, 0.99));
+
+  box-shadow:
+    0 36px 100px rgba(0, 0, 0, 0.72),
+    0 8px 30px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.018);
+
+  animation:
+    adminCardEnter 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
+
+
+.admin-pin-card::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: inherit;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 50% 0%,
+      rgba(249, 115, 22, 0.055),
+      transparent 38%);
+
+  z-index: 0;
+}
+
+
+.admin-pin-card>* {
+  position: relative;
+
+  z-index: 1;
+}
+
 
 @keyframes adminCardEnter {
   from {
     opacity: 0;
-    transform: translateY(18px) scale(0.97);
+
+    transform:
+      translateY(20px) scale(0.97);
   }
+
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+
+    transform:
+      translateY(0) scale(1);
   }
 }
 
-/* Header */
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
 .admin-pin-header {
-  margin-bottom: 16px;
+  min-height: 108px;
+
+  margin-bottom: 2px;
 }
+
 
 .admin-pin-kicker {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 10px;
+  justify-content: center;
+
+  gap: 7px;
+
+  margin-bottom: 11px;
 }
 
+
 .admin-pin-kicker-text {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
   color: #94a3b8;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+
   text-transform: uppercase;
 }
 
+
 .admin-pin-kicker-badge {
-  font-size: 11px;
-  font-weight: 700;
-  color: #f97316;
-  background: rgba(249, 115, 22, 0.12);
-  border: 1px solid rgba(249, 115, 22, 0.3);
-  padding: 1px 6px;
-  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 20px;
+
+  padding: 2px 7px;
+
+  border-radius: 6px;
+
+  border:
+    1px solid rgba(249, 115, 22, 0.3);
+
+  background:
+    rgba(249, 115, 22, 0.1);
+
+  color: #fb923c;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  letter-spacing: 0.04em;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
 }
+
 
 .admin-pin-title {
+  margin: 0 0 8px;
+
+  color: #ffffff;
+
   font-size: 23px;
   font-weight: 700;
-  color: #ffffff;
-  margin: 0 0 8px;
-  letter-spacing: -0.01em;
-  line-height: 1.3;
+
+  line-height: 1.28;
+
+  letter-spacing: -0.025em;
 }
+
 
 .admin-pin-desc {
-  font-size: 13.5px;
-  color: #8892b0;
+  max-width: 320px;
+
   margin: 0 auto;
-  max-width: 310px;
-  line-height: 1.5;
+
+  color: #8892a6;
+
+  font-size: 13.5px;
+  font-weight: 400;
+
+  line-height: 1.55;
 }
 
-/* Central Animation Stage with (0,0) Center Coordinate System */
+
+/* ==========================================================================
+   CENTRAL ANIMATION STAGE
+
+   IMPORTANT:
+   stage-center is the absolute 0,0 center.
+   All animated PIN elements use this origin.
+   ========================================================================== */
+
 .admin-pin-stage {
   position: relative;
-  min-height: 210px;
+
+  width: 100%;
+
+  min-height: 245px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 8px 0;
+
+  margin: 0;
+
+  isolation: isolate;
 }
+
 
 .admin-pin-stage-center {
   position: relative;
+
   width: 0;
   height: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  isolation: isolate;
 }
 
-/* 6 Individual PIN Digit Boxes */
+
+/* ==========================================================================
+   PIN BOXES
+   ========================================================================== */
+
 .admin-pin-box {
   position: absolute;
-  border-radius: 14px;
-  background: #161922;
-  border: 1.5px solid rgba(255, 255, 255, 0.12);
+
+  box-sizing: border-box;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: text;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
-  user-select: none;
+
   overflow: hidden;
+
+  border: 1.5px solid rgba(255, 255, 255, 0.115);
+
+  background:
+    linear-gradient(145deg,
+      rgba(28, 31, 42, 0.98),
+      rgba(18, 21, 29, 0.98));
+
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+
+  cursor: text;
+
+  user-select: none;
+
+  -webkit-user-select: none;
+
+  will-change:
+    transform,
+    width,
+    height,
+    opacity;
+
+  /*
+   * Framer Motion controls actual movement.
+   * Do NOT transition transform here.
+   */
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
 }
 
-/* Active focus state with orange glowing border */
+
+/* ==========================================================================
+   ACTIVE PIN BOX
+   ========================================================================== */
+
 .admin-pin-box.is-active {
   border-color: #f97316 !important;
-  background-color: #1b1723;
+
+  background:
+    linear-gradient(145deg,
+      rgba(43, 29, 25, 0.98),
+      rgba(27, 23, 31, 0.98));
+
   box-shadow:
-    0 0 0 1px rgba(249, 115, 22, 0.35),
-    0 0 18px rgba(249, 115, 22, 0.45);
+    0 0 0 1px rgba(249, 115, 22, 0.28),
+    0 0 12px rgba(249, 115, 22, 0.32),
+    0 0 25px rgba(249, 115, 22, 0.12),
+    0 7px 18px rgba(0, 0, 0, 0.3);
 }
 
-/* Filled state */
+
+/* ==========================================================================
+   FILLED PIN BOX
+   ========================================================================== */
+
 .admin-pin-box.is-filled {
-  border-color: rgba(255, 255, 255, 0.32);
-  background-color: #191d28;
+  border-color:
+    rgba(255, 255, 255, 0.26);
+
+  background:
+    linear-gradient(145deg,
+      rgba(31, 35, 47, 0.98),
+      rgba(21, 24, 34, 0.98));
+
+  box-shadow:
+    0 6px 17px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-/* Error state with red border */
+
+/* Active + Filled */
+
+.admin-pin-box.is-active.is-filled {
+  border-color: #f97316 !important;
+
+  box-shadow:
+    0 0 0 1px rgba(249, 115, 22, 0.3),
+    0 0 19px rgba(249, 115, 22, 0.34);
+}
+
+
+/* ==========================================================================
+   ERROR PIN BOX
+   ========================================================================== */
+
 .admin-pin-box.is-error-box {
   border-color: #ef4444 !important;
-  background-color: rgba(239, 68, 68, 0.1) !important;
-  box-shadow: 0 0 18px rgba(239, 68, 68, 0.4) !important;
+
+  background:
+    linear-gradient(145deg,
+      rgba(239, 68, 68, 0.14),
+      rgba(50, 20, 25, 0.25)) !important;
+
+  box-shadow:
+    0 0 0 1px rgba(239, 68, 68, 0.2),
+    0 0 20px rgba(239, 68, 68, 0.32) !important;
 }
+
+
+/* ==========================================================================
+   PIN INPUT FIELD
+   ========================================================================== */
 
 .admin-pin-input-field {
   width: 100%;
   height: 100%;
-  border: none;
-  outline: none;
+
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+  outline: 0;
+
   background: transparent;
-  text-align: center;
+
   color: #ffffff;
+
+  text-align: center;
+
   font-family: inherit;
-  font-size: 24px;
+
+  font-size: 23px;
   font-weight: 700;
+
+  line-height: 1;
+
   caret-color: #f97316;
+
+  appearance: none;
+
+  -webkit-appearance: none;
 }
+
+
+.admin-pin-input-field::selection {
+  background:
+    rgba(249, 115, 22, 0.3);
+}
+
+
+/* Remove Edge password icon */
+
+.admin-pin-input-field::-ms-reveal,
+.admin-pin-input-field::-ms-clear {
+  display: none;
+}
+
+
+/* ==========================================================================
+   PIN DIGIT — CIRCULAR STATE
+   ========================================================================== */
 
 .admin-pin-digit-display {
-  color: #ffffff;
-  font-size: 21px;
-  font-weight: 700;
-  pointer-events: none;
-  letter-spacing: -0.02em;
-}
-
-/* SVG Ring Overlay */
-.admin-ring-wrapper {
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  margin-left: -110px;
-  margin-top: -110px;
-  pointer-events: none;
-  z-index: 8;
-}
-
-.admin-ring-svg {
   width: 100%;
   height: 100%;
-  overflow: visible;
-}
 
-/* Success Check Emblem & Aura */
-.admin-success-check-wrapper {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  margin-left: -60px;
-  margin-top: -60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 12;
+
+  color: #ffffff;
+
+  font-size: 19px;
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: -0.02em;
+
+  text-shadow:
+    0 0 12px rgba(255, 255, 255, 0.08);
+
+  pointer-events: none;
 }
+
+
+/* ==========================================================================
+   VERIFICATION RING
+   ========================================================================== */
+
+.admin-ring-wrapper {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 220px;
+  height: 220px;
+
+  margin-left: -110px;
+  margin-top: -110px;
+
+  pointer-events: none;
+
+  z-index: 6;
+}
+
+
+.admin-ring-svg {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: visible;
+
+  transform: translateZ(0);
+
+  will-change: transform;
+}
+
+
+/* ==========================================================================
+   SUCCESS CHECK WRAPPER
+   ========================================================================== */
+
+.admin-success-check-wrapper {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 120px;
+  height: 120px;
+
+  margin-left: -60px;
+  margin-top: -60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+
+  z-index: 14;
+}
+
+
+/* ==========================================================================
+   SUCCESS GREEN AURA
+   ========================================================================== */
 
 .admin-success-glow-aura {
   position: absolute;
-  inset: -12px;
+
+  inset: -14px;
+
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(34, 197, 94, 0.5) 0%, rgba(34, 197, 94, 0.15) 55%, transparent 75%);
-  filter: blur(14px);
+
+  background:
+    radial-gradient(circle,
+      rgba(34, 197, 94, 0.44) 0%,
+      rgba(34, 197, 94, 0.18) 37%,
+      rgba(34, 197, 94, 0.055) 60%,
+      transparent 76%);
+
+  filter: blur(15px);
+
   pointer-events: none;
 }
 
+
+/* ==========================================================================
+   SUCCESS BADGE
+   ========================================================================== */
+
 .admin-success-icon-badge {
   position: relative;
+
   z-index: 3;
+
   width: 68px;
   height: 68px;
-  border-radius: 20px;
-  background: rgba(34, 197, 94, 0.18);
-  border: 2px solid #22c55e;
-  box-shadow:
-    0 0 35px rgba(34, 197, 94, 0.55),
-    inset 0 0 14px rgba(34, 197, 94, 0.28);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  border-radius: 20px;
+
+  border: 2px solid #22c55e;
+
+  background:
+    linear-gradient(145deg,
+      rgba(34, 197, 94, 0.27),
+      rgba(22, 163, 74, 0.13));
+
+  box-shadow:
+    0 0 0 5px rgba(34, 197, 94, 0.055),
+    0 0 18px rgba(34, 197, 94, 0.37),
+    0 0 42px rgba(34, 197, 94, 0.18),
+    inset 0 0 17px rgba(34, 197, 94, 0.2);
 }
 
+
 .admin-success-svg {
+  display: block;
+
   width: 44px;
   height: 44px;
 }
 
-/* Green Particles Burst */
+
+/* ==========================================================================
+   PARTICLE BURST
+
+   Particle TSX starts from x:0 / y:0.
+   This element therefore MUST be centered at the same 0,0 point.
+   ========================================================================== */
+
 .admin-particle-burst-container {
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+  left: 50%;
+  top: 50%;
+
+  width: 1px;
+  height: 1px;
+
   pointer-events: none;
-  z-index: 15;
+
+  z-index: 20;
 }
+
 
 .admin-burst-particle {
   position: absolute;
+
+  left: 0;
+  top: 0;
+
+  display: block;
+
   background: #22c55e;
-  box-shadow: 0 0 8px #22c55e, 0 0 14px rgba(34, 197, 94, 0.85);
+
+  box-shadow:
+    0 0 6px rgba(34, 197, 94, 0.96),
+    0 0 12px rgba(34, 197, 94, 0.58);
+
+  will-change:
+    transform,
+    opacity;
 }
 
-.admin-burst-particle.is-circle,
-.admin-burst-particle.is-dot {
+
+.admin-burst-particle.is-circle {
   border-radius: 50%;
 }
 
-.admin-burst-particle.is-square {
-  border-radius: 2px;
+
+.admin-burst-particle.is-dot {
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 5px rgba(34, 197, 94, 0.9);
 }
 
-/* Error Banner */
+
+.admin-burst-particle.is-square {
+  border-radius: 1.5px;
+}
+
+
+/* ==========================================================================
+   ERROR BANNER
+   ========================================================================== */
+
 .admin-pin-error-banner {
+  position: relative;
+
+  z-index: 20;
+
+  align-self: center;
+
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
+  justify-content: center;
+
+  gap: 7px;
+
+  max-width: 100%;
+
+  margin: 4px auto 0;
+
+  padding: 7px 13px;
+
+  border-radius: 9px;
+
+  border:
+    1px solid rgba(239, 68, 68, 0.23);
+
+  background:
+    rgba(239, 68, 68, 0.085);
+
   color: #f87171;
-  background: rgba(239, 68, 68, 0.1);
-  padding: 6px 14px;
-  border-radius: 8px;
-  border: 1px solid rgba(239, 68, 68, 0.25);
-  margin-top: 8px;
+
+  font-size: 12.5px;
+  font-weight: 500;
+
+  line-height: 1.4;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
 }
 
-/* Footer / Actions */
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
 .admin-pin-footer {
-  margin-top: 14px;
+  position: relative;
+
+  z-index: 20;
+
+  min-height: 42px;
+
+  margin-top: 10px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+
   gap: 10px;
 }
+
 
 .admin-pin-actions {
   display: flex;
   align-items: center;
   justify-content: center;
+
   gap: 12px;
 }
+
+
+/* ==========================================================================
+   SHOW/HIDE PIN
+   ========================================================================== */
 
 .admin-pin-eye-toggle {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+
   gap: 6px;
+
+  min-height: 34px;
+
+  padding: 5px 11px;
+
+  border: 0;
+
+  border-radius: 8px;
+
   background: transparent;
-  border: none;
+
   color: #64748b;
+
+  font-family: inherit;
+
   font-size: 12.5px;
+  font-weight: 500;
+
   cursor: pointer;
-  padding: 4px 10px;
-  border-radius: 6px;
-  transition: color 0.2s ease, background 0.2s ease;
+
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease,
+    transform 180ms ease;
 }
 
-.admin-pin-eye-toggle:hover {
+
+.admin-pin-eye-toggle:hover:not(:disabled) {
   color: #cbd5e1;
-  background: rgba(255, 255, 255, 0.05);
+
+  background:
+    rgba(255, 255, 255, 0.05);
+
+  transform:
+    translateY(-1px);
 }
+
+
+.admin-pin-eye-toggle:active:not(:disabled) {
+  transform:
+    translateY(0);
+}
+
+
+.admin-pin-eye-toggle:focus-visible {
+  outline:
+    2px solid rgba(249, 115, 22, 0.55);
+
+  outline-offset: 3px;
+}
+
+
+.admin-pin-eye-toggle:disabled {
+  opacity: 0.38;
+
+  cursor: default;
+}
+
+
+/* ==========================================================================
+   VERIFIED AND SECURE BADGE
+   ========================================================================== */
 
 .admin-verified-secure-badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+
   gap: 7px;
+
+  min-height: 36px;
+
   padding: 8px 18px;
+
   border-radius: 999px;
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.3);
+
+  border:
+    1px solid rgba(34, 197, 94, 0.3);
+
+  background:
+    linear-gradient(145deg,
+      rgba(34, 197, 94, 0.11),
+      rgba(34, 197, 94, 0.055));
+
   color: #4ade80;
-  font-size: 13.5px;
+
+  box-shadow:
+    0 6px 22px rgba(34, 197, 94, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.02em;
+
+  letter-spacing: 0.015em;
 }
 
+
 .admin-lock-icon {
+  flex: 0 0 auto;
+
   color: #22c55e;
 }
 
+
+/* ==========================================================================
+   BACK LINK
+   ========================================================================== */
+
 .admin-pin-back-link {
+  position: relative;
+
+  z-index: 2;
+
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+
   gap: 6px;
+
+  margin-top: 22px;
+
   color: #64748b;
+
   font-size: 13px;
+  font-weight: 500;
+
   text-decoration: none;
-  transition: color 0.2s ease;
-  margin-top: 20px;
+
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
 }
+
 
 .admin-pin-back-link:hover {
-  color: #94a3b8;
+  color: #cbd5e1;
+
+  transform:
+    translateX(-2px);
 }
 
-/* Mobile Responsive */
+
+.admin-pin-back-link:focus-visible {
+  outline:
+    2px solid rgba(249, 115, 22, 0.5);
+
+  outline-offset: 5px;
+
+  border-radius: 5px;
+}
+
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
 @media (max-width: 480px) {
+  .admin-pin-screen {
+    padding:
+      18px 12px;
+  }
+
+
+  .admin-pin-ambient-glow {
+    width: 430px;
+    height: 280px;
+
+    top: -120px;
+  }
+
+
   .admin-pin-card {
-    padding: 30px 18px 24px;
+    width: 100%;
+
+    min-height: 485px;
+
+    padding:
+      32px 18px 26px;
+
     border-radius: 22px;
   }
 
+
+  .admin-pin-header {
+    min-height: 101px;
+  }
+
+
+  .admin-pin-kicker {
+    margin-bottom: 9px;
+  }
+
+
   .admin-pin-title {
+    font-size: 20px;
+
+    line-height: 1.3;
+  }
+
+
+  .admin-pin-desc {
+    max-width: 280px;
+
+    font-size: 12.5px;
+  }
+
+
+  .admin-pin-stage {
+    min-height: 230px;
+  }
+
+
+  .admin-pin-input-field {
     font-size: 21px;
   }
 
-  .admin-pin-desc {
+
+  .admin-pin-digit-display {
+    font-size: 18px;
+  }
+
+
+  .admin-pin-error-banner {
+    padding:
+      6px 10px;
+
+    font-size: 11.5px;
+  }
+
+
+  .admin-verified-secure-badge {
+    padding:
+      7px 15px;
+
+    font-size: 12.5px;
+  }
+
+
+  .admin-pin-back-link {
+    margin-top: 18px;
+
     font-size: 12.5px;
   }
 }
 
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  .admin-pin-box,
-  .admin-success-icon-badge,
-  .admin-burst-particle {
-    transition: none !important;
-    animation: none !important;
-  }
-}
 
-/* Green Particles Explosion */
-.admin-particle-field {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 2;
-}
+/* ==========================================================================
+   SMALL MOBILE
+   ========================================================================== */
 
-.admin-particle-dot {
-  position: absolute;
-  border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 8px #22c55e, 0 0 16px rgba(34, 197, 94, 0.8);
-  animation: particleShoot 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-@keyframes particleShoot {
-  0% {
-    transform: translate(0, 0) scale(0);
-    opacity: 1;
-  }
-  60% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--tx), var(--ty)) scale(1.1);
-    opacity: 0;
-  }
-}
-
-/* Bottom "Verified and Secure" badge matching video */
-.admin-verified-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 16px;
-  border-radius: 999px;
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  color: #4ade80;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  animation: tagFadeIn 0.5s ease-out 0.35s both;
-}
-
-.admin-verified-tag-icon {
-  color: #22c55e;
-}
-
-@keyframes tagFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Back Link */
-.admin-pin-back-link {
-  margin-top: 24px;
-  color: #64748b;
-  font-size: 13px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: color 0.2s ease;
-  z-index: 2;
-}
-
-.admin-pin-back-link:hover {
-  color: #cbd5e1;
-}
-
-/* Responsive Mobile Sizing */
-@media (max-width: 480px) {
+@media (max-width: 380px) {
   .admin-pin-card {
-    padding: 32px 20px 26px;
-    border-radius: 22px;
+    padding:
+      28px 14px 23px;
   }
 
-  .admin-pin-grid {
-    gap: 6px;
-  }
-
-  .admin-pin-box {
-    width: 44px;
-    height: 52px;
-    border-radius: 12px;
-  }
-
-  .admin-pin-input-field {
-    font-size: 20px;
-  }
 
   .admin-pin-title {
-    font-size: 21px;
+    font-size: 19px;
+  }
+
+
+  .admin-pin-desc {
+    font-size: 12px;
+  }
+
+
+  /*
+   * Slightly scale the entire animation coordinate system
+   * so 6 boxes + 220px ring remain inside smaller devices.
+   */
+  .admin-pin-stage-center {
+    transform: scale(0.92);
+  }
+
+
+  .admin-pin-stage {
+    min-height: 218px;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .admin-pin-card,
-  .admin-pin-box.is-popping,
-  .admin-pin-grid.admin-pin-shake,
-  .admin-success-aura,
-  .admin-success-badge,
-  .admin-particle-dot,
-  .admin-verified-tag {
-    animation: none !important;
-    transition: none !important;
+
+/* ==========================================================================
+   EXTRA SMALL MOBILE
+   ========================================================================== */
+
+@media (max-width: 340px) {
+  .admin-pin-stage-center {
+    transform: scale(0.84);
+  }
+
+
+  .admin-pin-card {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
+
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-pin-card {
+    animation: none !important;
+  }
+
+
+  .admin-pin-box,
+  .admin-pin-eye-toggle,
+  .admin-pin-back-link {
+    transition: none !important;
+  }
+
+
+  .admin-success-glow-aura {
+    filter: none;
+  }
+}
+
+/* ==========================================================================
+   SECTION 2: ADMIN DASHBOARD, SHELL, ENQUIRIES & PORTAL (DOWN)
+   ========================================================================== */
 
 .sr-only {
   position: absolute;
