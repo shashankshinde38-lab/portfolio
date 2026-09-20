@@ -4,6 +4,7 @@
 
 .admin-pin-screen {
   min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,7 +12,8 @@
   position: relative;
   overflow: hidden;
   background: #08090d;
-  padding: 24px;
+  padding: 24px 16px;
+  font-family: var(--font-space-grotesk, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
 }
 
 /* Subtle amber top ambient glow matching reference video */
@@ -20,9 +22,9 @@
   top: -100px;
   left: 50%;
   transform: translateX(-50%);
-  width: 480px;
+  width: 500px;
   height: 260px;
-  background: radial-gradient(ellipse at 50% 30%, rgba(234, 88, 12, 0.12) 0%, rgba(249, 115, 22, 0.04) 50%, transparent 75%);
+  background: radial-gradient(ellipse at 50% 30%, rgba(234, 88, 12, 0.13) 0%, rgba(249, 115, 22, 0.04) 50%, transparent 75%);
   pointer-events: none;
   z-index: 1;
 }
@@ -31,16 +33,20 @@
 .admin-pin-card {
   position: relative;
   z-index: 2;
-  width: min(440px, calc(100% - 24px));
+  width: min(440px, 100%);
+  min-height: 480px;
   background: #11141d;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 26px;
-  padding: 42px 34px 34px;
+  padding: 38px 30px 32px;
   box-shadow:
-    0 30px 90px rgba(0, 0, 0, 0.65),
+    0 30px 90px rgba(0, 0, 0, 0.7),
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     inset 0 -1px 0 rgba(255, 255, 255, 0.02);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   animation: adminCardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -58,106 +64,109 @@
 
 /* Header */
 .admin-pin-header {
-  margin-bottom: 26px;
+  margin-bottom: 16px;
 }
 
 .admin-pin-kicker {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: #a78bfa;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 10px;
+}
+
+.admin-pin-kicker-text {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
   text-transform: uppercase;
 }
 
+.admin-pin-kicker-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #f97316;
+  background: rgba(249, 115, 22, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  padding: 1px 6px;
+  border-radius: 5px;
+}
+
 .admin-pin-title {
-  font-family: var(--font-space-grotesk, sans-serif);
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 700;
   color: #ffffff;
   margin: 0 0 8px;
   letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 .admin-pin-desc {
-  font-size: 14px;
-  color: #94a3b8;
-  margin: 0;
+  font-size: 13.5px;
+  color: #8892b0;
+  margin: 0 auto;
+  max-width: 310px;
   line-height: 1.5;
 }
 
-/* 6 PIN Boxes Grid */
-.admin-pin-grid {
+/* Central Animation Stage with (0,0) Center Coordinate System */
+.admin-pin-stage {
+  position: relative;
+  min-height: 210px;
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin: 28px 0 20px;
+  margin: 8px 0;
 }
 
+.admin-pin-stage-center {
+  position: relative;
+  width: 0;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 6 Individual PIN Digit Boxes */
 .admin-pin-box {
-  width: 52px;
-  height: 58px;
+  position: absolute;
   border-radius: 14px;
   background: #161922;
-  border: 1.5px solid rgba(255, 255, 255, 0.11);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: text;
-  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
-    background 0.2s ease,
-    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    background-color 0.2s ease;
+  user-select: none;
+  overflow: hidden;
 }
 
+/* Active focus state with orange glowing border */
 .admin-pin-box.is-active {
-  border-color: rgba(255, 255, 255, 0.65);
-  background: #1c202d;
-  box-shadow: 0 0 16px rgba(255, 255, 255, 0.12);
+  border-color: #f97316 !important;
+  background-color: #1b1723;
+  box-shadow:
+    0 0 0 1px rgba(249, 115, 22, 0.35),
+    0 0 18px rgba(249, 115, 22, 0.45);
 }
 
+/* Filled state */
 .admin-pin-box.is-filled {
-  border-color: rgba(255, 255, 255, 0.35);
-  background: #191d28;
+  border-color: rgba(255, 255, 255, 0.32);
+  background-color: #191d28;
 }
 
-/* Entry Pop Animation */
-.admin-pin-box.is-popping {
-  animation: pinDigitPop 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes pinDigitPop {
-  0% {
-    transform: scale(0.92);
-  }
-  50% {
-    transform: scale(1.08);
-    border-color: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 0 16px rgba(255, 255, 255, 0.22);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Error State */
-.admin-pin-grid.admin-pin-shake {
-  animation: pinShake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-}
-
-@keyframes pinShake {
-  0%, 100% { transform: translateX(0); }
-  15%, 45%, 75% { transform: translateX(-7px); }
-  30%, 60%, 90% { transform: translateX(7px); }
-}
-
+/* Error state with red border */
 .admin-pin-box.is-error-box {
   border-color: #ef4444 !important;
-  background: rgba(239, 68, 68, 0.1) !important;
-  box-shadow: 0 0 16px rgba(239, 68, 68, 0.35) !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  box-shadow: 0 0 18px rgba(239, 68, 68, 0.4) !important;
 }
 
 .admin-pin-input-field {
@@ -168,44 +177,108 @@
   background: transparent;
   text-align: center;
   color: #ffffff;
-  font-family: var(--font-space-grotesk, sans-serif);
+  font-family: inherit;
   font-size: 24px;
   font-weight: 700;
-  caret-color: transparent;
+  caret-color: #f97316;
 }
 
-.admin-pin-box.is-error-box .admin-pin-input-field {
-  color: #f87171 !important;
+.admin-pin-digit-display {
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: 700;
+  pointer-events: none;
+  letter-spacing: -0.02em;
 }
 
-/* Status Area (Verifying / Error) */
-.admin-pin-status-area {
-  min-height: 32px;
+/* SVG Ring Overlay */
+.admin-ring-wrapper {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  margin-left: -110px;
+  margin-top: -110px;
+  pointer-events: none;
+  z-index: 8;
+}
+
+.admin-ring-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Success Check Emblem & Aura */
+.admin-success-check-wrapper {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  margin-left: -60px;
+  margin-top: -60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
+  z-index: 12;
 }
 
-.admin-pin-verifying-row {
-  display: inline-flex;
+.admin-success-glow-aura {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.5) 0%, rgba(34, 197, 94, 0.15) 55%, transparent 75%);
+  filter: blur(14px);
+  pointer-events: none;
+}
+
+.admin-success-icon-badge {
+  position: relative;
+  z-index: 3;
+  width: 68px;
+  height: 68px;
+  border-radius: 20px;
+  background: rgba(34, 197, 94, 0.18);
+  border: 2px solid #22c55e;
+  box-shadow:
+    0 0 35px rgba(34, 197, 94, 0.55),
+    inset 0 0 14px rgba(34, 197, 94, 0.28);
+  display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: #94a3b8;
-  animation: fadeInStatus 0.2s ease-out;
+  justify-content: center;
 }
 
-.admin-pin-spinner {
-  animation: pinSpin 0.8s linear infinite;
-  color: #a78bfa;
+.admin-success-svg {
+  width: 44px;
+  height: 44px;
 }
 
-@keyframes pinSpin {
-  to { transform: rotate(360deg); }
+/* Green Particles Burst */
+.admin-particle-burst-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 15;
 }
 
-.admin-pin-error-row {
+.admin-burst-particle {
+  position: absolute;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e, 0 0 14px rgba(34, 197, 94, 0.85);
+}
+
+.admin-burst-particle.is-circle,
+.admin-burst-particle.is-dot {
+  border-radius: 50%;
+}
+
+.admin-burst-particle.is-square {
+  border-radius: 2px;
+}
+
+/* Error Banner */
+.admin-pin-error-banner {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -214,20 +287,24 @@
   background: rgba(239, 68, 68, 0.1);
   padding: 6px 14px;
   border-radius: 8px;
-  border: 1px solid rgba(239, 68, 68, 0.22);
-  animation: fadeInStatus 0.2s ease-out;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  margin-top: 8px;
 }
 
-@keyframes fadeInStatus {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Footer / Actions */
+.admin-pin-footer {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
-/* Actions / Eye Toggle */
 .admin-pin-actions {
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin-top: 4px;
+  gap: 12px;
 }
 
 .admin-pin-eye-toggle {
@@ -239,8 +316,8 @@
   color: #64748b;
   font-size: 12.5px;
   cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 8px;
+  padding: 4px 10px;
+  border-radius: 6px;
   transition: color 0.2s ease, background 0.2s ease;
 }
 
@@ -249,104 +326,62 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* ==========================================================================
-   SUCCESS STATE — Exact Recreation of Reference Video 00:03 - 00:04
-   ========================================================================== */
-
-.admin-pin-success-content {
-  display: flex;
-  flex-direction: column;
+.admin-verified-secure-badge {
+  display: inline-flex;
   align-items: center;
-  padding: 6px 0;
-  animation: successContentIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes successContentIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.admin-pin-desc.success-desc {
-  color: #22c55e !important;
-  font-weight: 500;
-  margin-top: 4px;
-}
-
-/* Center Emblem & Aura */
-.admin-success-emblem-wrap {
-  position: relative;
-  width: 140px;
-  height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 26px auto 22px;
-}
-
-.admin-success-aura {
-  position: absolute;
-  inset: 12px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(34, 197, 94, 0.45) 0%, rgba(34, 197, 94, 0.15) 50%, transparent 75%);
-  filter: blur(12px);
-  animation: auraPulse 1.8s ease-in-out infinite alternate;
-}
-
-@keyframes auraPulse {
-  from { transform: scale(0.9); opacity: 0.65; }
-  to { transform: scale(1.15); opacity: 1; }
-}
-
-.admin-success-badge {
-  position: relative;
-  z-index: 3;
-  width: 68px;
-  height: 68px;
-  border-radius: 20px;
-  background: rgba(34, 197, 94, 0.16);
-  border: 2px solid #22c55e;
-  box-shadow:
-    0 0 35px rgba(34, 197, 94, 0.5),
-    inset 0 0 16px rgba(34, 197, 94, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: badgePop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-}
-
-@keyframes badgePop {
-  0% {
-    transform: scale(0.4);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.admin-success-check-icon {
+  gap: 7px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
   color: #4ade80;
-  animation: checkPop 0.35s ease-out 0.15s both;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
-@keyframes checkPop {
-  from {
-    transform: scale(0.5);
-    opacity: 0;
+.admin-lock-icon {
+  color: #22c55e;
+}
+
+.admin-pin-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  margin-top: 20px;
+}
+
+.admin-pin-back-link:hover {
+  color: #94a3b8;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .admin-pin-card {
+    padding: 30px 18px 24px;
+    border-radius: 22px;
   }
-  to {
-    transform: scale(1);
-    opacity: 1;
+
+  .admin-pin-title {
+    font-size: 21px;
+  }
+
+  .admin-pin-desc {
+    font-size: 12.5px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .admin-pin-box,
+  .admin-success-icon-badge,
+  .admin-burst-particle {
+    transition: none !important;
+    animation: none !important;
   }
 }
 

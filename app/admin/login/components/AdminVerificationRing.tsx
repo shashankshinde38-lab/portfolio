@@ -1,23 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { VerificationState } from "./types";
+import { AdminVerificationState } from "./types";
 
-interface PINVerificationRingProps {
-  state: VerificationState;
+interface AdminVerificationRingProps {
+  state: AdminVerificationState;
   isScanning: boolean;
   onScanComplete?: () => void;
 }
 
-export function PINVerificationRing({
+export function AdminVerificationRing({
   state,
   isScanning,
   onScanComplete,
-}: PINVerificationRingProps) {
-  // Only display once we reach forming-circle or beyond
+}: AdminVerificationRingProps) {
   if (state === "input") return null;
 
-  // Determine ring stroke color based on state
   const ringColor =
     state === "success"
       ? "#22c55e"
@@ -25,37 +23,28 @@ export function PINVerificationRing({
       ? "#ef4444"
       : "#f97316";
 
-  const glowId =
+  const filterId =
     state === "success"
-      ? "url(#pinGreenGlow)"
+      ? "url(#adminRingGreenGlow)"
       : state === "error"
-      ? "url(#pinRedGlow)"
-      : "url(#pinOrangeGlow)";
+      ? "url(#adminRingRedGlow)"
+      : "url(#adminRingOrangeGlow)";
 
   return (
-    <div className="pin-ring-container" aria-hidden="true">
+    <div className="admin-ring-wrapper" aria-hidden="true">
       <motion.svg
-        viewBox="0 0 220 220"
-        className="pin-ring-svg"
+        viewBox="-110 -110 220 220"
+        className="admin-ring-svg"
         animate={
           state === "error"
-            ? { x: [0, -5, 5, -4, 4, 0] }
+            ? { x: [0, -6, 6, -4, 4, -2, 2, 0] }
             : { x: 0 }
         }
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.42 }}
       >
         <defs>
-          {/* Orange glow filter */}
-          <filter id="pinOrangeGlow" x="-25%" y="-25%" width="150%" height="150%">
-            <feGaussianBlur stdDeviation="2.5" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-
-          {/* Green glow filter */}
-          <filter id="pinGreenGlow" x="-25%" y="-25%" width="150%" height="150%">
+          {/* Orange glow */}
+          <filter id="adminRingOrangeGlow" x="-30%" y="-30%" width="160%" height="160%">
             <feGaussianBlur stdDeviation="3" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
@@ -63,43 +52,52 @@ export function PINVerificationRing({
             </feMerge>
           </filter>
 
-          {/* Red glow filter */}
-          <filter id="pinRedGlow" x="-25%" y="-25%" width="150%" height="150%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
+          {/* Green glow */}
+          <filter id="adminRingGreenGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3.5" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
 
-          {/* Scanning bead trail gradient */}
-          <linearGradient id="pinScannerHead" x1="0%" y1="0%" x2="100%" y2="100%">
+          {/* Red glow */}
+          <filter id="adminRingRedGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3.5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+
+          {/* Scanner bead trailing arc gradient */}
+          <linearGradient id="adminScanTrail" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-            <stop offset="60%" stopColor="#f97316" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#ea580c" stopOpacity="0" />
+            <stop offset="50%" stopColor="#f97316" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
           </linearGradient>
         </defs>
 
-        {/* Faint subtle background guide ring */}
+        {/* Faint guide track circle */}
         <circle
-          cx="110"
-          cy="110"
-          r="86"
+          cx={0}
+          cy={0}
+          r={88}
           fill="none"
-          stroke="rgba(255, 255, 255, 0.07)"
+          stroke="rgba(255, 255, 255, 0.08)"
           strokeWidth="1.5"
         />
 
         {/* STEP 3: Animate circular verification ring drawing */}
         <motion.circle
-          cx="110"
-          cy="110"
-          r="86"
+          cx={0}
+          cy={0}
+          r={88}
           fill="none"
           stroke={ringColor}
           strokeWidth="2"
           strokeLinecap="round"
-          filter={glowId}
+          filter={filterId}
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
           transition={{
@@ -111,7 +109,7 @@ export function PINVerificationRing({
         {/* STEP 4: Scanning effect — ring rotation & traveling glowing bead */}
         {isScanning && state === "verifying" && (
           <motion.g
-            style={{ originX: "110px", originY: "110px" }}
+            style={{ originX: "0px", originY: "0px" }}
             initial={{ rotate: 0 }}
             animate={{ rotate: 360 }}
             transition={{
@@ -122,24 +120,24 @@ export function PINVerificationRing({
           >
             {/* Glowing bead traveling along circumference */}
             <circle
-              cx="110"
-              cy="24"
-              r="4.5"
+              cx={0}
+              cy={-88}
+              r={4.5}
               fill="#ffffff"
-              filter="url(#pinOrangeGlow)"
+              filter="url(#adminRingOrangeGlow)"
             />
             <circle
-              cx="110"
-              cy="24"
-              r="8"
-              fill="rgba(249, 115, 22, 0.45)"
+              cx={0}
+              cy={-88}
+              r={8}
+              fill="rgba(249, 115, 22, 0.5)"
             />
 
             {/* Glowing sweep trail arc behind the bead */}
             <path
-              d="M 110 24 A 86 86 0 0 0 65 38"
+              d="M 0 -88 A 88 88 0 0 0 -45 -75"
               fill="none"
-              stroke="url(#pinScannerHead)"
+              stroke="url(#adminScanTrail)"
               strokeWidth="3.5"
               strokeLinecap="round"
             />

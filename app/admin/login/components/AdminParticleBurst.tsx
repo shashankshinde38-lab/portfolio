@@ -4,22 +4,21 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { BurstParticle } from "./types";
 
-interface PINParticleBurstProps {
+interface AdminParticleBurstProps {
   count?: number;
   onBurstComplete?: () => void;
 }
 
-export function PINParticleBurst({
+export function AdminParticleBurst({
   count = 24,
   onBurstComplete,
-}: PINParticleBurstProps) {
+}: AdminParticleBurstProps) {
   const particles: BurstParticle[] = useMemo(() => {
     return Array.from({ length: count }, (_, i) => {
-      // Polar dispersion to achieve a radial burst around the circle
       const baseAngle = (i / count) * 2 * Math.PI;
-      const jitter = (Math.random() - 0.5) * 0.4;
+      const jitter = (Math.random() - 0.5) * 0.35;
       const angle = baseAngle + jitter;
-      const distance = 40 + Math.random() * 55; // 40px to 95px outward
+      const distance = 42 + Math.random() * 52; // 42px to 94px
       const x = Math.round(Math.cos(angle) * distance);
       const y = Math.round(Math.sin(angle) * distance);
       const rotate = Math.round(Math.random() * 360);
@@ -44,11 +43,11 @@ export function PINParticleBurst({
   }, [count]);
 
   return (
-    <div className="pin-particle-burst-container" aria-hidden="true">
+    <div className="admin-particle-burst-container" aria-hidden="true">
       {particles.map((p, idx) => (
         <motion.span
           key={p.id}
-          className={`pin-burst-particle is-${p.shape}`}
+          className={`admin-burst-particle is-${p.shape}`}
           style={{
             width: `${p.size}px`,
             height: `${p.size}px`,
