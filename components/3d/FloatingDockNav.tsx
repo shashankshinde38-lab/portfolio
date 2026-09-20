@@ -52,6 +52,49 @@ const NAV_ITEMS = [
   },
 ];
 
+const MOBILE_TERMINAL_ITEMS = [
+  {
+    id: "home",
+    label: "Overview",
+    cmd: "overview",
+  },
+  {
+    id: "about",
+    label: "About",
+    cmd: "about",
+  },
+  {
+    id: "simulator",
+    label: "Testing",
+    cmd: "testing",
+  },
+  {
+    id: "skills",
+    label: "Quality",
+    cmd: "quality",
+  },
+  {
+    id: "cases",
+    label: "Automation",
+    cmd: "automation",
+  },
+  {
+    id: "experience",
+    label: "Insights",
+    cmd: "insights",
+  },
+  {
+    id: "certs",
+    label: "Certifications",
+    cmd: "certifications",
+  },
+  {
+    id: "faq",
+    label: "FAQ",
+    cmd: "faq",
+  },
+];
+
 /* ------------------------------------------------------------------ */
 /* Props                                                              */
 /* ------------------------------------------------------------------ */
@@ -341,7 +384,7 @@ export default function FloatingDockNav({
               {/* Navigation links */}
 
               <div className="terminal-nav-list">
-                {NAV_ITEMS.map((item, index) => {
+                {MOBILE_TERMINAL_ITEMS.map((item, index) => {
                   const isActive =
                     activeSection === item.id;
 
@@ -353,7 +396,7 @@ export default function FloatingDockNav({
                         }`}
                       onClick={closeMenu}
                       style={{
-                        animationDelay: `${index * 60}ms`,
+                        animationDelay: `${index * 40}ms`,
                       }}
                     >
                       <ChevronRight
@@ -395,7 +438,7 @@ export default function FloatingDockNav({
                     }`}
                   onClick={closeMenu}
                   style={{
-                    animationDelay: `${NAV_ITEMS.length * 60
+                    animationDelay: `${MOBILE_TERMINAL_ITEMS.length * 40
                       }ms`,
                   }}
                 >
@@ -442,7 +485,7 @@ export default function FloatingDockNav({
                 className="terminal-nav-item terminal-nav-resume"
                 onClick={closeMenu}
                 style={{
-                  animationDelay: `${(NAV_ITEMS.length + 1) * 60
+                  animationDelay: `${(MOBILE_TERMINAL_ITEMS.length + 1) * 40
                     }ms`,
                 }}
               >

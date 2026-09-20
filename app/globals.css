@@ -4670,39 +4670,7 @@ textarea.form-input {
   }
 }
 
-/* Portfolio loading */
-.portfolio-loading-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 99;
-  background: var(--ink);
-  display: grid;
-  place-content: center;
-}
 
-.portfolio-loading-shimmer {
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  animation: shimmer 1.5s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-
-  0%,
-  100% {
-    opacity: 0.4;
-  }
-
-  50% {
-    opacity: 1;
-  }
-}
-
-.portfolio-shell.is-booting> :not(.portfolio-loading-layer):not(.skip-link) {
-  visibility: hidden;
-}
 
 /* ===================================================================
    NOT FOUND PAGE

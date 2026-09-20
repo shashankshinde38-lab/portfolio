@@ -330,7 +330,7 @@ export default function PortfolioPage() {
             <span className="hero-headline-gradient">Tested to the last detail.</span>
           </h1>
           <p className="hero-description">
-            I design, automate and execute tests that ensure reliability, performance and exceptional quality.
+            I&apos;m <strong>Shashank Shinde</strong>, a Software Test Engineer &amp; QA Automation Specialist based in Pune, India. I design, automate and execute comprehensive test suites that ensure high reliability, performance and exceptional quality.
           </p>
           <div className="availability">
             <span className="status-dot" /> Available for QA &amp; SDET opportunities

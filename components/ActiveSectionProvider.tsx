@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import FloatingDockNav from "@/components/3d/FloatingDockNav";
 import AmbientBackdrop from "@/components/3d/AmbientBackdrop";
 import { ArrowUpRight } from "lucide-react";
@@ -9,8 +9,7 @@ import { ArrowUpRight } from "lucide-react";
 /* This thin client wrapper handles:                                   */
 /*   1. IntersectionObserver for active-section tracking               */
 /*   2. Backend pulse check (contact channel live/offline)             */
-/*   3. Boot shimmer animation                                         */
-/*   4. Next.js dev overlay logo removal                               */
+/*   3. Next.js dev overlay logo removal                               */
 /*                                                                     */
 /* All static content inside <main> is passed as `children` and        */
 /* remains server-rendered HTML.                                       */
@@ -39,17 +38,13 @@ export default function ActiveSectionProvider({
 }: ActiveSectionProviderProps) {
   const [activeSection, setActiveSection] = useState("home");
   const [backendLive, setBackendLive] = useState(false);
-  const [isBooting, setIsBooting] = useState(true);
 
   /* ---------------------------------------------------------------- */
-  /* Backend pulse + boot timer                                        */
+  /* Backend pulse check (async background check)                     */
   /* ---------------------------------------------------------------- */
 
   useEffect(() => {
     let active = true;
-    const timeout = window.setTimeout(() => {
-      if (active) setIsBooting(false);
-    }, 900);
 
     fetch("/api/pulse")
       .then((r) => r.json())
@@ -58,17 +53,10 @@ export default function ActiveSectionProvider({
       })
       .catch(() => {
         if (active) setBackendLive(false);
-      })
-      .finally(() => {
-        if (active) {
-          window.clearTimeout(timeout);
-          setIsBooting(false);
-        }
       });
 
     return () => {
       active = false;
-      window.clearTimeout(timeout);
     };
   }, []);
 
@@ -112,7 +100,7 @@ export default function ActiveSectionProvider({
   /* ---------------------------------------------------------------- */
 
   return (
-    <div className={`portfolio-shell ${isBooting ? "is-booting" : ""}`}>
+    <div className="portfolio-shell">
       {/* Background Volumetric Glows & Particles */}
       <AmbientBackdrop />
 
@@ -127,11 +115,6 @@ export default function ActiveSectionProvider({
         <span className="admin-trigger-pulse" aria-hidden="true" />
       </a>
 
-      {isBooting && (
-        <div className="portfolio-loading-layer" role="status" aria-live="polite">
-          <span className="portfolio-loading-shimmer">Loading portfolio…</span>
-        </div>
-      )}
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
