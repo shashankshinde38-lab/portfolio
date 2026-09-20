@@ -1,8 +1,10 @@
 .admin-login-page {
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: clamp(32px, 6vh, 60px) 24px 24px;
   background: radial-gradient(ellipse at 50% 0%, #698b8224, transparent 55%), var(--bg-primary);
 }
 .admin-login-card {
@@ -11,6 +13,8 @@
   display: grid;
   gap: 16px;
   text-align: center;
+  position: relative;
+  z-index: 10;
 }
 .admin-kicker {
   font-size: 11px;
