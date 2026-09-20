@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useRef, type ReactNode } from "react";
 import FloatingDockNav from "@/components/3d/FloatingDockNav";
+import AmbientBackdrop from "@/components/3d/AmbientBackdrop";
+import { ArrowUpRight } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
 /* This thin client wrapper handles:                                   */
@@ -22,6 +24,7 @@ const SECTION_IDS = [
   "simulator",
   "skills",
   "certs",
+  "faq",
   "contact",
 ];
 
@@ -110,6 +113,20 @@ export default function ActiveSectionProvider({
 
   return (
     <div className={`portfolio-shell ${isBooting ? "is-booting" : ""}`}>
+      {/* Background Volumetric Glows & Particles */}
+      <AmbientBackdrop />
+
+      {/* Discreet bottom-left Admin trigger button */}
+      <a
+        href="/admin/login"
+        className="fixed-admin-trigger-btn"
+        aria-label="Admin Access"
+        title="Admin Access"
+      >
+        <span className="admin-trigger-mark">S</span>
+        <span className="admin-trigger-pulse" aria-hidden="true" />
+      </a>
+
       {isBooting && (
         <div className="portfolio-loading-layer" role="status" aria-live="polite">
           <span className="portfolio-loading-shimmer">Loading portfolio…</span>
@@ -122,11 +139,12 @@ export default function ActiveSectionProvider({
       <main id="main-content">
         {children}
       </main>
-      {/* Footer needs backendLive state, so we clone it with the prop */}
+
+      {/* Footer without visible Admin text */}
       <footer className="site-footer">
         <div className="page-container">
           <div className="footer-top">
-            <a className="brand" href="#home">
+            <a className="brand footer-brand-admin" href="/admin/login" title="Admin Portal" aria-label="Admin Portal">
               <span className="brand-mark">
                 s<span>.</span>
               </span>
@@ -147,7 +165,7 @@ export default function ActiveSectionProvider({
               <span className="status-dot" />
               {backendLive ? "Contact channel online" : "Let's connect"}
             </span>
-            <div>
+            <div className="footer-links-list">
               <a href="https://github.com/shashankshinde38-lab" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
@@ -159,9 +177,6 @@ export default function ActiveSectionProvider({
                 LinkedIn
               </a>
               <a href="mailto:shashankshinde38@gmail.com">Email</a>
-              <a href="/admin/login" className="footer-admin-link">
-                Admin
-              </a>
             </div>
           </div>
         </div>
@@ -169,6 +184,3 @@ export default function ActiveSectionProvider({
     </div>
   );
 }
-
-/* Need this import for the footer ArrowUpRight icon */
-import { ArrowUpRight } from "lucide-react";

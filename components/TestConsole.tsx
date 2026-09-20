@@ -1,192 +1,190 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Terminal, Play, ChevronRight } from "lucide-react";
-import StatusBadge from "@/components/StatusBadge";
-import { useReducedMotion, DURATION } from "@/hooks/useReducedMotion";
+import { Terminal, CheckCircle2, Play, Sparkles, ShieldCheck } from "lucide-react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-/* ------------------------------------------------------------------ */
-/*  Data for the three tabbed views                                    */
-/* ------------------------------------------------------------------ */
-
-interface TestLine {
-  name: string;
-  status: "pass" | "warn" | "fail";
+interface SuiteDetail {
+  title: string;
+  command: string;
+  suite: string;
+  env: string;
+  browser: string;
+  total: number;
+  passed: number;
+  skipped: number;
+  failed: number;
   duration: string;
+  coverage: string;
+  details: string[];
 }
 
-interface ConsoleView {
-  tab: string;
-  file: string;
-  tests: TestLine[];
-  summary: string;
-}
-
-const CONSOLE_VIEWS: ConsoleView[] = [
+const SUITES: SuiteDetail[] = [
   {
-    tab: "E2E Suite",
-    file: "auth.spec.ts",
-    tests: [
-      { name: "Login flow with valid credentials", status: "pass", duration: "0.6s" },
-      { name: "RBAC permission boundary check", status: "pass", duration: "0.8s" },
-      { name: "Session timeout and refresh", status: "pass", duration: "0.4s" },
-      { name: "Checkout payment gateway E2E", status: "pass", duration: "1.2s" },
+    title: "Regression",
+    command: "test-suite run --all",
+    suite: "regression",
+    env: "staging",
+    browser: "Chrome 125 | headless",
+    total: 124,
+    passed: 124,
+    skipped: 2,
+    failed: 0,
+    duration: "18.42s",
+    coverage: "96.7%",
+    details: [
+      "✓ Auth & RBAC boundary checks",
+      "✓ Multi-cart checkout concurrency",
+      "✓ Payment gateway webhook assertions",
+      "✓ Geospatial route calculation & dispatch",
     ],
-    summary: "24/24 passed · 2.4s",
   },
   {
-    tab: "Load Test",
-    file: "jmeter-stress.jmx",
-    tests: [
-      { name: "100k concurrent users ramp-up", status: "pass", duration: "12.1s" },
-      { name: "Throughput ≥ 25k req/s", status: "pass", duration: "—" },
-      { name: "P99 latency < 200ms", status: "pass", duration: "42ms" },
+    title: "Load & Stress",
+    command: "jmeter -n -t stress-suite.jmx",
+    suite: "distributed-stress",
+    env: "pre-production",
+    browser: "JMeter Engine (100k VUs)",
+    total: 3,
+    passed: 3,
+    skipped: 0,
+    failed: 0,
+    duration: "45.20s",
+    coverage: "99.9% uptime",
+    details: [
+      "✓ 100k concurrent users ramp-up",
+      "✓ Sustained throughput ≥ 25k req/s",
+      "✓ P99 latency threshold < 180ms",
     ],
-    summary: "3/3 passed · 45.2s",
   },
   {
-    tab: "API Check",
-    file: "api-contract.test.ts",
-    tests: [
-      { name: "GET /users — schema valid", status: "pass", duration: "0.1s" },
-      { name: "POST /orders — 201 created", status: "pass", duration: "0.3s" },
-      { name: "Auth token expiry returns 401", status: "pass", duration: "0.2s" },
+    title: "API Contract",
+    command: "pytest tests/api/ -v",
+    suite: "rest-contract",
+    env: "staging",
+    browser: "REST Assured / Postman",
+    total: 58,
+    passed: 58,
+    skipped: 0,
+    failed: 0,
+    duration: "4.15s",
+    coverage: "100% schema match",
+    details: [
+      "✓ JSON Schema & OpenAPI 3.1 validation",
+      "✓ JWT revocation & expired token 401s",
+      "✓ Idempotency key race-condition checks",
     ],
-    summary: "18/18 passed · 1.8s",
   },
 ];
 
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
-
 export default function TestConsole() {
   const [activeTab, setActiveTab] = useState(0);
-  const [revealedLines, setRevealedLines] = useState<number>(0);
+  const [revealed, setRevealed] = useState(false);
   const { prefersReduced } = useReducedMotion();
-  const autoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lineTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const currentSuite = SUITES[activeTab];
+  const cycleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const view = CONSOLE_VIEWS[activeTab];
-  const totalLines = view.tests.length;
-
-  /* Animate lines revealing one-by-one */
-  const revealLines = useCallback(() => {
-    if (prefersReduced) {
-      setRevealedLines(totalLines);
-      return;
-    }
-    setRevealedLines(0);
-    let i = 0;
-    const tick = () => {
-      i++;
-      setRevealedLines(i);
-      if (i < totalLines) {
-        lineTimer.current = setTimeout(tick, DURATION.MICRO + 100);
-      }
-    };
-    lineTimer.current = setTimeout(tick, DURATION.STANDARD);
-  }, [prefersReduced, totalLines]);
-
-  /* When tab changes, start line reveal */
   useEffect(() => {
-    revealLines();
-    return () => {
-      if (lineTimer.current) clearTimeout(lineTimer.current);
-    };
-  }, [activeTab, revealLines]);
+    setRevealed(false);
+    const t = setTimeout(() => setRevealed(true), 120);
+    return () => clearTimeout(t);
+  }, [activeTab]);
 
-  /* Auto-cycle tabs every 5s (after reveal completes) */
+  // Auto-cycle through test suites every 7 seconds if not reduced motion
   useEffect(() => {
     if (prefersReduced) return;
-
-    const scheduleNext = () => {
-      autoTimer.current = setTimeout(() => {
-        setActiveTab((prev) => (prev + 1) % CONSOLE_VIEWS.length);
-      }, 5000);
-    };
-
-    /* Wait for all lines to reveal, then schedule */
-    const revealTime = DURATION.STANDARD + totalLines * (DURATION.MICRO + 100);
-    const delay = setTimeout(scheduleNext, revealTime);
+    cycleTimer.current = setTimeout(() => {
+      setActiveTab((prev) => (prev + 1) % SUITES.length);
+    }, 7000);
 
     return () => {
-      clearTimeout(delay);
-      if (autoTimer.current) clearTimeout(autoTimer.current);
+      if (cycleTimer.current) clearTimeout(cycleTimer.current);
     };
-  }, [activeTab, prefersReduced, totalLines]);
+  }, [activeTab, prefersReduced]);
 
-  const handleTabClick = (index: number) => {
-    if (autoTimer.current) clearTimeout(autoTimer.current);
-    if (lineTimer.current) clearTimeout(lineTimer.current);
+  const handleSelectTab = (index: number) => {
+    if (cycleTimer.current) clearTimeout(cycleTimer.current);
     setActiveTab(index);
   };
 
   return (
-    <div className="test-console" role="region" aria-label="Interactive test runner console">
-      {/* Chrome / title bar */}
-      <div className="console-chrome">
-        <div className="console-dots">
-          <i />
-          <i />
-          <i />
-        </div>
-        <span className="console-title">
-          <Terminal size={12} /> test-runner
-        </span>
-        <span className="console-run">
-          <Play size={10} /> Running
-        </span>
-      </div>
+    <div className="hero-terminal-3d-wrapper" role="region" aria-label="Interactive QA test runner terminal">
+      {/* Soft volumetric glow backing the 3D window */}
+      <div className="terminal-volumetric-glow" aria-hidden="true" />
 
-      {/* Tab bar */}
-      <div className="console-tabs" role="tablist" aria-label="Test suite views">
-        {CONSOLE_VIEWS.map((v, i) => (
-          <button
-            key={v.tab}
-            role="tab"
-            aria-selected={i === activeTab}
-            className={`console-tab${i === activeTab ? " console-tab--active" : ""}`}
-            onClick={() => handleTabClick(i)}
-          >
-            {v.tab}
-          </button>
-        ))}
-      </div>
+      {/* Floating 3D Glass Window Container */}
+      <div className="terminal-3d-window">
+        {/* macOS-style Chrome Header matching Image 2 */}
+        <div className="terminal-window-header">
+          <div className="terminal-window-dots" aria-hidden="true">
+            <span className="dot dot-red" />
+            <span className="dot dot-yellow" />
+            <span className="dot dot-green" />
+          </div>
 
-      {/* Console body */}
-      <div className="console-body" role="tabpanel" aria-label={view.tab}>
-        {/* Spec file */}
-        <div className="console-spec">
-          <ChevronRight size={12} />
-          <span>{view.file}</span>
+          <div className="terminal-window-title">
+            <code>test-suite run --all</code>
+          </div>
+
+          <div className="terminal-header-spacer" aria-hidden="true" />
         </div>
 
-        {/* Test lines */}
-        <div className="console-tests">
-          {view.tests.map((test, i) => (
-            <div
-              key={`${activeTab}-${i}`}
-              className={`console-test-line${i < revealedLines ? " is-visible" : ""}`}
-              style={
-                !prefersReduced
-                  ? { transitionDelay: `${i * 80}ms` }
-                  : undefined
-              }
-            >
-              <StatusBadge status={test.status} />
-              <span className="console-test-name">{test.name}</span>
-              <span className="console-test-duration">{test.duration}</span>
+        {/* Terminal Body matching Image 2 */}
+        <div className="terminal-window-body">
+          {/* Telemetry execution lines */}
+          <div className="terminal-telemetry-lines">
+            <p className="terminal-line log-env">
+              <span className="term-arrow">&gt;</span> Running test suite:{" "}
+              <span className="term-highlight">{currentSuite.suite}</span>
+            </p>
+            <p className="terminal-line log-env">
+              <span className="term-arrow">&gt;</span> Environment:{" "}
+              <span className="term-value">{currentSuite.env}</span>
+            </p>
+            <p className="terminal-line log-env">
+              <span className="term-arrow">&gt;</span> Browser:{" "}
+              <span className="term-value">{currentSuite.browser}</span>
+            </p>
+          </div>
+
+          {/* Test results with pass checkmarks matching Image 2 */}
+          <div className={`terminal-results-block${revealed ? " is-visible" : ""}`}>
+            <div className="terminal-log-line pass-title">
+              <span className="term-check">✓</span>
+              <span>All tests passed ({currentSuite.total})</span>
             </div>
-          ))}
-        </div>
 
-        {/* Summary */}
-        <div
-          className={`console-summary${revealedLines >= totalLines ? " is-visible" : ""}`}
-        >
-          <span className="console-summary-label">Summary</span>
-          <span className="console-summary-value">{view.summary}</span>
+            <div className="terminal-log-line">
+              <span className="term-check">✓</span>
+              <span>{currentSuite.passed} passed</span>
+            </div>
+
+            <div className="terminal-log-line">
+              <span className="term-check">✓</span>
+              <span>{currentSuite.skipped} skipped</span>
+            </div>
+
+            <div className="terminal-log-line">
+              <span className="term-check">✓</span>
+              <span>{currentSuite.failed} failed</span>
+            </div>
+
+            <div className="terminal-log-stat indented">
+              Test duration: {currentSuite.duration}
+            </div>
+
+            <div className="terminal-log-stat indented">
+              Coverage: {currentSuite.coverage}
+            </div>
+
+            {/* Quality assured footer matching Image 2 */}
+            <div className="terminal-quality-assured">
+              <span className="term-sparkle-symbol">✨</span>
+              <span>Quality assured. Shipping with confidence.</span>
+            </div>
+
+            <div className="terminal-blinking-cursor" aria-hidden="true">|</div>
+          </div>
         </div>
       </div>
     </div>

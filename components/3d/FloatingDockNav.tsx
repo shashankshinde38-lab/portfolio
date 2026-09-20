@@ -7,32 +7,48 @@ import {
   ChevronRight,
   Terminal,
   X,
+  Home,
+  TestTube2,
+  Activity,
+  ShieldCheck,
+  Sparkles,
+  User,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
-/* Navigation Items                                                   */
+/* Navigation Items matching Image 2 Reference                        */
 /* ------------------------------------------------------------------ */
 
 const NAV_ITEMS = [
   {
-    id: "about",
-    label: "About",
-    cmd: "about",
-  },
-  {
-    id: "skills",
-    label: "Skills",
-    cmd: "skills",
-  },
-  {
-    id: "cases",
-    label: "Projects",
-    cmd: "projects",
+    id: "home",
+    label: "Overview",
+    icon: Home,
+    cmd: "overview",
   },
   {
     id: "simulator",
-    label: "Testing Lab",
-    cmd: "testing-lab",
+    label: "Testing",
+    icon: TestTube2,
+    cmd: "testing",
+  },
+  {
+    id: "skills",
+    label: "Quality",
+    icon: Activity,
+    cmd: "quality",
+  },
+  {
+    id: "cases",
+    label: "Automation",
+    icon: ShieldCheck,
+    cmd: "automation",
+  },
+  {
+    id: "experience",
+    label: "Insights",
+    icon: Sparkles,
+    cmd: "insights",
   },
 ];
 
@@ -163,20 +179,38 @@ export default function FloatingDockNav({
         {/* Desktop Navigation                                         */}
         {/* ---------------------------------------------------------- */}
 
-        <div className="nav-links-desktop">
-          {NAV_ITEMS.map((item) => {
+        <div className="nav-links-desktop" role="menubar">
+          {NAV_ITEMS.map((item, index) => {
             const isActive = activeSection === item.id;
+            const Icon = item.icon;
 
             return (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                aria-current={isActive ? "location" : undefined}
-              >
-                <span>{item.label}</span>
-              </a>
+              <div key={item.id} className="nav-pill-entry">
+                <a
+                  href={`#${item.id}`}
+                  className={`nav-pill-item${isActive ? " is-active" : ""}`}
+                  aria-current={isActive ? "location" : undefined}
+                >
+                  <Icon size={14} strokeWidth={1.8} className="nav-pill-icon" />
+                  <span>{item.label}</span>
+                  {isActive && <span className="nav-active-glow" aria-hidden="true" />}
+                </a>
+                {index < NAV_ITEMS.length - 1 && (
+                  <span className="nav-pill-divider" aria-hidden="true">
+                    |
+                  </span>
+                )}
+              </div>
             );
           })}
+          <a
+            href="#about"
+            className="nav-avatar-btn"
+            aria-label="About Shashank Shinde profile"
+            title="Shashank Shinde — QA Engineer"
+          >
+            <User size={15} strokeWidth={2} />
+          </a>
         </div>
 
         {/* ---------------------------------------------------------- */}
