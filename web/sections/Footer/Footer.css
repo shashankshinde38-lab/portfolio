@@ -85,4 +85,16 @@
   outline: none;
 }
 
+.footer-brand-admin {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.footer-links-list {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+
 

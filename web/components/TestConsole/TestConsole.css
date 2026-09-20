@@ -454,6 +454,36 @@
   position: relative;
 }
 
+.terminal-window-dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  z-index: 1;
+}
+
+.terminal-window-dots .dot,
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-red {
+  background: #FF5C6C;
+  box-shadow: 0 0 6px rgba(255, 92, 108, 0.4);
+}
+
+.dot-yellow {
+  background: #F5A83C;
+  box-shadow: 0 0 6px rgba(245, 168, 60, 0.4);
+}
+
+.dot-green {
+  background: #35D48A;
+  box-shadow: 0 0 6px rgba(53, 212, 138, 0.4);
+}
+
 .terminal-window-title {
   position: absolute;
   left: 50%;
@@ -477,6 +507,11 @@
   color: #E2E8F0;
 }
 
+.log-env {
+  color: var(--text-secondary);
+}
+
+.pass-title,
 .terminal-log-line.pass-title {
   color: #FFFFFF;
   font-size: 0.95rem;
@@ -484,6 +519,12 @@
   margin-bottom: 8px;
 }
 
+.term-check {
+  color: #10B981;
+  font-weight: 700;
+}
+
+.indented,
 .terminal-log-stat.indented {
   padding-left: 20px;
   color: var(--text-secondary);
@@ -491,9 +532,11 @@
   margin: 4px 0;
 }
 
+.term-sparkle-symbol,
 .terminal-sparkle-symbol {
   font-size: 0.95rem;
 }
+
 
 .terminal-blinking-cursor {
   color: #A78BFA;

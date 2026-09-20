@@ -1,16 +1,14 @@
 /* ===================================================================
    NOT FOUND PAGE (404)
    =================================================================== */
-/* ===================================================================
-   NOT FOUND PAGE
-   =================================================================== */
+
 .not-found-page {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-6);
+  padding: var(--space-6, 24px);
   gap: 30px;
 }
 
@@ -20,7 +18,33 @@
   padding: 50px;
 }
 
-.not-found-panel>.icon-tile {
+.surface-glass {
+  background: rgba(14, 18, 28, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-panel, 20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.icon-tile {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-tile.icon-amber,
+.icon-amber {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+.not-found-panel > .icon-tile {
   margin-bottom: 30px;
 }
 
@@ -42,7 +66,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-3, 12px);
   margin-top: 30px;
 }
 
@@ -60,15 +84,14 @@
 }
 
 .not-found-report-link:hover {
-  color: var(--accent-light);
+  color: var(--accent-light, #a78bfa);
 }
 
 .not-found-footer-credit,
-.not-found-page>p {
+.not-found-page > p {
   font-family: var(--font-jetbrains-mono, monospace);
   font-size: 0.8rem;
   color: rgba(148, 163, 184, 0.65);
   letter-spacing: 0.03em;
   text-align: center;
 }
-

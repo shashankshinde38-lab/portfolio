@@ -376,11 +376,24 @@
     0 0 50px rgba(124, 108, 255, 0.38);
 }
 
+.profile-panel-glow {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .profile-top-header {
   display: flex;
   align-items: center;
   gap: 14px;
   justify-content: space-between;
+  position: relative;
+  z-index: 1;
 }
 
 .profile-avatar-circle {
@@ -395,6 +408,15 @@
   color: #C4B5FD;
   position: relative;
   box-shadow: 0 0 18px rgba(124, 108, 255, 0.4);
+}
+
+.profile-avatar-pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  border: 1px solid rgba(167, 139, 250, 0.45);
+  animation: pulse-glow 2.4s infinite ease-in-out;
+  pointer-events: none;
 }
 
 .profile-title-block h3 {
@@ -423,9 +445,11 @@
   font-weight: 500;
 }
 
-.status-dot.live-pulse {
+.status-dot.live-pulse,
+.live-pulse {
   background: #A78BFA;
   box-shadow: 0 0 8px #A78BFA;
+  animation: pulse-glow 2s infinite ease-in-out;
 }
 
 .profile-circuit-diagram {
@@ -438,9 +462,52 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+.circuit-grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(167, 139, 250, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(167, 139, 250, 0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+  pointer-events: none;
+}
+
+.circuit-node {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #A78BFA;
+  box-shadow: 0 0 8px #A78BFA;
+}
+
+.circuit-node.node-left,
+.node-left {
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.circuit-node.node-right,
+.node-right {
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.circuit-node.node-top,
+.node-top {
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .circuit-target-ring {
+  position: relative;
+  z-index: 1;
   width: 76px;
   height: 76px;
   border-radius: 9999px;
@@ -450,6 +517,7 @@
   justify-content: center;
   box-shadow: 0 0 24px rgba(124, 108, 255, 0.3);
 }
+
 
 .circuit-inner-ring {
   width: 44px;
@@ -828,6 +896,7 @@
 
 
 /* Violet */
+.violet,
 .stat-icon-wrap.violet {
   background:
     linear-gradient(145deg,
@@ -843,6 +912,7 @@
 
 
 /* Cyan */
+.cyan,
 .stat-icon-wrap.cyan {
   background:
     linear-gradient(145deg,
@@ -858,6 +928,7 @@
 
 
 /* Blue */
+.blue,
 .stat-icon-wrap.blue {
   background:
     linear-gradient(145deg,
@@ -873,6 +944,7 @@
 
 
 /* Indigo */
+.indigo,
 .stat-icon-wrap.indigo {
   background:
     linear-gradient(145deg,
@@ -883,7 +955,7 @@
 
   box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.12),
-    0 0 18px rgba(99, 102, 241, 0.18);
+    0 0 18px rgba(99, 102, 241, 0.20);
 }
 
 

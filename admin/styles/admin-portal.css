@@ -2,6 +2,12 @@
    SECTION 2: ADMIN DASHBOARD, SHELL, ENQUIRIES & PORTAL (DOWN)
    ========================================================================== */
 
+:root {
+  --bg-primary: #08090d;
+  --accent-cyan: #22d3ee;
+  --border: rgba(255, 255, 255, 0.08);
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -116,6 +122,24 @@
   font-size: 28px;
   margin-bottom: 18px;
 }
+
+.admin-kicker {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent, #f97316);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.admin-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary, #94a3b8);
+  margin-top: -12px;
+  margin-bottom: 20px;
+}
+
 
 .admin-muted,
 .admin-empty {

@@ -98,7 +98,8 @@
   margin: 0;
 }
 
-.defect-desc.symptom {
+.defect-desc.symptom,
+.symptom {
   color: #ffa4ad;
 }
 
@@ -182,4 +183,26 @@
   color: var(--accent);
   overflow-x: auto;
 }
+
+.defect-interactive-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.defect-resolved-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  animation: expand-down var(--duration-standard) var(--ease-out);
+}
+
+.defect-static-resolution {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
 

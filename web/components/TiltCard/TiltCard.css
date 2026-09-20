@@ -65,6 +65,7 @@
 
 .tilt-card {
   position: relative;
+  --tilt-glare-opacity: 0;
 
   width: 100%;
   max-width: 100%;
@@ -280,4 +281,24 @@
     display: none;
   }
 }
+
+/* =========================================================
+   TILT GLARE LAYER
+   ========================================================= */
+.tilt-card__glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+  background: radial-gradient(
+    circle at var(--tilt-glow-x, 50%) var(--tilt-glow-y, 50%),
+    rgba(255, 255, 255, var(--tilt-glare-opacity, 0.15)),
+    transparent 70%
+  );
+  opacity: var(--tilt-glare-opacity, 0);
+  transition: opacity var(--duration-micro, 150ms) ease;
+  z-index: 2;
+}
+
 

@@ -27,6 +27,12 @@
   border-bottom: 1px solid var(--border);
 }
 
+.defect-lab-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .defect-lab-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -114,4 +120,15 @@
   font-weight: 700;
   color: var(--accent);
 }
+
+.defect-tab-cat {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.defect-tab-check {
+  color: var(--pass, #35d48a);
+  margin-left: 2px;
+}
+
 

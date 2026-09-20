@@ -54,22 +54,30 @@
   gap: 6px;
 }
 
-.simulator-window-dots .dot {
+.simulator-window-dots .dot,
+.dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
+  display: inline-block;
 }
 
-.simulator-window-dots .dot-red {
+.simulator-window-dots .dot-red,
+.dot-red {
   background: #FF5C6C;
+  box-shadow: 0 0 6px rgba(255, 92, 108, 0.4);
 }
 
-.simulator-window-dots .dot-yellow {
+.simulator-window-dots .dot-yellow,
+.dot-yellow {
   background: #F5A83C;
+  box-shadow: 0 0 6px rgba(245, 168, 60, 0.4);
 }
 
-.simulator-window-dots .dot-green {
+.simulator-window-dots .dot-green,
+.dot-green {
   background: #35D48A;
+  box-shadow: 0 0 6px rgba(53, 212, 138, 0.4);
 }
 
 .simulator-terminal-name {
@@ -142,6 +150,11 @@
   color: var(--text-primary);
 }
 
+.simulator-status-indicator {
+  display: flex;
+  align-items: center;
+}
+
 .simulator-state-chip {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
@@ -151,12 +164,14 @@
   letter-spacing: 0.05em;
 }
 
+.standby,
 .simulator-state-chip.standby {
   color: var(--text-secondary);
   border: 1px solid rgba(141, 153, 166, 0.2);
   background: rgba(141, 153, 166, 0.05);
 }
 
+.running,
 .simulator-state-chip.running {
   color: var(--accent);
   border: 1px solid rgba(110, 124, 251, 0.3);
@@ -298,6 +313,13 @@
   gap: 8px;
 }
 
+.simulator-meta-info .separator,
+.separator {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+
 .simulator-btn-group {
   display: flex;
   align-items: center;
@@ -318,6 +340,7 @@
   transition: all var(--duration-standard) ease;
 }
 
+.primary,
 .simulator-btn.primary {
   background: var(--accent);
   color: #07090c;
@@ -329,6 +352,7 @@
   filter: brightness(1.1);
 }
 
+.secondary,
 .simulator-btn.secondary {
   background: transparent;
   color: var(--text-secondary);

@@ -16,7 +16,6 @@
 }
 
 @keyframes status-pulse {
-
   0%,
   100% {
     opacity: 1;
@@ -28,6 +27,136 @@
     transform: scale(1.1);
   }
 }
+
+/* Accordion & drawer expansion */
+@keyframes expand-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 2000px;
+  }
+}
+
+/* Pulsing subtle ambient glow */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+}
+
+/* Monospace terminal cursor blink */
+@keyframes cursor-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes cursorBlink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Floating idle for profile card */
+@keyframes floatingIdleProfile {
+  0%, 100% {
+    transform: perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0);
+  }
+  50% {
+    transform: perspective(1200px) rotateX(1deg) rotateY(-1.5deg) translateY(-8px);
+  }
+}
+
+/* 3D Workstation holographic animations */
+@keyframes workstation-float {
+  0%, 100% {
+    transform: translateY(0) rotateX(var(--scene-rx, 0deg)) rotateY(var(--scene-ry, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotateX(var(--scene-rx, 0deg)) rotateY(var(--scene-ry, 0deg));
+  }
+}
+
+@keyframes window-float {
+  0%, 100% {
+    transform: translateY(0) rotateY(var(--rotate-y, 0deg)) rotateX(var(--rotate-x, 0deg)) rotateZ(var(--rotate-z, 0deg)) translateZ(var(--tz, 0px));
+  }
+  50% {
+    transform: translateY(-8px) rotateY(var(--rotate-y, 0deg)) rotateX(var(--rotate-x, 0deg)) rotateZ(var(--rotate-z, 0deg)) translateZ(var(--tz, 0px));
+  }
+}
+
+@keyframes device-float {
+  0%, 100% {
+    transform: translateY(0) rotateY(var(--rotate-y, -14deg)) rotateX(var(--rotate-x, 4deg)) rotateZ(var(--rotate-z, 6deg)) translateZ(var(--tz, 45px));
+  }
+  50% {
+    transform: translateY(-9px) rotateY(var(--rotate-y, -14deg)) rotateX(var(--rotate-x, 4deg)) rotateZ(var(--rotate-z, 6deg)) translateZ(var(--tz, 45px));
+  }
+}
+
+@keyframes bug-float {
+  0%, 100% {
+    transform: translateY(0) rotateY(var(--rotate-y, -6deg)) rotateX(var(--rotate-x, 3deg)) rotateZ(var(--rotate-z, 2deg)) translateZ(var(--tz, 65px));
+  }
+  50% {
+    transform: translateY(-6px) rotateY(var(--rotate-y, -6deg)) rotateX(var(--rotate-x, 3deg)) rotateZ(var(--rotate-z, 2deg)) translateZ(var(--tz, 65px));
+  }
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(100px);
+    opacity: 0;
+  }
+}
+
+@keyframes hero-glow {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes holographic-text {
+  0% {
+    filter: drop-shadow(0 0 10px rgba(127, 255, 212, 0.4));
+  }
+  100% {
+    filter: drop-shadow(0 0 25px rgba(0, 245, 255, 0.7));
+  }
+}
+
 
 
 
