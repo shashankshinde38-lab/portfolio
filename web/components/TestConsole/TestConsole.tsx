@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Terminal, CheckCircle2, Play, Sparkles, ShieldCheck } from "lucide-react";
 import { useReducedMotion } from "@/web/hooks/useReducedMotion";
+import "./TestConsole.css";
 
 interface SuiteDetail {
   title: string;

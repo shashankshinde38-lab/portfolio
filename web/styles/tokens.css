@@ -1,0 +1,91 @@
+/* ===================================================================
+   Tailwind v4 theme extension & Design tokens
+   =================================================================== */
+@theme {
+  --color-ink: #0B0E12;
+  --color-surface: #141920;
+  --color-text-primary: #EDF1F4;
+  --color-text-secondary: #8D99A6;
+  --color-accent: #6E7CFB;
+  --color-pass: #35D48A;
+  --color-warn: #F5A83C;
+  --color-fail: #FF5C6C;
+  --radius-control: 8px;
+  --radius-panel: 16px;
+}
+
+/* ===================================================================
+   Design tokens — CSS custom properties
+   =================================================================== */
+:root {
+  color-scheme: dark;
+
+  /* Core palette — near-black deep space */
+  --ink: #050507;
+  --surface: rgba(12, 14, 22, 0.75);
+  --surface-glass: rgba(14, 17, 28, 0.7);
+  --surface-elevated: rgba(18, 22, 36, 0.85);
+  --text-primary: #F3F4F6;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+
+  /* Primary Accent: Electric indigo / soft violet (#7C6CFF → #A78BFA) */
+  --accent: #7C6CFF;
+  --accent-light: #A78BFA;
+  --accent-glow: rgba(124, 108, 255, 0.28);
+  --accent-glow-strong: rgba(124, 108, 255, 0.45);
+  --accent-gradient: linear-gradient(135deg, #7C6CFF 0%, #A78BFA 100%);
+
+  /* Secondary: Soft cyan for success/passed states */
+  --cyan-accent: #22D3EE;
+  --cyan-glow: rgba(34, 211, 238, 0.25);
+  --pass: #10B981;
+  --pass-glow: rgba(16, 185, 129, 0.22);
+  --warn: #F59E0B;
+  --fail: #EF4444;
+  --fail-glow: rgba(239, 68, 68, 0.25);
+
+  /* Derived borders & glass */
+  --border: rgba(124, 108, 255, 0.16);
+  --border-light: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(167, 139, 250, 0.35);
+  --surface-hover: rgba(20, 24, 40, 0.85);
+  --glass-blur: blur(24px) saturate(180%);
+
+  /* Fonts (set by next/font className variables) */
+  --font-display: var(--font-space-grotesk), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  /* Radius — exactly two values */
+  --radius-control: 8px;
+  --radius-panel: 16px;
+
+  /* Motion */
+  --duration-micro: 150ms;
+  --duration-standard: 300ms;
+  --duration-hero: 600ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* 3D Depth system tokens */
+  --depth-surface: 0px;
+  --depth-content: 12px;
+  --depth-icon: 20px;
+  --depth-badge: 24px;
+  --depth-symbol: 28px;
+  --depth-highlight: 36px;
+}
+

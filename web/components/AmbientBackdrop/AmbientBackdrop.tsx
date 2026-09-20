@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import "./AmbientBackdrop.css";
 
 export default function AmbientBackdrop() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);

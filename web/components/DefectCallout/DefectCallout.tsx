@@ -2,6 +2,7 @@
 
 import { Bug, CheckCircle2, ChevronDown, Sparkles } from "lucide-react";
 import StatusBadge from "@/web/components/StatusBadge/StatusBadge";
+import "./DefectCallout.css";
 
 export type DefectSeverity = "CRITICAL" | "HIGH" | "MEDIUM";
 

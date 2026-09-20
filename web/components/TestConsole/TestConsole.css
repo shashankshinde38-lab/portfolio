@@ -1,0 +1,688 @@
+/* ===================================================================
+   TEST CONSOLE — INTERACTIVE HERO TERMINAL
+   =================================================================== */
+/* ===================================================================
+   TEST CONSOLE — single interactive terminal in the hero
+   =================================================================== */
+.test-console {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  font-family: var(--font-mono);
+  animation: console-arrive var(--duration-hero) var(--ease-out) both;
+}
+
+@keyframes console-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.console-chrome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(20, 25, 32, 0.6);
+}
+
+.console-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.console-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(141, 153, 166, 0.25);
+}
+
+.console-dots i:first-child {
+  background: rgba(255, 92, 108, 0.6);
+}
+
+.console-dots i:nth-child(2) {
+  background: rgba(245, 168, 60, 0.6);
+}
+
+.console-dots i:nth-child(3) {
+  background: rgba(53, 212, 138, 0.6);
+}
+
+.console-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.console-run {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--accent);
+}
+
+/* Tabs */
+.console-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.console-tab {
+  flex: 1;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--duration-micro) var(--ease-out),
+    border-color var(--duration-micro) var(--ease-out);
+}
+
+.console-tab:hover {
+  color: var(--text-primary);
+}
+
+.console-tab--active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Body */
+.console-body {
+  padding: 16px;
+}
+
+.console-spec {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.console-spec svg {
+  color: var(--accent);
+}
+
+/* Test lines */
+.console-tests {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.console-test-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(110, 124, 251, 0.06);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity var(--duration-standard) var(--ease-out),
+    transform var(--duration-standard) var(--ease-out);
+}
+
+.console-test-line.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.console-test-name {
+  flex: 1;
+  font-size: 12px;
+  color: var(--text-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.console-test-duration {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Summary */
+.console-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  transition: opacity var(--duration-standard) var(--ease-out);
+}
+
+.console-summary.is-visible {
+  opacity: 1;
+}
+
+.console-summary-label {
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.console-summary-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+
+/* TERMINAL 3D WINDOW — PREMIUM HOVER & DEPTHS */
+/* =========================================================
+   TERMINAL 3D WINDOW — PREMIUM HOVER
+   ========================================================= */
+
+.terminal-3d-window {
+  position: relative;
+
+  transform:
+    perspective(1200px) rotateY(0deg) rotateX(0deg) translate3d(0, 0, 0) scale3d(1, 1, 1);
+
+  transform-style: preserve-3d;
+  transform-origin: center center;
+
+  backface-visibility: hidden;
+
+  will-change: transform, box-shadow;
+
+  transition:
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 400ms ease,
+    background 400ms ease;
+}
+
+
+/* ---------------------------------------------------------
+   Glass highlight
+   --------------------------------------------------------- */
+
+.terminal-3d-window::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  border-radius: inherit;
+
+  padding: 1px;
+
+  background:
+    linear-gradient(145deg,
+      rgba(255, 255, 255, 0.32) 0%,
+      rgba(183, 175, 255, 0.18) 18%,
+      rgba(255, 255, 255, 0.05) 45%,
+      transparent 72%);
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+
+  opacity: 0.9;
+
+  z-index: 10;
+}
+
+
+/* ---------------------------------------------------------
+   Internal purple light
+   --------------------------------------------------------- */
+
+.terminal-3d-window::after {
+  content: "";
+
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  top: -130px;
+  right: -80px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(circle,
+      rgba(124, 108, 255, 0.24),
+      rgba(124, 108, 255, 0.08) 40%,
+      transparent 72%);
+
+  filter: blur(25px);
+
+  pointer-events: none;
+
+  opacity: 0.7;
+
+  transition:
+    opacity 500ms ease,
+    transform 600ms ease;
+
+  z-index: 0;
+}
+
+
+/* =========================================================
+   DESKTOP HOVER
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  .terminal-3d-window:hover {
+    animation-play-state: paused;
+
+    transform:
+      perspective(1200px) rotateY(-2deg) rotateX(1.5deg) translate3d(0, -8px, 24px) scale3d(1.015, 1.015, 1.015);
+
+    border-color:
+      rgba(167, 139, 250, 0.65);
+
+    box-shadow:
+      0 12px 25px rgba(0, 0, 0, 0.55),
+      0 35px 70px rgba(0, 0, 0, 0.78),
+      0 55px 110px rgba(0, 0, 0, 0.88),
+      0 0 45px rgba(124, 108, 255, 0.32),
+      0 0 100px rgba(124, 108, 255, 0.12),
+      inset 0 1px 2px rgba(255, 255, 255, 0.25),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.45);
+  }
+
+  .terminal-3d-window:hover::after {
+    opacity: 1;
+
+    transform:
+      translate3d(-20px, 20px, 30px) scale(1.15);
+  }
+}
+
+
+/* =========================================================
+   TERMINAL CONTENT DEPTH
+   ========================================================= */
+
+.terminal-3d-window>* {
+  position: relative;
+
+  z-index: 2;
+
+  transform-style: preserve-3d;
+}
+
+
+/* Optional deeper terminal content */
+.terminal-3d-window .terminal-header {
+  transform: translate3d(0, 0, 18px);
+}
+
+.terminal-3d-window .terminal-content {
+  transform: translate3d(0, 0, 12px);
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  .terminal-3d-window {
+    transform:
+      perspective(1000px) rotateY(0deg) rotateX(0deg) translate3d(0, 0, 0) scale3d(1, 1, 1);
+  }
+
+  .terminal-3d-window::after {
+    opacity: 0.45;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .terminal-3d-window {
+    transform:
+      perspective(900px) rotateY(0deg) rotateX(0deg) translate3d(0, 0, 0) scale3d(1, 1, 1);
+
+    transition:
+      transform 350ms ease,
+      box-shadow 350ms ease;
+  }
+
+  .terminal-3d-window .terminal-header,
+  .terminal-3d-window .terminal-content {
+    transform: none;
+  }
+
+  .terminal-3d-window::after {
+    opacity: 0.25;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+  .terminal-3d-window {
+    transform: none;
+
+    transform-style: flat;
+
+    box-shadow:
+      0 15px 35px rgba(0, 0, 0, 0.65),
+      inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  }
+
+  .terminal-3d-window::after {
+    display: none;
+  }
+
+  .terminal-3d-window .terminal-header,
+  .terminal-3d-window .terminal-content {
+    transform: none;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .terminal-3d-window {
+    animation: none !important;
+
+    transform: none !important;
+
+    transition: none !important;
+
+    will-change: auto !important;
+  }
+
+  .terminal-3d-window::after {
+    display: none;
+  }
+}
+
+
+/* TERMINAL WINDOW HEADER & TELEMETRY */
+.terminal-window-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: rgba(14, 18, 32, 0.65);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+}
+
+.terminal-window-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: rgba(226, 232, 240, 0.85);
+  letter-spacing: 0.03em;
+}
+
+.terminal-header-spacer {
+  width: 44px;
+}
+
+.terminal-log-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+  font-size: 0.86rem;
+  color: #E2E8F0;
+}
+
+.terminal-log-line.pass-title {
+  color: #FFFFFF;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.terminal-log-stat.indented {
+  padding-left: 20px;
+  color: var(--text-secondary);
+  font-size: 0.825rem;
+  margin: 4px 0;
+}
+
+.terminal-sparkle-symbol {
+  font-size: 0.95rem;
+}
+
+.terminal-blinking-cursor {
+  color: #A78BFA;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-top: 6px;
+  animation: cursorBlink 1s infinite;
+}
+
+.projects-main-title {
+  font-family: "Times New Roman", Times, Georgia, serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.about-heading-row h2 {
+  font-family: "Times New Roman", Times, Georgia, serif;
+  font-size: clamp(2.4rem, 4.6vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.hero-explore-link {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #E2E8F0;
+  text-transform: uppercase;
+}
+
+.terminal-3d-window,
+.project-card-3d,
+.stat-card-3d,
+.profile-panel-3d {
+  -webkit-box-reflect: below 10px linear-gradient(to bottom, transparent 65%, rgba(255, 255, 255, 0.035));
+}
+
+.terminal-window-body {
+  padding: 22px 24px 26px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.terminal-telemetry-lines {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.terminal-line {
+  margin: 4px 0;
+  color: var(--text-secondary);
+  font-size: 0.825rem;
+}
+
+.term-arrow {
+  color: #A78BFA;
+  margin-right: 6px;
+}
+
+.term-highlight {
+  color: #22D3EE;
+  font-weight: 500;
+}
+
+.term-value {
+  color: var(--text-primary);
+}
+
+.terminal-results-block {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.terminal-results-block.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.terminal-pass-headline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #FFFFFF;
+  font-size: 1.02rem;
+  margin-bottom: 12px;
+}
+
+.terminal-pass-headline .term-check {
+  color: #10B981;
+  font-weight: 700;
+}
+
+.terminal-metrics-counters {
+  display: flex;
+  gap: 16px;
+  font-size: 0.825rem;
+  margin-bottom: 12px;
+}
+
+.term-counter-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.term-counter-item.pass {
+  color: #10B981;
+}
+
+.term-counter-item.skip {
+  color: var(--text-secondary);
+}
+
+.term-counter-item.fail {
+  color: #EF4444;
+}
+
+.terminal-stat-summary {
+  display: flex;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+.terminal-stat-summary strong {
+  color: var(--text-primary);
+}
+
+.stat-separator {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.terminal-spec-items {
+  margin: 12px 0;
+}
+
+.terminal-spec-row {
+  margin: 4px 0;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.terminal-quality-assured {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #34D399;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.term-sparkle-icon {
+  color: #FBBF24;
+}
+
+.term-cursor {
+  color: #A78BFA;
+  font-weight: 700;
+  animation: cursorBlink 1s infinite;
+}
+
+@keyframes cursorBlink {
+
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* -------------------------------------------------------------------
+   5. About Section 3D Profile Panel & Dimensional Stats Row (Image 3)
+   ------------------------------------------------------------------- */

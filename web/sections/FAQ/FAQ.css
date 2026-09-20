@@ -1,0 +1,247 @@
+/* ===================================================================
+   FAQ SECTION (AEO / GEO / VSO OPTIMIZATION)
+   =================================================================== */
+/* ===================================================================
+   FAQ Section (AEO / GEO / VSO Optimization)
+   =================================================================== */
+
+.faq-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.faq-item {
+  border: 1px solid rgba(124, 108, 255, 0.16);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(14, 17, 28, 0.8), rgba(8, 10, 18, 0.9));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  transition: all 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.faq-item[open] {
+  border-color: rgba(124, 108, 255, 0.38);
+  box-shadow: 0 12px 36px rgba(124, 108, 255, 0.15), 0 0 20px rgba(124, 108, 255, 0.08);
+}
+
+.faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  gap: 16px;
+  transition: background 200ms ease;
+}
+
+.faq-question::-webkit-details-marker {
+  display: none;
+}
+
+.faq-question:hover {
+  background: rgba(124, 108, 255, 0.06);
+}
+
+.faq-question-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.faq-icon {
+  color: var(--accent-light, #A78BFA);
+  flex-shrink: 0;
+}
+
+.faq-question-text {
+  font-family: var(--font-space-grotesk, sans-serif);
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
+  font-weight: 600;
+  color: #F3F4F6;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.faq-chevron {
+  color: var(--text-secondary, #94A3B8);
+  flex-shrink: 0;
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.faq-item[open] .faq-chevron {
+  transform: rotate(180deg);
+  color: var(--accent-light, #A78BFA);
+}
+
+.faq-answer {
+  padding: 0 24px 22px 52px;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #CBD5E1;
+  animation: fadeInFaq 260ms ease-out;
+}
+
+.faq-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.faq-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-family: var(--font-jetbrains-mono, monospace);
+  font-size: 0.74rem;
+  font-weight: 500;
+  background: rgba(124, 108, 255, 0.1);
+  color: #C4B5FD;
+  border: 1px solid rgba(124, 108, 255, 0.22);
+}
+
+@keyframes fadeInFaq {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .faq-question {
+    padding: 16px 18px;
+  }
+  .faq-answer {
+    padding: 0 18px 18px 18px;
+    font-size: 0.88rem;
+  }
+}
+
+
+.btn-3d-glow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #7C6CFF 0%, #6366F1 100%);
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow:
+    0 12px 28px -5px rgba(124, 108, 255, 0.55),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-3d-glow:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:
+    0 18px 36px -4px rgba(124, 108, 255, 0.7),
+    0 0 25px rgba(124, 108, 255, 0.4);
+}
+
+.btn-3d-glow:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.btn-3d-glass {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 24px;
+  border-radius: 9999px;
+  background: rgba(14, 17, 28, 0.7);
+  border: 1px solid rgba(167, 139, 250, 0.28);
+  backdrop-filter: blur(16px);
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow: 0 10px 24px -5px rgba(0, 0, 0, 0.6);
+  transition: all 220ms ease;
+}
+
+.btn-3d-glass:hover {
+  transform: translateY(-3px);
+  border-color: rgba(167, 139, 250, 0.55);
+  box-shadow: 0 14px 30px -4px rgba(0, 0, 0, 0.75), 0 0 20px rgba(124, 108, 255, 0.2);
+}
+
+/* 3D Glass Test Runner Mockup (Image 2) */
+.hero-terminal-3d-wrapper {
+  position: relative;
+  perspective: 1200px;
+  width: 100%;
+  max-width: 540px;
+}
+
+.terminal-volumetric-glow {
+  position: absolute;
+  inset: -25px;
+  background: radial-gradient(ellipse at center,
+      rgba(124, 108, 255, 0.25) 0%,
+      rgba(34, 211, 238, 0.1) 45%,
+      transparent 75%);
+  filter: blur(35px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes floatingIdleTerminal {
+
+  0%,
+  100% {
+    transform: perspective(1000px) rotateY(-5deg) rotateX(2.5deg) translateY(0);
+  }
+
+  50% {
+    transform: perspective(1000px) rotateY(-4.5deg) rotateX(2deg) translateY(-8px);
+  }
+}
+
+@keyframes floatingIdleProfile {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.terminal-3d-window {
+  position: relative;
+  z-index: 1;
+  background: rgba(8, 10, 18, 0.84);
+  border: 1px solid rgba(167, 139, 250, 0.38);
+  border-radius: 20px;
+  backdrop-filter: blur(28px) saturate(190%);
+  box-shadow:
+    0 32px 75px -15px rgba(0, 0, 0, 0.95),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 0 35px -5px rgba(124, 108, 255, 0.22);
+  transform: perspective(1000px) rotateY(-5deg) rotateX(2.5deg);
+  transform-style: preserve-3d;
+  animation: floatingIdleTerminal 7s ease-in-out infinite;
+  transition: transform 380ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 380ms ease;
+  overflow: hidden;
+}
+

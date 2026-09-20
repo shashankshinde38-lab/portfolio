@@ -1,0 +1,19 @@
+/* ===================================================================
+   ACTIVE SECTION PROVIDER & BOOT SHIMMER
+   =================================================================== */
+.boot-shimmer-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #7C6CFF, #22D3EE, transparent);
+  background-size: 200% 100%;
+  animation: bootShimmer 1.8s ease-in-out infinite;
+  z-index: 9999;
+}
+
+@keyframes bootShimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}

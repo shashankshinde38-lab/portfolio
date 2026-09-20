@@ -1,0 +1,117 @@
+/* ===================================================================
+   HOLOGRAPHIC DEFECT LAB
+   =================================================================== */
+/* ===================================================================
+   HOLOGRAPHIC DEFECT LAB
+   =================================================================== */
+.defect-lab-card {
+  padding: var(--space-8);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.defect-lab-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.defect-lab-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--fail);
+  margin-bottom: 6px;
+}
+
+.defect-lab-header h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 6px 0;
+}
+
+.defect-lab-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 540px;
+}
+
+.defect-progress-tracker {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(110, 124, 251, 0.08);
+  border: 1px solid rgba(110, 124, 251, 0.25);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.defect-progress-count,
+.defect-progress-complete {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-primary);
+}
+
+.defect-progress-complete {
+  color: var(--pass);
+}
+
+.defect-selector-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.defect-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius-control);
+  background: rgba(11, 14, 18, 0.6);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+  min-height: 44px;
+  transition: all var(--duration-standard) ease;
+}
+
+.defect-tab-btn:hover {
+  border-color: rgba(110, 124, 251, 0.3);
+  color: var(--text-primary);
+}
+
+.defect-tab-btn.is-active {
+  background: rgba(110, 124, 251, 0.12);
+  border-color: var(--accent);
+  color: var(--text-primary);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.defect-tab-id {
+  font-weight: 700;
+  color: var(--accent);
+}
+

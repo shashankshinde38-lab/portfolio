@@ -12,6 +12,7 @@ import {
   Mail,
   ShieldCheck,
 } from "lucide-react";
+import "./ContactSection.css";
 
 /* ------------------------------------------------------------------ */
 /* Validation                                                          */

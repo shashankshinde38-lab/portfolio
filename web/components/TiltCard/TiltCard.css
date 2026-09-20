@@ -1,0 +1,283 @@
+/* ===================================================================
+   3D DEPTH SYSTEM & TILT CARD
+   =================================================================== */
+/* ===================================================================
+   3D Depth System & Tilt Card
+   =================================================================== */
+/* =========================================================
+   3D DEPTH LAYERS
+   ========================================================= */
+
+.depth-surface,
+.depth-content,
+.depth-icon,
+.depth-badge,
+.depth-symbol,
+.depth-highlight {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform;
+
+  transition:
+    transform var(--duration-standard, 400ms) var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.depth-surface {
+  transform: translate3d(0,
+      0,
+      var(--depth-surface, 0px));
+}
+
+.depth-content {
+  transform: translate3d(0,
+      0,
+      var(--depth-content, 12px));
+}
+
+.depth-icon {
+  transform: translate3d(0,
+      0,
+      var(--depth-icon, 20px));
+}
+
+.depth-badge {
+  transform: translate3d(0,
+      0,
+      var(--depth-badge, 24px));
+}
+
+.depth-symbol {
+  transform: translate3d(0,
+      0,
+      var(--depth-symbol, 28px));
+}
+
+.depth-highlight {
+  transform: translate3d(0,
+      0,
+      var(--depth-highlight, 32px));
+}
+
+
+/* =========================================================
+   TILT CARD
+   ========================================================= */
+
+.tilt-card {
+  position: relative;
+
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  transform:
+    perspective(var(--tilt-perspective, 1100px)) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale3d(var(--tilt-scale, 1),
+      var(--tilt-scale, 1),
+      1);
+
+  transform-style: preserve-3d;
+  transform-origin: center center;
+
+  backface-visibility: hidden;
+
+  will-change: transform;
+
+  transition:
+    transform var(--duration-micro, 150ms) var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    box-shadow var(--duration-standard, 400ms) var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-color var(--duration-standard, 400ms) var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+
+/* =========================================================
+   TILT GLOW
+   ========================================================= */
+
+.tilt-card::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  border-radius: inherit;
+
+  background:
+    radial-gradient(480px circle at var(--tilt-glow-x, 50%) var(--tilt-glow-y, 50%),
+      rgba(110, 124, 251, 0.14),
+      transparent 55%);
+
+  opacity: 0;
+
+  transition:
+    opacity var(--duration-standard, 400ms) var(--ease-out, ease);
+
+  z-index: 1;
+}
+
+
+/* =========================================================
+   DESKTOP HOVER
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  .tilt-card:hover::after {
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  .depth-content {
+    transform: translate3d(0,
+        0,
+        calc(var(--depth-content, 12px) * 0.8));
+  }
+
+  .depth-icon {
+    transform: translate3d(0,
+        0,
+        calc(var(--depth-icon, 20px) * 0.8));
+  }
+
+  .depth-badge {
+    transform: translate3d(0,
+        0,
+        calc(var(--depth-badge, 24px) * 0.75));
+  }
+
+  .depth-symbol {
+    transform: translate3d(0,
+        0,
+        calc(var(--depth-symbol, 28px) * 0.7));
+  }
+
+  .depth-highlight {
+    transform: translate3d(0,
+        0,
+        calc(var(--depth-highlight, 32px) * 0.65));
+  }
+
+  .tilt-card::after {
+    opacity: 0;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .depth-content {
+    transform: translate3d(0,
+        0,
+        calc(var(--depth-content, 12px) * 0.6));
+  }
+
+  .depth-icon {
+    transform: translate3d(0,
+        0,
+        calc(var(--depth-icon, 20px) * 0.55));
+  }
+
+  .depth-badge {
+    transform: translate3d(0,
+        0,
+        calc(var(--depth-badge, 24px) * 0.55));
+  }
+
+  .depth-symbol {
+    transform: translate3d(0,
+        0,
+        calc(var(--depth-symbol, 28px) * 0.5));
+  }
+
+  .depth-highlight {
+    transform: translate3d(0,
+        0,
+        calc(var(--depth-highlight, 32px) * 0.45));
+  }
+
+  .tilt-card {
+    transform:
+      perspective(var(--tilt-perspective, 900px)) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale3d(var(--tilt-scale, 1),
+        var(--tilt-scale, 1),
+        1);
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .depth-surface,
+  .depth-content,
+  .depth-icon,
+  .depth-badge,
+  .depth-symbol,
+  .depth-highlight {
+    transform: none;
+  }
+
+  .tilt-card {
+    transform:
+      scale3d(var(--tilt-scale, 1),
+        var(--tilt-scale, 1),
+        1);
+
+    transform-style: flat;
+  }
+
+  .tilt-card::after {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+   ========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+  .tilt-card::after {
+    opacity: 0;
+  }
+
+  .tilt-card {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .depth-surface,
+  .depth-content,
+  .depth-icon,
+  .depth-badge,
+  .depth-symbol,
+  .depth-highlight,
+  .tilt-card {
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .tilt-card::after {
+    display: none;
+  }
+}
+

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Layers, Mail, ScanSearch, Send } from "lucide-react";
+import "./not-found.css";
 
 export const metadata: Metadata = {
   title: "404: Edge Case Not Found | Shashank Shinde — Software Test Engineer",

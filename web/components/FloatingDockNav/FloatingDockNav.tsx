@@ -14,6 +14,7 @@ import {
   Sparkles,
   User,
 } from "lucide-react";
+import "./FloatingDockNav.css";
 
 /* ------------------------------------------------------------------ */
 /* Navigation Items matching Image 2 Reference                        */

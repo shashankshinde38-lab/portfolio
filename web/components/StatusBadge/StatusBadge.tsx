@@ -2,6 +2,7 @@
 
 import { CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import "./StatusBadge.css";
 
 type Status = "pass" | "warn" | "fail";
 

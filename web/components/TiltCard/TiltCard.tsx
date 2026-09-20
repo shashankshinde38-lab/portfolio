@@ -9,6 +9,7 @@ import {
   type PointerEvent as ReactPointerEvent,
   type HTMLAttributes,
 } from "react";
+import "./TiltCard.css";
 
 interface TiltCardProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode;

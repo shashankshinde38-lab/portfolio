@@ -1,0 +1,338 @@
+/* ===================================================================
+   CONTACT SECTION, FORM & DIALOG / MODAL
+   =================================================================== */
+/* ===================================================================
+   CONTACT
+   =================================================================== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.2fr;
+  gap: 83px;
+  align-items: start;
+}
+
+.contact-copy h2 {
+  font-size: 2.25rem;
+}
+
+.contact-copy>p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.95;
+  max-width: 340px;
+  margin-top: var(--space-6);
+}
+
+.contact-availability {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  font-size: 12px;
+  margin-top: var(--space-6);
+}
+
+.contact-links {
+  margin-top: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-links>a {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 10px 0;
+  max-width: 350px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  padding: 12px 13px;
+  transition: transform var(--duration-micro) var(--ease-out),
+    background var(--duration-micro) var(--ease-out),
+    border-color var(--duration-micro) var(--ease-out);
+}
+
+.contact-links>a:hover {
+  transform: translateX(8px);
+  border-color: rgba(110, 124, 251, 0.2);
+  background: rgba(110, 124, 251, 0.06);
+}
+
+.contact-links>a>svg:first-child {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.contact-links>a>svg:last-child {
+  color: rgba(141, 153, 166, 0.5);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.contact-links small {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+
+.contact-links strong {
+  display: block;
+  font-weight: 400;
+  color: var(--text-primary);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.contact-links>a:hover strong {
+  color: var(--accent);
+}
+
+.contact-copy>.contact-note {
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.contact-form-panel {
+  padding: 34px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 25px 60px rgba(0, 0, 0, 0.25);
+  transition: transform var(--duration-standard) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact-form-panel:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.form-heading {
+  padding-bottom: 25px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 25px;
+}
+
+.form-heading h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.form-heading>span {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 17px;
+}
+
+.form-field {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field label {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.form-field label>span {
+  color: var(--accent);
+  margin-left: 2px;
+}
+
+.form-field label>small {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-left: 2px;
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 45px;
+  background: rgba(11, 14, 18, 0.5);
+  border: 1px solid rgba(110, 124, 251, 0.12);
+  border-radius: var(--radius-control);
+  padding: 11px 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.6;
+  transition:
+    border-color var(--duration-micro) var(--ease-out),
+    box-shadow var(--duration-micro) var(--ease-out);
+}
+
+.form-input::placeholder {
+  color: rgba(141, 153, 166, 0.5);
+  opacity: 1;
+}
+
+.form-input:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.form-input[aria-invalid="true"] {
+  border-color: rgba(255, 92, 108, 0.6);
+}
+
+select.form-input {
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+select.form-input option {
+  background: var(--surface);
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 135px;
+}
+
+.field-error {
+  color: #FF5C6C;
+  font-size: 11px;
+}
+
+.message-meta {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.message-meta>span:last-child {
+  white-space: nowrap;
+}
+
+.message-counter {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  transition: color var(--duration-micro) ease;
+}
+
+.message-counter.char-warn {
+  color: var(--warn) !important;
+  font-weight: 600;
+}
+
+.message-counter.char-fail {
+  color: var(--fail) !important;
+  font-weight: 700;
+}
+
+.form-submit {
+  width: 100%;
+  min-height: 47px;
+  margin-top: 3px;
+}
+
+.form-footnote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  text-align: center;
+  margin-top: -18px;
+}
+
+.form-footnote svg {
+  flex-shrink: 0;
+}
+
+/* ===================================================================
+   LOADING / SPINNER
+   =================================================================== */
+.loading-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* ===================================================================
+   DIALOG / MODAL
+   =================================================================== */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 14, 18, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 70;
+}
+
+.success-dialog {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(430px, calc(100% - 40px));
+  z-index: 71;
+  padding: 38px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
+}
+
+.success-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 23px;
+  border: 1px solid rgba(110, 124, 251, 0.2);
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  color: var(--accent);
+  background: rgba(110, 124, 251, 0.06);
+}
+
+.success-dialog h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.7px;
+}
+
+.success-dialog p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 13px 0 25px;
+}
+
+.success-dialog button {
+  width: 100%;
+}
+

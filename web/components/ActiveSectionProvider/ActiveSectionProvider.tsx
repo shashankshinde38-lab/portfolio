@@ -4,6 +4,8 @@ import { useEffect, useState, type ReactNode } from "react";
 import FloatingDockNav from "@/web/components/FloatingDockNav/FloatingDockNav";
 import AmbientBackdrop from "@/web/components/AmbientBackdrop/AmbientBackdrop";
 import { ArrowUpRight } from "lucide-react";
+import "./ActiveSectionProvider.css";
+import "@/web/sections/Footer/Footer.css";
 
 /* ------------------------------------------------------------------ */
 /* This thin client wrapper handles:                                   */

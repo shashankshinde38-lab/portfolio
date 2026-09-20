@@ -5,6 +5,7 @@ import confetti from "canvas-confetti";
 import { Bug, CheckCircle2, Sparkles, Trophy } from "lucide-react";
 import DefectCallout, { type DefectSeverity } from "@/web/components/DefectCallout/DefectCallout";
 import TiltCard from "@/web/components/TiltCard/TiltCard";
+import "./BugSpotterLab.css";
 
 interface BugCase {
   id: string;

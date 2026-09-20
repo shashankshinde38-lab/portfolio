@@ -1,0 +1,10 @@
+/* ===================================================================
+   QA WORKSTATION 3D CANVAS
+   =================================================================== */
+.qa-workstation-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  border-radius: var(--radius-panel);
+}

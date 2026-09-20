@@ -18,6 +18,7 @@ import {
   Terminal,
   Zap,
 } from "lucide-react";
+import "./QAWorkstation.css";
 
 export default function QAWorkstation() {
   const sceneRef = useRef<HTMLDivElement>(null);
