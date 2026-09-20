@@ -7,6 +7,7 @@ import {
   Bug,
   ListChecks,
   TrendingUp,
+  Activity,
 } from "lucide-react";
 import TiltCard from "@/web/components/TiltCard/TiltCard";
 import "./About.css";
@@ -122,50 +123,225 @@ export default function About() {
         </TiltCard>
       </div>
 
-      {/* 4-Card Floating 3D Stats Row matching Image 3 */}
+      {/* =========================================================
+    PREMIUM 3D QA STATS
+========================================================= */}
+
       <div className="stats-row-3d">
-        <TiltCard as="div" className="stat-card-3d" maxTilt={5}>
+        {/* DEFECTS */}
+
+        <TiltCard
+          as="div"
+          className="stat-card-3d tone-violet"
+          maxTilt={5}
+        >
+          <div
+            className="stat-card-orb"
+            aria-hidden="true"
+          />
+
           <div className="stat-card-header">
-            <span className="stat-icon-wrap violet">
-              <Bug size={16} />
+            <span className="stat-icon-wrap">
+              <Bug size={17} />
             </span>
-            <span className="stat-category-label">BUGS IDENTIFIED</span>
+
+            <div className="stat-card-heading">
+              <span className="stat-category-label">
+                DEFECTS CAUGHT EARLY
+              </span>
+
+              <span className="stat-mini-status">
+                QA TRACKING
+              </span>
+            </div>
           </div>
-          <strong className="stat-value-glow">100k+</strong>
-          <p className="stat-subtext">and counting</p>
+
+          <div className="stat-value-row">
+            <strong className="stat-value-glow">
+              240+
+            </strong>
+
+            <span
+              className="stat-live-dot"
+              aria-hidden="true"
+            />
+          </div>
+
+          <p className="stat-subtext">
+            before production release
+          </p>
+
+          <div className="stat-card-footer">
+            <span className="stat-progress-track">
+              <span className="stat-progress-fill" />
+            </span>
+
+            <span className="stat-footer-label">
+              QUALITY SIGNAL
+            </span>
+          </div>
         </TiltCard>
 
-        <TiltCard as="div" className="stat-card-3d" maxTilt={5}>
+        {/* TEST CASES */}
+
+        <TiltCard
+          as="div"
+          className="stat-card-3d tone-cyan"
+          maxTilt={5}
+        >
+          <div
+            className="stat-card-orb"
+            aria-hidden="true"
+          />
+
           <div className="stat-card-header">
-            <span className="stat-icon-wrap cyan">
-              <ListChecks size={16} />
+            <span className="stat-icon-wrap">
+              <ListChecks size={17} />
             </span>
-            <span className="stat-category-label">TEST CASES DESIGNED</span>
+
+            <div className="stat-card-heading">
+              <span className="stat-category-label">
+                TEST CASES DESIGNED
+              </span>
+
+              <span className="stat-mini-status">
+                TEST COVERAGE
+              </span>
+            </div>
           </div>
-          <strong className="stat-value-glow">500+</strong>
-          <p className="stat-subtext">and executed</p>
+
+          <div className="stat-value-row">
+            <strong className="stat-value-glow">
+              500+
+            </strong>
+
+            <span
+              className="stat-live-dot"
+              aria-hidden="true"
+            />
+          </div>
+
+          <p className="stat-subtext">
+            designed &amp; executed
+          </p>
+
+          <div className="stat-card-footer">
+            <span className="stat-progress-track">
+              <span className="stat-progress-fill" />
+            </span>
+
+            <span className="stat-footer-label">
+              TEST MATRIX
+            </span>
+          </div>
         </TiltCard>
 
-        <TiltCard as="div" className="stat-card-3d" maxTilt={5}>
+        {/* PERFORMANCE USERS */}
+
+        <TiltCard
+          as="div"
+          className="stat-card-3d tone-blue"
+          maxTilt={5}
+        >
+          <div
+            className="stat-card-orb"
+            aria-hidden="true"
+          />
+
           <div className="stat-card-header">
-            <span className="stat-icon-wrap blue">
-              <ShieldCheck size={16} />
+            <span className="stat-icon-wrap">
+              <Activity size={17} />
             </span>
-            <span className="stat-category-label">PROJECTS DELIVERED</span>
+
+            <div className="stat-card-heading">
+              <span className="stat-category-label">
+                VIRTUAL USERS
+              </span>
+
+              <span className="stat-mini-status">
+                JMETER LOAD TESTS
+              </span>
+            </div>
           </div>
-          <strong className="stat-value-glow">240+</strong>
-          <p className="stat-subtext">with confidence</p>
+
+          <div className="stat-value-row">
+            <strong className="stat-value-glow">
+              100k+
+            </strong>
+
+            <span
+              className="stat-live-dot"
+              aria-hidden="true"
+            />
+          </div>
+
+          <p className="stat-subtext">
+            simulated concurrent load
+          </p>
+
+          <div className="stat-card-footer">
+            <span className="stat-progress-track">
+              <span className="stat-progress-fill" />
+            </span>
+
+            <span className="stat-footer-label">
+              PERFORMANCE GATE
+            </span>
+          </div>
         </TiltCard>
 
-        <TiltCard as="div" className="stat-card-3d" maxTilt={5}>
+        {/* AUTOMATION */}
+
+        <TiltCard
+          as="div"
+          className="stat-card-3d tone-indigo"
+          maxTilt={5}
+        >
+          <div
+            className="stat-card-orb"
+            aria-hidden="true"
+          />
+
           <div className="stat-card-header">
-            <span className="stat-icon-wrap indigo">
-              <TrendingUp size={16} />
+            <span className="stat-icon-wrap">
+              <TrendingUp size={17} />
             </span>
-            <span className="stat-category-label">AUTOMATION IMPACT</span>
+
+            <div className="stat-card-heading">
+              <span className="stat-category-label">
+                AUTOMATION IMPACT
+              </span>
+
+              <span className="stat-mini-status">
+                EFFICIENCY
+              </span>
+            </div>
           </div>
-          <strong className="stat-value-glow">~40%</strong>
-          <p className="stat-subtext">reduction in regression time</p>
+
+          <div className="stat-value-row">
+            <strong className="stat-value-glow">
+              ~40%
+            </strong>
+
+            <span
+              className="stat-live-dot"
+              aria-hidden="true"
+            />
+          </div>
+
+          <p className="stat-subtext">
+            reduction in regression time
+          </p>
+
+          <div className="stat-card-footer">
+            <span className="stat-progress-track">
+              <span className="stat-progress-fill" />
+            </span>
+
+            <span className="stat-footer-label">
+              AUTOMATION GAIN
+            </span>
+          </div>
         </TiltCard>
       </div>
     </section>

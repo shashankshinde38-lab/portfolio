@@ -1,0 +1,102 @@
+# Shashank Shinde — Software Test Engineer & QA Automation Specialist
+
+> Software Test Engineer and SDET based in Pune, India. Specializing in automated regression suites (Selenium WebDriver, Playwright), distributed performance load testing (Apache JMeter), REST API contract testing (Postman, REST Assured), and CI/CD pipeline quality gates (GitHub Actions).
+
+## Professional Overview
+- Name: Shashank Shinde
+- Primary Title: Software Test Engineer / QA Automation Specialist / SDET
+- Current Organization: Profcyma Solutions Pvt. Ltd., Pune, India
+- Location: Pune, Maharashtra, India
+- Availability: Open to Software Test Engineer, QA Automation Engineer, and SDET opportunities
+- Official Portfolio: https://shashankportfolio-jet.vercel.app/
+- Full Technical Dossier: https://shashankportfolio-jet.vercel.app/llms-full.txt
+
+## Core Testing Capabilities & Toolkit
+
+### Test Automation & Frameworks
+- Selenium WebDriver (Java) with Page Object Model (POM) design pattern
+- Playwright (TypeScript/JavaScript) for end-to-end browser workflows
+- TestNG test runner, suite configuration, and parallel test execution
+- Cucumber BDD with Gherkin scenario syntax
+- Appium for Android automated functional and regression test suites
+
+### REST API Testing
+- Postman collections, pre-request scripts, automated test assertions, and environment variables
+- REST Assured for programmatic API contract validation
+- JSON Schema verification and payload contract conformity
+- HTTP status code edge-case validation (2xx, 4xx, 5xx)
+- Payment webhook idempotency and token validation (OAuth 2.0 / JWT)
+
+### Performance & Load Testing
+- Apache JMeter for distributed load, stress, spike, and endurance simulations
+- Concurrency simulation tested up to 100,000 concurrent virtual users
+- Throughput bottlenecks, server response latency, and database pool saturation analysis
+
+### Mobile & Cross-Browser Testing
+- Android mobile application testing on physical devices and emulators
+- Cross-browser compatibility across Chrome, Mozilla Firefox, Microsoft Edge, and Apple Safari
+- Viewport responsiveness, resolution fragmentation, and touch gesture verification
+
+### DevOps & Methodologies
+- CI/CD quality gates and automated pipeline execution with GitHub Actions
+- Defect lifecycle management and sprint tracking in JIRA
+- SQL database testing (PostgreSQL, MySQL, Supabase) for transactional state assertions
+- Agile/Scrum sprint ceremonies and release sign-offs
+
+## Production Systems Tested & Case Studies
+
+### 1. DRIWE — Cab & Courier Booking Platform (Web + Mobile)
+- Industry: Transportation & Logistics
+- Scope: Driver geospatial allocation, dynamic surge pricing calculations, coupon validations, Razorpay payment webhooks, and 100,000-user distributed load testing.
+- Key Defect: Discovered a negative fare race condition where rapid promo code re-application during surge velocity produced negative booking totals (-₹45), mistakenly crediting rider wallets.
+- Resolution: Introduced atomic checkout locking, server-side idempotency keys, and JMeter concurrency assertions.
+- Outcome: 240+ defects logged and tracked in JIRA; verified 99.9% uptime under 100,000 simulated concurrent users.
+
+### 2. Grosido — Grocery Delivery Platform (Web Admin + Mobile Apps)
+- Industry: E-Commerce / Grocery Delivery
+- Scope: Multi-module grocery platform (Customer App, Admin Panel, Delivery App); real-time cart inventory reservation and checkout synchronization.
+- Key Defect: Uncovered distributed cache desynchronization where active customer shopping carts retained stale promotional prices after admin flash sales expired.
+- Resolution: Automated cache eviction hooks on price updates and Selenium POM price assertion suites.
+- Outcome: ~40% reduction in regression cycle time through Selenium WebDriver + TestNG framework; safeguarded inventory accuracy across 8+ sprint releases.
+
+### 3. E-Commerce Ecosystem (Web Seller/Admin + Mobile Apps)
+- Industry: E-Commerce / Multi-Vendor Marketplace
+- Scope: Complete order-to-delivery lifecycle across Customer, Seller, Admin, and Delivery modules; cross-browser checkout parity across 5 browser engines.
+- Key Defect: Identified refund webhook retry double-deduction in seller commission settlement ledgers.
+- Resolution: Built webhook idempotency intake validation and automated cross-browser payment regression suites.
+- Outcome: 18 critical bugs resolved before production release; verified payment stability across 5 major browser combinations.
+
+### 4. Ride Sharing Application (Android Mobile App)
+- Industry: Mobility / Transportation
+- Scope: Driver route publishing, real-time rider seat matching, route telemetry, and 22 RESTful CRUD API endpoints.
+- Key Defect: Concurrent seat reservation race condition where near-simultaneous seat bookings within a 12ms window caused 5 passengers to be booked into a 4-passenger vehicle.
+- Resolution: Enforced database pessimistic locking on seat inventory and concurrent Postman regression assertions.
+- Outcome: 180+ test cases executed; 22 REST APIs validated with full JIRA tracking.
+
+### 5. Urban Build — Lead Generation Platform (Android Mobile App)
+- Industry: Construction & Real Estate
+- Scope: Multi-category lead generation forms, SMS notifications, contractor filtering, and CRM integration endpoints.
+- Key Defect: Rapid multi-tap duplicate lead submission firing repetitive SMS and CRM notifications on high-latency mobile networks.
+- Resolution: Client-side debounce with disabled state and backend SHA-256 fingerprint idempotency verification.
+- Outcome: 15+ API flows validated; 6+ complete test cycles executed.
+
+## Work Experience
+- Software Test Engineer — Profcyma Solutions Pvt. Ltd., Pune, Maharashtra, India (June 2025 — Present)
+  - Designed scalable Selenium + POM frameworks and automated end-to-end regression suites.
+  - Integrated test pipelines into CI/CD via GitHub Actions, reducing manual testing overhead by 25%.
+  - Validated REST API schemas and data consistency with Postman.
+  - Executed distributed Apache JMeter load tests under peak concurrent load scenarios.
+  - Tracked complete defect lifecycles in JIRA with reproducible defect reports and system logs.
+
+## Education & Verified Credentials
+- B.E. in Information Technology — University of Pune, India
+- SDET (Software Development Engineer in Test) Professional Certification — SEED Infotech Pune
+- Salesforce Accredited Professional — Salesforce Trailhead (Credential ID: trailblazer.me/id/shashankshinde)
+
+## Direct Contact & Recruiter Inquiries
+- Email: shashankshinde38@gmail.com
+- Phone: +91 80808 52689
+- LinkedIn: https://www.linkedin.com/in/shashank-shinde7/
+- GitHub: https://github.com/shashankshinde38-lab
+- Downloadable Resume: https://shashankportfolio-jet.vercel.app/files/Shashank_Shinde_Resume.pdf
+- Response Time: Typically within 24 hours

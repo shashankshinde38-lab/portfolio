@@ -480,8 +480,18 @@ export default function Projects() {
                     </div>
 
                     <div className="case-detail-block">
+                      <h4>Testing scope</h4>
+                      <p>{project.testingScope}</p>
+                    </div>
+
+                    <div className="case-detail-block">
                       <h4>My approach</h4>
                       <p>{project.approach}</p>
+                    </div>
+
+                    <div className="case-detail-block">
+                      <h4>Key findings &amp; defects</h4>
+                      <p>{project.keyFindings}</p>
                     </div>
 
                     <div className="case-detail-block">

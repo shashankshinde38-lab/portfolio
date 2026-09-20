@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+
 import { AdminVerificationState } from "./types";
 
 interface AdminVerificationRingProps {
@@ -16,18 +17,6 @@ export function AdminVerificationRing({
   isScanning,
   onScanComplete,
 }: AdminVerificationRingProps) {
-  /*
-   * IMPORTANT:
-   *
-   * Do not display ring while:
-   *
-   * 1. User is entering PIN.
-   * 2. Six PIN digits are moving
-   *    into circular formation.
-   *
-   * The ring appears only AFTER
-   * the circle formation is complete.
-   */
   if (
     state === "input" ||
     state === "forming-circle"
@@ -35,215 +24,278 @@ export function AdminVerificationRing({
     return null;
   }
 
-  /*
-   * ======================================
-   * RING COLOR
-   * ======================================
-   */
+  /* =========================================================
+     ORBIT / VERIFY
 
-  const ringColor =
-    state === "success"
-      ? "#22c55e"
-      : state === "error"
-        ? "#ef4444"
-        : "#f97316";
+     No large outer ring.
+     Only premium security core.
+  ========================================================= */
 
-  /*
-   * ======================================
-   * GLOW FILTER
-   * ======================================
-   */
-
-  const filterId =
-    state === "success"
-      ? "url(#adminRingGreenGlow)"
-      : state === "error"
-        ? "url(#adminRingRedGlow)"
-        : "url(#adminRingOrangeGlow)";
-
-  return (
-    <div
-      className="admin-ring-wrapper"
-      aria-hidden="true"
-    >
-      <motion.svg
-        viewBox="-110 -110 220 220"
-        className="admin-ring-svg"
-        /*
-         * Red shake when PIN is incorrect.
-         */
-        animate={
-          state === "error"
-            ? {
-              x: [
-                0,
-                -6,
-                6,
-                -5,
-                5,
-                -3,
-                3,
-                0,
-              ],
-            }
-            : {
-              x: 0,
-            }
-        }
-        transition={{
-          duration: 0.45,
-        }}
+  if (
+    state === "orbiting" ||
+    state === "verifying"
+  ) {
+    return (
+      <div
+        className="admin-ring-wrapper"
+        aria-hidden="true"
       >
-        <defs>
-          {/* ==================================
-              ORANGE GLOW
-          ================================== */}
-
-          <filter
-            id="adminRingOrangeGlow"
-            x="-40%"
-            y="-40%"
-            width="180%"
-            height="180%"
-          >
-            <feGaussianBlur
-              stdDeviation="3"
-              result="blur"
-            />
-
-            <feMerge>
-              <feMergeNode in="blur" />
-
-              <feMergeNode
-                in="SourceGraphic"
-              />
-            </feMerge>
-          </filter>
-
-          {/* ==================================
-              GREEN GLOW
-          ================================== */}
-
-          <filter
-            id="adminRingGreenGlow"
-            x="-40%"
-            y="-40%"
-            width="180%"
-            height="180%"
-          >
-            <feGaussianBlur
-              stdDeviation="3.5"
-              result="blur"
-            />
-
-            <feMerge>
-              <feMergeNode in="blur" />
-
-              <feMergeNode
-                in="SourceGraphic"
-              />
-            </feMerge>
-          </filter>
-
-          {/* ==================================
-              RED GLOW
-          ================================== */}
-
-          <filter
-            id="adminRingRedGlow"
-            x="-40%"
-            y="-40%"
-            width="180%"
-            height="180%"
-          >
-            <feGaussianBlur
-              stdDeviation="3.5"
-              result="blur"
-            />
-
-            <feMerge>
-              <feMergeNode in="blur" />
-
-              <feMergeNode
-                in="SourceGraphic"
-              />
-            </feMerge>
-          </filter>
-
-          {/* ==================================
-              SCANNER TRAIL
-          ================================== */}
-
-          <linearGradient
-            id="adminScanTrail"
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
-          >
-            <stop
-              offset="0%"
-              stopColor="#ffffff"
-              stopOpacity="1"
-            />
-
-            <stop
-              offset="30%"
-              stopColor="#fb923c"
-              stopOpacity="0.9"
-            />
-
-            <stop
-              offset="65%"
-              stopColor="#f97316"
-              stopOpacity="0.45"
-            />
-
-            <stop
-              offset="100%"
-              stopColor="#f97316"
-              stopOpacity="0"
-            />
-          </linearGradient>
-        </defs>
-
-        {/* ==================================
-            BACKGROUND GUIDE TRACK
-        ================================== */}
-
-        <circle
-          cx={0}
-          cy={0}
-          r={88}
-          fill="none"
-          stroke="rgba(255,255,255,0.07)"
-          strokeWidth="1.5"
-        />
-
-        {/* ==================================
-            MAIN RING DRAW
-        ================================== */}
-
-        <motion.circle
-          cx={0}
-          cy={0}
-          r={88}
-          fill="none"
-          stroke={ringColor}
-          strokeWidth="2"
-          strokeLinecap="round"
-          filter={filterId}
+        <motion.svg
+          viewBox="-110 -110 220 220"
+          className="admin-ring-svg"
           initial={{
-            pathLength: 0,
             opacity: 0,
           }}
           animate={{
-            pathLength: 1,
             opacity: 1,
           }}
-          transition={{
-            pathLength: {
-              duration: 0.65,
+          exit={{
+            opacity: 0,
+          }}
+        >
+          <defs>
+            <radialGradient id="adminOrbitCoreGlow">
+              <stop
+                offset="0%"
+                stopColor="#67e8f9"
+                stopOpacity="0.26"
+              />
+
+              <stop
+                offset="45%"
+                stopColor="#38bdf8"
+                stopOpacity="0.08"
+              />
+
+              <stop
+                offset="100%"
+                stopColor="#38bdf8"
+                stopOpacity="0"
+              />
+            </radialGradient>
+
+            <filter
+              id="adminOrbitCoreBlur"
+              x="-100%"
+              y="-100%"
+              width="300%"
+              height="300%"
+            >
+              <feGaussianBlur
+                stdDeviation="3"
+                result="blur"
+              />
+
+              <feMerge>
+                <feMergeNode in="blur" />
+
+                <feMergeNode
+                  in="SourceGraphic"
+                />
+              </feMerge>
+            </filter>
+          </defs>
+
+          <motion.circle
+            cx="0"
+            cy="0"
+            r="34"
+            fill="url(#adminOrbitCoreGlow)"
+            initial={{
+              scale: 0.65,
+              opacity: 0,
+            }}
+            animate={{
+              scale:
+                isScanning
+                  ? [
+                    0.9,
+                    1.08,
+                    0.9,
+                  ]
+                  : 1,
+
+              opacity: 1,
+            }}
+            transition={{
+              scale: {
+                duration: 1.05,
+
+                repeat:
+                  isScanning
+                    ? Infinity
+                    : 0,
+
+                ease:
+                  "easeInOut",
+              },
+
+              opacity: {
+                duration: 0.3,
+              },
+            }}
+          />
+
+          <motion.circle
+            cx="0"
+            cy="0"
+            r="20"
+            fill="none"
+            stroke="rgba(103,232,249,0.24)"
+            strokeWidth="0.8"
+            strokeDasharray="2.5 5.5"
+            animate={{
+              rotate:
+                isScanning
+                  ? 360
+                  : 0,
+            }}
+            transition={{
+              duration: 4.5,
+
+              repeat:
+                isScanning
+                  ? Infinity
+                  : 0,
+
+              ease: "linear",
+            }}
+            style={{
+              transformOrigin:
+                "0px 0px",
+            }}
+          />
+
+          <motion.circle
+            cx="0"
+            cy="0"
+            r="4.2"
+            fill="#dff7ff"
+            filter="url(#adminOrbitCoreBlur)"
+            animate={{
+              scale:
+                isScanning
+                  ? [
+                    0.85,
+                    1.2,
+                    0.85,
+                  ]
+                  : 1,
+
+              opacity:
+                isScanning
+                  ? [
+                    0.7,
+                    1,
+                    0.7,
+                  ]
+                  : 0.85,
+            }}
+            transition={{
+              duration: 0.95,
+
+              repeat:
+                isScanning
+                  ? Infinity
+                  : 0,
+
+              ease:
+                "easeInOut",
+            }}
+            onAnimationComplete={
+              !isScanning
+                ? onScanComplete
+                : undefined
+            }
+          />
+        </motion.svg>
+      </div>
+    );
+  }
+
+  /* =========================================================
+     SUCCESS WAVES
+  ========================================================= */
+
+  if (
+    state === "success"
+  ) {
+    return (
+      <div
+        className="admin-ring-wrapper"
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="-110 -110 220 220"
+          className="admin-ring-svg"
+        >
+          <motion.circle
+            cx="0"
+            cy="0"
+            r="44"
+            fill="none"
+            stroke="#22c55e"
+            strokeWidth="1.5"
+            initial={{
+              scale: 0.4,
+              opacity: 0.65,
+            }}
+            animate={{
+              scale: 1.8,
+              opacity: 0,
+            }}
+            transition={{
+              duration: 0.72,
+              ease: "easeOut",
+            }}
+          />
+
+          <motion.circle
+            cx="0"
+            cy="0"
+            r="34"
+            fill="none"
+            stroke="#4ade80"
+            strokeWidth="1"
+            initial={{
+              scale: 0.35,
+              opacity: 0.4,
+            }}
+            animate={{
+              scale: 2,
+              opacity: 0,
+            }}
+            transition={{
+              duration: 0.84,
+              delay: 0.07,
+              ease: "easeOut",
+            }}
+          />
+
+          <motion.circle
+            cx="0"
+            cy="0"
+            r="12"
+            fill="rgba(34,197,94,0.18)"
+            initial={{
+              scale: 0,
+              opacity: 0,
+            }}
+            animate={{
+              scale: [
+                0,
+                1.6,
+                0.8,
+              ],
+
+              opacity: [
+                0,
+                0.8,
+                0,
+              ],
+            }}
+            transition={{
+              duration: 0.5,
 
               ease: [
                 0.22,
@@ -251,193 +303,68 @@ export function AdminVerificationRing({
                 0.36,
                 1,
               ],
-            },
-
-            opacity: {
-              duration: 0.18,
-            },
-          }}
-        />
-
-        {/* ==================================
-            INNER SUBTLE RING
-        ================================== */}
-
-        <motion.circle
-          cx={0}
-          cy={0}
-          r={81}
-          fill="none"
-          stroke={ringColor}
-          strokeWidth="0.75"
-          strokeOpacity="0.22"
-          initial={{
-            scale: 0.92,
-            opacity: 0,
-          }}
-          animate={{
-            scale: 1,
-            opacity: 1,
-          }}
-          transition={{
-            duration: 0.45,
-            delay: 0.15,
-
-            ease: [
-              0.22,
-              1,
-              0.36,
-              1,
-            ],
-          }}
-        />
-
-        {/* ==================================
-            VERIFICATION SCANNER
-        ================================== */}
-
-        {isScanning &&
-          state === "verifying" && (
-            <motion.g
-              style={{
-                transformOrigin:
-                  "0px 0px",
-              }}
-              initial={{
-                rotate: 0,
-              }}
-              animate={{
-                rotate: 360,
-              }}
-              transition={{
-                duration: 0.95,
-
-                ease: [
-                  0.25,
-                  0.1,
-                  0.25,
-                  1,
-                ],
-              }}
-              onAnimationComplete={
-                onScanComplete
-              }
-            >
-              {/* Scanner outer aura */}
-
-              <circle
-                cx={0}
-                cy={-88}
-                r={10}
-                fill="rgba(249,115,22,0.12)"
-              />
-
-              {/* Scanner medium aura */}
-
-              <circle
-                cx={0}
-                cy={-88}
-                r={6.5}
-                fill="rgba(249,115,22,0.35)"
-              />
-
-              {/* Scanner white center */}
-
-              <circle
-                cx={0}
-                cy={-88}
-                r={3.8}
-                fill="#ffffff"
-                filter="url(#adminRingOrangeGlow)"
-              />
-
-              {/* ==================================
-                  TRAILING ARC
-              ================================== */}
-
-              <path
-                d="
-                  M 0 -88
-                  A 88 88
-                  0 0 0
-                  -51.7 -71.2
-                "
-                fill="none"
-                stroke="url(#adminScanTrail)"
-                strokeWidth="3.5"
-                strokeLinecap="round"
-              />
-            </motion.g>
-          )}
-
-        {/* ==================================
-            SUCCESS GREEN PULSE
-        ================================== */}
-
-        {state === "success" && (
-          <motion.circle
-            cx={0}
-            cy={0}
-            r={88}
-            fill="none"
-            stroke="#22c55e"
-            strokeWidth="3"
-            initial={{
-              opacity: 0.85,
-              scale: 0.96,
-            }}
-            animate={{
-              opacity: [
-                0.85,
-                0,
-              ],
-
-              scale: [
-                0.96,
-                1.12,
-              ],
-            }}
-            transition={{
-              duration: 0.7,
-              ease: "easeOut",
             }}
           />
-        )}
+        </svg>
+      </div>
+    );
+  }
 
-        {/* ==================================
-            ERROR RED PULSE
-        ================================== */}
+  /* =========================================================
+     ERROR
+  ========================================================= */
 
-        {state === "error" && (
+  if (
+    state === "error"
+  ) {
+    return (
+      <div
+        className="admin-ring-wrapper"
+        aria-hidden="true"
+      >
+        <motion.svg
+          viewBox="-110 -110 220 220"
+          className="admin-ring-svg"
+          animate={{
+            x: [
+              0,
+              -5,
+              5,
+              -4,
+              4,
+              -2,
+              2,
+              0,
+            ],
+          }}
+          transition={{
+            duration: 0.42,
+          }}
+        >
           <motion.circle
-            cx={0}
-            cy={0}
-            r={88}
+            cx="0"
+            cy="0"
+            r="74"
             fill="none"
             stroke="#ef4444"
-            strokeWidth="3"
+            strokeWidth="1.5"
             initial={{
-              opacity: 0.75,
-              scale: 0.96,
+              scale: 0.8,
+              opacity: 0.65,
             }}
             animate={{
-              opacity: [
-                0.75,
-                0,
-              ],
-
-              scale: [
-                0.96,
-                1.08,
-              ],
+              scale: 1.15,
+              opacity: 0,
             }}
             transition={{
               duration: 0.55,
               ease: "easeOut",
             }}
           />
-        )}
-      </motion.svg>
-    </div>
-  );
+        </motion.svg>
+      </div>
+    );
+  }
+
+  return null;
 }

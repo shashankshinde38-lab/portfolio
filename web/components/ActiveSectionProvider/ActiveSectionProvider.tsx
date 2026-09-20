@@ -109,6 +109,7 @@ export default function ActiveSectionProvider({
       {/* Discreet bottom-left Admin trigger button */}
       <a
         href="/admin/login"
+        rel="nofollow"
         className="fixed-admin-trigger-btn"
         aria-label="Admin Access"
         title="Admin Access"
@@ -129,7 +130,13 @@ export default function ActiveSectionProvider({
       <footer className="site-footer">
         <div className="page-container">
           <div className="footer-top">
-            <a className="brand footer-brand-admin" href="/admin/login" title="Admin Portal" aria-label="Admin Portal">
+            <a
+              className="brand footer-brand-admin"
+              href="/admin/login"
+              rel="nofollow"
+              title="Admin Portal"
+              aria-label="Admin Portal"
+            >
               <span className="brand-mark">
                 s<span>.</span>
               </span>

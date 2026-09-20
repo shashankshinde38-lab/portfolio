@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
+
 import { BurstParticle } from "./types";
 
 interface AdminParticleBurstProps {
@@ -9,98 +10,185 @@ interface AdminParticleBurstProps {
   onBurstComplete?: () => void;
 }
 
+function seededRandom(seed: number) {
+  const value =
+    Math.sin(
+      seed * 12.9898 + 78.233
+    ) * 43758.5453123;
+
+  return (
+    value -
+    Math.floor(value)
+  );
+}
+
 export function AdminParticleBurst({
-  count = 24,
+  count = 32,
   onBurstComplete,
 }: AdminParticleBurstProps) {
-  const particles: BurstParticle[] = useMemo(() => {
-    return Array.from({ length: count }, (_, i) => {
-      const baseAngle = (i / count) * 2 * Math.PI;
+  const particles: BurstParticle[] =
+    useMemo(() => {
+      return Array.from(
+        { length: count },
+        (_, index) => {
+          const randomAngle =
+            seededRandom(
+              index * 11 + 17
+            );
 
-      const jitter = (Math.random() - 0.5) * 0.35;
-      const angle = baseAngle + jitter;
+          const randomDistance =
+            seededRandom(
+              index * 17 + 39
+            );
 
-      /*
-       * Slightly wider premium burst.
-       */
-      const distance = 48 + Math.random() * 52;
+          const randomRotate =
+            seededRandom(
+              index * 23 + 67
+            );
 
-      const x = Math.round(
-        Math.cos(angle) * distance
-      );
+          const randomSize =
+            seededRandom(
+              index * 31 + 91
+            );
 
-      const y = Math.round(
-        Math.sin(angle) * distance
-      );
+          const randomShape =
+            seededRandom(
+              index * 41 + 137
+            );
 
-      const rotate = Math.round(
-        Math.random() * 360
-      );
+          const randomDelay =
+            seededRandom(
+              index * 47 + 173
+            );
 
-      const size =
-        3 + Math.floor(Math.random() * 4);
+          const randomDuration =
+            seededRandom(
+              index * 59 + 223
+            );
 
-      const shapeType = Math.random();
+          const baseAngle =
+            (index / count) *
+            Math.PI *
+            2;
 
-      const shape:
-        | "circle"
-        | "square"
-        | "dot" =
-        shapeType > 0.65
-          ? "circle"
-          : shapeType > 0.3
-            ? "square"
-            : "dot";
+          const jitter =
+            (randomAngle - 0.5) *
+            0.42;
 
-      const delay = Math.random() * 0.1;
+          const angle =
+            baseAngle +
+            jitter;
 
-      const duration =
-        0.7 + Math.random() * 0.3;
+          const distance =
+            60 +
+            randomDistance *
+            80;
 
-      return {
-        id: i,
-        x,
-        y,
-        rotate,
-        size,
-        shape,
-        delay,
-        duration,
-      };
-    });
-  }, [count]);
+          const x =
+            Math.round(
+              Math.cos(angle) *
+              distance
+            );
 
-  /*
-   * Find which particle will actually
-   * finish last.
-   *
-   * This prevents the particle container
-   * from disappearing too early.
-   */
-  const lastParticleIndex = useMemo(() => {
-    let latestFinishTime = 0;
-    let latestIndex = 0;
+          const y =
+            Math.round(
+              Math.sin(angle) *
+              distance
+            );
 
-    particles.forEach(
-      (particle, index) => {
-        const finishTime =
-          particle.delay +
-          particle.duration;
+          const rotate =
+            Math.round(
+              randomRotate *
+              540
+            );
 
-        if (
-          finishTime >
-          latestFinishTime
-        ) {
-          latestFinishTime =
-            finishTime;
+          let size = 3;
 
-          latestIndex = index;
+          if (
+            randomSize >
+            0.88
+          ) {
+            size = 7;
+          } else if (
+            randomSize >
+            0.65
+          ) {
+            size = 5;
+          } else if (
+            randomSize >
+            0.32
+          ) {
+            size = 4;
+          }
+
+          const shape:
+            | "circle"
+            | "square"
+            | "dot" =
+            randomShape >
+              0.68
+              ? "square"
+              : randomShape >
+                0.34
+                ? "circle"
+                : "dot";
+
+          return {
+            id: index,
+
+            x,
+            y,
+
+            rotate,
+
+            size,
+
+            shape,
+
+            delay:
+              randomDelay *
+              0.085,
+
+            duration:
+              0.8 +
+              randomDuration *
+              0.38,
+          };
         }
-      }
-    );
+      );
+    }, [count]);
 
-    return latestIndex;
-  }, [particles]);
+  const lastParticleIndex =
+    useMemo(() => {
+      let longestFinishTime =
+        -1;
+
+      let finalIndex = 0;
+
+      particles.forEach(
+        (
+          particle,
+          index
+        ) => {
+          const finishTime =
+            particle.delay +
+            particle.duration;
+
+          if (
+            finishTime >
+            longestFinishTime
+          ) {
+            longestFinishTime =
+              finishTime;
+
+            finalIndex =
+              index;
+          }
+        }
+      );
+
+      return finalIndex;
+    }, [particles]);
 
   return (
     <div
@@ -108,70 +196,105 @@ export function AdminParticleBurst({
       aria-hidden="true"
     >
       {particles.map(
-        (particle, index) => (
-          <motion.span
-            key={particle.id}
-            className={`admin-burst-particle is-${particle.shape}`}
-            style={{
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-            }}
-            initial={{
-              x: 0,
-              y: 0,
+        (
+          particle,
+          index
+        ) => {
+          const midX =
+            particle.x *
+            0.55;
 
-              scale: 0,
-              opacity: 0,
+          const midY =
+            particle.y *
+            0.48;
 
-              rotate: 0,
-            }}
-            animate={{
-              x: particle.x,
-              y: particle.y,
+          return (
+            <motion.span
+              key={
+                particle.id
+              }
+              className={`admin-burst-particle is-${particle.shape}`}
+              style={{
+                width:
+                  particle.size,
 
-              /*
-               * Small expansion followed
-               * by a natural disappearance.
-               */
-              scale: [
-                0,
-                1.25,
-                0.9,
-                0,
-              ],
+                height:
+                  particle.size,
+              }}
+              initial={{
+                x: 0,
+                y: 0,
 
-              opacity: [
-                0,
-                1,
-                0.85,
-                0,
-              ],
+                scale: 0,
 
-              rotate:
-                particle.rotate,
-            }}
-            transition={{
-              duration:
-                particle.duration,
+                opacity: 0,
 
-              delay:
-                particle.delay,
+                rotate: 0,
+              }}
+              animate={{
+                x: [
+                  0,
+                  midX,
+                  particle.x,
+                ],
 
-              ease: [
-                0.25,
-                1,
-                0.5,
-                1,
-              ],
-            }}
-            onAnimationComplete={
-              index ===
-                lastParticleIndex
-                ? onBurstComplete
-                : undefined
-            }
-          />
-        )
+                y: [
+                  0,
+                  midY,
+                  particle.y,
+                ],
+
+                scale: [
+                  0,
+                  1.35,
+                  1,
+                  0.2,
+                ],
+
+                opacity: [
+                  0,
+                  1,
+                  0.9,
+                  0,
+                ],
+
+                rotate: [
+                  0,
+                  particle.rotate *
+                  0.45,
+                  particle.rotate,
+                ],
+              }}
+              transition={{
+                duration:
+                  particle.duration,
+
+                delay:
+                  particle.delay,
+
+                times: [
+                  0,
+                  0.18,
+                  0.72,
+                  1,
+                ],
+
+                ease: [
+                  0.16,
+                  1,
+                  0.3,
+                  1,
+                ],
+              }}
+              onAnimationComplete={
+                index ===
+                  lastParticleIndex
+                  ? onBurstComplete
+                  : undefined
+              }
+            />
+          );
+        }
       )}
     </div>
   );

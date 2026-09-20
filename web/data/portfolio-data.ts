@@ -15,8 +15,10 @@ export interface Project {
   role: string;
   stack: string[];
   summary: string;
+  testingScope: string;
   challenge: string;
   approach: string;
+  keyFindings: string;
   keyDefect: string;
   defect: ProjectDefect;
   outcome: string;
@@ -36,10 +38,14 @@ export const ALL_PROJECTS: Project[] = [
     stack: ["Manual Testing", "API Testing", "JMeter", "JIRA"],
     summary:
       "Full-cycle quality testing of a high-concurrency cab and parcel delivery ecosystem with real-time geospatial driver allocation.",
+    testingScope:
+      "Real-time driver dispatching algorithms, Razorpay payment gateway webhooks, dynamic surge pricing calculations, concurrent booking transactions, and distributed load resilience under 100,000 simulated virtual users.",
     challenge:
       "Surge pricing race conditions caused negative fare calculations during high booking velocity and simultaneous driver acceptances.",
     approach:
       "Built Apache JMeter distributed thread groups simulating 100,000 peak users, asserting database connection pool stability and API response latencies.",
+    keyFindings:
+      "Isolated a critical negative fare race condition where rapid coupon re-application during surge demand allowed rides to be booked with negative totals, mistakenly crediting rider wallets.",
     keyDefect:
       "Negative fare edge case: rapid coupon re-application allowed riders to book with negative balances and credited their wallets.",
     defect: {
@@ -77,10 +83,14 @@ export const ALL_PROJECTS: Project[] = [
     stack: ["Selenium WebDriver", "POM", "Manual Testing", "JIRA"],
     summary:
       "Multi-module grocery delivery platform comprising Customer App, Admin Panel, and Delivery Boy App with end-to-end cart and checkout coverage.",
+    testingScope:
+      "Cross-platform inventory state synchronization, dynamic cart promotions, order dispatch workflows, delivery partner tracking, and automated regression suite design with Page Object Model.",
     challenge:
       "Ensuring real-time inventory and pricing consistency across three independently deployed modules.",
     approach:
       "Automated end-to-end order processing using Selenium WebDriver + Page Object Model (POM). Smoke and sanity cycles run every sprint.",
+    keyFindings:
+      "Discovered distributed cache desynchronization where active customer shopping carts retained stale discounted prices after admin promotions had been expired or revoked.",
     keyDefect:
       "Data inconsistency between user UI and admin dashboards: product price updates were not propagating to customer carts in real time.",
     defect: {
@@ -126,10 +136,14 @@ export const ALL_PROJECTS: Project[] = [
     stack: ["Selenium WebDriver", "Manual Testing", "API Testing"],
     summary:
       "Full marketplace ecosystem covering the complete order-to-delivery lifecycle across Customer, Seller, Admin, and Delivery modules.",
+    testingScope:
+      "Multi-vendor seller commission ledgers, payment checkout resilience across 5 major browser engines, automated refund idempotency, and returns logistics verification.",
     challenge:
       "Testing multi-role order-to-delivery workflows where returns, refunds, and seller commissions interact across 4 separate systems.",
     approach:
       "Selenium scripts for complete web order workflows. Cross-browser testing across 5 browsers with automated payment regression after every release.",
+    keyFindings:
+      "Identified 18 critical bugs prior to launch, notably a payment webhook retry flaw that led to double-deduction on partial order refunds in merchant settlement accounts.",
     keyDefect:
       "18 critical bugs identified in checkout and payment workflows, including a refund-processing defect that caused financial balance discrepancies.",
     defect: {
@@ -173,9 +187,13 @@ export const ALL_PROJECTS: Project[] = [
     stack: ["Manual Testing", "API Testing", "JIRA"],
     summary:
       "Android ride-sharing app where drivers post available trips and riders request seats with real-time route matching.",
+    testingScope:
+      "Driver route publishing, real-time rider seat allocation, geospatial coordinate mapping, route cancellation policies, and 22 RESTful API endpoints for trip lifecycle management.",
     challenge: "Validating real-time trip posting and rider-driver matching logic via high-frequency REST APIs.",
     approach:
       "Functional, UI, and regression suites for driver and user modules. API response validation for trip CRUD operations.",
+    keyFindings:
+      "Uncovered a concurrent seat reservation race condition where near-simultaneous seat requests within a 12ms window caused 5 passengers to be confirmed in a 4-seat vehicle.",
     keyDefect: "Incorrect trip-assignment logic when multiple riders requested the same trip simultaneously.",
     defect: {
       severity: "HIGH",
@@ -208,10 +226,14 @@ export const ALL_PROJECTS: Project[] = [
     stack: ["Manual Testing", "API Testing", "JIRA"],
     summary:
       "Android lead-generation platform connecting customers with material suppliers, construction experts, and property listings.",
+    testingScope:
+      "Lead generation forms, SMS gateway notifications, contractor filtering algorithms, mobile offline persistence, and CRM integration endpoints.",
     challenge:
       "Testing interconnected lead-generation flows across Materials, Experts, Property, and Construction modules.",
     approach:
       "Functional, UI, regression, and API testing with defect tracking in JIRA. Verified REST APIs for auth and lead posting.",
+    keyFindings:
+      "Diagnosed a rapid multi-tap duplicate lead creation bug that fired repetitive SMS dispatches and created duplicate leads in contractor CRMs under slow mobile network conditions.",
     keyDefect:
       "Enquiry submission edge case where duplicate leads were created when users tapped the submit button rapidly.",
     defect: {
@@ -273,6 +295,7 @@ export const ALL_SKILLS = [
     group: "Mobile Testing",
     icon: "📱",
     items: [
+      { name: "Appium", desc: "Automated mobile functional and regression testing" },
       { name: "Android Testing", desc: "Real devices and emulators" },
       { name: "Cross-Device Testing", desc: "Resolutions, OS versions, fragmentation" },
       { name: "App Store Validation", desc: "Pre-submission compliance checks" },
@@ -311,24 +334,24 @@ export interface StatItem {
 
 export const ABOUT_STATS: StatItem[] = [
   {
-    value: "100k+",
-    label: "Virtual users simulated",
-    detail: "Performance tested with JMeter",
-  },
-  {
-    value: "300+",
-    label: "Test cases executed",
-    detail: "Across web and mobile apps",
-  },
-  {
     value: "240+",
     label: "Defects caught early",
-    detail: "Before reaching production",
+    detail: "Logged and tracked in JIRA before release",
+  },
+  {
+    value: "500+",
+    label: "Test cases designed",
+    detail: "Systematically designed & executed",
+  },
+  {
+    value: "100k+",
+    label: "Virtual users simulated",
+    detail: "Performance tested with Apache JMeter",
   },
   {
     value: "~40%",
     label: "Faster regression cycles",
-    detail: "With Selenium + TestNG",
+    detail: "With Selenium WebDriver + TestNG",
   },
 ];
 

@@ -1,0 +1,175 @@
+# Shashank Shinde — Software Test Engineer & QA Automation Specialist (Full Technical Dossier)
+
+> Detailed technical documentation of QA automation architectures, defect reports, performance testing benchmarks, and test assertions engineered by Shashank Shinde.
+
+## Table of Contents
+1. Engineering Philosophy & STLC Approach
+2. Automation Framework Architecture (Selenium + POM & Playwright)
+3. Detailed Critical Defect Reports & Code Snippets
+4. Performance Engineering & Load Profiles (Apache JMeter)
+5. REST API Test Architecture & Webhook Idempotency
+6. Mobile & Cross-Browser Verification Strategies
+7. Full Work History & Project Breakdown
+8. Credentials & Contact Data
+
+---
+
+## 1. Engineering Philosophy & STLC Approach
+Shashank Shinde approaches software quality engineering not merely as bug detection, but as risk mitigation and user trust protection.
+
+Core STLC methodology:
+- Requirements Analysis: Deriving negative test scenarios, boundary value limits, and concurrency hazards from product specifications before code is written.
+- Test Strategy & Design: Structuring test matrices with priority tags (P0 Smoke, P1 Critical Regression, P2 Boundary Edge Cases).
+- Automation First for Repeatability: Encapsulating browser interactions inside Page Object Models with explicit dynamic synchronization (avoiding brittle Thread.sleep).
+- Continuous Quality Gates: Integrating automated tests into GitHub Actions pipelines so regressions fail builds before staging promotion.
+- Evidence-Based Defect Reporting: Logging defects in JIRA with exact reproduction steps, HTTP request/response payloads, stack traces, and proposed developer remediation hints.
+
+---
+
+## 2. Automation Framework Architecture
+
+### Selenium WebDriver + Page Object Model (POM) + TestNG
+- Language: Java 17+
+- Design Pattern: Page Object Model (POM) with PageFactory encapsulation
+- Test Runner: TestNG with xml suite configurations (smoke.xml, regression.xml)
+- Assertions: AssertJ and TestNG assertions with descriptive failure messages
+- Execution: Headless mode in GitHub Actions CI with xvfb virtual framebuffers
+- Key Metrics: ~40% reduction in regression cycle turnaround time across 8+ sprint releases
+
+### Playwright (TypeScript)
+- Language: TypeScript / JavaScript
+- Capabilities: Auto-waiting, network request interception and mocking, cross-tab testing, multi-context browser isolation
+- Test Runner: @playwright/test with parallel workers and video/trace artifact capture on assertion failures
+
+### Mobile Automation (Appium)
+- Language: Java / JavaScript
+- Platforms: Android physical devices and emulator matrices
+- Focus: App launch cold/warm start, backgrounding/resume state retention, low-memory handling, orientation changes, network degradation (3G/2G throttling)
+
+---
+
+## 3. Detailed Critical Defect Reports & Code Snippets
+
+### Case 1: DRIWE — Negative Fare Surge Calculation Race Condition
+- Report ID: DRW-DEF-2024-014
+- Severity: CRITICAL (P0)
+- Environment: Pre-Production
+- Defect Description: When a dynamic promo code exceeded the base ride rate during rapid surge pricing recalculation and simultaneous driver acceptances, the total fare was calculated with negative values (-₹45), resulting in wallet credits rather than debits.
+- Reproduction Assertion Snippet:
+```javascript
+// PricingService.computeFare(tripId, promoId)
+const baseFare = await db.trips.getBaseRate(tripId);
+const finalFare = baseFare - promoDiscount;
+
+// Non-negative assertion catches race condition
+expect(finalFare).toBeGreaterThanOrEqual(0.00);
+expect(dbRiderWallet.isNegative()).toBe(false);
+```
+- Resolution: Introduced atomic database checkout transactions, server-side promotional floor validation (`Math.max(0, calculatedFare)`), and JMeter concurrent assertion gates.
+
+### Case 2: Grosido — Distributed Cache Desynchronization in Cart Checkout
+- Report ID: GRO-DEF-2024-071
+- Severity: HIGH (P0)
+- Environment: Staging
+- Defect Description: When administrators discounted item prices in the Admin Panel, active customer checkout sessions retained stale cached baseline prices, while the payment gateway billed the updated promotional amount, causing ledger balance mismatches.
+- Reproduction Assertion Snippet:
+```java
+// Selenium POM Assertion for Price Delta Sync
+CartPage cartPage = new CartPage(driver);
+cartPage.refreshPriceCheck(itemId);
+assertThat(cartPage.getSubtotal()).isEqualTo(adminPanel.getLivePrice(itemId));
+```
+- Resolution: Engineered automated cache eviction pub/sub hooks on product price updates and added automated regression assertions on price sync between admin and customer modules.
+
+### Case 3: E-Commerce Ecosystem — Multi-Role Refund Webhook Double-Deduction
+- Report ID: ECO-DEF-2024-032
+- Severity: CRITICAL (P0)
+- Environment: Staging
+- Defect Description: Partial return processing across 4 isolated micro-modules under unstable network retry schedules caused refund webhooks to trigger duplicate balance deductions in merchant settlement accounts.
+- Reproduction Assertion Snippet:
+```javascript
+// WebhookHandler.processRefund(txId, sellerId)
+const isProcessed = await redis.get('tx:' + txId);
+if (isProcessed) return res.status(200).send('ACK');
+
+// Idempotency check prevents duplicate deduction
+await sellerLedger.recordDeduction(sellerId, refundAmount);
+expect(sellerLedger.getDeductions(txId)).toBe(1);
+```
+- Resolution: Engineered strict intake idempotency checks using Redis transaction keys and authored a 5-browser automated payment regression suite.
+
+### Case 4: Ride Sharing Application — Concurrent Seat Reservation Race Condition
+- Report ID: RDS-DEF-2024-019
+- Severity: HIGH (P1)
+- Environment: Staging
+- Defect Description: Two riders requesting the final remaining seat on an active shared route within a 12ms window caused vehicle occupancy to reach 5 passengers in a 4-passenger vehicle.
+- Reproduction Assertion Snippet:
+```javascript
+// Postman Test Script
+pm.test('Vehicle capacity cannot exceed physical maximum seats', function () {
+  const json = pm.response.json();
+  pm.expect(json.passengerCount).toBeLessThanOrEqual(4);
+});
+```
+- Resolution: Enforced database row-level locking (`SELECT FOR UPDATE`) during seat reservation and authored concurrent Postman Newman test executions.
+
+### Case 5: Urban Build — Rapid Multi-Tap Duplicate Lead Generation
+- Report ID: URB-DEF-2024-025
+- Severity: MEDIUM (P2)
+- Environment: Production Catch
+- Defect Description: On high-latency 3G/4G connections, impatient users rapidly tapped 'Submit Enquiry', creating duplicate database records and firing redundant SMS dispatches.
+- Reproduction Assertion Snippet:
+```javascript
+// Client-side debounce & server fingerprint assertion
+expect(await getLeadCount(userToken)).toBe(1);
+expect(submitBtn.disabled).toBe(true);
+```
+- Resolution: Disabled submit button upon initial tap with UI loading spinner, and enforced backend SHA-256 fingerprint deduplication with a 60-second time-to-live window.
+
+---
+
+## 4. Performance Engineering & Load Testing (Apache JMeter)
+- Load Tool: Apache JMeter 5.x
+- Concurrency Scalability: Distributed thread groups simulating up to 100,000 concurrent virtual users
+- Metrics Analyzed:
+  - 90th / 95th / 99th percentile response times
+  - Error rate under step-up ramp-up load
+  - Throughput (requests per second)
+  - Server CPU / memory utilization
+  - Database connection pool wait times
+
+---
+
+## 5. REST API Testing Architecture
+- Tools: Postman, Newman CLI, REST Assured
+- Contract Assertions: JSON Schema Validation against RFC 7159
+- Status Code Verification:
+  - 200 OK, 201 Created, 204 No Content for standard success paths
+  - 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found for client fault boundaries
+  - 429 Too Many Requests for rate limiter boundary verification
+  - 500 Internal Server Error recovery & graceful error message formatting
+- Authentication Testing: Bearer token lifecycle, JWT claims validation, refresh token rotation, and expired token rejection.
+
+---
+
+## 6. Work Experience Breakdown
+### Software Test Engineer — Profcyma Solutions Pvt. Ltd., Pune (June 2025 — Present)
+- Designed and maintained automated regression frameworks cutting cycle times by ~40%.
+- Conducted manual, functional, regression, smoke, and sanity test cycles across 5+ client applications.
+- Validated RESTful APIs and payment webhook integrations.
+- Integrated automated suites into GitHub Actions CI/CD workflows, cutting manual testing overhead by 25%.
+- Logged and tracked 240+ defects in JIRA with comprehensive root-cause analysis.
+
+---
+
+## 7. Education & Verified Credentials
+- B.E. in Information Technology — University of Pune
+- Software Development Engineer in Test (SDET) — SEED Infotech Pune
+- Salesforce Accredited Professional — Salesforce Trailhead
+
+## 8. Contact & Hiring Details
+- Email: shashankshinde38@gmail.com
+- Telephone: +91 80808 52689
+- LinkedIn: https://www.linkedin.com/in/shashank-shinde7/
+- GitHub: https://github.com/shashankshinde38-lab
+- Website: https://shashankportfolio-jet.vercel.app/

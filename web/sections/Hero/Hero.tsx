@@ -11,6 +11,7 @@ import {
   TestTube2,
   Database,
   GitPullRequest,
+  Smartphone,
 } from "lucide-react";
 import TestConsole from "@/web/components/TestConsole/TestConsole";
 import "./Hero.css";
@@ -68,6 +69,7 @@ export default function Hero() {
                 <span><Layers /> Playwright</span>
                 <span><Activity /> JMeter</span>
                 <span><Braces /> Postman</span>
+                <span><Smartphone /> Appium</span>
                 <span><GitBranch /> CI/CD</span>
                 <span><Bug /> JIRA</span>
                 <span><TestTube2 /> TestNG</span>
@@ -81,6 +83,7 @@ export default function Hero() {
                 <span><Layers /> Playwright</span>
                 <span><Activity /> JMeter</span>
                 <span><Braces /> Postman</span>
+                <span><Smartphone /> Appium</span>
                 <span><GitBranch /> CI/CD</span>
                 <span><Bug /> JIRA</span>
                 <span><TestTube2 /> TestNG</span>

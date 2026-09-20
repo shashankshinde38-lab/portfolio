@@ -36,25 +36,29 @@ export const metadata: Metadata = {
     "Software Test Engineer",
     "QA Engineer",
     "QA Automation Engineer",
-    "Automation Testing",
-    "SDET",
-    "Selenium WebDriver",
+    "Automation Tester",
     "Selenium",
+    "Selenium WebDriver",
     "Playwright",
-    "REST API Testing",
     "API Testing",
-    "Apache JMeter",
-    "JMeter",
-    "Java",
-    "SQL",
     "Postman",
+    "JMeter",
+    "Apache JMeter",
+    "Appium",
+    "Manual Testing",
+    "Performance Testing",
+    "Software Testing Portfolio",
+    "SDET",
+    "Java",
+    "TypeScript",
+    "SQL",
     "TestNG",
     "Cucumber BDD",
+    "Page Object Model",
     "Regression Testing",
-    "Performance Testing",
-    "Manual Testing",
+    "CI/CD Automation",
     "Shashank Shinde",
-    "QA Portfolio",
+    "Profcyma Solutions",
     "Pune Software Tester",
   ],
   authors: [{ name: "Shashank Shinde", url: siteUrl }],
@@ -239,10 +243,13 @@ const jsonLdData = {
       knowsAbout: [
         "Software Testing",
         "QA Automation",
+        "Automation Testing",
         "Selenium WebDriver",
+        "Selenium",
         "Playwright",
         "Apache JMeter",
         "Postman",
+        "Appium",
         "REST Assured",
         "TestNG",
         "Cucumber BDD",
@@ -306,6 +313,26 @@ const jsonLdData = {
       about: {
         "@id": `${siteUrl}/#person`,
       },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${siteUrl}/#webpage`,
+      url: siteUrl,
+      name: "Shashank Shinde — Software Test Engineer Portfolio",
+      description:
+        "Official Software Test Engineer & QA Automation portfolio of Shashank Shinde. Showcasing automated regression suites, API test coverage, distributed load simulations, and verified defect mitigation case studies.",
+      isPartOf: {
+        "@id": `${siteUrl}/#website`,
+      },
+      about: {
+        "@id": `${siteUrl}/#person`,
+      },
+      hasPart: [
+        {
+          "@id": `${siteUrl}/#projects-list`,
+        },
+      ],
+      inLanguage: "en-US",
     },
     {
       "@type": "BreadcrumbList",
@@ -441,84 +468,6 @@ const jsonLdData = {
             creator: { "@id": `${siteUrl}/#person` },
             about: "Construction / Real Estate Lead Generation QA",
             keywords: "REST API Testing, Debounce Testing, Idempotency, Duplicate Prevention, JIRA",
-          },
-        },
-      ],
-    },
-    {
-      "@type": "FAQPage",
-      "@id": `${siteUrl}/#faqpage`,
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "Who is Shashank Shinde and what is his professional background?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Shashank Shinde is a Software Test Engineer and SDET based in Pune, India, currently working at Profcyma Solutions Pvt. Ltd. He holds a Bachelor of Engineering in Information Technology and professional SDET certification from SEED Infotech Pune. He specializes in automated regression suites, REST API validation, performance engineering, and quality assurance.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "What test automation tools and frameworks does Shashank use?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Shashank builds automation frameworks using Selenium WebDriver, Playwright, Java, TestNG, and Cucumber (BDD). He designs maintainable architectures with the Page Object Model (POM) pattern and integrates automated test execution into CI/CD pipelines via GitHub Actions.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Does Shashank have experience with REST API testing?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. Shashank tests RESTful APIs using Postman and REST Assured. His coverage includes HTTP status code assertions, JSON schema validations, authentication workflows (OAuth/JWT), payload validation, and payment gateway webhook idempotency.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Does Shashank have performance and load testing experience?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. Shashank performs load, stress, and endurance testing using Apache JMeter. In the DRIWE cab platform, he engineered distributed thread groups simulating 100,000 concurrent virtual users to analyze server latency, throughput bottlenecks, and database connection pooling under peak surge loads.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "What major software applications has Shashank tested and delivered?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Shashank has engineered QA suites for DRIWE Cab & Courier (EV & logistics tracking), Grosido Grocery (concurrency & inventory race condition mitigation), E-Commerce Ecosystem (webhook & payment checkout idempotency), Ride Sharing Platform (telemetry & WebSocket load), and Urban Build (offline sync conflict testing).",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "How can recruiters, engineering managers, or clients contact Shashank?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "You can reach Shashank directly by email at shashankshinde38@gmail.com, phone at +91 80808 52689, connect on LinkedIn at https://www.linkedin.com/in/shashank-shinde7/, or submit an inquiry through the contact form on this portfolio. He typically responds within 24 hours.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "What does Shashank Shinde do as a Software Test Engineer?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Shashank designs test strategies, builds automation frameworks, validates REST APIs, and performs load testing for web and mobile applications. His day-to-day work includes writing Selenium WebDriver and Playwright scripts, running Apache JMeter load simulations, tracking defects in JIRA, and integrating test suites into CI/CD pipelines. He works across the full software testing lifecycle — from test planning to release sign-off.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Does Shashank Shinde use Selenium WebDriver?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. Selenium WebDriver is one of Shashank's primary automation tools. He builds maintainable test frameworks using Selenium with Java, following the Page Object Model (POM) design pattern. He has used Selenium for end-to-end regression suites across projects like Grosido Grocery and the E-Commerce Ecosystem, achieving approximately 40% reduction in regression cycle time.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Does Shashank have experience with CI/CD and test pipeline integration?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. Shashank integrates automated test suites into CI/CD pipelines using GitHub Actions. His approach includes running smoke and regression tests on every build, enabling teams to catch defects early in the development cycle. He has reduced manual verification overhead by approximately 25% through pipeline automation at Profcyma Solutions.",
           },
         },
       ],

@@ -90,6 +90,23 @@
   animation: fadeInFaq 260ms ease-out;
 }
 
+.faq-direct-answer {
+  margin: 0 0 10px 0;
+  color: #E2E8F0;
+}
+
+.faq-answer-lead {
+  color: #38BDF8;
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.faq-supporting-detail {
+  margin: 0;
+  color: #94A3B8;
+  font-size: 0.91rem;
+}
+
 .faq-tags-row {
   display: flex;
   flex-wrap: wrap;

@@ -1,77 +1,163 @@
-async function runAudit() {
-  console.log("==================================================");
-  console.log("PHASE 5 QA & TECHNICAL SEO VERIFICATION TEST");
-  console.log("==================================================");
+async function runExhaustiveAudit() {
+  console.log("===============================================================");
+  console.log("EXHAUSTIVE TECHNICAL SEO, AEO, GEO, LLMO & PERFORMANCE AUDIT");
+  console.log("===============================================================\n");
 
-  // 1. Homepage & SEO Crawlability Test
-  const res = await fetch("http://localhost:3000/");
-  console.log(`[TEST 1] Homepage Status: ${res.status} ${res.statusText}`);
-  const html = await res.text();
+  const results = {
+    passed: 0,
+    failed: 0,
+    warnings: 0,
+  };
 
-  const hasH1 = /<h1[^>]*>([\s\S]*?)<\/h1>/i.test(html);
-  const h1Match = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
-  console.log(`[TEST 2] Semantic H1 Present: ${hasH1}`);
-  if (h1Match) console.log(`         H1 Text: "${h1Match[1].trim()}"`);
-
-  const h2Matches = [...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/gi)].map((m) => m[1].trim());
-  console.log(`[TEST 3] Semantic H2 Headings Count: ${h2Matches.length}`);
-  h2Matches.forEach((h2, i) => console.log(`         H2[${i + 1}]: "${h2}"`));
-
-  const hasCanonical = html.includes('rel="canonical"');
-  console.log(`[TEST 4] Canonical Tag Present: ${hasCanonical}`);
-
-  const hasJsonLd = html.includes('application/ld+json');
-  console.log(`[TEST 5] Schema.org JSON-LD Present: ${hasJsonLd}`);
-  if (hasJsonLd) {
-    const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i);
-    if (jsonLdMatch) {
-      try {
-        const parsed = JSON.parse(jsonLdMatch[1]);
-        console.log(`         JSON-LD Types:`, parsed["@graph"] ? parsed["@graph"].map((g) => g["@type"]) : parsed["@type"]);
-      } catch (e) {
-        console.log(`         JSON-LD Parse Error:`, e.message);
-      }
+  function assert(title, condition, extra = "") {
+    if (condition) {
+      console.log(`  ✅ [PASS] ${title}${extra ? ` — ${extra}` : ""}`);
+      results.passed++;
+    } else {
+      console.error(`  ❌ [FAIL] ${title}${extra ? ` — ${extra}` : ""}`);
+      results.failed++;
     }
   }
 
-  console.log(`[TEST 6] Open Graph Image Configured: ${html.includes('og:image')}`);
-  console.log(`[TEST 7] Twitter Large Card Configured: ${html.includes('summary_large_image')}`);
-  console.log(`[TEST 8] Robots Meta Configured: ${html.includes('name="robots"')}`);
-  console.log(`[TEST 9] Crawlable Internal Nav Anchors: ${html.includes('<nav aria-label="Portfolio Sections Index"')}`);
-  console.log(`[TEST 10] Authentic Experience (Profcyma Solutions): ${html.includes('Profcyma Solutions')}`);
-  console.log(`[TEST 11] Authentic Projects (DRIWE, Grosido, E-Commerce, Ride Sharing, Urban Build): ${
-    html.includes('DRIWE') && html.includes('Grosido') && html.includes('E-Commerce') && html.includes('Ride Sharing') && html.includes('Urban Build')
-  }`);
-  console.log(`[TEST 12] Authentic Skills (Selenium, Playwright, JMeter, Postman): ${
-    html.includes('Selenium') && html.includes('Playwright') && html.includes('JMeter') && html.includes('Postman')
-  }`);
-  console.log(`[TEST 13] Authentic Contact Coordinates Present: ${html.includes('shashankshinde38@gmail.com')}`);
+  // 1. Homepage & Server-Rendered HTML
+  console.log("--- 1. SERVER-RENDERED HTML & CORE METADATA ---");
+  const homeRes = await fetch("http://localhost:3000/");
+  assert("Homepage Status 200", homeRes.status === 200, `Status: ${homeRes.status}`);
+  const html = await homeRes.text();
 
-  // 2. Robots.txt Test
-  const robotsRes = await fetch("http://localhost:3000/robots.txt");
-  console.log(`[TEST 14] robots.txt Status: ${robotsRes.status} (Allow: /, Sitemap declared)`);
+  // Headings
+  const h1Matches = [...html.matchAll(/<h1[^>]*>([\s\S]*?)<\/h1>/gi)];
+  assert("Single H1 on page", h1Matches.length === 1, `Found ${h1Matches.length} H1`);
 
-  // 3. Sitemap.xml Test
-  const sitemapRes = await fetch("http://localhost:3000/sitemap.xml");
-  console.log(`[TEST 15] sitemap.xml Status: ${sitemapRes.status}`);
+  const h2Matches = [...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/gi)];
+  assert("Multiple semantic H2 landmarks", h2Matches.length >= 7, `Found ${h2Matches.length} H2 sections`);
 
-  // 4. Custom 404 Error Handling Test
-  const notFoundRes = await fetch("http://localhost:3000/non-existent-room-qa-suite");
-  console.log(`[TEST 16] Custom 404 Route Status: ${notFoundRes.status} (Expected: 404)`);
-  const notFoundHtml = await notFoundRes.text();
-  console.log(`[TEST 17] Custom 404 Branded Sketch Card: ${notFoundHtml.includes('Room Not Found')}`);
+  // Canonical & Alternates
+  assert("Canonical URL configured", html.includes('rel="canonical"'));
+  assert("Viewport meta configured", html.includes('name="viewport"'));
+  assert("Theme color configured", html.includes('name="theme-color"'));
 
-  // 5. Contact API Validation Test
-  const contactBadRes = await fetch("http://localhost:3000/api/contact", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({}),
+  // Open Graph & Twitter
+  console.log("\n--- 2. SOCIAL MEDIA & OPEN GRAPH METADATA ---");
+  assert("OG Title configured", html.includes('property="og:title"'));
+  assert("OG Description configured", html.includes('property="og:description"'));
+  assert("OG Type profile configured", html.includes('property="og:type"'));
+  assert("OG Image configured", html.includes('property="og:image"'));
+  assert("Twitter Card summary_large_image configured", html.includes('name="twitter:card"'));
+
+  // Target Keywords
+  console.log("\n--- 3. NATURAL TARGET KEYWORDS TARGETING ---");
+  const targetKeywords = [
+    "Software Test Engineer",
+    "QA Engineer",
+    "QA Automation",
+    "Automation Tester",
+    "Selenium",
+    "Playwright",
+    "API Testing",
+    "Postman",
+    "JMeter",
+    "Appium",
+    "Manual Testing",
+    "Performance Testing",
+    "Software Testing",
+  ];
+
+  targetKeywords.forEach((kw) => {
+    assert(`Keyword "${kw}" present in indexable HTML`, html.toLowerCase().includes(kw.toLowerCase()));
   });
-  console.log(`[TEST 18] Contact API Bad Request Validation: ${contactBadRes.status} (Expected: 400)`);
 
-  console.log("==================================================");
-  console.log("ALL AUTOMATED TESTS EXECUTED.");
-  console.log("==================================================");
+  // Schema.org JSON-LD
+  console.log("\n--- 4. STRUCTURED DATA & ENTITY SEO (JSON-LD) ---");
+  const jsonLdMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i);
+  assert("JSON-LD script present", Boolean(jsonLdMatch));
+
+  if (jsonLdMatch) {
+    try {
+      const parsed = JSON.parse(jsonLdMatch[1]);
+      const graph = parsed["@graph"] || [];
+      const types = graph.map((g) => g["@type"]);
+      console.log(`     Discovered Schema Types: ${types.join(", ")}`);
+
+      assert("Person schema present", types.includes("Person"));
+      assert("ProfilePage schema present", types.includes("ProfilePage"));
+      assert("WebSite schema present", types.includes("WebSite"));
+      assert("WebPage schema present", types.includes("WebPage"));
+      assert("BreadcrumbList schema present", types.includes("BreadcrumbList"));
+      assert("ItemList (CreativeWork) schema present", types.includes("ItemList"));
+      assert("No deprecated FAQPage schema", !types.includes("FAQPage"), "Deprecated FAQPage removed");
+
+      const person = graph.find((g) => g["@type"] === "Person");
+      if (person) {
+        assert("Person name is Shashank Shinde", person.name === "Shashank Shinde");
+        assert("Person jobTitle is Software Test Engineer", person.jobTitle === "Software Test Engineer");
+        assert("Person knowsAbout includes Appium", person.knowsAbout?.includes("Appium"));
+        assert("Person worksFor Profcyma Solutions", person.worksFor?.name === "Profcyma Solutions Pvt. Ltd.");
+        assert("Person hasOccupation configured", Boolean(person.hasOccupation));
+      }
+    } catch (e) {
+      assert("JSON-LD valid syntax", false, e.message);
+    }
+  }
+
+  // AEO, GEO & LLMO
+  console.log("\n--- 5. AEO, GEO & LLMO CONTENT ARCHITECTURE ---");
+  assert("Direct Answer label present in FAQ", html.includes("Direct Answer:"));
+  assert("Testing scope present in Case Studies", html.includes("Testing scope"));
+  assert("Key findings & defects present in Case Studies", html.includes("Key findings &amp; defects") || html.includes("Key findings & defects"));
+  assert("Authentic defects metric (240+)", html.includes("240+"));
+  assert("Authentic test cases metric (500+)", html.includes("500+"));
+  assert("Authentic virtual users metric (100k+)", html.includes("100k+"));
+  assert("Authentic automation metric (~40%)", html.includes("~40%"));
+
+  // llms.txt & llms-full.txt
+  console.log("\n--- 6. MACHINE-READABLE STANDARDS (llms.txt) ---");
+  const llmsRes = await fetch("http://localhost:3000/llms.txt");
+  assert("llms.txt HTTP 200", llmsRes.status === 200);
+  const llmsText = await llmsRes.text();
+  assert("llms.txt contains Shashank Shinde", llmsText.includes("Shashank Shinde"));
+  assert("llms.txt contains testing toolkit", llmsText.includes("Selenium WebDriver") && llmsText.includes("Appium"));
+
+  const llmsFullRes = await fetch("http://localhost:3000/llms-full.txt");
+  assert("llms-full.txt HTTP 200", llmsFullRes.status === 200);
+  const llmsFullText = await llmsFullRes.text();
+  assert("llms-full.txt contains defect reproduction codes", llmsFullText.includes("Reproduction Assertion Snippet"));
+
+  // Crawlability & Sitemaps
+  console.log("\n--- 7. CRAWLABILITY, ROBOTS & SITEMAPS ---");
+  const robotsRes = await fetch("http://localhost:3000/robots.txt");
+  assert("robots.txt HTTP 200", robotsRes.status === 200);
+  const robotsText = await robotsRes.text();
+  assert("robots.txt disallows /admin", robotsText.includes("Disallow: /admin"));
+  assert("robots.txt disallows /api", robotsText.includes("Disallow: /api"));
+  assert("robots.txt declares sitemap", robotsText.includes("Sitemap:"));
+
+  const sitemapRes = await fetch("http://localhost:3000/sitemap.xml");
+  assert("sitemap.xml HTTP 200", sitemapRes.status === 200);
+  const sitemapText = await sitemapRes.text();
+  assert("sitemap.xml has current lastmod", sitemapText.includes("2026-09-21"));
+  assert("sitemap.xml has image schema", sitemapText.includes("<image:loc>"));
+
+  // Security & Indexing Control
+  console.log("\n--- 8. SECURITY & NON-INDEXABLE ROUTES ---");
+  assert("Admin portal link has rel=nofollow in shell", html.includes('rel="nofollow"'));
+
+  const notFoundRes = await fetch("http://localhost:3000/invalid-url-assertion-test");
+  assert("Unhandled routes return 404", notFoundRes.status === 404, `Status: ${notFoundRes.status}`);
+  const notFoundHtml = await notFoundRes.text();
+  assert("404 page has edge case messaging", notFoundHtml.includes("edge case") || notFoundHtml.includes("404"));
+
+  // Summary
+  console.log("\n===============================================================");
+  console.log(`AUDIT RESULTS: ${results.passed} PASSED, ${results.failed} FAILED`);
+  console.log("===============================================================");
+
+  if (results.failed > 0) {
+    process.exit(1);
+  }
 }
 
-runAudit().catch(console.error);
+runExhaustiveAudit().catch((err) => {
+  console.error("Audit Execution Error:", err);
+  process.exit(1);
+});
