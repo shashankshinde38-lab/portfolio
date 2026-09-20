@@ -8,6 +8,8 @@ import {
   ArrowUpRight,
   Check,
   CheckCircle2,
+  Copy,
+  Mail,
   ShieldCheck,
 } from "lucide-react";
 
@@ -18,21 +20,26 @@ import {
 const validateField = (name: string, value: string): string => {
   switch (name) {
     case "fullName":
-      if (!value.trim()) return "Full name is required";
+      if (!value.trim()) return "Please enter your name";
       if (value.trim().length < 2) return "Please enter at least 2 characters";
       return "";
     case "email":
-      if (!value.trim()) return "Email address is required";
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) return "Valid email address is required";
+      if (!value.trim()) return "Please enter your email address";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
+        return "Please enter a valid email address (e.g. name@company.com)";
+      }
       return "";
     case "mobile":
-      if (value.trim() && !/^\d{10}$/.test(value.trim())) return "Enter exactly 10 digits";
+      if (value.trim() && !/^[+]?[\d\s().-]{7,20}$/.test(value.trim())) {
+        return "Please enter a valid phone number (e.g. +91 80808 52689 or +1 555-0199)";
+      }
       return "";
     case "reason":
-      if (!value) return "Please select a reason";
+      if (!value) return "Please select a reason for contact";
       return "";
     case "message":
-      if (!value.trim()) return "Message is required";
+      if (!value.trim()) return "Please enter your message";
+      if (value.trim().length < 10) return "Please provide at least 10 characters so I can best assist you";
       return "";
     default:
       return "";
@@ -56,6 +63,17 @@ export default function ContactSection() {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [formStatus, setFormStatus] = useState<"idle" | "validating" | "sending" | "sent" | "error">("idle");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText("shashankshinde38@gmail.com");
+      setEmailCopied(true);
+      setTimeout(() => setEmailCopied(false), 2500);
+    } catch {
+      // fallback
+    }
+  };
 
   const handleBlur = (
     e: FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -166,6 +184,37 @@ export default function ContactSection() {
           <h3>Let's start a conversation.</h3>
           <span>Tell me a little about what you have in mind.</span>
         </div>
+
+        {/* 1-Click Fast Actions for Recruiters & Hiring Managers */}
+        <div className="contact-quick-actions" role="region" aria-label="Quick contact shortcuts">
+          <button
+            type="button"
+            onClick={handleCopyEmail}
+            className="copy-email-chip"
+            aria-label="Copy direct email address to clipboard"
+          >
+            {emailCopied ? (
+              <>
+                <Check size={13} className="text-pass" aria-hidden="true" />
+                <span>Email copied!</span>
+              </>
+            ) : (
+              <>
+                <Copy size={13} aria-hidden="true" />
+                <span>Copy direct email</span>
+              </>
+            )}
+          </button>
+          <a
+            href="mailto:shashankshinde38@gmail.com?subject=QA%20Opportunity%20%2F%20Inquiry%20-%20Shashank%20Shinde"
+            className="direct-email-chip"
+            aria-label="Open native email client with pre-composed subject to email Shashank"
+          >
+            <Mail size={13} aria-hidden="true" />
+            <span>Open email client ↗</span>
+          </a>
+        </div>
+
         <form onSubmit={handleFormSubmit} noValidate className="contact-form">
           <input
             type="text"
@@ -236,13 +285,12 @@ export default function ContactSection() {
                 id="mobile"
                 type="tel"
                 name="mobile"
-                autoComplete="tel-national"
-                inputMode="numeric"
-                maxLength={10}
+                autoComplete="tel"
+                maxLength={25}
                 value={formData.mobile}
                 onChange={handleFormChange}
                 onBlur={handleBlur}
-                placeholder="10-digit mobile number"
+                placeholder="+91 80808 52689 or +1 (555)..."
                 aria-invalid={Boolean(touched.mobile && formErrors.mobile)}
                 aria-describedby={touched.mobile && formErrors.mobile ? "mobile-error" : undefined}
                 className="form-input"
@@ -269,9 +317,9 @@ export default function ContactSection() {
                 className="form-input"
               >
                 <option value="">Select a reason</option>
+                <option value="QA opportunity">QA / SDET Opportunity</option>
                 <option value="Project collaboration">Project collaboration</option>
-                <option value="QA opportunity">QA opportunity</option>
-                <option value="Freelance work">Freelance work</option>
+                <option value="Freelance work">Freelance / Consulting work</option>
                 <option value="General enquiry">General enquiry</option>
                 <option value="Other">Other</option>
               </select>
@@ -290,11 +338,11 @@ export default function ContactSection() {
               id="message"
               name="message"
               rows={5}
-              maxLength={500}
+              maxLength={1500}
               value={formData.message}
               onChange={handleFormChange}
               onBlur={handleBlur}
-              placeholder="Tell me about the opportunity, your project, or what you're working on..."
+              placeholder="Tell me about your QA opportunity, project scope, or testing challenges..."
               aria-required="true"
               aria-invalid={Boolean(touched.message && formErrors.message)}
               aria-describedby={
@@ -312,10 +360,10 @@ export default function ContactSection() {
               )}
               <span
                 id="message-count"
-                className={`message-counter ${formData.message.length === 500 ? "char-fail" : formData.message.length > 450 ? "char-warn" : ""}`}
+                className={`message-counter ${formData.message.length >= 1500 ? "char-fail" : formData.message.length > 1350 ? "char-warn" : ""}`}
                 aria-live="polite"
               >
-                {formData.message.length} / 500
+                {formData.message.length} / 1500
               </span>
             </div>
           </div>

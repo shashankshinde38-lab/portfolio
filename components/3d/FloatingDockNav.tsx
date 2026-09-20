@@ -250,24 +250,36 @@ export default function FloatingDockNav({
         </div>
 
         {/* ---------------------------------------------------------- */}
-        {/* Mobile Toggle                                              */}
+        {/* Mobile Action Buttons (CRO Enhancement)                   */}
         {/* ---------------------------------------------------------- */}
 
-        <button
-          ref={toggleRef}
-          type="button"
-          className="nav-toggle"
-          aria-expanded={open}
-          aria-controls="mobile-nav-overlay"
-          aria-label={open ? "Close navigation" : "Open navigation"}
-          onClick={() => setOpen((previous) => !previous)}
-        >
-          {open ? (
-            <X size={20} strokeWidth={1.8} />
-          ) : (
-            <Terminal size={20} strokeWidth={1.8} />
-          )}
-        </button>
+        <div className="mobile-header-actions">
+          <a
+            href="#contact"
+            className="mobile-cta-talk"
+            aria-label="Contact Shashank Shinde"
+            onClick={closeMenu}
+          >
+            <span>Let's talk</span>
+            <ArrowUpRight size={13} strokeWidth={2} aria-hidden="true" />
+          </a>
+
+          <button
+            ref={toggleRef}
+            type="button"
+            className="nav-toggle"
+            aria-expanded={open}
+            aria-controls="mobile-nav-overlay"
+            aria-label={open ? "Close navigation" : "Open navigation"}
+            onClick={() => setOpen((previous) => !previous)}
+          >
+            {open ? (
+              <X size={20} strokeWidth={1.8} />
+            ) : (
+              <Terminal size={20} strokeWidth={1.8} />
+            )}
+          </button>
+        </div>
       </nav>
 
       {/* ------------------------------------------------------------ */}

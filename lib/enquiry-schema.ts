@@ -9,13 +9,13 @@ export const enquiryCreateSchema = z.object({
   mobile: z
     .string()
     .trim()
-    .max(24, "Mobile number is too long")
+    .max(30, "Mobile number is too long")
     .optional()
     .or(z.literal(""))
     .refine((v) => !v || /^[\d\s()+-]+$/.test(v), "Please enter a valid mobile number")
-    .transform((v) => (v ? v.replace(/\D/g, "") : ""))
-    .refine((v) => !v || v.length === 10, "Mobile number must be 10 digits"),
-  message: z.string().trim().min(1, "Message is required").max(1000),
+    .transform((v) => (v ? v.replace(/[^\d+]/g, "") : ""))
+    .refine((v) => !v || (v.replace(/\D/g, "").length >= 7 && v.replace(/\D/g, "").length <= 15), "Mobile number must contain between 7 and 15 digits"),
+  message: z.string().trim().min(1, "Message is required").max(2000),
   reason: z.string().trim().max(100).optional(),
   website: z.string().trim().max(0).optional(),
 });

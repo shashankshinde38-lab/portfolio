@@ -1453,6 +1453,17 @@ export default function PortfolioPage() {
                 </a>
               ))}
             </div>
+            <div className="contact-resume-block">
+              <a
+                className="btn-secondary contact-resume-btn"
+                href="/files/Shashank_Shinde_Resume.pdf"
+                download="Shashank_Shinde_Resume.pdf"
+                aria-label="Download Shashank Shinde Software Test Engineer Resume (PDF)"
+              >
+                <ArrowDownToLine size={16} aria-hidden="true" />
+                <span>Download Resume (PDF)</span>
+              </a>
+            </div>
             <p className="contact-note">I typically respond within 24 hours.</p>
           </div>
           <ContactSection />
