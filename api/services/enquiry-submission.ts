@@ -1,10 +1,10 @@
 import "server-only";
 import { after } from "next/server";
 
-import { noStoreJson, publicError, safeApiMessage } from "@/lib/api-response";
-import { insertEnquiry } from "@/lib/enquiries";
-import { enquiryCreateSchema } from "@/lib/enquiry-schema";
-import { sendContactNotification } from "@/lib/mailer";
+import { noStoreJson, publicError, safeApiMessage } from "@/api/helpers/api-response";
+import { insertEnquiry } from "@/api/services/enquiries";
+import { enquiryCreateSchema } from "@/api/schemas/enquiry-schema";
+import { sendContactNotification } from "@/api/services/mailer";
 
 const MAX_REQUEST_BYTES = 16_384;
 

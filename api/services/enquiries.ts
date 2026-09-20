@@ -1,7 +1,7 @@
 import "server-only";
 
-import { getSupabaseAdmin } from "@/lib/supabase";
-import type { Enquiry, EnquiryStatus } from "@/lib/enquiry-schema";
+import { getSupabaseAdmin } from "@/api/helpers/supabase";
+import type { Enquiry, EnquiryStatus } from "@/api/schemas/enquiry-schema";
 
 type EnquiryRow = {
   id: string;

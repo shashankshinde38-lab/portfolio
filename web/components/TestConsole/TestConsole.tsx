@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Terminal, CheckCircle2, Play, Sparkles, ShieldCheck } from "lucide-react";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useReducedMotion } from "@/web/hooks/useReducedMotion";
 
 interface SuiteDetail {
   title: string;

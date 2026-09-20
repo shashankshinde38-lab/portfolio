@@ -1,5 +1,5 @@
-import { clearAdminAccessCookie, isSameOrigin, revokeAdminRequest } from "@/lib/admin-auth";
-import { noStoreJson, publicError } from "@/lib/api-response";
+import { clearAdminAccessCookie, isSameOrigin, revokeAdminRequest } from "@/api/services/admin-auth";
+import { noStoreJson, publicError } from "@/api/helpers/api-response";
 
 export async function POST(req: Request) {
   if (!isSameOrigin(req)) return publicError("Request origin is not allowed.", 403);

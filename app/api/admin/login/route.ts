@@ -1,5 +1,5 @@
-import { isSameOrigin, setAdminAccessCookie, signInAdmin } from "@/lib/admin-auth";
-import { noStoreJson, publicError } from "@/lib/api-response";
+import { isSameOrigin, setAdminAccessCookie, signInAdmin } from "@/api/services/admin-auth";
+import { noStoreJson, publicError } from "@/api/helpers/api-response";
 
 export async function POST(req: Request) {
   try {

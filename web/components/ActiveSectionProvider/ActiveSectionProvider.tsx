@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import FloatingDockNav from "@/components/3d/FloatingDockNav";
-import AmbientBackdrop from "@/components/3d/AmbientBackdrop";
+import FloatingDockNav from "@/web/components/FloatingDockNav/FloatingDockNav";
+import AmbientBackdrop from "@/web/components/AmbientBackdrop/AmbientBackdrop";
 import { ArrowUpRight } from "lucide-react";
 
 /* ------------------------------------------------------------------ */

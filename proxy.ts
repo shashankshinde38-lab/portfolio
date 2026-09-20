@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { ADMIN_ACCESS_COOKIE } from "@/lib/admin-cookie";
+import { ADMIN_ACCESS_COOKIE } from "@/api/helpers/admin-cookie";
 
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;

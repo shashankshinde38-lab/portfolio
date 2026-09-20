@@ -2,8 +2,8 @@ import "server-only";
 
 import { createHash, randomBytes } from "crypto";
 import type { User } from "@supabase/supabase-js";
-import { ADMIN_ACCESS_COOKIE, adminAccessCookieOptions } from "@/lib/admin-cookie";
-import { getSupabaseAdmin, getSupabaseAuthClient } from "@/lib/supabase";
+import { ADMIN_ACCESS_COOKIE, adminAccessCookieOptions } from "@/api/helpers/admin-cookie";
+import { getSupabaseAdmin, getSupabaseAuthClient } from "@/api/helpers/supabase";
 
 const ADMIN_ROLE = "portfolio_admin";
 const ADMIN_SESSION_TABLE = "admin_sessions";

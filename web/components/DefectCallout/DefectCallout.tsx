@@ -1,7 +1,7 @@
 "use client";
 
 import { Bug, CheckCircle2, ChevronDown, Sparkles } from "lucide-react";
-import StatusBadge from "@/components/StatusBadge";
+import StatusBadge from "@/web/components/StatusBadge/StatusBadge";
 
 export type DefectSeverity = "CRITICAL" | "HIGH" | "MEDIUM";
 

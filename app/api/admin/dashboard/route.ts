@@ -1,6 +1,6 @@
-import { isAdminRequest } from "@/lib/admin-auth";
-import { noStoreJson, publicError, safeApiMessage } from "@/lib/api-response";
-import { enquiryStats } from "@/lib/enquiries";
+import { isAdminRequest } from "@/api/services/admin-auth";
+import { noStoreJson, publicError, safeApiMessage } from "@/api/helpers/api-response";
+import { enquiryStats } from "@/api/services/enquiries";
 
 export async function GET(req: Request) {
   try {

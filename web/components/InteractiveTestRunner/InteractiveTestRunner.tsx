@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import confetti from "canvas-confetti";
 import { Play, RotateCcw, CheckCircle2, AlertTriangle, XCircle, Terminal, Check } from "lucide-react";
-import StatusBadge from "@/components/StatusBadge";
+import StatusBadge from "@/web/components/StatusBadge/StatusBadge";
 
 interface TestLog {
   text: string;

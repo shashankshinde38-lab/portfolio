@@ -3,8 +3,8 @@
 import { useState } from "react";
 import confetti from "canvas-confetti";
 import { Bug, CheckCircle2, Sparkles, Trophy } from "lucide-react";
-import DefectCallout, { type DefectSeverity } from "@/components/DefectCallout";
-import TiltCard from "@/components/TiltCard";
+import DefectCallout, { type DefectSeverity } from "@/web/components/DefectCallout/DefectCallout";
+import TiltCard from "@/web/components/TiltCard/TiltCard";
 
 interface BugCase {
   id: string;

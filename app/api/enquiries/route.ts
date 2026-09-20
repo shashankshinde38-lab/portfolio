@@ -1,7 +1,7 @@
-import { isAdminRequest } from "@/lib/admin-auth";
-import { noStoreJson, publicError, safeApiMessage } from "@/lib/api-response";
-import { listEnquiries } from "@/lib/enquiries";
-import { submitEnquiry } from "@/lib/enquiry-submission";
+import { isAdminRequest } from "@/api/services/admin-auth";
+import { noStoreJson, publicError, safeApiMessage } from "@/api/helpers/api-response";
+import { listEnquiries } from "@/api/services/enquiries";
+import { submitEnquiry } from "@/api/services/enquiry-submission";
 
 export async function POST(req: Request) {
   return submitEnquiry(req);

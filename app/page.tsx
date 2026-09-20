@@ -12,14 +12,14 @@
 /*   • DefectCallout — project defect callout                          */
 /* ================================================================== */
 
-import ActiveSectionProvider from "@/components/ActiveSectionProvider";
-import InteractiveTestRunner from "@/components/3d/InteractiveTestRunner";
-import BugSpotterLab from "@/components/sections/BugSpotterLab";
-import ContactSection from "@/components/sections/ContactSection";
-import TestConsole from "@/components/TestConsole";
-import TiltCard from "@/components/TiltCard";
-import DefectCallout from "@/components/DefectCallout";
-import { ALL_PROJECTS, ALL_SKILLS, ABOUT_STATS, EXPERIENCE_ROLES } from "@/lib/portfolio-data";
+import ActiveSectionProvider from "@/web/components/ActiveSectionProvider/ActiveSectionProvider";
+import InteractiveTestRunner from "@/web/components/InteractiveTestRunner/InteractiveTestRunner";
+import BugSpotterLab from "@/web/sections/BugSpotterLab/BugSpotterLab";
+import ContactSection from "@/web/sections/ContactSection/ContactSection";
+import TestConsole from "@/web/components/TestConsole/TestConsole";
+import TiltCard from "@/web/components/TiltCard/TiltCard";
+import DefectCallout from "@/web/components/DefectCallout/DefectCallout";
+import { ALL_PROJECTS, ALL_SKILLS, ABOUT_STATS, EXPERIENCE_ROLES } from "@/web/data/portfolio-data";
 import {
   Activity,
   AlertTriangle,

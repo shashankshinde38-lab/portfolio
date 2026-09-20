@@ -1,7 +1,7 @@
-import { isAdminRequest, isSameOrigin } from "@/lib/admin-auth";
-import { noStoreJson, publicError, safeApiMessage } from "@/lib/api-response";
-import { updateEnquiryStatus } from "@/lib/enquiries";
-import { enquiryIdSchema, enquiryStatusSchema } from "@/lib/enquiry-schema";
+import { isAdminRequest, isSameOrigin } from "@/api/services/admin-auth";
+import { noStoreJson, publicError, safeApiMessage } from "@/api/helpers/api-response";
+import { updateEnquiryStatus } from "@/api/services/enquiries";
+import { enquiryIdSchema, enquiryStatusSchema } from "@/api/schemas/enquiry-schema";
 
 export async function PATCH(
   req: Request,

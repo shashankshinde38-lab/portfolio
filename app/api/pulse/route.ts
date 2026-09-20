@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin, supabaseServerConfigured } from "@/lib/supabase";
+import { getSupabaseAdmin, supabaseServerConfigured } from "@/api/helpers/supabase";
 
 export async function GET() {
   if (!supabaseServerConfigured()) {
