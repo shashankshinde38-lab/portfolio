@@ -271,8 +271,10 @@ export function isSameOrigin(req: Request) {
     const originUrl = new URL(origin);
     const requestUrl = new URL(req.url);
     const forwardedHost = req.headers.get("x-forwarded-host");
+    const forwardedProto = req.headers.get("x-forwarded-proto");
     const requestHost = forwardedHost || requestUrl.host;
-    if (originUrl.host === requestHost && originUrl.protocol === requestUrl.protocol) return true;
+    const requestProto = forwardedProto ? `${forwardedProto}:` : requestUrl.protocol;
+    if (originUrl.host === requestHost && originUrl.protocol === requestProto) return true;
 
     const loopbackHosts = new Set(["localhost", "127.0.0.1", "::1"]);
     return (

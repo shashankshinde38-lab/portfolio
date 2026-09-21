@@ -3,6 +3,8 @@ import { noStoreJson, publicError, safeApiMessage } from "@/api/helpers/api-resp
 import { listEnquiries } from "@/api/services/enquiries";
 import { submitEnquiry } from "@/api/services/enquiry-submission";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   return submitEnquiry(req);
 }
