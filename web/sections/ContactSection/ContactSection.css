@@ -1092,15 +1092,13 @@
 }
 
 .contact-honeypot {
+  display: none !important;
+  visibility: hidden !important;
   position: absolute !important;
-
   left: -9999px !important;
-
-  width: 1px !important;
-  height: 1px !important;
-
+  width: 0 !important;
+  height: 0 !important;
   opacity: 0 !important;
-
   pointer-events: none !important;
 }
 
@@ -1229,6 +1227,41 @@
 
   box-shadow:
     0 0 0 3px rgba(248, 113, 113, 0.045);
+}
+
+/* Chrome / WebKit Autofill Dark Mode & Animation */
+@keyframes onAutoFillStart {
+  from { /**/ }
+  to { /**/ }
+}
+
+@keyframes onAutoFillCancel {
+  from { /**/ }
+  to { /**/ }
+}
+
+.form-input:-webkit-autofill {
+  animation-name: onAutoFillStart;
+  -webkit-box-shadow: 0 0 0 1000px #090e17 inset !important;
+  box-shadow: 0 0 0 1000px #090e17 inset !important;
+  -webkit-text-fill-color: #f8fafc !important;
+  caret-color: #38bdf8 !important;
+  border-color: rgba(56, 189, 248, 0.45) !important;
+  transition: background-color 50000s ease-in-out 0s;
+}
+
+.form-input:-webkit-autofill:hover,
+.form-input:-webkit-autofill:focus,
+.form-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #090e17 inset !important;
+  box-shadow: 0 0 0 1000px #090e17 inset !important;
+  -webkit-text-fill-color: #f8fafc !important;
+  caret-color: #38bdf8 !important;
+  border-color: rgba(56, 189, 248, 0.6) !important;
+}
+
+.form-input:not(:-webkit-autofill) {
+  animation-name: onAutoFillCancel;
 }
 
 textarea.form-input {

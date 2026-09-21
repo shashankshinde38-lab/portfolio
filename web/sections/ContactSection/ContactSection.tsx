@@ -145,7 +145,7 @@ export default function ContactSection() {
     mobile: "",
     reason: "",
     message: "",
-    website: "",
+    botField: "",
   });
 
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -157,6 +157,8 @@ export default function ContactSection() {
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
+
+  const formRef = useRef<HTMLFormElement | null>(null);
 
   /* Premium reason dropdown */
 
@@ -217,13 +219,16 @@ export default function ContactSection() {
   };
 
   /* ==========================================================================
-     STANDARD FIELD CHANGE
+     STANDARD FIELD CHANGE & INPUT
      ========================================================================== */
 
   const handleFormChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e:
+      | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+    const { name, value } = target;
 
     setFormData((previous) => ({
       ...previous,
@@ -245,6 +250,68 @@ export default function ContactSection() {
       return next;
     });
   };
+
+  /* ==========================================================================
+     SYNC DOM VALUES (Autofill & Predictive Suggestions)
+     ========================================================================== */
+
+  const syncFormValues = useCallback(() => {
+    const form = formRef.current;
+    if (!form) return;
+
+    const formElements = form.elements;
+    const nameEl = formElements.namedItem("fullName") as HTMLInputElement | null;
+    const emailEl = formElements.namedItem("email") as HTMLInputElement | null;
+    const mobileEl = formElements.namedItem("mobile") as HTMLInputElement | null;
+    const messageEl = formElements.namedItem("message") as HTMLTextAreaElement | null;
+
+    setFormData((prev) => {
+      const nextName = nameEl ? nameEl.value : prev.fullName;
+      const nextEmail = emailEl ? emailEl.value : prev.email;
+      const nextMobile = mobileEl ? mobileEl.value : prev.mobile;
+      const nextMessage = messageEl ? messageEl.value : prev.message;
+
+      if (
+        nextName === prev.fullName &&
+        nextEmail === prev.email &&
+        nextMobile === prev.mobile &&
+        nextMessage === prev.message
+      ) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        fullName: nextName,
+        email: nextEmail,
+        mobile: nextMobile,
+        message: nextMessage,
+      };
+    });
+  }, []);
+
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+
+    const handleInputOrChange = () => {
+      syncFormValues();
+    };
+
+    form.addEventListener("input", handleInputOrChange, { capture: true });
+    form.addEventListener("change", handleInputOrChange, { capture: true });
+    form.addEventListener("animationstart", handleInputOrChange, { capture: true });
+
+    syncFormValues();
+    const timer = setTimeout(syncFormValues, 300);
+
+    return () => {
+      clearTimeout(timer);
+      form.removeEventListener("input", handleInputOrChange, { capture: true });
+      form.removeEventListener("change", handleInputOrChange, { capture: true });
+      form.removeEventListener("animationstart", handleInputOrChange, { capture: true });
+    };
+  }, [syncFormValues]);
 
   /* ==========================================================================
      REASON DROPDOWN HELPERS
@@ -448,12 +515,43 @@ export default function ContactSection() {
      SUBMIT
      ========================================================================== */
 
-  const handleFormSubmit = async (e: FormEvent) => {
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setReasonOpen(false);
 
-    if (formData.website) {
+    const form = e.currentTarget;
+    const formElements = form.elements;
+
+    // Read live values directly from DOM elements to capture browser autofill & suggestions
+    const nameEl = formElements.namedItem("fullName") as HTMLInputElement | null;
+    const emailEl = formElements.namedItem("email") as HTMLInputElement | null;
+    const mobileEl = formElements.namedItem("mobile") as HTMLInputElement | null;
+    const messageEl = formElements.namedItem("message") as HTMLTextAreaElement | null;
+    const botEl = formElements.namedItem("company_code_validation") as HTMLInputElement | null;
+
+    const liveFullName = (nameEl?.value ?? formData.fullName ?? "").trim();
+    const liveEmail = (emailEl?.value ?? formData.email ?? "").trim();
+    const liveMobile = (mobileEl?.value ?? formData.mobile ?? "").trim();
+    const liveReason = (formData.reason ?? "").trim();
+    const liveMessage = (messageEl?.value ?? formData.message ?? "").trim();
+    const liveBotField = (botEl?.value ?? formData.botField ?? "").trim();
+
+    // Sync React state immediately so text is not erased by re-renders
+    setFormData((prev) => ({
+      ...prev,
+      fullName: liveFullName,
+      email: liveEmail,
+      mobile: liveMobile,
+      message: liveMessage,
+      reason: liveReason,
+      botField: liveBotField,
+    }));
+
+    // If bot protection caught a hidden field submission
+    if (liveBotField) {
+      setFormStatus("sent");
+      setShowSuccessModal(true);
       return;
     }
 
@@ -480,7 +578,7 @@ export default function ContactSection() {
 
     const nameError = validateField(
       "fullName",
-      formData.fullName
+      liveFullName
     );
 
     if (nameError) {
@@ -489,7 +587,7 @@ export default function ContactSection() {
 
     const emailError = validateField(
       "email",
-      formData.email
+      liveEmail
     );
 
     if (emailError) {
@@ -498,7 +596,7 @@ export default function ContactSection() {
 
     const mobileError = validateField(
       "mobile",
-      formData.mobile
+      liveMobile
     );
 
     if (mobileError) {
@@ -507,7 +605,7 @@ export default function ContactSection() {
 
     const reasonError = validateField(
       "reason",
-      formData.reason
+      liveReason
     );
 
     if (reasonError) {
@@ -516,7 +614,7 @@ export default function ContactSection() {
 
     const messageError = validateField(
       "message",
-      formData.message
+      liveMessage
     );
 
     if (messageError) {
@@ -524,8 +622,24 @@ export default function ContactSection() {
     }
 
     if (Object.keys(errors).length > 0) {
+      errors.form = "Please check the highlighted fields above.";
       setFormErrors(errors);
       setFormStatus("idle");
+
+      // Auto-focus the first invalid element so the user sees what is missing
+      if (errors.fullName && nameEl) {
+        nameEl.focus();
+      } else if (errors.email && emailEl) {
+        emailEl.focus();
+      } else if (errors.mobile && mobileEl) {
+        mobileEl.focus();
+      } else if (errors.reason && reasonTriggerRef.current) {
+        reasonTriggerRef.current.focus();
+        setReasonOpen(true);
+      } else if (errors.message && messageEl) {
+        messageEl.focus();
+      }
+
       return;
     }
 
@@ -540,12 +654,12 @@ export default function ContactSection() {
         },
 
         body: JSON.stringify({
-          name: formData.fullName,
-          email: formData.email,
-          mobile: formData.mobile,
-          reason: formData.reason,
-          message: formData.message,
-          website: formData.website,
+          name: liveFullName,
+          email: liveEmail,
+          mobile: liveMobile,
+          reason: liveReason,
+          message: liveMessage,
+          website: "",
         }),
       });
 
@@ -587,7 +701,7 @@ export default function ContactSection() {
         mobile: "",
         reason: "",
         message: "",
-        website: "",
+        botField: "",
       });
 
       setTouched({});
@@ -736,22 +850,39 @@ export default function ContactSection() {
         ===================================================== */}
 
         <form
+          ref={formRef}
           onSubmit={handleFormSubmit}
           noValidate
           className="contact-form"
         >
-          {/* Honeypot */}
-
-          <input
-            type="text"
-            name="website"
-            value={formData.website}
-            onChange={handleFormChange}
-            className="contact-honeypot"
-            tabIndex={-1}
-            autoComplete="off"
+          {/* Bot protection honeypot - completely hidden so autofill engines and screen readers ignore it */}
+          <div
+            style={{
+              position: "absolute",
+              width: "1px",
+              height: "1px",
+              padding: 0,
+              margin: "-1px",
+              overflow: "hidden",
+              clip: "rect(0, 0, 0, 0)",
+              whiteSpace: "nowrap",
+              border: 0,
+              display: "none",
+            }}
             aria-hidden="true"
-          />
+          >
+            <label htmlFor="company_code_validation">Leave this field empty</label>
+            <input
+              id="company_code_validation"
+              type="text"
+              name="company_code_validation"
+              value={formData.botField}
+              onChange={handleFormChange}
+              onInput={handleFormChange}
+              tabIndex={-1}
+              autoComplete="new-password"
+            />
+          </div>
 
           {/* Hidden value keeps reason available as form data */}
 
@@ -780,6 +911,7 @@ export default function ContactSection() {
                 maxLength={100}
                 value={formData.fullName}
                 onChange={handleFormChange}
+                onInput={handleFormChange}
                 onBlur={handleBlur}
                 placeholder="Your name"
                 aria-required="true"
@@ -822,6 +954,7 @@ export default function ContactSection() {
                 maxLength={120}
                 value={formData.email}
                 onChange={handleFormChange}
+                onInput={handleFormChange}
                 onBlur={handleBlur}
                 placeholder="you@company.com"
                 aria-required="true"
@@ -873,6 +1006,7 @@ export default function ContactSection() {
                 maxLength={25}
                 value={formData.mobile}
                 onChange={handleFormChange}
+                onInput={handleFormChange}
                 onBlur={handleBlur}
                 placeholder="+91 80808 52689"
                 aria-invalid={Boolean(
@@ -1166,6 +1300,7 @@ export default function ContactSection() {
               maxLength={1000}
               value={formData.message}
               onChange={handleFormChange}
+              onInput={handleFormChange}
               onBlur={handleBlur}
               placeholder="Tell me about your QA opportunity, project scope, or testing challenges..."
               aria-required="true"
@@ -1282,7 +1417,7 @@ export default function ContactSection() {
             className="form-global-status"
             aria-live="polite"
           >
-            {formStatus === "error" && (
+            {(formStatus === "error" || Boolean(formErrors.form)) && (
               <p
                 className="field-error form-error-message"
                 role="alert"
