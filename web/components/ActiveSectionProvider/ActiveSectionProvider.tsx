@@ -107,7 +107,7 @@ export default function ActiveSectionProvider({
       <AmbientBackdrop />
 
       {/* Discreet bottom-left Admin trigger button */}
-      <a
+      {/* <a
         href="/admin/login"
         rel="nofollow"
         className="fixed-admin-trigger-btn"
@@ -116,7 +116,7 @@ export default function ActiveSectionProvider({
       >
         <span className="admin-trigger-mark">S</span>
         <span className="admin-trigger-pulse" aria-hidden="true" />
-      </a>
+      </a> */}
 
       <a href="#main-content" className="skip-link">
         Skip to content

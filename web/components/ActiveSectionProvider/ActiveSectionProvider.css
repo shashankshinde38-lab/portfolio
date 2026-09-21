@@ -79,3 +79,13 @@
   box-shadow: 0 0 8px #A78BFA;
   animation: pulse-glow 2.5s infinite;
 }
+
+@media (max-width: 640px) {
+  .fixed-admin-trigger-btn {
+    bottom: 16px;
+    left: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+}

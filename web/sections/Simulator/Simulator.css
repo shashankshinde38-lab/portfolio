@@ -1,0 +1,854 @@
+/* ==========================================================================
+   TESTING SIMULATOR
+   320px → 2560px+
+   ========================================================================== */
+
+.simulator-section {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    padding-block: clamp(72px, 7vw, 110px);
+    box-sizing: border-box;
+    overflow: clip;
+}
+
+.simulator-container {
+    width: min(1440px, calc(100% - clamp(32px, 5vw, 80px)));
+    max-width: 1440px;
+    min-width: 0;
+    margin-inline: auto;
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+   HEADING
+   ========================================================================== */
+
+.simulator-section-heading {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: clamp(38px, 5vw, 64px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.48fr);
+    align-items: end;
+    gap: clamp(28px, 5vw, 72px);
+}
+
+.simulator-heading-copy {
+    min-width: 0;
+}
+
+.simulator-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 15px;
+    color: #67e8f9;
+    font-family: var(--font-mono);
+    font-size: clamp(0.6rem, 0.68vw, 0.7rem);
+    font-weight: 650;
+    line-height: 1.4;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.simulator-kicker-icon {
+    width: 35px;
+    height: 35px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border: 1px solid rgba(103, 232, 249, 0.2);
+    border-radius: 50%;
+    color: #67e8f9;
+    background:
+        linear-gradient(145deg,
+            rgba(34, 211, 238, 0.12),
+            rgba(34, 211, 238, 0.025));
+    box-shadow: 0 0 18px rgba(34, 211, 238, 0.09);
+}
+
+.simulator-section-heading h2 {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-family: var(--font-display);
+    font-size: clamp(2.55rem, 4.1vw, 3.9rem);
+    font-weight: 650;
+    line-height: 1.045;
+    letter-spacing: -0.05em;
+}
+
+.simulator-title-label {
+    display: block;
+    margin-bottom: 11px;
+    color: rgba(148, 163, 184, 0.58) !important;
+    font-family: var(--font-mono);
+    font-size: clamp(0.58rem, 0.64vw, 0.66rem);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.simulator-title-main {
+    display: block;
+    color: var(--text-primary) !important;
+}
+
+.simulator-title-accent {
+    display: block;
+    margin-top: 4px;
+    padding-bottom: 4px;
+    background:
+        linear-gradient(100deg,
+            #f8fafc 0%,
+            #cffafe 20%,
+            #67e8f9 48%,
+            #60a5fa 74%,
+            #818cf8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+}
+
+/* ==========================================================================
+   HEADING SIDE CARD
+   ========================================================================== */
+
+.simulator-heading-side {
+    min-width: 0;
+    padding: 17px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    border: 1px solid rgba(96, 165, 250, 0.11);
+    border-radius: 14px;
+    background:
+        linear-gradient(145deg,
+            rgba(56, 189, 248, 0.045),
+            rgba(255, 255, 255, 0.008));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.simulator-heading-side-icon {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(96, 165, 250, 0.16);
+    border-radius: 9px;
+    color: #60a5fa;
+    background: rgba(96, 165, 250, 0.045);
+}
+
+.simulator-heading-side-copy {
+    min-width: 0;
+}
+
+.simulator-heading-side strong {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--text-primary);
+    font-size: clamp(0.8rem, 0.9vw, 0.92rem);
+    font-weight: 620;
+    line-height: 1.4;
+}
+
+.simulator-heading-side p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: clamp(0.75rem, 0.82vw, 0.85rem);
+    line-height: 1.6;
+    text-wrap: pretty;
+}
+
+/* ==========================================================================
+   STATUS BAR
+   ========================================================================== */
+
+.simulator-lab-intro {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: clamp(18px, 2vw, 24px);
+    padding: 11px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-sizing: border-box;
+    border: 1px solid rgba(103, 232, 249, 0.1);
+    border-radius: 12px;
+    background:
+        linear-gradient(90deg,
+            rgba(34, 211, 238, 0.035),
+            rgba(96, 165, 250, 0.018),
+            rgba(129, 140, 248, 0.025));
+}
+
+.simulator-lab-intro-left,
+.simulator-lab-intro-right {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.simulator-online-badge,
+.simulator-demo-badge {
+    min-height: 28px;
+    padding: 5px 9px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    box-sizing: border-box;
+}
+
+.simulator-online-badge {
+    border: 1px solid rgba(74, 222, 128, 0.17);
+    border-radius: 999px;
+    color: #86efac;
+    background: rgba(74, 222, 128, 0.045);
+    font-family: var(--font-mono);
+    font-size: 0.59rem;
+    font-weight: 650;
+    letter-spacing: 0.075em;
+}
+
+.simulator-online-dot {
+    position: relative;
+    width: 6px;
+    height: 6px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.7);
+}
+
+.simulator-online-dot::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    border-radius: inherit;
+    animation: simulatorOnlinePulse 2s ease-out infinite;
+}
+
+@keyframes simulatorOnlinePulse {
+    0% {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+
+    35% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.7);
+    }
+}
+
+.simulator-demo-badge {
+    border: 1px solid rgba(103, 232, 249, 0.12);
+    border-radius: 7px;
+    color: rgba(207, 250, 254, 0.78);
+    background: rgba(103, 232, 249, 0.025);
+    font-family: var(--font-mono);
+    font-size: 0.61rem;
+}
+
+.simulator-lab-intro-right {
+    justify-content: flex-end;
+    color: rgba(148, 163, 184, 0.7);
+    font-size: 0.68rem;
+}
+
+.simulator-lab-intro-right>span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.simulator-lab-intro-right svg {
+    color: #60a5fa;
+}
+
+.simulator-lab-divider {
+    width: 1px;
+    height: 14px;
+    background: rgba(148, 163, 184, 0.17);
+}
+
+/* ==========================================================================
+   MAIN GRID
+   ========================================================================== */
+
+.simulator-testing-grid {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+    align-items: start;
+    gap: clamp(18px, 2vw, 26px);
+}
+
+/* ==========================================================================
+   TOOL PANEL
+   ========================================================================== */
+
+.simulator-tool-panel {
+    --sim-rgb: 103, 232, 249;
+    --sim-accent: #67e8f9;
+
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid rgba(var(--sim-rgb), 0.12);
+    border-radius: 20px;
+    background:
+        linear-gradient(145deg,
+            rgba(18, 24, 38, 0.91),
+            rgba(8, 11, 20, 0.97));
+    box-shadow:
+        0 18px 44px rgba(0, 0, 0, 0.24),
+        0 32px 70px rgba(0, 0, 0, 0.13),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.simulator-bug-panel {
+    --sim-rgb: 96, 165, 250;
+    --sim-accent: #60a5fa;
+}
+
+.simulator-tool-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    padding: 1px;
+    pointer-events: none;
+    border-radius: inherit;
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, 0.18),
+            rgba(var(--sim-rgb), 0.13) 18%,
+            transparent 65%);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+.simulator-panel-glow {
+    position: absolute;
+    z-index: -1;
+    top: -120px;
+    right: -90px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+        radial-gradient(circle,
+            rgba(var(--sim-rgb), 0.13),
+            rgba(var(--sim-rgb), 0.03) 42%,
+            transparent 70%);
+    filter: blur(8px);
+}
+
+/* ==========================================================================
+   TOOL HEADER
+   ========================================================================== */
+
+.simulator-tool-header {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    min-width: 0;
+    padding: 15px 17px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(var(--sim-rgb), 0.075);
+    background:
+        linear-gradient(180deg,
+            rgba(var(--sim-rgb), 0.03),
+            transparent);
+}
+
+.simulator-tool-title {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.simulator-tool-icon {
+    width: 35px;
+    height: 35px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(var(--sim-rgb), 0.15);
+    border-radius: 9px;
+    color: var(--sim-accent);
+    background: rgba(var(--sim-rgb), 0.045);
+}
+
+.simulator-tool-title>div {
+    min-width: 0;
+}
+
+.simulator-tool-eyebrow {
+    display: block;
+    margin-bottom: 2px;
+    color: rgba(var(--sim-rgb), 0.62);
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    font-weight: 650;
+    letter-spacing: 0.095em;
+}
+
+.simulator-tool-title h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: clamp(0.9rem, 1vw, 1.04rem);
+    font-weight: 620;
+    line-height: 1.35;
+}
+
+/* ==========================================================================
+   READY
+   ========================================================================== */
+
+.simulator-ready-badge {
+    min-height: 25px;
+    padding: 4px 8px;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(74, 222, 128, 0.16);
+    border-radius: 999px;
+    color: #86efac;
+    background: rgba(74, 222, 128, 0.04);
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    font-weight: 650;
+    letter-spacing: 0.07em;
+}
+
+.simulator-ready-dot {
+    width: 5px;
+    height: 5px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 6px rgba(74, 222, 128, 0.65);
+}
+
+/* ==========================================================================
+   TOOL BODY
+   ========================================================================== */
+
+.simulator-tool-body {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: clamp(12px, 1.3vw, 16px);
+    box-sizing: border-box;
+}
+
+.simulator-tool-body>* {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* Existing runner safety */
+
+.simulator-section .simulator-toolbar,
+.simulator-section .simulator-subbar,
+.simulator-section .simulator-command-wrap {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.simulator-section .simulator-command-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ==========================================================================
+   FOOTER CARDS
+   ========================================================================== */
+
+.simulator-info-grid {
+    width: 100%;
+    min-width: 0;
+    margin-top: clamp(18px, 2vw, 24px);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.simulator-info-card {
+    min-width: 0;
+    padding: 13px 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border: 1px solid rgba(96, 165, 250, 0.075);
+    border-radius: 11px;
+    background: rgba(96, 165, 250, 0.018);
+}
+
+.simulator-info-icon {
+    width: 29px;
+    height: 29px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(96, 165, 250, 0.12);
+    border-radius: 8px;
+    color: #60a5fa;
+    background: rgba(96, 165, 250, 0.035);
+}
+
+.simulator-info-card>div {
+    min-width: 0;
+}
+
+.simulator-info-card strong {
+    display: block;
+    margin-bottom: 2px;
+    color: rgba(241, 245, 249, 0.9);
+    font-size: 0.78rem;
+    font-weight: 610;
+}
+
+.simulator-info-card p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   HOVER
+   ========================================================================== */
+
+@media (hover: hover) and (pointer: fine) {
+    .simulator-tool-panel {
+        transition:
+            border-color 280ms ease,
+            box-shadow 320ms ease;
+    }
+
+    .simulator-tool-panel:hover {
+        border-color: rgba(var(--sim-rgb), 0.28);
+        box-shadow:
+            0 25px 55px rgba(0, 0, 0, 0.31),
+            0 0 38px rgba(var(--sim-rgb), 0.06),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+}
+
+/* ==========================================================================
+   <= 1250PX
+   ========================================================================== */
+
+@media (max-width: 1250px) {
+    .simulator-container {
+        width: min(1120px, calc(100% - 48px));
+    }
+
+    /*
+   * Both components are complex.
+   * Full-width is cleaner below desktop.
+   */
+    .simulator-testing-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* ==========================================================================
+   <= 1024PX
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .simulator-container {
+        width: min(860px, calc(100% - 48px));
+    }
+
+    .simulator-section-heading {
+        grid-template-columns: 1fr;
+        align-items: start;
+        gap: 22px;
+    }
+
+    .simulator-heading-side {
+        max-width: 560px;
+    }
+}
+
+/* ==========================================================================
+   <= 768PX
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .simulator-section {
+        padding-block: 66px;
+    }
+
+    .simulator-container {
+        width: calc(100% - 48px);
+    }
+
+    .simulator-section-heading {
+        margin-bottom: 36px;
+    }
+
+    .simulator-section-heading h2 {
+        font-size: clamp(2.2rem, 7vw, 3.1rem);
+    }
+
+    .simulator-lab-intro {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .simulator-lab-intro-right {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .simulator-tool-header {
+        padding: 14px;
+    }
+
+    .simulator-tool-body {
+        padding: 13px;
+    }
+
+    .simulator-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Existing runner */
+
+    .simulator-section .simulator-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .simulator-section .simulator-tabs {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .simulator-section .simulator-tab {
+        flex: 1 1 auto;
+        min-width: 0;
+        text-align: center;
+    }
+
+    .simulator-section .simulator-subbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 9px;
+    }
+}
+
+/* ==========================================================================
+   <= 600PX
+   ========================================================================== */
+
+@media (max-width: 600px) {
+    .simulator-section {
+        padding-block: 58px;
+    }
+
+    .simulator-container {
+        width: calc(100% - 36px);
+    }
+
+    .simulator-section-heading {
+        margin-bottom: 31px;
+    }
+
+    .simulator-section-heading h2 {
+        font-size: clamp(2rem, 9.5vw, 2.65rem);
+    }
+
+    .simulator-kicker-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .simulator-heading-side {
+        padding: 14px 15px;
+    }
+
+    .simulator-lab-intro {
+        padding: 10px 11px;
+    }
+
+    .simulator-lab-intro-left,
+    .simulator-lab-intro-right {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .simulator-lab-divider {
+        display: none;
+    }
+
+    .simulator-tool-panel {
+        border-radius: 16px;
+    }
+
+    .simulator-tool-body {
+        padding: 11px;
+    }
+}
+
+/* ==========================================================================
+   <= 480PX
+   ========================================================================== */
+
+@media (max-width: 480px) {
+    .simulator-section {
+        padding-block: 54px;
+    }
+
+    .simulator-container {
+        width: calc(100% - 32px);
+    }
+
+    .simulator-section-heading h2 {
+        font-size: clamp(1.9rem, 10vw, 2.4rem);
+    }
+
+    .simulator-tool-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    .simulator-ready-badge {
+        margin-left: 45px;
+    }
+
+    .simulator-info-card {
+        padding: 11px 12px;
+    }
+}
+
+/* ==========================================================================
+   <= 390PX
+   ========================================================================== */
+
+@media (max-width: 390px) {
+    .simulator-container {
+        width: calc(100% - 30px);
+    }
+
+    .simulator-section-heading h2 {
+        font-size: clamp(1.8rem, 10vw, 2.18rem);
+    }
+
+    .simulator-kicker,
+    .simulator-title-label {
+        font-size: 0.55rem;
+    }
+
+    .simulator-tool-body {
+        padding: 10px;
+    }
+}
+
+/* ==========================================================================
+   <= 340PX
+   ========================================================================== */
+
+@media (max-width: 340px) {
+    .simulator-container {
+        width: calc(100% - 26px);
+    }
+
+    .simulator-section-heading h2 {
+        font-size: 1.72rem;
+    }
+
+    .simulator-heading-side {
+        padding: 12px;
+    }
+
+    .simulator-tool-header {
+        padding: 11px 9px;
+    }
+
+    .simulator-tool-body {
+        padding: 8px;
+    }
+
+    .simulator-ready-badge {
+        margin-left: 42px;
+    }
+}
+
+/* ==========================================================================
+   LARGE DESKTOP
+   ========================================================================== */
+
+@media (min-width: 1600px) {
+    .simulator-container {
+        max-width: 1460px;
+    }
+}
+
+@media (min-width: 1920px) {
+    .simulator-container {
+        max-width: 1500px;
+    }
+
+    .simulator-section-heading h2 {
+        font-size: 3.9rem;
+    }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .simulator-online-dot::after {
+        animation: none !important;
+    }
+
+    .simulator-tool-panel {
+        transition: none !important;
+    }
+}

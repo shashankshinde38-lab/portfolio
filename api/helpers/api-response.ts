@@ -14,10 +14,13 @@ export function noStoreJson(body: unknown, init?: ResponseInit) {
 }
 
 export function safeApiMessage(err: unknown, fallback = "Something went wrong. Please try again.") {
-  if (process.env.NODE_ENV !== "production" && err instanceof Error) {
-    console.error("[api]", err.message);
-  } else if (err instanceof Error) {
-    console.error("[api]", err.name);
+  if (err && typeof err === "object") {
+    const errorObj = err as Record<string, unknown>;
+    const msg = errorObj.message || errorObj.error_description || errorObj.details;
+    const code = errorObj.code;
+    console.error("[api]", code ? `[${code}]` : "", msg || err);
+  } else if (err) {
+    console.error("[api]", err);
   }
   return fallback;
 }

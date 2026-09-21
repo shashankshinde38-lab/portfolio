@@ -19,6 +19,22 @@ function success(id?: string) {
   );
 }
 
+function extract10DigitMobile(rawMobile?: string | null): string | null {
+  if (!rawMobile) return null;
+  const digits = rawMobile.replace(/\D/g, "");
+  if (digits.length === 10) return digits;
+  if (digits.length === 11 && (digits.startsWith("0") || digits.startsWith("1"))) {
+    return digits.slice(-10);
+  }
+  if (digits.length === 12 && digits.startsWith("91")) {
+    return digits.slice(-10);
+  }
+  if (digits.length >= 10) {
+    return digits.slice(-10);
+  }
+  return null;
+}
+
 export async function submitEnquiry(req: Request) {
   try {
     const contentLength = Number(req.headers.get("content-length") || 0);
@@ -49,11 +65,22 @@ export async function submitEnquiry(req: Request) {
 
     const { name, email, mobile, message, reason } = parsed.data;
     const safeReason = reason || "General Inquiry";
+    const rawMobile = mobile?.trim() || null;
+    const dbMobile = extract10DigitMobile(rawMobile);
+
+    let storedMessage = message.trim();
+    if (rawMobile && rawMobile !== dbMobile) {
+      const contactNote = `\n\n[Contact: ${rawMobile}]`;
+      if (storedMessage.length + contactNote.length <= 1000) {
+        storedMessage += contactNote;
+      }
+    }
+
     const { id } = await insertEnquiry({
       name,
       email,
-      mobile: mobile || null,
-      message,
+      mobile: dbMobile,
+      message: storedMessage,
       reason: safeReason,
     });
 
@@ -62,16 +89,17 @@ export async function submitEnquiry(req: Request) {
         await sendContactNotification({
           full_name: name,
           email,
-          mobile: mobile || null,
+          mobile: rawMobile,
           reason: safeReason,
           message,
         });
-      } catch {
-        console.warn("[enquiries] Notification delivery failed after the enquiry was stored.");
+      } catch (mailErr) {
+        console.warn("[enquiries] Notification delivery failed after the enquiry was stored:", mailErr);
       }
     });
     return success(id);
   } catch (error: unknown) {
+    console.error("[enquiries] submitEnquiry failed:", error);
     return publicError(
       safeApiMessage(error, "Unable to submit your enquiry right now."),
       500

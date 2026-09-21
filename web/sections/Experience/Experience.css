@@ -1,64 +1,1237 @@
-/* ===================================================================
-   EXPERIENCE SECTION & TIMELINE
-   =================================================================== */
-/* ===================================================================
-   EXPERIENCE TIMELINE
-   =================================================================== */
-.experience-timeline {
-  display: flex;
-  flex-direction: column;
+/* ==========================================================================
+   EXPERIENCE
+   Responsive: 320px → 2560px+
+   ========================================================================== */
+
+
+/* ==========================================================================
+   SECTION
+   ========================================================================== */
+
+.experience-section {
   position: relative;
-  margin-top: var(--space-8);
+
+  width: 100%;
+
+  min-width: 0;
+
+  padding:
+    clamp(72px, 7vw, 110px) 0;
+
+  scroll-margin-top: 96px;
+
+  border-top:
+    1px solid rgba(110, 124, 251, 0.1);
+
+  box-sizing: border-box;
+
+  overflow: clip;
 }
 
-/* =========================================
-   EXPERIENCE - EXTRA UI DETAILS
-========================================= */
+
+/* ==========================================================================
+   CENTERED CONTAINER
+   ========================================================================== */
+
+.experience-container {
+  width: 100%;
+
+  max-width: 1440px;
+
+  min-width: 0;
+
+  margin-inline: auto;
+
+  padding-inline:
+    clamp(20px, 2.4vw, 34px);
+
+  box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   SECTION HEADING
+   ========================================================================== */
+
+.experience-heading {
+  width: 100%;
+
+  margin-bottom:
+    clamp(44px, 5vw, 68px);
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr) minmax(280px, 0.52fr);
+
+  align-items: end;
+
+  gap:
+    clamp(30px, 5vw, 72px);
+}
+
+
+.experience-heading-copy {
+  min-width: 0;
+}
+
+
+/* ==========================================================================
+   KICKER
+   ========================================================================== */
+
+.experience-kicker {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 14px;
+
+  color: #9183ff;
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size:
+    clamp(0.6rem, 0.67vw, 0.69rem);
+
+  font-weight: 650;
+
+  line-height: 1.4;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+
+.experience-kicker-icon {
+  width: 34px;
+
+  height: 34px;
+
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  border:
+    1px solid rgba(129, 140, 248, 0.27);
+
+  border-radius: 50%;
+
+  color: #818cf8;
+
+  background:
+    linear-gradient(145deg,
+      rgba(99, 102, 241, 0.14),
+      rgba(99, 102, 241, 0.035));
+
+  box-shadow:
+    0 0 18px rgba(99, 102, 241, 0.12);
+}
+
+
+/* ==========================================================================
+   HEADING
+   ========================================================================== */
+
+.experience-heading h2 {
+  margin: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  font-family:
+    var(--font-display);
+
+  font-size:
+    clamp(2.55rem, 4.1vw, 3.9rem);
+
+  font-weight: 650;
+
+  line-height: 1.045;
+
+  letter-spacing: -0.05em;
+
+  text-wrap: balance;
+}
+
+
+.experience-title-label {
+  margin-bottom: 11px;
+
+  color:
+    rgba(148, 163, 184, 0.56) !important;
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size:
+    clamp(0.58rem, 0.64vw, 0.66rem);
+
+  font-weight: 600;
+
+  line-height: 1.4;
+
+  letter-spacing: 0.085em;
+
+  text-transform: uppercase;
+}
+
+
+.experience-title-main {
+  color:
+    var(--text-primary) !important;
+}
+
+
+.experience-title-accent {
+  margin-top: 4px;
+
+  padding-bottom: 3px;
+
+  background:
+    linear-gradient(100deg,
+      #f8fafc 0%,
+      #d0ceff 24%,
+      #a79dff 57%,
+      #7c6cff 100%);
+
+  -webkit-background-clip: text;
+
+  background-clip: text;
+
+  color:
+    transparent !important;
+}
+
+
+/* ==========================================================================
+   HEADING SIDE COPY
+   ========================================================================== */
+
+.experience-heading-side {
+  position: relative;
+
+  min-width: 0;
+
+  padding:
+    17px 18px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 11px;
+
+  border:
+    1px solid rgba(110, 124, 251, 0.1);
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(145deg,
+      rgba(110, 124, 251, 0.045),
+      rgba(255, 255, 255, 0.01));
+}
+
+
+.experience-heading-orb {
+  width: 31px;
+
+  height: 31px;
+
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  border:
+    1px solid rgba(103, 232, 249, 0.16);
+
+  border-radius: 9px;
+
+  color: #67e8f9;
+
+  background:
+    rgba(103, 232, 249, 0.045);
+}
+
+
+.experience-heading-side p {
+  margin: 0;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    clamp(0.82rem, 0.9vw, 0.93rem);
+
+  line-height: 1.7;
+
+  text-wrap: pretty;
+}
+
+
+/* ==========================================================================
+   TIMELINE
+   ========================================================================== */
+
+.experience-timeline {
+  position: relative;
+
+  width: 100%;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+/* ==========================================================================
+   ROLE
+   ========================================================================== */
+
+.timeline-role {
+  position: relative;
+
+  width: 100%;
+
+  min-width: 0;
+
+  padding-bottom:
+    clamp(34px, 4vw, 54px);
+
+  display: grid;
+
+  grid-template-columns:
+    50px minmax(0, 1fr);
+
+  gap:
+    clamp(18px, 2vw, 28px);
+
+  box-sizing: border-box;
+}
+
+
+.timeline-role:last-child {
+  padding-bottom: 0;
+}
+
+
+/* ==========================================================================
+   TIMELINE RAIL
+   ========================================================================== */
+
+.timeline-rail {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+}
+
+
+.timeline-line {
+  position: absolute;
+
+  z-index: 0;
+
+  top: 38px;
+
+  bottom: -54px;
+
+  width: 1px;
+
+  background:
+    linear-gradient(180deg,
+      rgba(129, 140, 248, 0.7),
+      rgba(129, 140, 248, 0.12) 38%,
+      rgba(129, 140, 248, 0.04));
+}
+
+
+.timeline-role:last-child .timeline-line {
+  bottom: 20px;
+
+  background:
+    linear-gradient(180deg,
+      rgba(129, 140, 248, 0.5),
+      transparent);
+}
+
+
+/* ==========================================================================
+   NODE
+   ========================================================================== */
+
+.timeline-node {
+  position: relative;
+
+  z-index: 2;
+
+  width: 36px;
+
+  height: 36px;
+
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  border:
+    1px solid rgba(129, 140, 248, 0.18);
+
+  border-radius: 50%;
+
+  color:
+    var(--text-secondary);
+
+  background:
+    linear-gradient(145deg,
+      rgba(23, 27, 42, 0.98),
+      rgba(10, 13, 22, 0.98));
+
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.28),
+
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+
+.timeline-node.is-current {
+  border-color:
+    rgba(74, 222, 128, 0.45);
+
+  color: #4ade80;
+
+  box-shadow:
+    0 0 20px rgba(74, 222, 128, 0.12),
+
+    inset 0 0 10px rgba(74, 222, 128, 0.08);
+}
+
+
+.timeline-node-core {
+  width: 9px;
+
+  height: 9px;
+
+  border-radius: 50%;
+
+  background: #4ade80;
+
+  box-shadow:
+    0 0 9px rgba(74, 222, 128, 0.8);
+}
+
+
+.timeline-node-pulse {
+  position: absolute;
+
+  width: 16px;
+
+  height: 16px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(74, 222, 128, 0.14);
+
+  animation:
+    timelineNodePulse 2s ease-in-out infinite;
+}
+
 
 .timeline-node-ring {
   position: absolute;
-  width: 28px;
-  height: 28px;
+
+  inset: 3px;
+
+  border:
+    1px solid rgba(74, 222, 128, 0.2);
+
   border-radius: 50%;
-  border: 1px solid rgba(110, 124, 251, 0.25);
-  animation: timeline-ring 2s ease-out infinite;
+
+  animation:
+    timelineRing 2.2s ease-out infinite;
 }
 
-@keyframes timeline-ring {
+
+@keyframes timelineNodePulse {
+
+  0%,
+  100% {
+    opacity: 0.6;
+
+    transform:
+      scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      scale(1.15);
+  }
+}
+
+
+@keyframes timelineRing {
   0% {
-    transform: scale(0.7);
-    opacity: 0.8;
+    opacity: 0.75;
+
+    transform:
+      scale(0.8);
   }
 
   100% {
-    transform: scale(1.5);
     opacity: 0;
+
+    transform:
+      scale(1.5);
   }
 }
 
-.timeline-role-number {
-  margin-top: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: rgba(110, 124, 251, 0.55);
-  letter-spacing: 0.08em;
+
+/* ==========================================================================
+   EXPERIENCE CARD
+   ========================================================================== */
+
+.timeline-card {
+  position: relative;
+
+  isolation: isolate;
+
+  width: 100%;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid rgba(110, 124, 251, 0.12);
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(145deg,
+      rgba(19, 23, 36, 0.91),
+      rgba(9, 12, 21, 0.97) 55%,
+      rgba(9, 11, 20, 0.99));
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.23),
+
+    0 36px 80px rgba(0, 0, 0, 0.14),
+
+    inset 0 1px 0 rgba(255, 255, 255, 0.055);
+
+  transition:
+    border-color 280ms ease,
+
+    box-shadow 320ms ease,
+
+    transform 320ms cubic-bezier(0.22,
+      1,
+      0.36,
+      1);
 }
 
-.cluster-header-icon {
-  width: 28px;
-  height: 28px;
 
-  display: grid;
-  place-content: center;
+/* ==========================================================================
+   CURRENT ROLE CARD
+   ========================================================================== */
 
-  flex-shrink: 0;
+.timeline-role.is-current-role .timeline-card {
+  border-color:
+    rgba(103, 232, 249, 0.16);
 
-  border: 1px solid rgba(110, 124, 251, 0.14);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.26),
+
+    0 0 46px rgba(56, 189, 248, 0.035),
+
+    inset 0 1px 0 rgba(255, 255, 255, 0.065);
+}
+
+
+/* ==========================================================================
+   CARD AMBIENT GLOW
+   ========================================================================== */
+
+.timeline-card-glow {
+  position: absolute;
+
+  z-index: -1;
+
+  top: -140px;
+
+  right: -90px;
+
+  width: 360px;
+
+  height: 360px;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle,
+      rgba(99, 102, 241, 0.11),
+      rgba(56, 189, 248, 0.035) 42%,
+      transparent 70%);
+
+  filter: blur(5px);
+
+  transition:
+    transform 400ms ease,
+    opacity 300ms ease;
+}
+
+
+.timeline-role.is-current-role .timeline-card-glow {
+  background:
+    radial-gradient(circle,
+      rgba(56, 189, 248, 0.12),
+      rgba(96, 165, 250, 0.035) 42%,
+      transparent 70%);
+}
+
+
+/* ==========================================================================
+   ROLE WATERMARK
+   ========================================================================== */
+
+.timeline-card-watermark {
+  position: absolute;
+
+  z-index: 0;
+
+  top: 6px;
+
+  right: 22px;
+
+  pointer-events: none;
+
+  color:
+    rgba(129, 140, 248, 0.035);
+
+  font-family:
+    var(--font-display);
+
+  font-size:
+    clamp(5rem, 9vw, 8rem);
+
+  font-weight: 750;
+
+  line-height: 1;
+
+  letter-spacing: -0.08em;
+
+  user-select: none;
+}
+
+
+/* ==========================================================================
+   CARD HOVER
+   ========================================================================== */
+
+@media (hover: hover) and (pointer: fine) {
+  .timeline-card:hover {
+    transform:
+      translateY(-4px);
+
+    border-color:
+      rgba(129, 140, 248, 0.29);
+
+    box-shadow:
+      0 26px 58px rgba(0, 0, 0, 0.32),
+
+      0 0 44px rgba(99, 102, 241, 0.06),
+
+      inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  }
+
+
+  .timeline-card:hover .timeline-card-glow {
+    opacity: 1;
+
+    transform:
+      translate3d(-20px,
+        16px,
+        0) scale(1.08);
+  }
+}
+
+
+/* ==========================================================================
+   CARD HEADER
+   ========================================================================== */
+
+.timeline-card-header {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  min-width: 0;
+
+  padding:
+    clamp(20px, 2.2vw, 30px);
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap:
+    clamp(22px, 3vw, 44px);
+
+  box-sizing: border-box;
+
+  border-bottom:
+    1px solid rgba(110, 124, 251, 0.08);
+
+  background:
+    linear-gradient(180deg,
+      rgba(110, 124, 251, 0.03),
+      transparent);
+}
+
+
+/* ==========================================================================
+   ROLE INFO
+   ========================================================================== */
+
+.timeline-role-info {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 7px;
+}
+
+
+/* ==========================================================================
+   BADGES
+   ========================================================================== */
+
+.timeline-badges {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-bottom: 2px;
+}
+
+
+.experience-section .small-badge {
+  min-height: 25px;
+
+  padding:
+    4px 9px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border:
+    1px solid rgba(74, 222, 128, 0.15);
+
+  border-radius: 999px;
+
+  color: #86efac;
+
+  background:
+    rgba(74, 222, 128, 0.04);
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size: 0.62rem;
+
+  font-weight: 600;
+
+  line-height: 1;
+
+  letter-spacing: 0.025em;
+}
+
+
+.experience-status-dot {
+  width: 6px;
+
+  height: 6px;
+
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+
+  background: #4ade80;
+
+  box-shadow:
+    0 0 7px rgba(74, 222, 128, 0.7);
+}
+
+
+.experience-section .cluster-tag {
+  max-width: 100%;
+
+  min-height: 25px;
+
+  padding:
+    4px 8px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  border:
+    1px solid rgba(96, 165, 250, 0.15);
+
   border-radius: 7px;
 
-  color: var(--accent);
+  color: #93c5fd;
 
-  background: rgba(110, 124, 251, 0.06);
+  background:
+    rgba(96, 165, 250, 0.045);
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size:
+    clamp(0.58rem, 0.63vw, 0.65rem);
+
+  font-weight: 550;
+
+  line-height: 1.25;
+
+  letter-spacing: 0.025em;
+
+  white-space: normal;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================================
+   ROLE NAME
+   ========================================================================== */
+
+.timeline-card-header h3 {
+  max-width: 100%;
+
+  margin: 0;
+
+  color:
+    var(--text-primary);
+
+  font-family:
+    var(--font-display);
+
+  font-size:
+    clamp(1.35rem, 2vw, 1.8rem);
+
+  font-weight: 650;
+
+  line-height: 1.25;
+
+  letter-spacing: -0.035em;
+
+  text-wrap: balance;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================================
+   COMPANY
+   ========================================================================== */
+
+.timeline-company {
+  max-width: 100%;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color: #818cf8;
+
+  font-size:
+    clamp(0.82rem, 0.93vw, 0.95rem);
+
+  font-weight: 530;
+
+  line-height: 1.4;
+
+  text-decoration: none;
+
+  overflow-wrap: anywhere;
+
+  transition:
+    color 180ms ease,
+    gap 180ms ease;
+}
+
+
+.timeline-company span {
+  overflow-wrap: anywhere;
+}
+
+
+.timeline-company svg {
+  flex: 0 0 auto;
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+  a.timeline-company:hover {
+    gap: 9px;
+
+    color: #a5b4fc;
+  }
+}
+
+
+/* ==========================================================================
+   META
+   ========================================================================== */
+
+.timeline-meta {
+  min-width: 190px;
+
+  flex: 0 0 auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 5px;
+
+  text-align: right;
+}
+
+
+.timeline-period {
+  color:
+    var(--text-primary);
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size:
+    clamp(0.7rem, 0.76vw, 0.8rem);
+
+  font-weight: 550;
+
+  line-height: 1.4;
+
+  letter-spacing: 0.025em;
+}
+
+
+.timeline-location {
+  color:
+    var(--text-secondary);
+
+  font-size:
+    clamp(0.68rem, 0.73vw, 0.76rem);
+
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
+}
+
+
+.timeline-role-number {
+  margin-top: 7px;
+
+  color:
+    rgba(129, 140, 248, 0.48);
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size: 0.58rem;
+
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+}
+
+
+/* ==========================================================================
+   SUMMARY
+   ========================================================================== */
+
+.timeline-summary {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  min-width: 0;
+
+  padding:
+    15px clamp(20px, 2.2vw, 30px);
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 11px;
+
+  box-sizing: border-box;
+
+  border-bottom:
+    1px solid rgba(110, 124, 251, 0.07);
+
+  background:
+    linear-gradient(90deg,
+      rgba(99, 102, 241, 0.035),
+      rgba(255, 255, 255, 0.006));
+}
+
+
+.timeline-summary-mark {
+  margin-top: -1px;
+
+  flex: 0 0 auto;
+
+  color: #818cf8;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 1.5rem;
+
+  line-height: 1;
+}
+
+
+.timeline-summary p {
+  margin: 0;
+
+  color:
+    rgba(226, 232, 240, 0.83);
+
+  font-size:
+    clamp(0.79rem, 0.86vw, 0.9rem);
+
+  font-weight: 480;
+
+  line-height: 1.65;
+
+  text-wrap: pretty;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================================
+   CLUSTER GRID
+   ========================================================================== */
+
+.timeline-clusters {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  min-width: 0;
+
+  padding:
+    clamp(18px, 2.2vw, 28px);
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,
+      minmax(0, 1fr));
+
+  gap:
+    clamp(12px, 1.3vw, 16px);
+
+  box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   CLUSTER CARD
+   ========================================================================== */
+
+.cluster-card {
+  --cluster-rgb:
+    103,
+    232,
+    249;
+
+  position: relative;
+
+  min-width: 0;
+
+  padding:
+    clamp(15px, 1.5vw, 20px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+
+  border:
+    1px solid rgba(var(--cluster-rgb), 0.09);
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(145deg,
+      rgba(15, 20, 30, 0.72),
+      rgba(8, 11, 19, 0.82));
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+  transition:
+    border-color 220ms ease,
+
+    background 220ms ease,
+
+    box-shadow 220ms ease;
+}
+
+
+.cluster-card:nth-child(2) {
+  --cluster-rgb:
+    96,
+    165,
+    250;
+}
+
+
+.cluster-card:nth-child(3) {
+  --cluster-rgb:
+    129,
+    140,
+    248;
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+  .cluster-card:hover {
+    border-color:
+      rgba(var(--cluster-rgb), 0.24);
+
+    background:
+      linear-gradient(145deg,
+        rgba(var(--cluster-rgb), 0.045),
+        rgba(8, 11, 19, 0.85));
+
+    box-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.18),
+
+      0 0 22px rgba(var(--cluster-rgb), 0.035),
+
+      inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  }
+}
+
+
+/* ==========================================================================
+   CLUSTER HEADER
+   ========================================================================== */
+
+.cluster-header {
+  min-width: 0;
+
+  padding-bottom: 12px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  border-bottom:
+    1px solid rgba(var(--cluster-rgb), 0.08);
+}
+
+
+.cluster-header-title {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.cluster-header-icon {
+  width: 30px;
+
+  height: 30px;
+
+  flex: 0 0 auto;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid rgba(var(--cluster-rgb), 0.15);
+
+  border-radius: 8px;
+
+  color:
+    rgb(var(--cluster-rgb));
+
+  background:
+    rgba(var(--cluster-rgb), 0.045);
+
+  box-shadow:
+    0 0 15px rgba(var(--cluster-rgb), 0.025);
 
   transition:
     transform 200ms ease,
@@ -66,43 +1239,948 @@
     box-shadow 200ms ease;
 }
 
-.cluster-card:hover .cluster-header-icon {
-  transform: rotate(-5deg) scale(1.05);
 
-  border-color: rgba(110, 124, 251, 0.35);
+.cluster-card:hover .cluster-header-icon {
+  border-color:
+    rgba(var(--cluster-rgb), 0.3);
 
   box-shadow:
-    0 0 16px rgba(110, 124, 251, 0.1);
+    0 0 18px rgba(var(--cluster-rgb), 0.08);
 }
+
+
+.cluster-header h4 {
+  min-width: 0;
+
+  margin: 0;
+
+  color:
+    var(--text-primary);
+
+  font-family:
+    var(--font-display);
+
+  font-size:
+    clamp(0.88rem, 0.96vw, 1rem);
+
+  font-weight: 620;
+
+  line-height: 1.35;
+
+  letter-spacing: -0.015em;
+
+  white-space: normal;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================================
+   CLUSTER ITEMS
+   ========================================================================== */
+
+.cluster-items {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+
+.cluster-item {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 9px;
+}
+
+
+.cluster-item-icon {
+  width: 19px;
+
+  height: 19px;
+
+  margin-top: 1px;
+
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  border:
+    1px solid rgba(var(--cluster-rgb), 0.14);
+
+  border-radius: 50%;
+
+  color:
+    rgb(var(--cluster-rgb));
+
+  background:
+    rgba(var(--cluster-rgb), 0.04);
+}
+
 
 .cluster-item-body {
   min-width: 0;
+
   flex: 1;
 }
 
+
 .cluster-item-title-row {
+  min-width: 0;
+
   display: flex;
+
   align-items: flex-start;
+
   justify-content: space-between;
 
-  gap: 10px;
+  gap: 8px;
 }
+
+
+.cluster-item-body h5 {
+  min-width: 0;
+
+  margin:
+    0 0 4px;
+
+  color:
+    var(--text-primary);
+
+  font-size:
+    clamp(0.79rem, 0.85vw, 0.88rem);
+
+  font-weight: 610;
+
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
+}
+
 
 .cluster-item-index {
-  flex-shrink: 0;
+  flex: 0 0 auto;
 
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
+  color:
+    rgba(var(--cluster-rgb), 0.52);
 
-  color: #8b9cfd;
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size: 0.56rem;
+
+  line-height: 1.4;
 }
+
+
+.cluster-item-body p {
+  margin: 0;
+
+  color:
+    var(--text-secondary);
+
+  font-size:
+    clamp(0.72rem, 0.77vw, 0.8rem);
+
+  line-height: 1.58;
+
+  text-wrap: pretty;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.timeline-card-footer {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  min-width: 0;
+
+  padding:
+    15px clamp(20px, 2.2vw, 30px);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  box-sizing: border-box;
+
+  border-top:
+    1px solid rgba(110, 124, 251, 0.07);
+
+  background:
+    rgba(8, 11, 18, 0.32);
+}
+
+
+.timeline-stack-heading {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  flex: 0 0 auto;
+}
+
+
+.timeline-stack-dot {
+  width: 6px;
+
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #60a5fa;
+
+  box-shadow:
+    0 0 7px rgba(96, 165, 250, 0.5);
+}
+
+
+.timeline-stack-label {
+  color:
+    var(--text-secondary);
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size: 0.62rem;
+
+  font-weight: 650;
+
+  line-height: 1;
+
+  letter-spacing: 0.09em;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   STACK
+   ========================================================================== */
 
 .timeline-stack-list {
+  min-width: 0;
+
+  margin: 0;
+
+  padding: 0;
+
+  flex: 1;
+
   display: flex;
+
   align-items: center;
+
   flex-wrap: wrap;
 
-  gap: var(--space-2);
+  gap: 7px;
+
+  list-style: none;
 }
 
 
+.timeline-stack-item {
+  min-height: 27px;
+
+  max-width: 100%;
+
+  padding:
+    5px 9px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid rgba(96, 165, 250, 0.12);
+
+  border-radius: 7px;
+
+  color:
+    rgba(203, 213, 225, 0.8);
+
+  background:
+    rgba(96, 165, 250, 0.035);
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size:
+    clamp(0.59rem, 0.63vw, 0.65rem);
+
+  font-weight: 500;
+
+  line-height: 1.2;
+
+  white-space: normal;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================================
+   1250PX
+   ========================================================================== */
+
+@media (max-width: 1250px) {
+  .experience-container {
+    max-width: 1120px;
+  }
+
+
+  .experience-heading {
+    grid-template-columns:
+      minmax(0, 1fr) minmax(260px, 0.48fr);
+  }
+
+
+  .timeline-clusters {
+    grid-template-columns:
+      repeat(2,
+        minmax(0, 1fr));
+  }
+
+
+  .cluster-card:last-child:nth-child(odd) {
+    grid-column:
+      1 / -1;
+  }
+}
+
+
+/* ==========================================================================
+   1024PX
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .experience-container {
+    max-width: 860px;
+  }
+
+
+  .experience-heading {
+    grid-template-columns: 1fr;
+
+    align-items: start;
+
+    gap: 23px;
+  }
+
+
+  .experience-heading-side {
+    max-width: 540px;
+  }
+
+
+  .timeline-role {
+    grid-template-columns:
+      45px minmax(0, 1fr);
+
+    gap: 17px;
+  }
+
+
+  .timeline-clusters {
+    grid-template-columns: 1fr;
+  }
+
+
+  .cluster-card:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+}
+
+
+/* ==========================================================================
+   TABLET
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .experience-section {
+    padding:
+      66px 0;
+  }
+
+
+  .experience-container {
+    padding-inline: 24px;
+  }
+
+
+  .experience-heading {
+    margin-bottom: 38px;
+  }
+
+
+  .experience-heading h2 {
+    font-size:
+      clamp(2.2rem, 7vw, 3.1rem);
+  }
+
+
+  /*
+   * Remove external timeline rail.
+   * The cards become clean stacked mobile/tablet cards.
+   */
+
+  .timeline-role {
+    grid-template-columns: 1fr;
+
+    gap: 0;
+
+    padding-bottom: 24px;
+  }
+
+
+  .timeline-rail {
+    display: none;
+  }
+
+
+  .timeline-card-header {
+    padding:
+      20px;
+
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+
+  .timeline-meta {
+    width: 100%;
+
+    min-width: 0;
+
+    padding-top: 13px;
+
+    align-items: flex-start;
+
+    text-align: left;
+
+    border-top:
+      1px solid rgba(110, 124, 251, 0.07);
+  }
+
+
+  .timeline-role-number {
+    margin-top: 2px;
+  }
+
+
+  .timeline-summary {
+    padding:
+      14px 20px;
+  }
+
+
+  .timeline-clusters {
+    padding: 18px;
+
+    gap: 12px;
+  }
+
+
+  .timeline-card-footer {
+    padding:
+      14px 18px;
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+
+  .timeline-stack-list {
+    width: 100%;
+  }
+
+
+  .timeline-card-watermark {
+    top: 15px;
+
+    right: 15px;
+
+    font-size: 5rem;
+  }
+}
+
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  .experience-section {
+    padding:
+      58px 0;
+  }
+
+
+  .experience-container {
+    padding-inline: 18px;
+  }
+
+
+  .experience-heading {
+    margin-bottom: 32px;
+
+    gap: 19px;
+  }
+
+
+  .experience-kicker {
+    margin-bottom: 12px;
+  }
+
+
+  .experience-kicker-icon {
+    width: 32px;
+
+    height: 32px;
+  }
+
+
+  .experience-heading h2 {
+    font-size:
+      clamp(2rem, 9.5vw, 2.65rem);
+
+    line-height: 1.045;
+  }
+
+
+  .experience-heading-side {
+    padding:
+      14px 15px;
+  }
+
+
+  .experience-heading-side p {
+    font-size: 0.82rem;
+
+    line-height: 1.6;
+  }
+
+
+  .timeline-role {
+    padding-bottom: 20px;
+  }
+
+
+  .timeline-card {
+    border-radius: 17px;
+  }
+
+
+  .timeline-card-header {
+    padding:
+      18px 16px;
+  }
+
+
+  .timeline-card-header h3 {
+    font-size:
+      clamp(1.25rem, 6vw, 1.5rem);
+  }
+
+
+  .timeline-summary {
+    padding:
+      13px 16px;
+  }
+
+
+  .timeline-summary p {
+    font-size: 0.79rem;
+  }
+
+
+  .timeline-clusters {
+    padding: 14px;
+
+    gap: 11px;
+  }
+
+
+  .cluster-card {
+    padding: 14px;
+
+    border-radius: 12px;
+  }
+
+
+  .cluster-header {
+    padding-bottom: 10px;
+  }
+
+
+  .cluster-header-icon {
+    width: 28px;
+
+    height: 28px;
+  }
+
+
+  .timeline-card-footer {
+    padding:
+      13px 15px;
+  }
+
+
+  .timeline-card-watermark {
+    font-size: 4.4rem;
+  }
+}
+
+
+/* ==========================================================================
+   480PX
+   ========================================================================== */
+
+@media (max-width: 480px) {
+  .experience-section {
+    padding:
+      54px 0;
+  }
+
+
+  .experience-container {
+    padding-inline: 16px;
+  }
+
+
+  .experience-heading h2 {
+    font-size:
+      clamp(1.9rem, 10vw, 2.4rem);
+  }
+
+
+  .experience-heading-side {
+    gap: 9px;
+  }
+
+
+  .experience-heading-orb {
+    width: 29px;
+
+    height: 29px;
+  }
+
+
+  .timeline-card-header {
+    padding:
+      16px 14px;
+  }
+
+
+  .timeline-badges {
+    gap: 6px;
+  }
+
+
+  .timeline-company {
+    font-size: 0.8rem;
+  }
+
+
+  .timeline-summary {
+    padding:
+      12px 14px;
+  }
+
+
+  .timeline-clusters {
+    padding:
+      12px;
+  }
+
+
+  .cluster-card {
+    padding:
+      13px 12px;
+  }
+
+
+  /*
+   * Allow long cluster tags to wrap rather than squeeze title.
+   */
+
+  .cluster-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+
+  .cluster-header-title {
+    width: 100%;
+  }
+
+
+  .cluster-item-body p {
+    font-size: 0.74rem;
+  }
+
+
+  .timeline-card-footer {
+    padding:
+      12px 14px;
+  }
+
+
+  .timeline-stack-list {
+    gap: 6px;
+  }
+}
+
+
+/* ==========================================================================
+   390PX
+   ========================================================================== */
+
+@media (max-width: 390px) {
+  .experience-container {
+    padding-inline: 15px;
+  }
+
+
+  .experience-heading h2 {
+    font-size:
+      clamp(1.8rem, 10vw, 2.18rem);
+  }
+
+
+  .experience-title-label {
+    font-size: 0.55rem;
+  }
+
+
+  .experience-kicker {
+    font-size: 0.55rem;
+  }
+
+
+  .timeline-card-header h3 {
+    font-size: 1.2rem;
+  }
+
+
+  .timeline-meta {
+    gap: 4px;
+  }
+
+
+  .timeline-period,
+  .timeline-location {
+    font-size: 0.68rem;
+  }
+
+
+  .cluster-item {
+    gap: 8px;
+  }
+
+
+  .cluster-item-icon {
+    width: 18px;
+
+    height: 18px;
+  }
+
+
+  .timeline-stack-item {
+    font-size: 0.58rem;
+
+    min-height: 25px;
+
+    padding:
+      4px 7px;
+  }
+}
+
+
+/* ==========================================================================
+   320PX
+   ========================================================================== */
+
+@media (max-width: 340px) {
+  .experience-container {
+    padding-inline: 13px;
+  }
+
+
+  .experience-heading h2 {
+    font-size: 1.72rem;
+  }
+
+
+  .experience-heading-side {
+    padding:
+      12px;
+  }
+
+
+  .timeline-card-header {
+    padding:
+      14px 12px;
+  }
+
+
+  .timeline-summary {
+    padding:
+      11px 12px;
+  }
+
+
+  .timeline-clusters {
+    padding:
+      10px;
+  }
+
+
+  .cluster-card {
+    padding:
+      12px 10px;
+  }
+
+
+  .timeline-card-footer {
+    padding:
+      11px 12px;
+  }
+}
+
+
+/* ==========================================================================
+   LARGE DESKTOP
+   ========================================================================== */
+
+@media (min-width: 1600px) {
+  .experience-container {
+    max-width: 1460px;
+  }
+
+
+  .experience-heading {
+    gap: 82px;
+  }
+
+
+  .timeline-role {
+    grid-template-columns:
+      54px minmax(0, 1fr);
+
+    gap: 28px;
+  }
+
+
+  .timeline-clusters {
+    gap: 17px;
+  }
+}
+
+
+/* ==========================================================================
+   ULTRA-WIDE
+   ========================================================================== */
+
+@media (min-width: 1920px) {
+  .experience-container {
+    max-width: 1500px;
+  }
+
+
+  .experience-heading h2 {
+    font-size: 3.9rem;
+  }
+
+
+  /*
+   * Do not let text/cards endlessly grow on 2K/4K screens.
+   */
+
+  .timeline-card-header,
+  .timeline-summary,
+  .timeline-clusters,
+  .timeline-card-footer {
+    max-width: 100%;
+  }
+}
+
+
+/* ==========================================================================
+   TOUCH
+   ========================================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .timeline-card {
+    /*
+     * Remove transform expectations on touch.
+     */
+    transition:
+      border-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+
+  .cluster-card {
+    transition:
+      border-color 180ms ease,
+      background 180ms ease;
+  }
+}
+
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .timeline-node-pulse,
+  .timeline-node-ring {
+    animation: none !important;
+  }
+
+
+  .timeline-card,
+  .timeline-card-glow,
+  .cluster-card,
+  .cluster-header-icon,
+  .timeline-company {
+    transition: none !important;
+  }
+
+
+  .timeline-card:hover {
+    transform: none !important;
+  }
+}

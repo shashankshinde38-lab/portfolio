@@ -1,134 +1,705 @@
-/* ===================================================================
+/* ==========================================================================
    HOLOGRAPHIC DEFECT LAB
-   =================================================================== */
-/* ===================================================================
-   HOLOGRAPHIC DEFECT LAB
-   =================================================================== */
+   ========================================================================== */
+
 .defect-lab-card {
-  padding: var(--space-8);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-panel);
-  background: var(--surface);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  --defect-cyan: #67e8f9;
+  --defect-blue: #60a5fa;
+  --defect-pass: #4ade80;
+  --defect-fail: #f87171;
+
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  padding: clamp(17px, 1.7vw, 24px);
+
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
-  position: relative;
+  gap: clamp(15px, 1.5vw, 21px);
+
+  overflow: hidden;
+  box-sizing: border-box;
+
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-radius: 17px;
+
+  background:
+    linear-gradient(145deg,
+      rgba(18, 25, 38, 0.92),
+      rgba(8, 12, 21, 0.98) 52%,
+      rgba(6, 9, 16, 0.99));
+
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.26),
+    0 30px 70px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
   transform-style: preserve-3d;
 }
 
+.defect-lab-glow {
+  position: absolute;
+  z-index: -1;
+  top: -110px;
+  right: -70px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle,
+      rgba(56, 189, 248, 0.13),
+      rgba(103, 232, 249, 0.04) 40%,
+      transparent 70%);
+
+  filter: blur(7px);
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
 .defect-lab-header {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-width: 0;
+
+  padding-bottom: 16px;
+
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--border);
+  gap: 18px;
+
+  border-bottom: 1px solid rgba(56, 189, 248, 0.08);
 }
 
 .defect-lab-title-group {
+  min-width: 0;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+}
+
+.defect-lab-title-row {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.defect-lab-icon {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  border-radius: 11px;
+
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.055);
 }
 
 .defect-lab-eyebrow {
-  display: inline-flex;
+  margin-bottom: 3px;
+
+  display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
+
+  color: rgba(103, 232, 249, 0.76);
+
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--fail);
-  margin-bottom: 6px;
+  font-size: clamp(0.51rem, 0.56vw, 0.59rem);
+  font-weight: 650;
+
+  letter-spacing: 0.09em;
+}
+
+.defect-lab-live-dot {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+
+  background: #67e8f9;
+
+  box-shadow:
+    0 0 8px rgba(103, 232, 249, 0.65);
+}
+
+.defect-lab-live-dot::after {
+  content: "";
+
+  position: absolute;
+  inset: -4px;
+
+  border: 1px solid rgba(103, 232, 249, 0.2);
+  border-radius: inherit;
+
+  animation:
+    bugLabPulse 2s ease-out infinite;
+}
+
+@keyframes bugLabPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+
+  35% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
 }
 
 .defect-lab-header h3 {
-  font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2vw, 1.5rem);
-  font-weight: 600;
+  margin: 0;
+
   color: var(--text-primary);
-  margin: 0 0 6px 0;
+
+  font-family: var(--font-display);
+  font-size: clamp(1.08rem, 1.3vw, 1.34rem);
+  font-weight: 650;
+
+  line-height: 1.3;
+  letter-spacing: -0.025em;
 }
 
 .defect-lab-subtitle {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
+  max-width: 620px;
+
   margin: 0;
-  max-width: 540px;
+
+  color: var(--text-secondary);
+
+  font-size: clamp(0.71rem, 0.78vw, 0.81rem);
+  line-height: 1.6;
+
+  text-wrap: pretty;
 }
 
+/* ==========================================================================
+   PROGRESS
+   ========================================================================== */
+
 .defect-progress-tracker {
-  padding: 6px 12px;
-  border-radius: 8px;
-  background: rgba(110, 124, 251, 0.08);
-  border: 1px solid rgba(110, 124, 251, 0.25);
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 600;
+  width: min(205px, 100%);
+  min-width: 175px;
+  flex: 0 0 auto;
+
+  padding: 10px 11px;
+
+  border: 1px solid rgba(56, 189, 248, 0.13);
+  border-radius: 11px;
+
+  background:
+    linear-gradient(145deg,
+      rgba(56, 189, 248, 0.055),
+      rgba(96, 165, 250, 0.02));
+}
+
+.defect-progress-tracker.is-complete {
+  border-color: rgba(74, 222, 128, 0.18);
+  background: rgba(74, 222, 128, 0.035);
+}
+
+.defect-progress-top {
+  margin-bottom: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
 }
 
 .defect-progress-count,
 .defect-progress-complete {
+  min-width: 0;
+
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--text-primary);
+
+  color: rgba(226, 232, 240, 0.84);
+
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
 }
 
-.defect-progress-complete {
-  color: var(--pass);
+.defect-progress-count svg {
+  color: #67e8f9;
 }
 
-.defect-selector-bar {
+.defect-progress-complete,
+.defect-progress-complete svg {
+  color: #4ade80;
+}
+
+.defect-progress-top strong {
+  color: #f8fafc;
+
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+}
+
+.defect-progress-bar {
+  position: relative;
+  width: 100%;
+  height: 4px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.defect-progress-fill {
+  position: absolute;
+
+  inset: 0 auto 0 0;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(90deg,
+      #38bdf8,
+      #67e8f9,
+      #4ade80);
+
+  box-shadow:
+    0 0 8px rgba(56, 189, 248, 0.28);
+
+  transition:
+    width 350ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ==========================================================================
+   QA FLOW
+   ========================================================================== */
+
+.defect-lab-meta {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  min-width: 0;
+
+  padding: 8px 10px;
+
   display: flex;
   align-items: center;
-  gap: 8px;
   flex-wrap: wrap;
+
+  gap: 9px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(96, 165, 250, 0.07);
+  border-radius: 9px;
+
+  background: rgba(96, 165, 250, 0.015);
+}
+
+.defect-lab-meta>span:not(.defect-lab-meta-divider) {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  color: rgba(148, 163, 184, 0.7);
+
+  font-size: 0.59rem;
+}
+
+.defect-lab-meta svg {
+  color: #60a5fa;
+}
+
+.defect-lab-meta-divider {
+  width: 1px;
+  height: 12px;
+
+  background: rgba(148, 163, 184, 0.15);
+}
+
+/* ==========================================================================
+   TABS
+   ========================================================================== */
+
+.defect-selector-bar {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 8px;
 }
 
 .defect-tab-btn {
-  display: inline-flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+
+  padding: 8px 10px;
+
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+
   gap: 8px;
-  padding: 8px 14px;
-  border-radius: var(--radius-control);
-  background: rgba(11, 14, 18, 0.6);
-  border: 1px solid var(--border);
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(96, 165, 250, 0.08);
+  border-radius: 10px;
+
   color: var(--text-secondary);
+  background: rgba(7, 11, 19, 0.55);
+
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  cursor: pointer;
-  min-height: 44px;
-  transition: all var(--duration-standard) ease;
+
+  text-align: left;
+
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
 }
 
-.defect-tab-btn:hover {
-  border-color: rgba(110, 124, 251, 0.3);
-  color: var(--text-primary);
-}
+.defect-tab-main {
+  min-width: 0;
 
-.defect-tab-btn.is-active {
-  background: rgba(110, 124, 251, 0.12);
-  border-color: var(--accent);
-  color: var(--text-primary);
-  box-shadow: 0 0 12px var(--accent-glow);
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
 }
 
 .defect-tab-id {
+  color: #60a5fa;
+
+  font-size: 0.61rem;
   font-weight: 700;
-  color: var(--accent);
 }
 
 .defect-tab-cat {
-  color: var(--text-primary);
+  color: rgba(203, 213, 225, 0.72);
+
+  font-size: 0.57rem;
   font-weight: 500;
+
+  overflow-wrap: anywhere;
 }
 
-.defect-tab-check {
-  color: var(--pass, #35d48a);
-  margin-left: 2px;
+.defect-tab-result {
+  flex: 0 0 auto;
 }
 
+.defect-tab-result.pending {
+  width: 6px;
+  height: 6px;
 
+  border-radius: 50%;
+
+  background: rgba(148, 163, 184, 0.25);
+}
+
+.defect-tab-result.resolved {
+  display: grid;
+  place-items: center;
+
+  color: #4ade80;
+}
+
+.defect-tab-btn.is-active {
+  border-color: rgba(56, 189, 248, 0.36);
+
+  background:
+    linear-gradient(145deg,
+      rgba(56, 189, 248, 0.1),
+      rgba(96, 165, 250, 0.035));
+
+  box-shadow:
+    0 0 20px rgba(56, 189, 248, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.defect-tab-btn.is-active .defect-tab-id {
+  color: #67e8f9;
+}
+
+.defect-tab-btn.is-resolved {
+  border-color: rgba(74, 222, 128, 0.13);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .defect-tab-btn:hover {
+    border-color: rgba(56, 189, 248, 0.23);
+    background: rgba(56, 189, 248, 0.04);
+  }
+}
+
+/* ==========================================================================
+   ACTIVE DEFECT
+   ========================================================================== */
+
+.active-defect-strip {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  min-width: 0;
+
+  padding: 10px 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  box-sizing: border-box;
+
+  border-left: 2px solid rgba(248, 113, 113, 0.68);
+
+  border-radius: 0 9px 9px 0;
+
+  background:
+    linear-gradient(90deg,
+      rgba(248, 113, 113, 0.05),
+      rgba(248, 113, 113, 0.01));
+}
+
+.active-defect-strip>div {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.active-defect-label {
+  color: rgba(148, 163, 184, 0.58);
+
+  font-family: var(--font-mono);
+  font-size: 0.53rem;
+  font-weight: 650;
+
+  letter-spacing: 0.08em;
+}
+
+.active-defect-strip strong {
+  color: var(--text-primary);
+
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+}
+
+.active-defect-severity {
+  flex: 0 0 auto;
+
+  padding: 4px 8px;
+
+  border-radius: 999px;
+
+  font-family: var(--font-mono);
+  font-size: 0.53rem;
+  font-weight: 700;
+}
+
+.active-defect-severity.severity-critical {
+  border: 1px solid rgba(248, 113, 113, 0.25);
+
+  color: #fca5a5;
+
+  background: rgba(248, 113, 113, 0.07);
+}
+
+.active-defect-severity.severity-high {
+  border: 1px solid rgba(251, 113, 133, 0.22);
+
+  color: #fda4af;
+
+  background: rgba(251, 113, 133, 0.06);
+}
+
+/* ==========================================================================
+   DEFECT CALLOUT SAFETY
+   ========================================================================== */
+
+.defect-callout-shell {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.defect-callout-shell>* {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+/* Code inside callout must not break layout */
+
+.defect-callout-shell pre,
+.defect-callout-shell code {
+  max-width: 100%;
+}
+
+.defect-callout-shell pre {
+  overflow-x: auto;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ==========================================================================
+   TABLET
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .defect-lab-card {
+    padding: 17px;
+    gap: 17px;
+
+    border-radius: 16px;
+  }
+
+  .defect-lab-header {
+    flex-direction: column;
+    gap: 13px;
+  }
+
+  .defect-progress-tracker {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  .defect-lab-card {
+    padding: 14px;
+    gap: 15px;
+  }
+
+  .defect-lab-title-row {
+    align-items: flex-start;
+  }
+
+  .defect-lab-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .defect-lab-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+  }
+
+  .defect-lab-meta-divider {
+    display: none;
+  }
+
+  .defect-selector-bar {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .defect-tab-btn {
+    min-height: 46px;
+  }
+
+  .defect-tab-main {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+/* ==========================================================================
+   <= 480PX
+   ========================================================================== */
+
+@media (max-width: 480px) {
+  .defect-lab-card {
+    padding: 13px 11px;
+  }
+
+  .defect-lab-header h3 {
+    font-size: 1.05rem;
+  }
+
+  .active-defect-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* ==========================================================================
+   <= 390PX
+   ========================================================================== */
+
+@media (max-width: 390px) {
+  .defect-lab-card {
+    padding: 12px 9px;
+  }
+
+  .defect-lab-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .defect-progress-tracker {
+    padding: 9px;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .defect-lab-live-dot::after {
+    animation: none !important;
+  }
+
+  .defect-tab-btn,
+  .defect-progress-fill {
+    transition: none !important;
+  }
+}

@@ -1,731 +1,2248 @@
-/* ===================================================================
-   TEST CONSOLE — INTERACTIVE HERO TERMINAL
-   =================================================================== */
-/* ===================================================================
-   TEST CONSOLE — single interactive terminal in the hero
-   =================================================================== */
-.test-console {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-panel);
-  overflow: hidden;
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  font-family: var(--font-mono);
-  animation: console-arrive var(--duration-hero) var(--ease-out) both;
-}
-
-@keyframes console-arrive {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.console-chrome {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(20, 25, 32, 0.6);
-}
-
-.console-dots {
-  display: flex;
-  gap: 5px;
-}
-
-.console-dots i {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(141, 153, 166, 0.25);
-}
-
-.console-dots i:first-child {
-  background: rgba(255, 92, 108, 0.6);
-}
-
-.console-dots i:nth-child(2) {
-  background: rgba(245, 168, 60, 0.6);
-}
-
-.console-dots i:nth-child(3) {
-  background: rgba(53, 212, 138, 0.6);
-}
-
-.console-title {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
-.console-run {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: auto;
-  font-size: 10px;
-  color: var(--accent);
-}
-
-/* Tabs */
-.console-tabs {
-  display: flex;
-  gap: 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.console-tab {
-  flex: 1;
-  padding: 10px 16px;
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: color var(--duration-micro) var(--ease-out),
-    border-color var(--duration-micro) var(--ease-out);
-}
-
-.console-tab:hover {
-  color: var(--text-primary);
-}
-
-.console-tab--active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-
-/* Body */
-.console-body {
-  padding: 16px;
-}
-
-.console-spec {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
-}
-
-.console-spec svg {
-  color: var(--accent);
-}
-
-/* Test lines */
-.console-tests {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.console-test-line {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(110, 124, 251, 0.06);
-  opacity: 0;
-  transform: translateX(-8px);
-  transition:
-    opacity var(--duration-standard) var(--ease-out),
-    transform var(--duration-standard) var(--ease-out);
-}
-
-.console-test-line.is-visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.console-test-name {
-  flex: 1;
-  font-size: 12px;
-  color: var(--text-primary);
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.console-test-duration {
-  font-size: 11px;
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-/* Summary */
-.console-summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-  opacity: 0;
-  transition: opacity var(--duration-standard) var(--ease-out);
-}
-
-.console-summary.is-visible {
-  opacity: 1;
-}
-
-.console-summary-label {
-  font-size: 10px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.console-summary-value {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--accent);
-}
+/* ==========================================================================
+   PREMIUM SDET EXECUTION CONSOLE
+   Responsive: 320px → 2560px+
+   ========================================================================== */
 
 
-/* TERMINAL 3D WINDOW — PREMIUM HOVER & DEPTHS */
-/* =========================================================
-   TERMINAL 3D WINDOW — PREMIUM HOVER
-   ========================================================= */
+/* ==========================================================================
+   WRAPPER
+   ========================================================================== */
 
-.terminal-3d-window {
+.sdet-console-wrapper {
   position: relative;
+  width: 100%;
+  max-width: 760px;
+  min-width: 0;
+  margin-inline: auto;
+  perspective: 1450px;
+  box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   AMBIENT BACKLIGHT
+   ========================================================================== */
+
+.sdet-console-glow {
+  position: absolute;
+  inset: -8% -7% -10%;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(ellipse at 55% 45%,
+      rgba(34, 211, 238, 0.1) 0%,
+      rgba(59, 130, 246, 0.07) 34%,
+      rgba(99, 102, 241, 0.035) 54%,
+      transparent 74%);
+
+  filter: blur(32px);
+}
+
+
+/* ==========================================================================
+   WINDOW
+   ========================================================================== */
+
+.sdet-console-window {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  min-width: 0;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(96, 165, 250, 0.2);
+
+  border-radius: 21px;
+
+  background:
+    linear-gradient(145deg,
+      rgba(14, 20, 33, 0.94) 0%,
+      rgba(7, 11, 20, 0.98) 52%,
+      rgba(5, 8, 15, 0.995) 100%);
+
+  backdrop-filter:
+    blur(26px) saturate(140%);
+
+  -webkit-backdrop-filter:
+    blur(26px) saturate(140%);
 
   transform:
-    perspective(1200px) rotateY(0deg) rotateX(0deg) translate3d(0, 0, 0) scale3d(1, 1, 1);
+    perspective(1450px) rotateY(-2.6deg) rotateX(1deg) translate3d(0, 0, 0);
 
-  transform-style: preserve-3d;
-  transform-origin: center center;
+  transform-style:
+    preserve-3d;
 
-  backface-visibility: hidden;
+  backface-visibility:
+    hidden;
 
-  will-change: transform, box-shadow;
+  box-shadow:
+    0 12px 25px rgba(0, 0, 0, 0.3),
+
+    0 35px 75px rgba(0, 0, 0, 0.5),
+
+    0 0 50px rgba(59, 130, 246, 0.055),
+
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+
+    inset 0 -1px 0 rgba(255, 255, 255, 0.018);
+
+  animation:
+    sdetConsoleFloat 8s ease-in-out infinite;
 
   transition:
-    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 400ms ease,
-    background 400ms ease;
+    transform 480ms cubic-bezier(0.22,
+      1,
+      0.36,
+      1),
+
+    border-color 320ms ease,
+
+    box-shadow 420ms ease;
 }
 
 
-/* ---------------------------------------------------------
-   Glass highlight
-   --------------------------------------------------------- */
+/* ==========================================================================
+   PREMIUM BORDER LIGHT
+   ========================================================================== */
 
-.terminal-3d-window::before {
+.sdet-console-window::before {
   content: "";
 
   position: absolute;
   inset: 0;
 
-  border-radius: inherit;
+  z-index: 20;
 
   padding: 1px;
 
+  border-radius: inherit;
+
+  pointer-events: none;
+
   background:
     linear-gradient(145deg,
-      rgba(255, 255, 255, 0.32) 0%,
-      rgba(183, 175, 255, 0.18) 18%,
-      rgba(255, 255, 255, 0.05) 45%,
-      transparent 72%);
+      rgba(255, 255, 255, 0.28) 0%,
+      rgba(103, 232, 249, 0.17) 18%,
+      rgba(96, 165, 250, 0.07) 38%,
+      transparent 67%);
 
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
 
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  -webkit-mask-composite:
+    xor;
 
-  pointer-events: none;
+  mask-composite:
+    exclude;
 
   opacity: 0.9;
-
-  z-index: 10;
 }
 
 
-/* ---------------------------------------------------------
-   Internal purple light
-   --------------------------------------------------------- */
+/* ==========================================================================
+   INTERNAL LIGHT
+   ========================================================================== */
 
-.terminal-3d-window::after {
+.sdet-console-window::after {
   content: "";
 
   position: absolute;
 
-  width: 260px;
-  height: 260px;
+  z-index: 0;
 
-  top: -130px;
-  right: -80px;
+  top: -140px;
+  right: -90px;
+
+  width: 310px;
+  height: 310px;
 
   border-radius: 50%;
-
-  background:
-    radial-gradient(circle,
-      rgba(124, 108, 255, 0.24),
-      rgba(124, 108, 255, 0.08) 40%,
-      transparent 72%);
-
-  filter: blur(25px);
 
   pointer-events: none;
 
-  opacity: 0.7;
+  background:
+    radial-gradient(circle,
+      rgba(34, 211, 238, 0.105),
+      rgba(59, 130, 246, 0.045) 40%,
+      transparent 72%);
+
+  filter:
+    blur(12px);
+
+  opacity: 0.75;
 
   transition:
-    opacity 500ms ease,
-    transform 600ms ease;
-
-  z-index: 0;
+    opacity 400ms ease,
+    transform 500ms ease;
 }
 
 
-/* =========================================================
+@keyframes sdetConsoleFloat {
+
+  0%,
+  100% {
+    transform:
+      perspective(1450px) rotateY(-2.6deg) rotateX(1deg) translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform:
+      perspective(1450px) rotateY(-2deg) rotateX(0.7deg) translate3d(0, -6px, 12px);
+  }
+}
+
+
+/* ==========================================================================
    DESKTOP HOVER
-   ========================================================= */
+   ========================================================================== */
 
 @media (hover: hover) and (pointer: fine) {
-  .terminal-3d-window:hover {
+
+  .sdet-console-window:hover {
     animation-play-state: paused;
 
     transform:
-      perspective(1200px) rotateY(-2deg) rotateX(1.5deg) translate3d(0, -8px, 24px) scale3d(1.015, 1.015, 1.015);
+      perspective(1450px) rotateY(-1.2deg) rotateX(0.5deg) translate3d(0, -8px, 24px) scale3d(1.012,
+        1.012,
+        1.012);
 
     border-color:
-      rgba(167, 139, 250, 0.65);
+      rgba(103,
+        232,
+        249,
+        0.36);
 
     box-shadow:
-      0 12px 25px rgba(0, 0, 0, 0.55),
-      0 35px 70px rgba(0, 0, 0, 0.78),
-      0 55px 110px rgba(0, 0, 0, 0.88),
-      0 0 45px rgba(124, 108, 255, 0.32),
-      0 0 100px rgba(124, 108, 255, 0.12),
-      inset 0 1px 2px rgba(255, 255, 255, 0.25),
-      inset 0 -1px 2px rgba(0, 0, 0, 0.45);
+      0 15px 30px rgba(0,
+        0,
+        0,
+        0.36),
+
+      0 42px 88px rgba(0,
+        0,
+        0,
+        0.58),
+
+      0 0 55px rgba(34,
+        211,
+        238,
+        0.085),
+
+      inset 0 1px 0 rgba(255,
+        255,
+        255,
+        0.1);
   }
 
-  .terminal-3d-window:hover::after {
+
+  .sdet-console-window:hover::after {
     opacity: 1;
 
     transform:
-      translate3d(-20px, 20px, 30px) scale(1.15);
+      translate3d(-15px,
+        20px,
+        0) scale(1.1);
   }
 }
 
 
-/* =========================================================
-   TERMINAL CONTENT DEPTH
-   ========================================================= */
+/* ==========================================================================
+   COMMON DEPTH
+   ========================================================================== */
 
-.terminal-3d-window>* {
+.sdet-window-header,
+.sdet-suite-tabs,
+.sdet-command-bar,
+.sdet-console-body {
   position: relative;
-
   z-index: 2;
-
-  transform-style: preserve-3d;
 }
 
 
-/* Optional deeper terminal content */
-.terminal-3d-window .terminal-header {
-  transform: translate3d(0, 0, 18px);
-}
+/* ==========================================================================
+   WINDOW HEADER
+   ========================================================================== */
 
-.terminal-3d-window .terminal-content {
-  transform: translate3d(0, 0, 12px);
-}
+.sdet-window-header {
+  min-height: 47px;
 
+  padding:
+    10px 14px;
 
-/* =========================================================
-   TABLET
-   ========================================================= */
+  display: grid;
 
-@media (max-width: 1024px) {
-  .terminal-3d-window {
-    transform:
-      perspective(1000px) rotateY(0deg) rotateX(0deg) translate3d(0, 0, 0) scale3d(1, 1, 1);
-  }
+  grid-template-columns:
+    1fr auto 1fr;
 
-  .terminal-3d-window::after {
-    opacity: 0.45;
-  }
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 768px) {
-  .terminal-3d-window {
-    transform:
-      perspective(900px) rotateY(0deg) rotateX(0deg) translate3d(0, 0, 0) scale3d(1, 1, 1);
-
-    transition:
-      transform 350ms ease,
-      box-shadow 350ms ease;
-  }
-
-  .terminal-3d-window .terminal-header,
-  .terminal-3d-window .terminal-content {
-    transform: none;
-  }
-
-  .terminal-3d-window::after {
-    opacity: 0.25;
-  }
-}
-
-
-/* =========================================================
-   SMALL MOBILE
-   ========================================================= */
-
-@media (max-width: 480px) {
-  .terminal-3d-window {
-    transform: none;
-
-    transform-style: flat;
-
-    box-shadow:
-      0 15px 35px rgba(0, 0, 0, 0.65),
-      inset 0 1px 1px rgba(255, 255, 255, 0.12);
-  }
-
-  .terminal-3d-window::after {
-    display: none;
-  }
-
-  .terminal-3d-window .terminal-header,
-  .terminal-3d-window .terminal-content {
-    transform: none;
-  }
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .terminal-3d-window {
-    animation: none !important;
-
-    transform: none !important;
-
-    transition: none !important;
-
-    will-change: auto !important;
-  }
-
-  .terminal-3d-window::after {
-    display: none;
-  }
-}
-
-
-/* TERMINAL WINDOW HEADER & TELEMETRY */
-.terminal-window-header {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 14px 20px;
-  background: rgba(14, 18, 32, 0.65);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  position: relative;
+
+  gap: 10px;
+
+  box-sizing: border-box;
+
+  border-bottom:
+    1px solid rgba(96,
+      165,
+      250,
+      0.07);
+
+  background:
+    linear-gradient(180deg,
+      rgba(25,
+        32,
+        49,
+        0.72),
+      rgba(11,
+        16,
+        27,
+        0.54));
 }
 
-.terminal-window-dots {
+
+/* ==========================================================================
+   WINDOW CONTROLS
+   ========================================================================== */
+
+.sdet-window-controls {
+  min-width: 0;
+
   display: flex;
+
   align-items: center;
-  gap: 7px;
-  z-index: 1;
+
+  gap: 6px;
 }
 
-.terminal-window-dots .dot,
-.dot {
-  width: 10px;
-  height: 10px;
+
+.control-dot {
+  width: 8px;
+  height: 8px;
+
+  flex: 0 0 auto;
+
   border-radius: 50%;
-  display: inline-block;
 }
 
-.dot-red {
-  background: #FF5C6C;
-  box-shadow: 0 0 6px rgba(255, 92, 108, 0.4);
+
+.control-blue {
+  background: #60a5fa;
+
+  box-shadow:
+    0 0 7px rgba(96,
+      165,
+      250,
+      0.48);
 }
 
-.dot-yellow {
-  background: #F5A83C;
-  box-shadow: 0 0 6px rgba(245, 168, 60, 0.4);
+
+.control-cyan {
+  background: #22d3ee;
+
+  box-shadow:
+    0 0 7px rgba(34,
+      211,
+      238,
+      0.46);
 }
 
-.dot-green {
-  background: #35D48A;
-  box-shadow: 0 0 6px rgba(53, 212, 138, 0.4);
+
+.control-green {
+  background: #4ade80;
+
+  box-shadow:
+    0 0 7px rgba(74,
+      222,
+      128,
+      0.44);
 }
 
-.terminal-window-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  color: rgba(226, 232, 240, 0.85);
-  letter-spacing: 0.03em;
-}
 
-.terminal-header-spacer {
-  width: 44px;
-}
+/* ==========================================================================
+   TITLE
+   ========================================================================== */
 
-.terminal-log-line {
-  display: flex;
+.sdet-window-title {
+  min-width: 0;
+
+  display: inline-flex;
+
   align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  color:
+    rgba(203,
+      213,
+      225,
+      0.73);
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size:
+    clamp(0.57rem,
+      0.63vw,
+      0.65rem);
+
+  font-weight: 550;
+
+  letter-spacing:
+    0.035em;
+
+  white-space: nowrap;
+}
+
+
+.sdet-window-title svg {
+  color: #60a5fa;
+}
+
+
+/* ==========================================================================
+   HEADER STATUS
+   ========================================================================== */
+
+.sdet-header-status {
+  justify-self: end;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color:
+    rgba(134,
+      239,
+      172,
+      0.72);
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size: 0.49rem;
+
+  font-weight: 650;
+
+  letter-spacing:
+    0.07em;
+}
+
+
+.sdet-header-status-dot {
+  width: 5px;
+  height: 5px;
+
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+
+  background: #4ade80;
+
+  box-shadow:
+    0 0 7px rgba(74,
+      222,
+      128,
+      0.55);
+}
+
+
+/* ==========================================================================
+   SUITE TABS
+   ========================================================================== */
+
+.sdet-suite-tabs {
+  width: 100%;
+  min-width: 0;
+
+  padding:
+    8px 9px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,
+      minmax(0, 1fr));
+
+  gap: 6px;
+
+  box-sizing: border-box;
+
+  border-bottom:
+    1px solid rgba(96,
+      165,
+      250,
+      0.065);
+
+  background:
+    rgba(5,
+      8,
+      15,
+      0.28);
+}
+
+
+.sdet-suite-tab {
+  width: 100%;
+  min-width: 0;
+
+  min-height: 37px;
+
+  padding:
+    7px 9px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid transparent;
+
+  border-radius: 8px;
+
+  color:
+    rgba(148,
+      163,
+      184,
+      0.62);
+
+  background:
+    transparent;
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size:
+    clamp(0.54rem,
+      0.61vw,
+      0.63rem);
+
+  font-weight: 550;
+
+  white-space: nowrap;
+
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+
+.sdet-suite-tab svg {
+  flex: 0 0 auto;
+}
+
+
+.sdet-suite-tab.is-active {
+  border-color:
+    rgba(103,
+      232,
+      249,
+      0.2);
+
+  color: #cffafe;
+
+  background:
+    linear-gradient(145deg,
+      rgba(34,
+        211,
+        238,
+        0.085),
+      rgba(59,
+        130,
+        246,
+        0.035));
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,
+      255,
+      255,
+      0.045);
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+
+  .sdet-suite-tab:hover {
+    color:
+      var(--text-primary);
+
+    background:
+      rgba(96,
+        165,
+        250,
+        0.035);
+  }
+}
+
+
+/* ==========================================================================
+   COMMAND BAR
+   ========================================================================== */
+
+.sdet-command-bar {
+  width: 100%;
+  min-width: 0;
+
+  min-height: 45px;
+
+  padding:
+    9px 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+
+  box-sizing: border-box;
+
+  border-bottom:
+    1px solid rgba(96,
+      165,
+      250,
+      0.065);
+
+  background:
+    rgba(3,
+      6,
+      12,
+      0.42);
+}
+
+
+.sdet-command-copy {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+
+  align-items: center;
+
   gap: 8px;
-  margin: 5px 0;
-  font-size: 0.86rem;
-  color: #E2E8F0;
+
+  overflow-x: auto;
+
+  scrollbar-width: none;
+
+  -webkit-overflow-scrolling:
+    touch;
 }
 
-.log-env {
-  color: var(--text-secondary);
+
+.sdet-command-copy::-webkit-scrollbar {
+  display: none;
 }
 
-.pass-title,
-.terminal-log-line.pass-title {
-  color: #FFFFFF;
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
 
-.term-check {
-  color: #10B981;
+.sdet-command-symbol {
+  flex: 0 0 auto;
+
+  color: #67e8f9;
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size: 0.72rem;
+
   font-weight: 700;
 }
 
-.indented,
-.terminal-log-stat.indented {
-  padding-left: 20px;
-  color: var(--text-secondary);
-  font-size: 0.825rem;
-  margin: 4px 0;
+
+.sdet-command-copy code {
+  color:
+    rgba(226,
+      232,
+      240,
+      0.84);
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size:
+    clamp(0.56rem,
+      0.66vw,
+      0.69rem);
+
+  white-space: nowrap;
 }
 
-.term-sparkle-symbol,
-.terminal-sparkle-symbol {
-  font-size: 0.95rem;
-}
 
+/* ==========================================================================
+   EXECUTION STATE
+   ========================================================================== */
 
-.terminal-blinking-cursor {
-  color: #A78BFA;
+.sdet-execution-state {
+  min-height: 24px;
+
+  padding:
+    4px 7px;
+
+  flex: 0 0 auto;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border-radius: 6px;
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size: 0.48rem;
+
   font-weight: 700;
-  font-size: 1.1rem;
-  margin-top: 6px;
-  animation: cursorBlink 1s infinite;
+
+  letter-spacing:
+    0.07em;
 }
 
-.projects-main-title {
-  font-family: "Times New Roman", Times, Georgia, serif;
-  font-size: 2.6rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #FFFFFF;
+
+.sdet-execution-state.is-running {
+  color: #67e8f9;
+
+  border:
+    1px solid rgba(34,
+      211,
+      238,
+      0.16);
+
+  background:
+    rgba(34,
+      211,
+      238,
+      0.04);
+}
+
+
+.sdet-execution-state.is-passed {
+  color: #86efac;
+
+  border:
+    1px solid rgba(74,
+      222,
+      128,
+      0.15);
+
+  background:
+    rgba(74,
+      222,
+      128,
+      0.035);
+}
+
+
+/* ==========================================================================
+   BODY
+   ========================================================================== */
+
+.sdet-console-body {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  padding:
+    clamp(15px,
+      1.7vw,
+      20px);
+
+  box-sizing: border-box;
+
+  font-family:
+    var(--font-mono, monospace);
+}
+
+
+/* ==========================================================================
+   SUITE HEADING
+   ========================================================================== */
+
+.sdet-suite-heading {
+  width: 100%;
+  min-width: 0;
+
+  margin-bottom: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+}
+
+
+.sdet-suite-heading-left {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.sdet-suite-heading-icon {
+  width: 35px;
+  height: 35px;
+
+  flex: 0 0 auto;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid rgba(103,
+      232,
+      249,
+      0.14);
+
+  border-radius: 9px;
+
+  color: #67e8f9;
+
+  background:
+    rgba(103,
+      232,
+      249,
+      0.035);
+
+  box-shadow:
+    0 0 15px rgba(34,
+      211,
+      238,
+      0.045);
+}
+
+
+.sdet-suite-heading-left>div {
+  min-width: 0;
+}
+
+
+.sdet-suite-eyebrow {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color:
+    rgba(96,
+      165,
+      250,
+      0.58);
+
+  font-size: 0.47rem;
+
+  font-weight: 650;
+
+  letter-spacing:
+    0.09em;
+}
+
+
+.sdet-suite-heading h3 {
   margin: 0;
+
+  color:
+    var(--text-primary);
+
+  font-family:
+    var(--font-display);
+
+  font-size:
+    clamp(0.9rem,
+      1.1vw,
+      1.05rem);
+
+  font-weight: 620;
+
+  line-height: 1.35;
+
+  letter-spacing:
+    -0.02em;
 }
 
-.about-heading-row h2 {
-  font-family: "Times New Roman", Times, Georgia, serif;
-  font-size: clamp(2.4rem, 4.6vw, 3.5rem);
-  font-weight: 500;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+
+.sdet-verified-chip {
+  min-height: 24px;
+
+  padding:
+    4px 7px;
+
+  flex: 0 0 auto;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border:
+    1px solid rgba(74,
+      222,
+      128,
+      0.13);
+
+  border-radius: 999px;
+
+  color:
+    rgba(134,
+      239,
+      172,
+      0.76);
+
+  background:
+    rgba(74,
+      222,
+      128,
+      0.03);
+
+  font-size: 0.47rem;
+
+  font-weight: 650;
+
+  letter-spacing:
+    0.06em;
 }
 
-.hero-explore-link {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #E2E8F0;
-  text-transform: uppercase;
+
+/* ==========================================================================
+   TELEMETRY
+   ========================================================================== */
+
+.sdet-telemetry-grid {
+  width: 100%;
+  min-width: 0;
+
+  margin-bottom: 12px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,
+      minmax(0, 1fr));
+
+  gap: 7px;
 }
 
-.terminal-3d-window,
-.project-card-3d,
-.stat-card-3d,
-.profile-panel-3d {
-  -webkit-box-reflect: below 10px linear-gradient(to bottom, transparent 65%, rgba(255, 255, 255, 0.035));
+
+.sdet-telemetry-item {
+  min-width: 0;
+
+  min-height: 54px;
+
+  padding:
+    8px 9px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto 1fr;
+
+  grid-template-rows:
+    auto auto;
+
+  column-gap: 6px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid rgba(96,
+      165,
+      250,
+      0.07);
+
+  border-radius: 8px;
+
+  background:
+    rgba(96,
+      165,
+      250,
+      0.014);
 }
 
-.terminal-window-body {
-  padding: 22px 24px 26px;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  line-height: 1.6;
+
+.sdet-telemetry-item svg {
+  grid-row:
+    1 / 3;
+
+  align-self:
+    center;
+
+  color:
+    #60a5fa;
+
+  flex: 0 0 auto;
 }
 
-.terminal-telemetry-lines {
-  margin-bottom: 16px;
-  padding-bottom: 14px;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+
+.sdet-telemetry-item span {
+  min-width: 0;
+
+  color:
+    rgba(148,
+      163,
+      184,
+      0.42);
+
+  font-size: 0.46rem;
+
+  font-weight: 600;
+
+  letter-spacing:
+    0.06em;
+
+  text-transform:
+    uppercase;
 }
 
-.terminal-line {
-  margin: 4px 0;
-  color: var(--text-secondary);
-  font-size: 0.825rem;
+
+.sdet-telemetry-item strong {
+  min-width: 0;
+
+  color:
+    rgba(226,
+      232,
+      240,
+      0.76);
+
+  font-size:
+    clamp(0.53rem,
+      0.59vw,
+      0.62rem);
+
+  font-weight: 550;
+
+  overflow-wrap:
+    anywhere;
 }
 
-.term-arrow {
-  color: #A78BFA;
-  margin-right: 6px;
-}
 
-.term-highlight {
-  color: #22D3EE;
-  font-weight: 500;
-}
+/* ==========================================================================
+   RESULT GRID
+   ========================================================================== */
 
-.term-value {
-  color: var(--text-primary);
-}
+.sdet-result-grid {
+  width: 100%;
+  min-width: 0;
 
-.terminal-results-block {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4,
+      minmax(0, 1fr));
+
+  gap: 7px;
+
   opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 250ms ease, transform 250ms ease;
+
+  transform:
+    translateY(6px);
+
+  transition:
+    opacity 280ms ease,
+    transform 280ms ease;
 }
 
-.terminal-results-block.is-visible {
+
+.sdet-result-grid.is-visible {
   opacity: 1;
-  transform: translateY(0);
+
+  transform:
+    translateY(0);
 }
 
-.terminal-pass-headline {
+
+.sdet-result-card {
+  position: relative;
+
+  min-width: 0;
+
+  min-height: 70px;
+
+  padding:
+    9px 10px;
+
   display: flex;
-  align-items: center;
+
+  flex-direction: column;
+
+  justify-content:
+    center;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(96,
+      165,
+      250,
+      0.07);
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(145deg,
+      rgba(17,
+        23,
+        37,
+        0.72),
+      rgba(7,
+        11,
+        19,
+        0.75));
+}
+
+
+.sdet-result-card>span {
+  color:
+    rgba(148,
+      163,
+      184,
+      0.4);
+
+  font-size: 0.45rem;
+
+  font-weight: 650;
+
+  letter-spacing:
+    0.075em;
+}
+
+
+.sdet-result-card strong {
+  margin-top: 2px;
+
+  color:
+    var(--text-primary);
+
+  font-family:
+    var(--font-display);
+
+  font-size:
+    clamp(1rem,
+      1.45vw,
+      1.3rem);
+
+  font-weight: 670;
+
+  line-height: 1.1;
+
+  overflow-wrap:
+    anywhere;
+}
+
+
+.sdet-result-card>svg {
+  position: absolute;
+
+  right: 8px;
+  bottom: 8px;
+
+  opacity: 0.5;
+}
+
+
+.sdet-result-card.result-pass {
+  border-color:
+    rgba(74,
+      222,
+      128,
+      0.11);
+}
+
+
+.result-pass>svg {
+  color: #4ade80;
+}
+
+
+.result-skip>svg,
+.result-coverage>svg {
+  color: #60a5fa;
+}
+
+
+.sdet-result-card.result-fail {
+  border-color:
+    rgba(248,
+      113,
+      113,
+      0.08);
+}
+
+
+.result-fail>svg {
+  color:
+    rgba(248,
+      113,
+      113,
+      0.68);
+}
+
+
+.result-fail strong {
+  color:
+    currentColor;
+}
+
+
+/* ==========================================================================
+   EXECUTION SUMMARY
+   ========================================================================== */
+
+.sdet-execution-summary {
+  width: 100%;
+  min-width: 0;
+
+  margin-top: 9px;
+
+  padding:
+    9px 11px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,
+      minmax(0, 1fr));
+
   gap: 8px;
-  color: #FFFFFF;
-  font-size: 1.02rem;
-  margin-bottom: 12px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid rgba(96,
+      165,
+      250,
+      0.06);
+
+  border-radius: 8px;
+
+  background:
+    rgba(255,
+      255,
+      255,
+      0.012);
+
+  opacity: 0;
+
+  transition:
+    opacity 280ms ease;
 }
 
-.terminal-pass-headline .term-check {
-  color: #10B981;
-  font-weight: 700;
+
+.sdet-execution-summary.is-visible {
+  opacity: 1;
 }
 
-.terminal-metrics-counters {
+
+.sdet-execution-summary>div {
+  min-width: 0;
+
   display: flex;
-  gap: 16px;
-  font-size: 0.825rem;
-  margin-bottom: 12px;
-}
 
-.term-counter-item {
-  display: flex;
   align-items: center;
+
   gap: 5px;
 }
 
-.term-counter-item.pass {
-  color: #10B981;
+
+.sdet-execution-summary svg {
+  flex: 0 0 auto;
+
+  color: #60a5fa;
 }
 
-.term-counter-item.skip {
-  color: var(--text-secondary);
+
+.sdet-execution-summary span {
+  color:
+    rgba(148,
+      163,
+      184,
+      0.45);
+
+  font-size: 0.46rem;
+
+  white-space: nowrap;
 }
 
-.term-counter-item.fail {
-  color: #EF4444;
+
+.sdet-execution-summary strong {
+  min-width: 0;
+
+  color:
+    rgba(226,
+      232,
+      240,
+      0.78);
+
+  font-size: 0.53rem;
+
+  font-weight: 600;
+
+  white-space: nowrap;
 }
 
-.terminal-stat-summary {
+
+.sdet-execution-summary .summary-gate-pass {
+  color: #4ade80;
+}
+
+
+/* ==========================================================================
+   ASSERTIONS
+   ========================================================================== */
+
+.sdet-assertions {
+  width: 100%;
+  min-width: 0;
+
+  margin-top: 12px;
+
+  padding-top: 11px;
+
+  border-top:
+    1px dashed rgba(96,
+      165,
+      250,
+      0.09);
+
+  opacity: 0;
+
+  transform:
+    translateY(5px);
+
+  transition:
+    opacity 300ms ease,
+    transform 300ms ease;
+}
+
+
+.sdet-assertions.is-visible {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+}
+
+
+.sdet-assertions-header {
+  margin-bottom: 7px;
+
   display: flex;
-  gap: 10px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.03);
-  padding: 8px 12px;
-  border-radius: 8px;
-  margin-bottom: 14px;
-}
 
-.terminal-stat-summary strong {
-  color: var(--text-primary);
-}
-
-.stat-separator {
-  color: rgba(255, 255, 255, 0.2);
-}
-
-.terminal-spec-items {
-  margin: 12px 0;
-}
-
-.terminal-spec-row {
-  margin: 4px 0;
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-}
-
-.terminal-quality-assured {
-  display: flex;
   align-items: center;
-  gap: 8px;
-  color: #34D399;
-  font-size: 0.85rem;
-  font-weight: 500;
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+
+  justify-content:
+    space-between;
+
+  gap: 10px;
+
+  color:
+    rgba(96,
+      165,
+      250,
+      0.53);
+
+  font-size: 0.46rem;
+
+  font-weight: 650;
+
+  letter-spacing:
+    0.075em;
 }
 
-.term-sparkle-icon {
-  color: #FBBF24;
+
+.sdet-assertions-header span:last-child {
+  color:
+    rgba(148,
+      163,
+      184,
+      0.38);
 }
 
-.term-cursor {
-  color: #A78BFA;
-  font-weight: 700;
-  animation: cursorBlink 1s infinite;
+
+.sdet-assertion-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
 }
 
-@keyframes cursorBlink {
 
-  0%,
-  50% {
-    opacity: 1;
-  }
+.sdet-assertion-row {
+  width: 100%;
+  min-width: 0;
 
-  51%,
-  100% {
+  min-height: 29px;
+
+  padding:
+    5px 7px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto minmax(0, 1fr) auto;
+
+  align-items: center;
+
+  gap: 7px;
+
+  box-sizing: border-box;
+
+  border-bottom:
+    1px solid rgba(96,
+      165,
+      250,
+      0.045);
+
+  opacity: 0;
+
+  animation:
+    sdetAssertionReveal 320ms ease forwards;
+}
+
+
+.sdet-assertion-row:last-child {
+  border-bottom: 0;
+}
+
+
+@keyframes sdetAssertionReveal {
+  from {
     opacity: 0;
+
+    transform:
+      translateX(-6px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateX(0);
   }
 }
 
-/* -------------------------------------------------------------------
-   5. About Section 3D Profile Panel & Dimensional Stats Row (Image 3)
-   ------------------------------------------------------------------- */
+
+.sdet-assertion-row svg {
+  color: #4ade80;
+
+  flex: 0 0 auto;
+}
+
+
+.sdet-assertion-row>span {
+  min-width: 0;
+
+  color:
+    rgba(203,
+      213,
+      225,
+      0.66);
+
+  font-size:
+    clamp(0.51rem,
+      0.59vw,
+      0.61rem);
+
+  line-height: 1.45;
+
+  overflow-wrap:
+    anywhere;
+}
+
+
+.sdet-assertion-row code {
+  color:
+    rgba(134,
+      239,
+      172,
+      0.66);
+
+  font-size: 0.44rem;
+
+  font-weight: 650;
+}
+
+
+/* ==========================================================================
+   QUALITY GATE
+   ========================================================================== */
+
+.sdet-quality-gate {
+  width: 100%;
+  min-width: 0;
+
+  margin-top: 12px;
+
+  padding-top: 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+
+  border-top:
+    1px dashed rgba(96,
+      165,
+      250,
+      0.09);
+}
+
+
+.sdet-quality-message {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+.sdet-quality-icon {
+  width: 29px;
+  height: 29px;
+
+  flex: 0 0 auto;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid rgba(74,
+      222,
+      128,
+      0.13);
+
+  border-radius: 8px;
+
+  color: #4ade80;
+
+  background:
+    rgba(74,
+      222,
+      128,
+      0.03);
+}
+
+
+.sdet-quality-message>div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 1px;
+}
+
+
+.sdet-quality-message span {
+  color:
+    rgba(74,
+      222,
+      128,
+      0.58);
+
+  font-size: 0.44rem;
+
+  font-weight: 650;
+
+  letter-spacing:
+    0.07em;
+}
+
+
+.sdet-quality-message strong {
+  color:
+    rgba(134,
+      239,
+      172,
+      0.83);
+
+  font-size:
+    clamp(0.55rem,
+      0.64vw,
+      0.67rem);
+
+  font-weight: 570;
+
+  line-height: 1.4;
+}
+
+
+/* ==========================================================================
+   RUN BUTTON
+   ========================================================================== */
+
+.sdet-run-button {
+  min-height: 34px;
+
+  padding:
+    7px 10px;
+
+  flex: 0 0 auto;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  border:
+    1px solid rgba(103,
+      232,
+      249,
+      0.17);
+
+  border-radius: 8px;
+
+  color: #cffafe;
+
+  background:
+    linear-gradient(110deg,
+      rgba(37,
+        99,
+        235,
+        0.3),
+      rgba(8,
+        145,
+        178,
+        0.18));
+
+  font-family:
+    var(--font-mono, monospace);
+
+  font-size: 0.54rem;
+
+  font-weight: 650;
+
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 200ms ease;
+}
+
+
+.sdet-run-button:disabled {
+  cursor: wait;
+
+  opacity: 0.64;
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+
+  .sdet-run-button:not( :disabled):hover {
+    border-color:
+      rgba(103,
+        232,
+        249,
+        0.32);
+
+    background:
+      linear-gradient(110deg,
+        rgba(37,
+          99,
+          235,
+          0.42),
+        rgba(8,
+          145,
+          178,
+          0.27));
+
+    box-shadow:
+      0 0 20px rgba(34,
+        211,
+        238,
+        0.07);
+  }
+}
+
+
+/* ==========================================================================
+   <= 1180PX
+   ========================================================================== */
+
+@media (max-width: 1180px) {
+
+  .sdet-console-wrapper {
+    max-width: 680px;
+  }
+
+
+  .sdet-console-window {
+    transform:
+      perspective(1300px) rotateY(-1.5deg) rotateX(0.6deg);
+  }
+}
+
+
+/* ==========================================================================
+   <= 1024PX
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+
+  .sdet-console-wrapper {
+    max-width: 100%;
+
+    perspective: none;
+  }
+
+
+  .sdet-console-window {
+    transform: none !important;
+
+    animation:
+      none !important;
+  }
+
+
+  .sdet-console-window:hover {
+    transform: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   <= 768PX
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+  .sdet-console-window {
+    border-radius: 18px;
+  }
+
+
+  .sdet-result-grid {
+    grid-template-columns:
+      repeat(2,
+        minmax(0, 1fr));
+  }
+
+
+  .sdet-result-card {
+    min-height: 64px;
+  }
+
+
+  .sdet-telemetry-grid {
+    grid-template-columns:
+      repeat(2,
+        minmax(0, 1fr));
+  }
+
+
+  .sdet-telemetry-wide {
+    grid-column:
+      1 / -1;
+  }
+}
+
+
+/* ==========================================================================
+   <= 600PX
+   ========================================================================== */
+
+@media (max-width: 600px) {
+
+  .sdet-window-header {
+    grid-template-columns:
+      auto minmax(0, 1fr) auto;
+
+    padding:
+      9px 10px;
+  }
+
+
+  .sdet-window-title {
+    overflow: hidden;
+  }
+
+
+  .sdet-window-title span {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+  }
+
+
+  .sdet-header-status {
+    font-size: 0.44rem;
+  }
+
+
+  .sdet-suite-tabs {
+    padding:
+      7px;
+
+    gap: 5px;
+  }
+
+
+  .sdet-suite-tab {
+    min-height: 35px;
+
+    padding:
+      6px;
+  }
+
+
+  .sdet-suite-tab span {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+  }
+
+
+  .sdet-command-bar {
+    padding:
+      8px 10px;
+  }
+
+
+  .sdet-console-body {
+    padding:
+      14px 12px;
+  }
+
+
+  .sdet-suite-heading {
+    align-items:
+      flex-start;
+  }
+
+
+  .sdet-execution-summary {
+    gap: 5px;
+  }
+
+
+  .sdet-execution-summary>div {
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+
+    gap: 2px;
+  }
+
+
+  .sdet-quality-gate {
+    align-items:
+      flex-start;
+  }
+}
+
+
+/* ==========================================================================
+   <= 480PX
+   ========================================================================== */
+
+@media (max-width: 480px) {
+
+  .sdet-console-window {
+    border-radius: 15px;
+  }
+
+
+  .sdet-window-header {
+    min-height: 43px;
+  }
+
+
+  .control-dot {
+    width: 7px;
+    height: 7px;
+  }
+
+
+  .sdet-window-title svg {
+    display: none;
+  }
+
+
+  .sdet-window-title {
+    font-size: 0.52rem;
+  }
+
+
+  .sdet-header-status {
+    gap: 4px;
+  }
+
+
+  .sdet-suite-tab {
+    flex-direction:
+      column;
+
+    gap: 3px;
+
+    min-height: 43px;
+
+    font-size: 0.48rem;
+  }
+
+
+  .sdet-suite-tab svg {
+    width: 12px;
+    height: 12px;
+  }
+
+
+  .sdet-execution-state {
+    font-size: 0.43rem;
+  }
+
+
+  .sdet-suite-heading-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+
+  .sdet-result-grid {
+    gap: 6px;
+  }
+
+
+  .sdet-result-card {
+    padding:
+      8px;
+
+    min-height: 60px;
+  }
+
+
+  .sdet-telemetry-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .sdet-telemetry-wide {
+    grid-column:
+      auto;
+  }
+
+
+  .sdet-execution-summary {
+    grid-template-columns:
+      repeat(3,
+        minmax(0, 1fr));
+
+    padding:
+      8px;
+  }
+
+
+  .sdet-assertion-row {
+    grid-template-columns:
+      auto minmax(0, 1fr);
+
+    padding:
+      6px 4px;
+  }
+
+
+  .sdet-assertion-row code {
+    display: none;
+  }
+
+
+  .sdet-quality-gate {
+    flex-direction:
+      column;
+  }
+
+
+  .sdet-run-button {
+    width: 100%;
+
+    min-height: 40px;
+  }
+}
+
+
+/* ==========================================================================
+   <= 390PX
+   ========================================================================== */
+
+@media (max-width: 390px) {
+
+  .sdet-window-header {
+    padding:
+      8px;
+  }
+
+
+  .sdet-header-status {
+    font-size: 0;
+
+    gap: 0;
+  }
+
+
+  .sdet-header-status-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+
+  .sdet-suite-tabs {
+    padding:
+      6px 5px;
+  }
+
+
+  .sdet-suite-tab {
+    min-height: 41px;
+
+    padding:
+      5px 3px;
+  }
+
+
+  .sdet-command-bar {
+    gap: 7px;
+  }
+
+
+  .sdet-command-copy code {
+    font-size: 0.53rem;
+  }
+
+
+  .sdet-console-body {
+    padding:
+      12px 10px;
+  }
+
+
+  .sdet-suite-heading h3 {
+    font-size: 0.9rem;
+  }
+
+
+  .sdet-verified-chip {
+    font-size: 0.42rem;
+  }
+
+
+  .sdet-result-card strong {
+    font-size: 1rem;
+  }
+}
+
+
+/* ==========================================================================
+   <= 340PX
+   ========================================================================== */
+
+@media (max-width: 340px) {
+
+  .sdet-console-window {
+    border-radius: 13px;
+  }
+
+
+  .sdet-window-title {
+    font-size: 0.48rem;
+  }
+
+
+  .sdet-suite-tab {
+    font-size: 0.43rem;
+  }
+
+
+  .sdet-command-copy code {
+    font-size: 0.49rem;
+  }
+
+
+  .sdet-console-body {
+    padding:
+      11px 8px;
+  }
+
+
+  .sdet-suite-heading {
+    gap: 7px;
+  }
+
+
+  .sdet-suite-heading-icon {
+    width: 29px;
+    height: 29px;
+  }
+
+
+  .sdet-verified-chip {
+    padding:
+      4px 5px;
+  }
+
+
+  .sdet-result-grid {
+    gap: 5px;
+  }
+
+
+  .sdet-result-card {
+    padding:
+      7px;
+
+    min-height: 57px;
+  }
+
+
+  .sdet-execution-summary {
+    padding:
+      7px 5px;
+  }
+}
+
+
+/* ==========================================================================
+   LARGE DESKTOP
+   ========================================================================== */
+
+@media (min-width: 1600px) {
+
+  .sdet-console-wrapper {
+    max-width: 780px;
+  }
+
+
+  .sdet-console-body {
+    padding: 21px;
+  }
+}
+
+
+/* ==========================================================================
+   ULTRAWIDE / 2K+
+   ========================================================================== */
+
+@media (min-width: 1920px) {
+
+  .sdet-console-wrapper {
+    max-width: 810px;
+  }
+}
+
+
+/* ==========================================================================
+   TOUCH DEVICES
+   ========================================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .sdet-console-window {
+    transform: none !important;
+
+    animation: none !important;
+
+    backdrop-filter:
+      blur(16px);
+
+    -webkit-backdrop-filter:
+      blur(16px);
+  }
+
+
+  .sdet-suite-tab,
+  .sdet-run-button {
+    min-height: 44px;
+  }
+}
+
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .sdet-console-window {
+    animation:
+      none !important;
+
+    transform:
+      none !important;
+
+    transition:
+      none !important;
+
+    will-change:
+      auto !important;
+  }
+
+
+  .sdet-console-window::after {
+    display: none;
+  }
+
+
+  .sdet-result-grid,
+  .sdet-execution-summary,
+  .sdet-assertions,
+  .sdet-suite-tab,
+  .sdet-run-button {
+    transition:
+      none !important;
+  }
+
+
+  .sdet-assertion-row {
+    opacity: 1 !important;
+
+    transform: none !important;
+
+    animation: none !important;
+  }
+}

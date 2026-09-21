@@ -1,31 +1,51 @@
 {
-  "name": "Shashank Shinde | QA Engineer & Test Automation",
+  "id": "/",
+  "name": "Shashank Shinde — Software Test Engineer & QA Automation",
   "short_name": "Shashank QA",
-  "description": "Portfolio of Shashank Shinde — QA Engineer & Test Automation Specialist.",
+  "description": "Professional portfolio of Shashank Shinde, Software Test Engineer and QA Automation specialist experienced in Selenium, Playwright, API testing, mobile testing, Appium, Postman, REST Assured, and Apache JMeter.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#0B0E12",
+  "display_override": [
+    "standalone",
+    "minimal-ui",
+    "browser"
+  ],
+  "background_color": "#05080a",
   "theme_color": "#05080a",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "orientation": "any",
+  "categories": [
+    "business",
+    "productivity",
+    "developer"
+  ],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/favicon-16x16.png",
       "sizes": "16x16",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/favicon-32x32.png",
       "sizes": "32x32",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/apple-touch-icon.png",
       "sizes": "180x180",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/favicon.svg",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ]
 }

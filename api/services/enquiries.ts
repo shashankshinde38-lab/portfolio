@@ -37,19 +37,30 @@ export async function insertEnquiry(input: {
   message: string;
   reason?: string;
 }) {
+  const safeMobile =
+    input.mobile && /^[0-9]{10}$/.test(input.mobile) ? input.mobile : null;
+  const safeName = input.name.slice(0, 120).trim();
+  const safeEmail = input.email.slice(0, 160).trim();
+  const safeMessage = input.message.slice(0, 1000).trim();
+  const safeReason = (input.reason || "").slice(0, 120).trim() || null;
+
   const { data, error } = await getSupabaseAdmin()
     .from(TABLE)
     .insert({
-      name: input.name,
-      email: input.email,
-      mobile: input.mobile || null,
-      message: input.message,
-      reason: input.reason || null,
+      name: safeName,
+      email: safeEmail,
+      mobile: safeMobile,
+      message: safeMessage,
+      reason: safeReason,
       status: "new",
     })
     .select("id")
     .single();
-  if (error) throw error;
+
+  if (error) {
+    console.error("[enquiries] insertEnquiry failed:", error);
+    throw error;
+  }
   return { id: String(data.id) };
 }
 

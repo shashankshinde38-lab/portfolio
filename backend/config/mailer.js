@@ -127,19 +127,40 @@ Stored in the secure Supabase enquiries inbox
     `.trim(),
     html: `
 <!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="x-apple-disable-message-reformatting">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="x-apple-disable-message-reformatting"
+  >
+
   <meta
     name="format-detection"
     content="telephone=no,address=no,email=no,date=no,url=no"
   >
-  <meta name="color-scheme" content="light">
-  <meta name="supported-color-schemes" content="light">
 
-  <title>New Portfolio Enquiry</title>
+  <meta
+    name="color-scheme"
+    content="light"
+  >
+
+  <meta
+    name="supported-color-schemes"
+    content="light"
+  >
+
+  <title>
+    New Portfolio Enquiry
+  </title>
 
   <style>
     html,
@@ -147,43 +168,62 @@ Stored in the secure Supabase enquiries inbox
       width: 100% !important;
       margin: 0 !important;
       padding: 0 !important;
-      background-color: #edf2f7;
+      background-color: #e9eef5 !important;
     }
 
     table,
     td {
       border-collapse: collapse !important;
+
       mso-table-lspace: 0pt !important;
       mso-table-rspace: 0pt !important;
+    }
+
+    img {
+      display: block;
+      border: 0;
+      outline: none;
+      text-decoration: none;
     }
 
     a {
       text-decoration: none;
     }
 
+    p {
+      margin: 0;
+    }
+
     @media only screen and (max-width: 640px) {
       .outer-pad {
-        padding: 14px 8px !important;
+        padding: 12px 7px !important;
       }
 
       .email-card {
-        border-radius: 14px !important;
+        border-radius: 16px !important;
       }
 
       .header-pad {
-        padding: 25px 21px 27px !important;
+        padding: 24px 19px 27px !important;
       }
 
-      .body-pad,
+      .body-pad {
+        padding: 24px 18px 28px !important;
+      }
+
       .footer-pad {
-        padding-left: 20px !important;
-        padding-right: 20px !important;
+        padding: 20px 18px !important;
       }
 
       .hero-title {
         font-size: 27px !important;
-        line-height: 34px !important;
-        letter-spacing: -0.5px !important;
+        line-height: 33px !important;
+        letter-spacing: -0.6px !important;
+      }
+
+      .hero-description {
+        font-size: 13px !important;
+        line-height: 21px !important;
       }
 
       .desktop-only {
@@ -195,7 +235,33 @@ Stored in the secure Supabase enquiries inbox
         width: 100% !important;
       }
 
-      .identity-copy {
+      .mobile-left {
+        text-align: left !important;
+      }
+
+      .brand-copy {
+        padding-left: 10px !important;
+      }
+
+      .status-cell {
+        display: block !important;
+        width: 100% !important;
+        border-right: 0 !important;
+      }
+
+      .status-cell + .status-cell {
+        border-top:
+          1px solid #253950 !important;
+      }
+
+      .profile-avatar-cell {
+        display: block !important;
+        width: 100% !important;
+      }
+
+      .profile-copy-cell {
+        display: block !important;
+        width: 100% !important;
         padding: 14px 0 0 !important;
       }
 
@@ -206,11 +272,22 @@ Stored in the secure Supabase enquiries inbox
       }
 
       .detail-label {
-        padding: 0 0 3px !important;
+        padding: 0 0 4px !important;
       }
 
       .detail-value {
         padding: 0 0 16px !important;
+      }
+
+      .metric-cell {
+        display: block !important;
+        width: 100% !important;
+        border-right: 0 !important;
+      }
+
+      .metric-cell + .metric-cell {
+        border-top:
+          1px solid #e5ebf2 !important;
       }
 
       .action-cell {
@@ -221,24 +298,27 @@ Stored in the secure Supabase enquiries inbox
 
       .action-link {
         display: block !important;
-        box-sizing: border-box !important;
         width: 100% !important;
+        box-sizing: border-box !important;
         text-align: center !important;
       }
 
-      .status-cell {
+      .footer-col {
         display: block !important;
         width: 100% !important;
-        border-right: 0 !important;
-      }
-
-      .status-cell + .status-cell {
-        border-top: 1px solid #263a54 !important;
+        text-align: left !important;
       }
 
       .footer-meta {
-        padding-top: 8px !important;
-        text-align: left !important;
+        padding-top: 10px !important;
+      }
+
+      .response-box {
+        padding: 14px !important;
+      }
+
+      .message-card-pad {
+        padding: 18px 16px !important;
       }
     }
   </style>
@@ -247,7 +327,9 @@ Stored in the secure Supabase enquiries inbox
   <noscript>
     <xml>
       <o:OfficeDocumentSettings>
-        <o:PixelsPerInch>96</o:PixelsPerInch>
+        <o:PixelsPerInch>
+          96
+        </o:PixelsPerInch>
       </o:OfficeDocumentSettings>
     </xml>
   </noscript>
@@ -259,7 +341,7 @@ Stored in the secure Supabase enquiries inbox
     width:100%;
     margin:0;
     padding:0;
-    background-color:#edf2f7;
+    background-color:#e9eef5;
     color:#101828;
     -webkit-font-smoothing:antialiased;
     -webkit-text-size-adjust:100%;
@@ -267,7 +349,10 @@ Stored in the secure Supabase enquiries inbox
   "
 >
 
-  <!-- PREVIEW TEXT -->
+  <!-- =========================================================
+       PREHEADER
+       ========================================================= -->
+
   <div
     style="
       display:none;
@@ -282,61 +367,91 @@ Stored in the secure Supabase enquiries inbox
       mso-hide:all;
     "
   >
-    New ${safeReason} enquiry from ${safeName}. Review the message and respond directly.
+    New ${safeReason} enquiry from ${safeName}. Review the
+    lead details and respond directly.
     &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
   </div>
 
-  <!-- PAGE BACKGROUND -->
+
+  <!-- =========================================================
+       EMAIL BACKGROUND
+       ========================================================= -->
+
   <table
     role="presentation"
     width="100%"
-    border="0"
     cellspacing="0"
     cellpadding="0"
+    border="0"
     style="
       width:100%;
-      background-color:#edf2f7;
+      background-color:#e9eef5;
     "
   >
     <tr>
       <td
         class="outer-pad"
         align="center"
-        style="padding:38px 16px;"
+        style="
+          padding:42px 16px;
+        "
       >
 
         <!--[if mso]>
-        <table role="presentation" width="640" border="0" cellspacing="0" cellpadding="0">
+        <table
+          role="presentation"
+          width="660"
+          cellspacing="0"
+          cellpadding="0"
+          border="0"
+        >
           <tr>
             <td>
         <![endif]-->
 
-        <!-- MAIN EMAIL -->
+
+        <!-- =====================================================
+             MASTER CARD
+             ===================================================== -->
+
         <table
           class="email-card"
           role="presentation"
           width="100%"
-          border="0"
           cellspacing="0"
           cellpadding="0"
+          border="0"
           style="
             width:100%;
-            max-width:640px;
-            overflow:hidden;
+            max-width:660px;
             background-color:#ffffff;
-            border:1px solid #dce4ee;
-            border-radius:18px;
-            box-shadow:0 18px 45px rgba(16,24,40,0.09);
+            border:1px solid #d7e0eb;
+            border-radius:21px;
+            overflow:hidden;
+            box-shadow:
+              0 22px 55px rgba(15,23,42,0.10);
           "
         >
 
-          <!-- GREEN TOP RAIL -->
+          <!-- ===================================================
+               PREMIUM ACCENT RAIL
+               =================================================== -->
+
           <tr>
             <td
               height="5"
               style="
                 height:5px;
-                background-color:#22c55e;
+                padding:0;
+                background-color:#0ea5e9;
+                background-image:
+                  linear-gradient(
+                    90deg,
+                    #2563eb 0%,
+                    #0ea5e9 35%,
+                    #22d3ee 68%,
+                    #4ade80 100%
+                  );
                 font-size:0;
                 line-height:0;
               "
@@ -345,79 +460,104 @@ Stored in the secure Supabase enquiries inbox
             </td>
           </tr>
 
-          <!-- ================================================= -->
-          <!-- HEADER -->
-          <!-- ================================================= -->
+
+          <!-- ===================================================
+               HEADER
+               =================================================== -->
 
           <tr>
             <td
               class="header-pad"
               style="
-                padding:29px 35px 31px;
-                background-color:#07111f;
-                background-image:linear-gradient(
-                  135deg,
-                  #07111f 0%,
-                  #0d2038 100%
-                );
+                padding:31px 38px 33px;
+                background-color:#06101d;
+                background-image:
+                  linear-gradient(
+                    145deg,
+                    #06101d 0%,
+                    #0a1a2d 55%,
+                    #0d2741 100%
+                  );
               "
             >
 
-              <!-- BRAND ROW -->
+              <!-- ===============================================
+                   BRAND / EVENT STATUS
+                   =============================================== -->
+
               <table
                 role="presentation"
                 width="100%"
-                border="0"
                 cellspacing="0"
                 cellpadding="0"
+                border="0"
               >
                 <tr>
 
-                  <td valign="middle">
-
+                  <td
+                    valign="middle"
+                  >
                     <table
                       role="presentation"
-                      border="0"
                       cellspacing="0"
                       cellpadding="0"
+                      border="0"
                     >
                       <tr>
 
-                        <!-- LOGO -->
+                        <!-- BRAND MARK -->
+
                         <td
-                          width="42"
-                          height="42"
+                          width="46"
+                          height="46"
                           align="center"
                           valign="middle"
                           style="
-                            width:42px;
-                            height:42px;
-                            background-color:#22c55e;
-                            border-radius:12px;
-                            color:#052e16;
-                            font-family:Arial,Helvetica,sans-serif;
-                            font-size:15px;
-                            line-height:42px;
+                            width:46px;
+                            height:46px;
+                            background-color:#0ea5e9;
+                            background-image:
+                              linear-gradient(
+                                145deg,
+                                #2563eb,
+                                #06b6d4
+                              );
+                            border-radius:13px;
+                            color:#ffffff;
+                            font-family:
+                              Arial,
+                              Helvetica,
+                              sans-serif;
+                            font-size:14px;
+                            line-height:46px;
                             font-weight:800;
-                            letter-spacing:-0.3px;
+                            letter-spacing:-0.2px;
+                            box-shadow:
+                              0 7px 20px rgba(14,165,233,0.22);
                           "
                         >
                           SS
                         </td>
 
+                        <!-- BRAND COPY -->
+
                         <td
+                          class="brand-copy"
                           style="
-                            padding-left:12px;
-                            font-family:Arial,Helvetica,sans-serif;
+                            padding-left:13px;
+                            font-family:
+                              Arial,
+                              Helvetica,
+                              sans-serif;
                           "
                         >
-
                           <div
                             style="
                               color:#f8fafc;
-                              font-size:14px;
-                              line-height:19px;
+                              font-size:15px;
+                              line-height:20px;
                               font-weight:700;
+                              letter-spacing:-0.2px;
                             "
                           >
                             Shashank Shinde
@@ -425,143 +565,203 @@ Stored in the secure Supabase enquiries inbox
 
                           <div
                             style="
-                              color:#8fa1b9;
-                              font-family:'Courier New',Courier,monospace;
-                              font-size:10px;
-                              line-height:17px;
+                              padding-top:1px;
+                              color:#7390ad;
+                              font-family:
+                                'Courier New',
+                                Courier,
+                                monospace;
+                              font-size:9px;
+                              line-height:15px;
                               font-weight:700;
-                              letter-spacing:1px;
+                              letter-spacing:1.15px;
                               text-transform:uppercase;
                             "
                           >
-                            QA Command Center
+                            SDET · QA Command Center
                           </div>
-
                         </td>
 
                       </tr>
                     </table>
-
                   </td>
 
-                  <!-- STATUS -->
+
+                  <!-- LIVE EVENT -->
+
                   <td
                     class="desktop-only"
                     align="right"
                     valign="middle"
                   >
-
                     <table
                       role="presentation"
-                      border="0"
                       cellspacing="0"
                       cellpadding="0"
+                      border="0"
+                      style="
+                        background-color:#0a1a2b;
+                        border:1px solid #1d3b56;
+                        border-radius:999px;
+                      "
                     >
                       <tr>
 
                         <td
-                          width="8"
-                          height="8"
+                          width="27"
+                          align="right"
+                          valign="middle"
                           style="
-                            width:8px;
-                            height:8px;
-                            border-radius:50%;
-                            background-color:#3ce982;
-                            font-size:0;
-                            line-height:0;
+                            padding-left:10px;
                           "
                         >
-                          &nbsp;
+                          <div
+                            style="
+                              width:7px;
+                              height:7px;
+                              background-color:#4ade80;
+                              border-radius:50%;
+                              box-shadow:
+                                0 0 8px rgba(74,222,128,0.6);
+                              font-size:0;
+                              line-height:0;
+                            "
+                          >
+                            &nbsp;
+                          </div>
                         </td>
 
                         <td
                           style="
-                            padding-left:8px;
-                            color:#a6b6ca;
-                            font-family:'Courier New',Courier,monospace;
-                            font-size:10px;
-                            line-height:15px;
+                            padding:
+                              7px
+                              11px
+                              7px
+                              7px;
+                            color:#a9bdd0;
+                            font-family:
+                              'Courier New',
+                              Courier,
+                              monospace;
+                            font-size:9px;
+                            line-height:13px;
                             font-weight:700;
                             letter-spacing:0.7px;
                             text-transform:uppercase;
                           "
                         >
-                          New lead detected
+                          New enquiry
                         </td>
 
                       </tr>
                     </table>
-
                   </td>
 
                 </tr>
               </table>
 
-              <div style="height:28px;line-height:28px;">
+
+              <div
+                style="
+                  height:31px;
+                  line-height:31px;
+                  font-size:0;
+                "
+              >
                 &nbsp;
               </div>
 
-              <!-- EYEBROW -->
+
+              <!-- ===============================================
+                   HERO COPY
+                   =============================================== -->
+
               <div
                 style="
-                  color:#3ce982;
-                  font-family:'Courier New',Courier,monospace;
-                  font-size:10px;
-                  line-height:16px;
+                  color:#38bdf8;
+                  font-family:
+                    'Courier New',
+                    Courier,
+                    monospace;
+                  font-size:9px;
+                  line-height:15px;
                   font-weight:700;
-                  letter-spacing:1.4px;
+                  letter-spacing:1.5px;
                   text-transform:uppercase;
                 "
               >
-                Portfolio / Contact enquiry
+                Portfolio Intelligence / Lead Alert
               </div>
 
-              <!-- TITLE -->
+
               <h1
                 class="hero-title"
                 style="
-                  margin:7px 0 9px;
+                  margin:8px 0 10px;
                   color:#ffffff;
-                  font-family:Arial,Helvetica,sans-serif;
-                  font-size:31px;
-                  line-height:39px;
+                  font-family:
+                    Arial,
+                    Helvetica,
+                    sans-serif;
+                  font-size:33px;
+                  line-height:40px;
                   font-weight:700;
-                  letter-spacing:-0.8px;
+                  letter-spacing:-1px;
                 "
               >
-                New enquiry received.
+                A new conversation
+                <br>
+                just entered your pipeline.
               </h1>
 
+
               <p
+                class="hero-description"
                 style="
-                  max-width:500px;
+                  max-width:520px;
                   margin:0;
-                  color:#a8b7ca;
-                  font-family:Arial,Helvetica,sans-serif;
+                  color:#9fb1c5;
+                  font-family:
+                    Arial,
+                    Helvetica,
+                    sans-serif;
                   font-size:14px;
                   line-height:22px;
                 "
               >
-                Someone viewed your work and started a conversation.
-                The complete enquiry is ready for your review.
+                Your portfolio generated a new enquiry.
+                Review the lead context, message and contact
+                information below before responding.
               </p>
 
-              <div style="height:25px;line-height:25px;">
+
+              <div
+                style="
+                  height:27px;
+                  line-height:27px;
+                  font-size:0;
+                "
+              >
                 &nbsp;
               </div>
 
-              <!-- STATUS PANEL -->
+
+              <!-- ===============================================
+                   COMMAND STATUS PANEL
+                   =============================================== -->
+
               <table
                 role="presentation"
                 width="100%"
-                border="0"
                 cellspacing="0"
                 cellpadding="0"
+                border="0"
                 style="
                   width:100%;
-                  border:1px solid #263a54;
-                  border-radius:11px;
-                  background-color:#0b192b;
+                  overflow:hidden;
+                  background-color:#081828;
+                  border:1px solid #203a52;
+                  border-radius:13px;
                 "
               >
                 <tr>
@@ -572,39 +772,44 @@ Stored in the secure Supabase enquiries inbox
                     valign="top"
                     style="
                       width:50%;
-                      padding:13px 15px;
-                      border-right:1px solid #263a54;
+                      padding:14px 16px;
+                      border-right:1px solid #203a52;
                     "
                   >
-
                     <div
                       style="
-                        color:#8091a8;
-                        font-family:'Courier New',Courier,monospace;
-                        font-size:9px;
-                        line-height:14px;
+                        color:#688099;
+                        font-family:
+                          'Courier New',
+                          Courier,
+                          monospace;
+                        font-size:8px;
+                        line-height:13px;
                         font-weight:700;
                         letter-spacing:1.1px;
                         text-transform:uppercase;
                       "
                     >
-                      Status
+                      Workflow status
                     </div>
 
                     <div
                       style="
-                        padding-top:2px;
-                        color:#dcfce7;
-                        font-family:Arial,Helvetica,sans-serif;
+                        padding-top:4px;
+                        color:#bbf7d0;
+                        font-family:
+                          Arial,
+                          Helvetica,
+                          sans-serif;
                         font-size:12px;
                         line-height:18px;
                         font-weight:700;
                       "
                     >
-                      Awaiting your reply
+                      ● Awaiting your reply
                     </div>
-
                   </td>
+
 
                   <td
                     class="status-cell"
@@ -612,16 +817,18 @@ Stored in the secure Supabase enquiries inbox
                     valign="top"
                     style="
                       width:50%;
-                      padding:13px 15px;
+                      padding:14px 16px;
                     "
                   >
-
                     <div
                       style="
-                        color:#8091a8;
-                        font-family:'Courier New',Courier,monospace;
-                        font-size:9px;
-                        line-height:14px;
+                        color:#688099;
+                        font-family:
+                          'Courier New',
+                          Courier,
+                          monospace;
+                        font-size:8px;
+                        line-height:13px;
                         font-weight:700;
                         letter-spacing:1.1px;
                         text-transform:uppercase;
@@ -632,9 +839,12 @@ Stored in the secure Supabase enquiries inbox
 
                     <div
                       style="
-                        padding-top:2px;
-                        color:#f1f5f9;
-                        font-family:Arial,Helvetica,sans-serif;
+                        padding-top:4px;
+                        color:#e2e8f0;
+                        font-family:
+                          Arial,
+                          Helvetica,
+                          sans-serif;
                         font-size:12px;
                         line-height:18px;
                         font-weight:700;
@@ -642,7 +852,6 @@ Stored in the secure Supabase enquiries inbox
                     >
                       ${now} IST
                     </div>
-
                   </td>
 
                 </tr>
@@ -651,38 +860,45 @@ Stored in the secure Supabase enquiries inbox
             </td>
           </tr>
 
-          <!-- ================================================= -->
-          <!-- BODY -->
-          <!-- ================================================= -->
+
+          <!-- ===================================================
+               BODY
+               =================================================== -->
 
           <tr>
             <td
               class="body-pad"
               style="
-                padding:29px 35px 34px;
+                padding:31px 38px 36px;
                 background-color:#ffffff;
               "
             >
 
-              <!-- SECTION 01 -->
+              <!-- =================================================
+                   SECTION HEADING 01
+                   ================================================= -->
+
               <table
                 role="presentation"
                 width="100%"
-                border="0"
                 cellspacing="0"
                 cellpadding="0"
+                border="0"
               >
                 <tr>
 
                   <td
-                    width="30"
+                    width="34"
                     valign="middle"
                     style="
-                      width:30px;
-                      color:#16a34a;
-                      font-family:'Courier New',Courier,monospace;
-                      font-size:11px;
-                      line-height:16px;
+                      width:34px;
+                      color:#0284c7;
+                      font-family:
+                        'Courier New',
+                        Courier,
+                        monospace;
+                      font-size:10px;
+                      line-height:15px;
                       font-weight:700;
                     "
                   >
@@ -692,26 +908,31 @@ Stored in the secure Supabase enquiries inbox
                   <td
                     valign="middle"
                     style="
-                      color:#475467;
-                      font-family:Arial,Helvetica,sans-serif;
-                      font-size:11px;
-                      line-height:16px;
+                      color:#344054;
+                      font-family:
+                        Arial,
+                        Helvetica,
+                        sans-serif;
+                      font-size:10px;
+                      line-height:15px;
                       font-weight:700;
-                      letter-spacing:1.1px;
+                      letter-spacing:1.2px;
                       text-transform:uppercase;
                     "
                   >
-                    Lead details
+                    Lead intelligence
                   </td>
 
                   <td
                     valign="middle"
-                    style="padding-left:14px;"
+                    style="
+                      padding-left:14px;
+                    "
                   >
                     <div
                       style="
                         height:1px;
-                        background-color:#e4eaf1;
+                        background-color:#e3eaf2;
                         font-size:0;
                         line-height:0;
                       "
@@ -723,95 +944,115 @@ Stored in the secure Supabase enquiries inbox
                 </tr>
               </table>
 
-              <div style="height:13px;line-height:13px;">
+
+              <div
+                style="
+                  height:13px;
+                  line-height:13px;
+                  font-size:0;
+                "
+              >
                 &nbsp;
               </div>
 
-              <!-- LEAD CARD -->
+
+              <!-- =================================================
+                   PREMIUM LEAD CARD
+                   ================================================= -->
+
               <table
                 role="presentation"
                 width="100%"
-                border="0"
                 cellspacing="0"
                 cellpadding="0"
+                border="0"
                 style="
                   width:100%;
                   background-color:#f8fafc;
-                  border:1px solid #e1e8f0;
-                  border-radius:13px;
+                  border:1px solid #dce5ef;
+                  border-radius:15px;
                 "
               >
                 <tr>
-                  <td style="padding:20px;">
+                  <td
+                    style="
+                      padding:21px;
+                    "
+                  >
 
-                    <!-- IDENTITY -->
+                    <!-- PROFILE -->
+
                     <table
                       role="presentation"
                       width="100%"
-                      border="0"
                       cellspacing="0"
                       cellpadding="0"
+                      border="0"
                     >
                       <tr>
 
                         <td
-                          class="mobile-block"
-                          width="62"
+                          class="profile-avatar-cell"
+                          width="66"
                           valign="top"
-                          style="width:62px;"
+                          style="
+                            width:66px;
+                          "
                         >
-
                           <table
                             role="presentation"
-                            border="0"
                             cellspacing="0"
                             cellpadding="0"
+                            border="0"
                           >
                             <tr>
-
                               <td
-                                width="50"
-                                height="50"
+                                width="52"
+                                height="52"
                                 align="center"
                                 valign="middle"
                                 style="
-                                  width:50px;
-                                  height:50px;
-                                  background-color:#dcfce7;
-                                  border:1px solid #b7efc5;
+                                  width:52px;
+                                  height:52px;
+                                  border:1px solid #bae6fd;
                                   border-radius:50%;
-                                  color:#15803d;
-                                  font-family:Arial,Helvetica,sans-serif;
+                                  background-color:#e0f2fe;
+                                  color:#0369a1;
+                                  font-family:
+                                    Arial,
+                                    Helvetica,
+                                    sans-serif;
                                   font-size:20px;
-                                  line-height:50px;
+                                  line-height:52px;
                                   font-weight:800;
                                   text-transform:uppercase;
                                 "
                               >
                                 ${safeName.charAt(0).toUpperCase()}
                               </td>
-
                             </tr>
                           </table>
-
                         </td>
 
+
                         <td
-                          class="mobile-block identity-copy"
+                          class="profile-copy-cell"
                           valign="top"
                           style="
-                            padding-left:5px;
-                            font-family:Arial,Helvetica,sans-serif;
+                            padding-left:4px;
+                            font-family:
+                              Arial,
+                              Helvetica,
+                              sans-serif;
                           "
                         >
-
                           <div
                             style="
                               color:#667085;
-                              font-size:10px;
-                              line-height:15px;
+                              font-size:9px;
+                              line-height:14px;
                               font-weight:700;
-                              letter-spacing:0.9px;
+                              letter-spacing:1px;
                               text-transform:uppercase;
                             "
                           >
@@ -822,32 +1063,39 @@ Stored in the secure Supabase enquiries inbox
                             style="
                               padding-top:2px;
                               color:#101828;
-                              font-size:20px;
-                              line-height:27px;
+                              font-size:21px;
+                              line-height:28px;
                               font-weight:700;
+                              letter-spacing:-0.4px;
                             "
                           >
                             ${safeName}
                           </div>
 
-                          <div style="padding-top:8px;">
-
+                          <div
+                            style="
+                              padding-top:8px;
+                            "
+                          >
                             <span
                               style="
                                 display:inline-block;
                                 padding:5px 10px;
-                                background-color:${badgeBg};
                                 border:1px solid ${badgeBorder};
                                 border-radius:999px;
+                                background-color:${badgeBg};
                                 color:${badgeColor};
-                                font-size:11px;
+                                font-family:
+                                  Arial,
+                                  Helvetica,
+                                  sans-serif;
+                                font-size:10px;
                                 line-height:15px;
                                 font-weight:700;
                               "
                             >
                               ${safeReason}
                             </span>
-
                           </div>
 
                         </td>
@@ -855,32 +1103,48 @@ Stored in the secure Supabase enquiries inbox
                       </tr>
                     </table>
 
-                    <div style="height:19px;line-height:19px;">
+
+                    <div
+                      style="
+                        height:19px;
+                        line-height:19px;
+                        font-size:0;
+                      "
+                    >
                       &nbsp;
                     </div>
 
-                    <!-- CONTACT DATA -->
+
+                    <!-- =========================================
+                         CONTACT DETAILS
+                         ========================================= -->
+
                     <table
                       role="presentation"
                       width="100%"
-                      border="0"
                       cellspacing="0"
                       cellpadding="0"
-                      style="border-top:1px solid #e1e8f0;"
+                      border="0"
+                      style="
+                        border-top:1px solid #e0e7ef;
+                      "
                     >
 
                       <tr>
 
                         <td
                           class="detail-label"
-                          width="125"
+                          width="135"
                           valign="top"
                           style="
-                            width:125px;
-                            padding:17px 12px 8px 0;
+                            width:135px;
+                            padding:17px 14px 8px 0;
                             color:#667085;
-                            font-family:Arial,Helvetica,sans-serif;
-                            font-size:12px;
+                            font-family:
+                              Arial,
+                              Helvetica,
+                              sans-serif;
+                            font-size:11px;
                             line-height:18px;
                             font-weight:600;
                           "
@@ -893,7 +1157,10 @@ Stored in the secure Supabase enquiries inbox
                           valign="top"
                           style="
                             padding:17px 0 8px;
-                            font-family:Arial,Helvetica,sans-serif;
+                            font-family:
+                              Arial,
+                              Helvetica,
+                              sans-serif;
                             font-size:13px;
                             line-height:18px;
                             font-weight:700;
@@ -903,7 +1170,7 @@ Stored in the secure Supabase enquiries inbox
                           <a
                             href="mailto:${safeEmail}"
                             style="
-                              color:#175cd3;
+                              color:#0369a1;
                               text-decoration:none;
                             "
                           >
@@ -913,18 +1180,22 @@ Stored in the secure Supabase enquiries inbox
 
                       </tr>
 
+
                       <tr>
 
                         <td
                           class="detail-label"
-                          width="125"
+                          width="135"
                           valign="top"
                           style="
-                            width:125px;
-                            padding:8px 12px 0 0;
+                            width:135px;
+                            padding:8px 14px 0 0;
                             color:#667085;
-                            font-family:Arial,Helvetica,sans-serif;
-                            font-size:12px;
+                            font-family:
+                              Arial,
+                              Helvetica,
+                              sans-serif;
+                            font-size:11px;
                             line-height:18px;
                             font-weight:600;
                           "
@@ -938,7 +1209,10 @@ Stored in the secure Supabase enquiries inbox
                           style="
                             padding:8px 0 0;
                             color:#101828;
-                            font-family:Arial,Helvetica,sans-serif;
+                            font-family:
+                              Arial,
+                              Helvetica,
+                              sans-serif;
                             font-size:13px;
                             line-height:18px;
                             font-weight:700;
@@ -947,27 +1221,27 @@ Stored in the secure Supabase enquiries inbox
                         >
                           ${safeMobile
         ? `
-                                <a
-                                  href="tel:${safeMobile.replace(/[^\d+]/g, "")}"
-                                  style="
-                                    color:#101828;
-                                    text-decoration:none;
-                                  "
-                                >
-                                  ${safeMobile}
-                                </a>
-                              `
+                              <a
+                                href="tel:${safeMobile.replace(/[^\d+]/g, "")}"
+                                style="
+                                  color:#101828;
+                                  text-decoration:none;
+                                "
+                              >
+                                ${safeMobile}
+                              </a>
+                            `
         : `
-                                <span
-                                  style="
-                                    color:#98a2b3;
-                                    font-weight:500;
-                                    font-style:italic;
-                                  "
-                                >
-                                  Not provided
-                                </span>
-                              `
+                              <span
+                                style="
+                                  color:#98a2b3;
+                                  font-weight:500;
+                                  font-style:italic;
+                                "
+                              >
+                                Not provided
+                              </span>
+                            `
       }
                         </td>
 
@@ -979,29 +1253,212 @@ Stored in the secure Supabase enquiries inbox
                 </tr>
               </table>
 
-              <div style="height:26px;line-height:26px;">
+
+              <div
+                style="
+                  height:17px;
+                  line-height:17px;
+                  font-size:0;
+                "
+              >
                 &nbsp;
               </div>
 
-              <!-- SECTION 02 -->
+
+              <!-- =================================================
+                   SNAPSHOT / METRICS
+                   ================================================= -->
+
               <table
                 role="presentation"
                 width="100%"
-                border="0"
                 cellspacing="0"
                 cellpadding="0"
+                border="0"
+                style="
+                  width:100%;
+                  overflow:hidden;
+                  background-color:#ffffff;
+                  border:1px solid #e1e8f0;
+                  border-radius:12px;
+                "
               >
                 <tr>
 
                   <td
-                    width="30"
+                    class="metric-cell"
+                    width="33.33%"
+                    valign="top"
+                    style="
+                      width:33.33%;
+                      padding:13px 14px;
+                      border-right:1px solid #e5ebf2;
+                    "
+                  >
+                    <div
+                      style="
+                        color:#98a2b3;
+                        font-family:
+                          'Courier New',
+                          Courier,
+                          monospace;
+                        font-size:8px;
+                        line-height:13px;
+                        font-weight:700;
+                        letter-spacing:0.9px;
+                        text-transform:uppercase;
+                      "
+                    >
+                      Lead source
+                    </div>
+
+                    <div
+                      style="
+                        padding-top:3px;
+                        color:#344054;
+                        font-family:
+                          Arial,
+                          Helvetica,
+                          sans-serif;
+                        font-size:11px;
+                        line-height:17px;
+                        font-weight:700;
+                      "
+                    >
+                      Portfolio
+                    </div>
+                  </td>
+
+
+                  <td
+                    class="metric-cell"
+                    width="33.33%"
+                    valign="top"
+                    style="
+                      width:33.33%;
+                      padding:13px 14px;
+                      border-right:1px solid #e5ebf2;
+                    "
+                  >
+                    <div
+                      style="
+                        color:#98a2b3;
+                        font-family:
+                          'Courier New',
+                          Courier,
+                          monospace;
+                        font-size:8px;
+                        line-height:13px;
+                        font-weight:700;
+                        letter-spacing:0.9px;
+                        text-transform:uppercase;
+                      "
+                    >
+                      Category
+                    </div>
+
+                    <div
+                      style="
+                        padding-top:3px;
+                        color:#344054;
+                        font-family:
+                          Arial,
+                          Helvetica,
+                          sans-serif;
+                        font-size:11px;
+                        line-height:17px;
+                        font-weight:700;
+                        word-break:break-word;
+                      "
+                    >
+                      ${safeReason}
+                    </div>
+                  </td>
+
+
+                  <td
+                    class="metric-cell"
+                    width="33.33%"
+                    valign="top"
+                    style="
+                      width:33.33%;
+                      padding:13px 14px;
+                    "
+                  >
+                    <div
+                      style="
+                        color:#98a2b3;
+                        font-family:
+                          'Courier New',
+                          Courier,
+                          monospace;
+                        font-size:8px;
+                        line-height:13px;
+                        font-weight:700;
+                        letter-spacing:0.9px;
+                        text-transform:uppercase;
+                      "
+                    >
+                      Next action
+                    </div>
+
+                    <div
+                      style="
+                        padding-top:3px;
+                        color:#15803d;
+                        font-family:
+                          Arial,
+                          Helvetica,
+                          sans-serif;
+                        font-size:11px;
+                        line-height:17px;
+                        font-weight:700;
+                      "
+                    >
+                      Review &amp; reply
+                    </div>
+                  </td>
+
+                </tr>
+              </table>
+
+
+              <div
+                style="
+                  height:29px;
+                  line-height:29px;
+                  font-size:0;
+                "
+              >
+                &nbsp;
+              </div>
+
+
+              <!-- =================================================
+                   SECTION 02
+                   ================================================= -->
+
+              <table
+                role="presentation"
+                width="100%"
+                cellspacing="0"
+                cellpadding="0"
+                border="0"
+              >
+                <tr>
+
+                  <td
+                    width="34"
                     valign="middle"
                     style="
-                      width:30px;
-                      color:#16a34a;
-                      font-family:'Courier New',Courier,monospace;
-                      font-size:11px;
-                      line-height:16px;
+                      width:34px;
+                      color:#0284c7;
+                      font-family:
+                        'Courier New',
+                        Courier,
+                        monospace;
+                      font-size:10px;
+                      line-height:15px;
                       font-weight:700;
                     "
                   >
@@ -1011,26 +1468,31 @@ Stored in the secure Supabase enquiries inbox
                   <td
                     valign="middle"
                     style="
-                      color:#475467;
-                      font-family:Arial,Helvetica,sans-serif;
-                      font-size:11px;
-                      line-height:16px;
+                      color:#344054;
+                      font-family:
+                        Arial,
+                        Helvetica,
+                        sans-serif;
+                      font-size:10px;
+                      line-height:15px;
                       font-weight:700;
-                      letter-spacing:1.1px;
+                      letter-spacing:1.2px;
                       text-transform:uppercase;
                     "
                   >
-                    Message
+                    Enquiry message
                   </td>
 
                   <td
                     valign="middle"
-                    style="padding-left:14px;"
+                    style="
+                      padding-left:14px;
+                    "
                   >
                     <div
                       style="
                         height:1px;
-                        background-color:#e4eaf1;
+                        background-color:#e3eaf2;
                         font-size:0;
                         line-height:0;
                       "
@@ -1042,22 +1504,33 @@ Stored in the secure Supabase enquiries inbox
                 </tr>
               </table>
 
-              <div style="height:13px;line-height:13px;">
+
+              <div
+                style="
+                  height:13px;
+                  line-height:13px;
+                  font-size:0;
+                "
+              >
                 &nbsp;
               </div>
 
-              <!-- MESSAGE CARD -->
+
+              <!-- =================================================
+                   PREMIUM MESSAGE CARD
+                   ================================================= -->
+
               <table
                 role="presentation"
                 width="100%"
-                border="0"
                 cellspacing="0"
                 cellpadding="0"
+                border="0"
                 style="
                   width:100%;
-                  background-color:#ffffff;
-                  border:1px solid #dce4ee;
-                  border-radius:13px;
+                  background-color:#f9fbfd;
+                  border:1px solid #dce5ef;
+                  border-radius:15px;
                 "
               >
                 <tr>
@@ -1066,8 +1539,14 @@ Stored in the secure Supabase enquiries inbox
                     width="5"
                     style="
                       width:5px;
-                      background-color:#22c55e;
-                      border-radius:13px 0 0 13px;
+                      background-color:#0ea5e9;
+                      background-image:
+                        linear-gradient(
+                          180deg,
+                          #0ea5e9,
+                          #22d3ee
+                        );
+                      border-radius:15px 0 0 15px;
                       font-size:0;
                       line-height:0;
                     "
@@ -1075,15 +1554,24 @@ Stored in the secure Supabase enquiries inbox
                     &nbsp;
                   </td>
 
-                  <td style="padding:19px 20px;">
+
+                  <td
+                    class="message-card-pad"
+                    style="
+                      padding:21px 22px;
+                    "
+                  >
 
                     <div
                       style="
-                        margin-bottom:10px;
-                        color:#16a34a;
-                        font-family:Georgia,'Times New Roman',serif;
-                        font-size:25px;
-                        line-height:18px;
+                        margin-bottom:8px;
+                        color:#0284c7;
+                        font-family:
+                          Georgia,
+                          'Times New Roman',
+                          serif;
+                        font-size:28px;
+                        line-height:20px;
                         font-weight:700;
                       "
                     >
@@ -1093,13 +1581,36 @@ Stored in the secure Supabase enquiries inbox
                     <div
                       style="
                         color:#27364b;
-                        font-family:Arial,Helvetica,sans-serif;
+                        font-family:
+                          Arial,
+                          Helvetica,
+                          sans-serif;
                         font-size:14px;
-                        line-height:23px;
+                        line-height:24px;
                         word-break:break-word;
                       "
                     >
                       ${safeMessage.replace(/\n/g, "<br>")}
+                    </div>
+
+                    <div
+                      style="
+                        margin-top:16px;
+                        padding-top:13px;
+                        border-top:1px solid #e6ecf2;
+                        color:#98a2b3;
+                        font-family:
+                          'Courier New',
+                          Courier,
+                          monospace;
+                        font-size:8px;
+                        line-height:14px;
+                        font-weight:700;
+                        letter-spacing:0.8px;
+                        text-transform:uppercase;
+                      "
+                    >
+                      Original message · Portfolio contact form
                     </div>
 
                   </td>
@@ -1107,44 +1618,269 @@ Stored in the secure Supabase enquiries inbox
                 </tr>
               </table>
 
-              <div style="height:27px;line-height:27px;">
+
+              <div
+                style="
+                  height:21px;
+                  line-height:21px;
+                  font-size:0;
+                "
+              >
                 &nbsp;
               </div>
 
-              <!-- ACTION BUTTONS -->
+
+              <!-- =================================================
+                   RESPONSE PRIORITY
+                   ================================================= -->
+
               <table
                 role="presentation"
                 width="100%"
-                border="0"
                 cellspacing="0"
                 cellpadding="0"
+                border="0"
+                style="
+                  width:100%;
+                  background-color:#effaf5;
+                  border:1px solid #ccebd9;
+                  border-radius:12px;
+                "
               >
                 <tr>
-
-                  <!-- REPLY -->
                   <td
-                    class="action-cell"
-                    valign="top"
-                    style="padding-right:10px;"
+                    class="response-box"
+                    style="
+                      padding:14px 16px;
+                    "
                   >
 
                     <table
                       role="presentation"
                       width="100%"
-                      border="0"
                       cellspacing="0"
                       cellpadding="0"
+                      border="0"
                     >
                       <tr>
 
                         <td
-                          align="center"
+                          width="30"
+                          valign="top"
                           style="
-                            background-color:#16a34a;
-                            border-radius:9px;
+                            width:30px;
                           "
                         >
+                          <table
+                            role="presentation"
+                            cellspacing="0"
+                            cellpadding="0"
+                            border="0"
+                          >
+                            <tr>
+                              <td
+                                width="24"
+                                height="24"
+                                align="center"
+                                valign="middle"
+                                style="
+                                  width:24px;
+                                  height:24px;
+                                  background-color:#dcfce7;
+                                  border-radius:50%;
+                                  color:#15803d;
+                                  font-family:
+                                    Arial,
+                                    Helvetica,
+                                    sans-serif;
+                                  font-size:12px;
+                                  line-height:24px;
+                                  font-weight:800;
+                                "
+                              >
+                                ✓
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
 
+
+                        <td
+                          valign="top"
+                          style="
+                            padding-left:4px;
+                          "
+                        >
+                          <div
+                            style="
+                              color:#166534;
+                              font-family:
+                                Arial,
+                                Helvetica,
+                                sans-serif;
+                              font-size:11px;
+                              line-height:17px;
+                              font-weight:700;
+                            "
+                          >
+                            Lead ready for review
+                          </div>
+
+                          <div
+                            style="
+                              padding-top:2px;
+                              color:#527061;
+                              font-family:
+                                Arial,
+                                Helvetica,
+                                sans-serif;
+                              font-size:10px;
+                              line-height:16px;
+                            "
+                          >
+                            Contact details and enquiry context
+                            have been captured successfully.
+                          </div>
+                        </td>
+
+                      </tr>
+                    </table>
+
+                  </td>
+                </tr>
+              </table>
+
+
+              <div
+                style="
+                  height:26px;
+                  line-height:26px;
+                  font-size:0;
+                "
+              >
+                &nbsp;
+              </div>
+
+
+              <!-- =================================================
+                   SECTION 03
+                   ================================================= -->
+
+              <table
+                role="presentation"
+                width="100%"
+                cellspacing="0"
+                cellpadding="0"
+                border="0"
+              >
+                <tr>
+
+                  <td
+                    width="34"
+                    valign="middle"
+                    style="
+                      width:34px;
+                      color:#0284c7;
+                      font-family:
+                        'Courier New',
+                        Courier,
+                        monospace;
+                      font-size:10px;
+                      line-height:15px;
+                      font-weight:700;
+                    "
+                  >
+                    03
+                  </td>
+
+                  <td
+                    valign="middle"
+                    style="
+                      color:#344054;
+                      font-family:
+                        Arial,
+                        Helvetica,
+                        sans-serif;
+                      font-size:10px;
+                      line-height:15px;
+                      font-weight:700;
+                      letter-spacing:1.2px;
+                      text-transform:uppercase;
+                    "
+                  >
+                    Take action
+                  </td>
+
+                  <td
+                    valign="middle"
+                    style="
+                      padding-left:14px;
+                    "
+                  >
+                    <div
+                      style="
+                        height:1px;
+                        background-color:#e3eaf2;
+                        font-size:0;
+                        line-height:0;
+                      "
+                    >
+                      &nbsp;
+                    </div>
+                  </td>
+
+                </tr>
+              </table>
+
+
+              <div
+                style="
+                  height:13px;
+                  line-height:13px;
+                  font-size:0;
+                "
+              >
+                &nbsp;
+              </div>
+
+
+              <!-- =================================================
+                   CTA BUTTONS
+                   ================================================= -->
+
+              <table
+                role="presentation"
+                width="100%"
+                cellspacing="0"
+                cellpadding="0"
+                border="0"
+              >
+                <tr>
+
+                  <!-- PRIMARY CTA -->
+
+                  <td
+                    class="action-cell"
+                    valign="top"
+                    style="
+                      padding-right:9px;
+                    "
+                  >
+                    <table
+                      role="presentation"
+                      width="100%"
+                      cellspacing="0"
+                      cellpadding="0"
+                      border="0"
+                    >
+                      <tr>
+                        <td
+                          align="center"
+                          style="
+                            background-color:#0369a1;
+                            border-radius:10px;
+                          "
+                        >
                           <a
                             class="action-link"
                             href="mailto:${safeEmail}?subject=${encodeURIComponent(
@@ -1152,151 +1888,168 @@ Stored in the secure Supabase enquiries inbox
       )}"
                             style="
                               display:inline-block;
-                              box-sizing:border-box;
                               width:100%;
-                              padding:14px 20px;
-                              border:1px solid #16a34a;
-                              border-radius:9px;
+                              box-sizing:border-box;
+                              padding:14px 18px;
+                              border:1px solid #0369a1;
+                              border-radius:10px;
                               color:#ffffff;
-                              font-family:Arial,Helvetica,sans-serif;
-                              font-size:13px;
+                              background-color:#0369a1;
+                              font-family:
+                                Arial,
+                                Helvetica,
+                                sans-serif;
+                              font-size:12px;
                               line-height:18px;
                               font-weight:700;
                               text-align:center;
                               text-decoration:none;
                             "
                           >
-                            Reply to ${safeName}&nbsp;&nbsp;&rarr;
+                            Reply to ${safeName}
+                            &nbsp;&nbsp;&rarr;
                           </a>
-
                         </td>
-
                       </tr>
                     </table>
-
                   </td>
+
+
+                  <!-- CALL CTA -->
 
                   ${safeMobile
         ? `
-                        <td
-                          class="action-cell"
-                          width="39%"
-                          valign="top"
-                          style="width:39%;"
+                      <td
+                        class="action-cell"
+                        width="38%"
+                        valign="top"
+                        style="
+                          width:38%;
+                        "
+                      >
+                        <table
+                          role="presentation"
+                          width="100%"
+                          cellspacing="0"
+                          cellpadding="0"
+                          border="0"
                         >
-
-                          <table
-                            role="presentation"
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
-                            <tr>
-
-                              <td
-                                align="center"
+                          <tr>
+                            <td
+                              align="center"
+                              style="
+                                background-color:#ffffff;
+                                border-radius:10px;
+                              "
+                            >
+                              <a
+                                class="action-link"
+                                href="tel:${safeMobile.replace(/[^\d+]/g, "")}"
                                 style="
+                                  display:inline-block;
+                                  width:100%;
+                                  box-sizing:border-box;
+                                  padding:14px 16px;
+                                  border:1px solid #cbd5e1;
+                                  border-radius:10px;
+                                  color:#172033;
                                   background-color:#ffffff;
-                                  border-radius:9px;
+                                  font-family:
+                                    Arial,
+                                    Helvetica,
+                                    sans-serif;
+                                  font-size:12px;
+                                  line-height:18px;
+                                  font-weight:700;
+                                  text-align:center;
+                                  text-decoration:none;
                                 "
                               >
-
-                                <a
-                                  class="action-link"
-                                  href="tel:${safeMobile.replace(/[^\d+]/g, "")}"
-                                  style="
-                                    display:inline-block;
-                                    box-sizing:border-box;
-                                    width:100%;
-                                    padding:14px 18px;
-                                    border:1px solid #cbd5e1;
-                                    border-radius:9px;
-                                    color:#172033;
-                                    font-family:Arial,Helvetica,sans-serif;
-                                    font-size:13px;
-                                    line-height:18px;
-                                    font-weight:700;
-                                    text-align:center;
-                                    text-decoration:none;
-                                  "
-                                >
-                                  Call now
-                                </a>
-
-                              </td>
-
-                            </tr>
-                          </table>
-
-                        </td>
-                      `
+                                Call now
+                              </a>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    `
         : ""
       }
 
                 </tr>
               </table>
 
+
+              <!-- ===============================================
+                   RESPONSE NOTE
+                   =============================================== -->
+
               <table
                 role="presentation"
                 width="100%"
-                border="0"
                 cellspacing="0"
                 cellpadding="0"
-                style="margin-top:14px;"
+                border="0"
+                style="
+                  margin-top:15px;
+                "
               >
                 <tr>
-
                   <td
                     align="center"
                     style="
                       color:#98a2b3;
-                      font-family:Arial,Helvetica,sans-serif;
-                      font-size:10px;
-                      line-height:16px;
+                      font-family:
+                        Arial,
+                        Helvetica,
+                        sans-serif;
+                      font-size:9px;
+                      line-height:15px;
                     "
                   >
-                    Responding promptly helps turn portfolio interest
-                    into a meaningful conversation.
+                    A thoughtful, timely reply helps convert
+                    portfolio interest into a meaningful
+                    professional conversation.
                   </td>
-
                 </tr>
               </table>
 
             </td>
           </tr>
 
-          <!-- ================================================= -->
-          <!-- FOOTER -->
-          <!-- ================================================= -->
+
+          <!-- ===================================================
+               FOOTER
+               =================================================== -->
 
           <tr>
             <td
               class="footer-pad"
               style="
-                padding:21px 35px 23px;
-                background-color:#f8fafc;
-                border-top:1px solid #e1e8f0;
+                padding:22px 38px 24px;
+                background-color:#f7f9fc;
+                border-top:1px solid #dfe7f0;
               "
             >
 
               <table
                 role="presentation"
                 width="100%"
-                border="0"
                 cellspacing="0"
                 cellpadding="0"
+                border="0"
               >
                 <tr>
 
                   <td
-                    class="mobile-block"
+                    class="footer-col"
                     valign="middle"
                     style="
-                      font-family:Arial,Helvetica,sans-serif;
+                      font-family:
+                        Arial,
+                        Helvetica,
+                        sans-serif;
                     "
                   >
-
                     <div
                       style="
                         color:#344054;
@@ -1315,39 +2068,50 @@ Stored in the secure Supabase enquiries inbox
                         line-height:17px;
                       "
                     >
-                      Software Test Engineer &amp; QA Automation
+                      Software Test Engineer · QA Automation · SDET
                     </div>
-
                   </td>
 
+
                   <td
-                    class="mobile-block footer-meta"
+                    class="footer-col footer-meta"
                     align="right"
                     valign="middle"
                     style="
                       color:#98a2b3;
-                      font-family:'Courier New',Courier,monospace;
-                      font-size:9px;
-                      line-height:15px;
+                      font-family:
+                        'Courier New',
+                        Courier,
+                        monospace;
+                      font-size:8px;
+                      line-height:14px;
                       font-weight:700;
                       letter-spacing:0.8px;
                       text-transform:uppercase;
                     "
                   >
-                    Portfolio form &nbsp;/&nbsp; Secure alert
+                    Portfolio / Secure lead notification
                   </td>
 
                 </tr>
               </table>
 
-              <div style="height:14px;line-height:14px;">
+
+              <div
+                style="
+                  height:14px;
+                  line-height:14px;
+                  font-size:0;
+                "
+              >
                 &nbsp;
               </div>
+
 
               <div
                 style="
                   height:1px;
-                  background-color:#e4eaf1;
+                  background-color:#e1e8f0;
                   font-size:0;
                   line-height:0;
                 "
@@ -1355,24 +2119,85 @@ Stored in the secure Supabase enquiries inbox
                 &nbsp;
               </div>
 
-              <p
+
+              <table
+                role="presentation"
+                width="100%"
+                cellspacing="0"
+                cellpadding="0"
+                border="0"
                 style="
-                  margin:12px 0 0;
-                  color:#98a2b3;
-                  font-family:Arial,Helvetica,sans-serif;
-                  font-size:9px;
-                  line-height:15px;
-                  text-align:center;
+                  margin-top:12px;
                 "
               >
-                This is an automated private notification generated
-                by your portfolio contact form.
-              </p>
+                <tr>
+
+                  <td
+                    align="center"
+                    style="
+                      color:#98a2b3;
+                      font-family:
+                        Arial,
+                        Helvetica,
+                        sans-serif;
+                      font-size:9px;
+                      line-height:15px;
+                    "
+                  >
+                    Private automated notification generated
+                    from the Shashank Shinde portfolio
+                    enquiry system.
+                  </td>
+
+                </tr>
+              </table>
 
             </td>
           </tr>
 
         </table>
+
+
+        <!-- =====================================================
+             OUTSIDE FOOTER
+             ===================================================== -->
+
+        <table
+          role="presentation"
+          width="100%"
+          cellspacing="0"
+          cellpadding="0"
+          border="0"
+          style="
+            width:100%;
+            max-width:660px;
+          "
+        >
+          <tr>
+            <td
+              align="center"
+              style="
+                padding:17px 12px 0;
+                color:#8794a5;
+                font-family:
+                  'Courier New',
+                  Courier,
+                  monospace;
+                font-size:8px;
+                line-height:14px;
+                letter-spacing:0.55px;
+                text-transform:uppercase;
+              "
+            >
+              QA Command Center
+              &nbsp;·&nbsp;
+              Portfolio Lead Intelligence
+              &nbsp;·&nbsp;
+              Secure Notification
+            </td>
+          </tr>
+        </table>
+
 
         <!--[if mso]>
             </td>

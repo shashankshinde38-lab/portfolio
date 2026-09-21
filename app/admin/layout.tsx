@@ -1,10 +1,39 @@
-import type { Metadata } from "next";
+import type {
+  Metadata,
+} from "next";
+
+import type {
+  ReactNode,
+} from "react";
 
 export const metadata: Metadata = {
-  title: "Admin | Shashank Shinde",
-  robots: { index: false, follow: false },
+  title: {
+    default:
+      "Admin Panel | Shashank Shinde",
+    template:
+      "%s | Admin Panel",
+  },
+
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+      noarchive: true,
+      nosnippet: true,
+    },
+  },
 };
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return children;
 }
+

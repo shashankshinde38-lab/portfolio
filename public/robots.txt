@@ -1,14 +1,12 @@
 User-agent: *
 Allow: /
 
-Disallow: /admin
-Disallow: /admin/
-Disallow: /admin/*
+# Do not crawl backend API endpoints
 Disallow: /api/
-Disallow: /api/*
 
-# Host
-Host: https://shashankportfolio-jet.vercel.app
+# Machine-readable portfolio resources
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /files/Shashank_Shinde_Resume.pdf
 
-# Sitemaps
 Sitemap: https://shashankportfolio-jet.vercel.app/sitemap.xml

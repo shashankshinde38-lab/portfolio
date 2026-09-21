@@ -90,15 +90,17 @@
 .simulator-tabs {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 4px;
   background: rgba(11, 14, 18, 0.9);
-  padding: 3px;
+  padding: 4px;
   border-radius: var(--radius-control);
   border: 1px solid var(--border);
+  max-width: 100%;
 }
 
 .simulator-tab {
-  padding: 5px 12px;
+  padding: 8px 14px;
   border-radius: 6px;
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -107,7 +109,10 @@
   background: transparent;
   border: 0;
   cursor: pointer;
-  min-height: 36px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: all var(--duration-standard) ease;
 }
 
@@ -368,4 +373,85 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* ===================================================================
+   RESPONSIVE ADAPTATIONS (Testing Lab Terminal)
+   =================================================================== */
+
+@media (max-width: 768px) {
+  .simulator-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .simulator-tabs {
+    width: 100%;
+  }
+
+  .simulator-tab {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  .simulator-subbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 14px;
+  }
+
+  .simulator-command-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .simulator-screen {
+    padding: 14px;
+    min-height: 200px;
+    max-height: 280px;
+  }
+
+  .simulator-actions-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .simulator-meta-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .simulator-btn-group {
+    width: 100%;
+  }
+
+  .simulator-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .simulator-btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .simulator-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .simulator-meta-info {
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 0.7rem;
+  }
+}
+
 

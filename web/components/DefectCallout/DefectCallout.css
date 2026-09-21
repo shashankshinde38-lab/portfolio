@@ -117,6 +117,8 @@
   font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
+  min-height: 44px;
+  box-sizing: border-box;
   transition: all var(--duration-standard) ease;
 }
 
@@ -138,6 +140,8 @@
   border-radius: var(--radius-control);
   padding: var(--space-3);
   margin-top: var(--space-2);
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .defect-fix-header {
@@ -157,6 +161,7 @@
   color: var(--text-primary);
   line-height: 1.5;
   margin: 0;
+  word-break: break-word;
 }
 
 .defect-assertion-box {
@@ -165,6 +170,12 @@
   border-radius: var(--radius-control);
   padding: var(--space-3);
   margin-top: var(--space-2);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .defect-assertion-label {
@@ -182,6 +193,10 @@
   line-height: 1.5;
   color: var(--accent);
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  min-width: 0;
+  white-space: pre;
 }
 
 .defect-interactive-actions {
