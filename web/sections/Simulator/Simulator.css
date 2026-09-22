@@ -840,6 +840,26 @@
 }
 
 /* ==========================================================================
+   SEMANTIC CRAWLABLE DESCRIPTIONS
+   ========================================================================== */
+
+.simulator-semantic-desc {
+    padding: 10px 18px 4px;
+    color: rgba(148, 163, 184, 0.85);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.simulator-semantic-desc p {
+    margin: 0;
+}
+
+.simulator-semantic-desc strong {
+    color: var(--text-primary, #f1f5f9);
+}
+
+/* ==========================================================================
    REDUCED MOTION
    ========================================================================== */
 

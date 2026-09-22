@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Wrench,
   Plug,
@@ -6,12 +7,24 @@ import {
   CheckSquare,
   Code2,
   Sparkles,
+  ArrowUpRight,
 } from "lucide-react";
 
 import TiltCard from "@/web/components/TiltCard/TiltCard";
 import { ALL_SKILLS } from "@/web/data/portfolio-data";
 
 import "./Skills.css";
+
+const SKILL_LINK_MAP: Record<string, string> = {
+  "Selenium WebDriver": "/skills/selenium-automation",
+  "Playwright": "/skills/playwright-automation",
+  "Postman": "/skills/api-testing",
+  "REST APIs": "/skills/api-testing",
+  "Apache JMeter": "/skills/performance-testing",
+  "Load Testing": "/skills/performance-testing",
+  "Appium": "/skills/mobile-testing",
+  "Android Testing": "/skills/mobile-testing",
+};
 
 const SKILL_TONES = [
   "cyan",
@@ -195,7 +208,28 @@ export default function Skills() {
 
                             <div className="skill-item-copy">
                               <strong>
-                                {item.name}
+                                {SKILL_LINK_MAP[item.name] ? (
+                                  <Link
+                                    href={SKILL_LINK_MAP[item.name]}
+                                    style={{
+                                      color: "inherit",
+                                      textDecoration: "none",
+                                      display: "inline-flex",
+                                      alignItems: "center",
+                                      gap: "4px",
+                                    }}
+                                    title={`Explore ${item.name} QA automation deep-dive`}
+                                  >
+                                    <span>{item.name}</span>
+                                    <ArrowUpRight
+                                      size={11}
+                                      aria-hidden="true"
+                                      style={{ opacity: 0.65 }}
+                                    />
+                                  </Link>
+                                ) : (
+                                  item.name
+                                )}
                               </strong>
 
                               <span>
@@ -230,6 +264,23 @@ export default function Skills() {
               </TiltCard>
             );
           })}
+        </div>
+
+        <div
+          className="skills-action-row"
+          style={{
+            marginTop: "clamp(36px, 4vw, 56px)",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Link
+            href="/skills"
+            className="experience-explore-link"
+          >
+            <span>Browse complete QA technical skills repository &amp; framework matrix</span>
+            <ArrowUpRight size={15} aria-hidden="true" />
+          </Link>
         </div>
       </div>
     </section>

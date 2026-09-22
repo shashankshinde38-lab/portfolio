@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Microscope,
   ArrowUpRight,
@@ -159,28 +160,28 @@ export default function About() {
               {/* ACTIONS */}
 
               <div className="about-actions-row">
-                <a
+                <Link
                   className="about-link about-link-primary"
-                  href="#cases"
-                  aria-label="Explore featured software testing projects"
+                  href="/about"
+                  aria-label="Read full profile and testing philosophy of Shashank Shinde"
                 >
                   <span>
-                    EXPLORE MY WORK
+                    READ FULL PROFILE
                   </span>
 
                   <ArrowUpRight
                     size={15}
                     aria-hidden="true"
                   />
-                </a>
+                </Link>
 
                 <a
                   className="about-link about-link-secondary"
-                  href="#experience"
-                  aria-label="View software testing work experience"
+                  href="#cases"
+                  aria-label="Explore featured software testing projects"
                 >
                   <span>
-                    A closer look at my experience
+                    Explore my work
                   </span>
 
                   <ArrowUpRight

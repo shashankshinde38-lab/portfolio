@@ -1,7 +1,25 @@
+# Standard Search Engine Crawlers
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /api/
 
-# Do not crawl backend API endpoints
+# Google Search
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Bing & Copilot Search
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# OpenAI Search (AEO indexing & citation in ChatGPT Search)
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
 Disallow: /api/
 
 # Machine-readable portfolio resources

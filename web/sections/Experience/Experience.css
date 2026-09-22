@@ -2184,3 +2184,45 @@
     transform: none !important;
   }
 }
+
+/* ==========================================================================
+   EXPERIENCE ACTION ROW & EXPLORE LINK
+   ========================================================================== */
+
+.experience-action-row {
+  margin-top: clamp(36px, 4vw, 56px);
+  display: flex;
+  justify-content: center;
+}
+
+.experience-explore-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  background: rgba(110, 124, 251, 0.08);
+  border: 1px solid rgba(110, 124, 251, 0.25);
+  color: #c7d2fe;
+  font-size: clamp(0.8rem, 0.85vw, 0.9rem);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.experience-explore-link:hover {
+  background: rgba(110, 124, 251, 0.16);
+  border-color: rgba(110, 124, 251, 0.45);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(110, 124, 251, 0.25);
+}
+
+.experience-explore-link svg {
+  transition: transform 0.2s ease;
+}
+
+.experience-explore-link:hover svg {
+  transform: translate3d(2px, -2px, 0);
+}

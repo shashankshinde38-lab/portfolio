@@ -151,7 +151,7 @@ export default function ActiveSectionProvider({
           </div>
           <div className="footer-bottom">
             <span>
-              © {new Date().getFullYear()} Shashank Shinde
+              © {new Date().getFullYear()} Shashank Shinde · Software Test Engineer — Pune, Maharashtra, India
             </span>
             <span className="footer-status">
               <span className="status-dot" />

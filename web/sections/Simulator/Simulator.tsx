@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Activity,
   FlaskConical,
@@ -134,10 +135,10 @@ export default function Simulator() {
 
                 <div>
                   <span className="simulator-tool-eyebrow">
-                    TEST EXECUTION
+                    TEST EXECUTION &amp; AUTOMATION
                   </span>
 
-                  <h3>Interactive Test Runner</h3>
+                  <h3>Playwright &amp; JMeter Test Demonstrations</h3>
                 </div>
               </div>
 
@@ -150,6 +151,22 @@ export default function Simulator() {
                 READY
               </span>
             </header>
+
+            <div className="simulator-semantic-desc">
+              <p>
+                <strong>
+                  <Link href="/skills/playwright-automation" style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                    Playwright End-to-End Testing
+                  </Link>{" "}
+                  &amp;{" "}
+                  <Link href="/skills/performance-testing" style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                    Apache JMeter Load Testing
+                  </Link>{" "}
+                  Demonstrations:
+                </strong>{" "}
+                Interactive execution of automated browser regression suites (Chromium checkout workflows, authentication tokens, and webhook assertions) and distributed performance simulations (100,000 concurrent virtual users under peak traffic).
+              </p>
+            </div>
 
             <div className="simulator-tool-body">
               <InteractiveTestRunner />
@@ -180,7 +197,7 @@ export default function Simulator() {
                     DEFECT INVESTIGATION
                   </span>
 
-                  <h3>Edge-Case Analysis</h3>
+                  <h3>Edge-Case Analysis &amp; Defect Triage</h3>
                 </div>
               </div>
 
@@ -193,6 +210,21 @@ export default function Simulator() {
                 READY
               </span>
             </header>
+
+            <div className="simulator-semantic-desc">
+              <p>
+                <strong>Defect Investigation &amp; Concurrency Edge-Case Analysis:</strong>{" "}
+                Interactive root-cause analysis and code-level assertions for critical pre-production defects, including{" "}
+                <Link href="/projects/driwe-qa-case-study" style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                  negative fare calculations during booking velocity surges
+                </Link>
+                ,{" "}
+                <Link href="/projects/ride-sharing-testing-case-study" style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                  inventory reservation race conditions
+                </Link>
+                , and session privilege flaws.
+              </p>
+            </div>
 
             <div className="simulator-tool-body">
               <BugSpotterLab />

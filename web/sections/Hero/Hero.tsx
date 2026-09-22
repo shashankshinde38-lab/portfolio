@@ -116,15 +116,18 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* ROLE */}
+          {/* ROLE & PRIMARY H1 */}
 
-          <p className="hero-role-title">
-            SOFTWARE TEST ENGINEER &amp; QA AUTOMATION SPECIALIST
-          </p>
+          <h1 className="hero-role-title">
+            Shashank Shinde — Software Test Engineer &amp; QA Automation Engineer
+          </h1>
 
-          {/* HEADING */}
+          {/* VISUAL HEADLINE */}
 
-          <h1 className="hero-headline">
+          <div
+            className="hero-headline"
+            aria-hidden="true"
+          >
             <span className="hero-headline-main">
               Great software.
             </span>
@@ -135,20 +138,16 @@ export default function Hero() {
               {" "}
               last detail.
             </span>
-          </h1>
+          </div>
 
-          {/* DESCRIPTION */}
+          {/* FACTUAL ENTITY STATEMENT & DESCRIPTION */}
 
           <p className="hero-description">
-            I&apos;m{" "}
-            <strong>
-              Shashank Shinde
-            </strong>
-            , a Software Test Engineer &amp; QA Automation
-            Specialist based in Pune, India. I design,
-            automate and execute comprehensive test suites
-            that improve reliability, performance and
-            overall product quality.
+            <strong>Shashank Shinde</strong> is a Software Test Engineer and QA
+            Automation Engineer based in Pune, Maharashtra, India, specializing
+            in web, mobile, API, automation and performance testing. Working as an
+            Automation Tester and SDET, I design, automate and execute comprehensive
+            test suites that improve reliability, performance and overall product quality.
           </p>
 
           {/* AVAILABILITY */}

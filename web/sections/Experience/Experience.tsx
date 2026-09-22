@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   ShieldCheck,
   Workflow,
@@ -423,6 +424,16 @@ export default function Experience() {
               </div>
             )
           )}
+        </div>
+
+        <div className="experience-action-row">
+          <Link
+            href="/experience"
+            className="experience-explore-link"
+          >
+            <span>Explore full professional experience &amp; client project timeline</span>
+            <ArrowUpRight size={15} aria-hidden="true" />
+          </Link>
         </div>
       </div>
     </section>

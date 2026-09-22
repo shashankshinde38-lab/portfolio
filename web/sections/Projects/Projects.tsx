@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 import {
   Layers,
@@ -18,12 +19,21 @@ import {
   Building2,
   Route,
   Sparkles,
+  ArrowUpRight,
 } from "lucide-react";
 
 import TiltCard from "@/web/components/TiltCard/TiltCard";
 import { ALL_PROJECTS } from "@/web/data/portfolio-data";
 
 import "./Projects.css";
+
+const CASE_STUDY_URLS: Record<string, string> = {
+  "TC-001": "/projects/driwe-qa-case-study",
+  "TC-002": "/projects/grosido-qa-case-study",
+  "TC-003": "/projects/ecommerce-testing-case-study",
+  "TC-004": "/projects/ride-sharing-testing-case-study",
+  "TC-005": "/projects/urban-build-testing-case-study",
+};
 
 /* =========================================================
    TYPES
@@ -1518,41 +1528,40 @@ export default function Projects() {
                           </div>
                         </div>
 
-                        {/* LINKS */}
+                        {/* CASE STUDY LINK & EXTERNAL LINKS */}
 
-                        {project.links?.length >
-                          0 && (
-                            <div className="project-links">
-                              {project.links.map(
-                                (link) => (
-                                  <a
-                                    className="project-resource-link"
-                                    key={
-                                      link.label
-                                    }
-                                    href={
-                                      link.url
-                                    }
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label={`${project.name} - ${link.label} (opens in new tab)`}
-                                  >
-                                    <span>
-                                      {
-                                        link.label
-                                      }
-                                    </span>
-
-                                    <ExternalLink
-                                      size={
-                                        13
-                                      }
-                                    />
-                                  </a>
-                                )
-                              )}
-                            </div>
+                        <div className="project-links" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
+                          {CASE_STUDY_URLS[project.id] && (
+                            <Link
+                              className="project-resource-link"
+                              href={CASE_STUDY_URLS[project.id]}
+                              aria-label={`Read full QA case study for ${project.name}`}
+                              style={{
+                                background: "rgba(99, 102, 241, 0.16)",
+                                borderColor: "rgba(99, 102, 241, 0.4)",
+                                color: "#c7d2fe",
+                              }}
+                            >
+                              <span>Read Full Case Study</span>
+                              <ArrowUpRight size={13} aria-hidden="true" />
+                            </Link>
                           )}
+
+                          {project.links?.length > 0 &&
+                            project.links.map((link) => (
+                              <a
+                                className="project-resource-link"
+                                key={link.label}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`${project.name} - ${link.label} (opens in new tab)`}
+                              >
+                                <span>{link.label}</span>
+                                <ExternalLink size={13} />
+                              </a>
+                            ))}
+                        </div>
                       </div>
                     </details>
                   </div>
@@ -1560,6 +1569,23 @@ export default function Projects() {
               );
             }
           )}
+        </div>
+
+        <div
+          className="projects-action-row"
+          style={{
+            marginTop: "clamp(36px, 4vw, 56px)",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Link
+            href="/projects"
+            className="experience-explore-link"
+          >
+            <span>View all 5 QA engineering case studies &amp; defect logs</span>
+            <ArrowUpRight size={15} aria-hidden="true" />
+          </Link>
         </div>
       </div>
     </section>

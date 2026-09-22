@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   BadgeCheck,
   ChevronDown,
@@ -6,6 +7,7 @@ import {
   SearchCheck,
   ShieldCheck,
   Sparkles,
+  ArrowUpRight,
 } from "lucide-react";
 
 import "./FAQ.css";
@@ -15,6 +17,7 @@ interface FaqItem {
   directAnswer: string;
   detail: string;
   tags?: string[];
+  link?: { text: string; href: string };
 }
 
 const FAQ_ITEMS: FaqItem[] = [
@@ -30,6 +33,10 @@ const FAQ_ITEMS: FaqItem[] = [
       "Quality Gates",
       "Defect Prevention",
     ],
+    link: {
+      text: "Read Shashank's full QA role & engineering track record",
+      href: "/experience",
+    },
   },
   {
     q: "What testing tools do I use?",
@@ -45,6 +52,10 @@ const FAQ_ITEMS: FaqItem[] = [
       "Appium",
       "JIRA",
     ],
+    link: {
+      text: "Explore complete QA technical skills & automation tools",
+      href: "/skills",
+    },
   },
   {
     q: "What automation frameworks do I work with?",
@@ -58,6 +69,10 @@ const FAQ_ITEMS: FaqItem[] = [
       "TestNG",
       "CI/CD Pipelines",
     ],
+    link: {
+      text: "Deep dive into Selenium WebDriver & POM framework architecture",
+      href: "/skills/selenium-automation",
+    },
   },
   {
     q: "What types of applications do I test?",
@@ -71,6 +86,10 @@ const FAQ_ITEMS: FaqItem[] = [
       "Android Apps",
       "Web Applications",
     ],
+    link: {
+      text: "Browse all 5 production software testing case studies",
+      href: "/projects",
+    },
   },
   {
     q: "How do I approach regression testing?",
@@ -84,6 +103,10 @@ const FAQ_ITEMS: FaqItem[] = [
       "~40% Cycle Reduction",
       "Continuous Testing",
     ],
+    link: {
+      text: "Inspect Playwright E2E automation & regression workflows",
+      href: "/skills/playwright-automation",
+    },
   },
   {
     q: "What API testing experience do I have?",
@@ -98,6 +121,10 @@ const FAQ_ITEMS: FaqItem[] = [
       "Webhook Idempotency",
       "OAuth/JWT",
     ],
+    link: {
+      text: "Review REST API testing, Postman assertions & webhook validation",
+      href: "/skills/api-testing",
+    },
   },
   {
     q: "What performance testing tools do I use?",
@@ -111,6 +138,10 @@ const FAQ_ITEMS: FaqItem[] = [
       "100k+ Concurrency",
       "Load & Stress Testing",
     ],
+    link: {
+      text: "Inspect Apache JMeter 100,000 user concurrency case study",
+      href: "/skills/performance-testing",
+    },
   },
   {
     q: "How can a recruiter contact me?",
@@ -125,6 +156,10 @@ const FAQ_ITEMS: FaqItem[] = [
       "Resume Download",
       "24h Response",
     ],
+    link: {
+      text: "Jump to contact channels & recruiter information",
+      href: "/#contact",
+    },
   },
   {
     q: "Who is Shashank Shinde and what is his professional background?",
@@ -138,6 +173,10 @@ const FAQ_ITEMS: FaqItem[] = [
       "SEED Infotech SDET",
       "B.E. IT",
     ],
+    link: {
+      text: "Read Shashank's full biography, education & testing certifications",
+      href: "/about",
+    },
   },
 ];
 
@@ -326,7 +365,7 @@ export default function FAQ() {
                       />
 
                       <span>
-                        DIRECT ANSWER
+                        Direct Answer:
                       </span>
                     </div>
 
@@ -348,6 +387,37 @@ export default function FAQ() {
                       {item.detail}
                     </p>
                   </div>
+
+                  {/* =========================================
+                      EVIDENCE & CITATION LINK
+                  ========================================= */}
+
+                  {item.link && (
+                    <div
+                      className="faq-link-area"
+                      style={{
+                        marginTop: "12px",
+                        paddingTop: "12px",
+                        borderTop: "1px solid rgba(110, 124, 251, 0.12)",
+                      }}
+                    >
+                      <Link
+                        href={item.link.href}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          color: "#93c5fd",
+                          fontSize: "0.82rem",
+                          fontWeight: 600,
+                          textDecoration: "none",
+                        }}
+                      >
+                        <span>{item.link.text}</span>
+                        <ArrowUpRight size={13} aria-hidden="true" />
+                      </Link>
+                    </div>
+                  )}
 
                   {/* =========================================
                       TAGS
@@ -380,6 +450,25 @@ export default function FAQ() {
             )
           )}
         </div>
+
+        {/* FAQPage JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": FAQ_ITEMS.map((item) => ({
+                "@type": "Question",
+                "name": item.q,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": `${item.directAnswer} ${item.detail}`,
+                },
+              })),
+            }),
+          }}
+        />
       </div>
     </section>
   );

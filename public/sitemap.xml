@@ -1,16 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
 >
+  <!-- 1. Home -->
   <url>
     <loc>https://shashankportfolio-jet.vercel.app/</loc>
-
-    <lastmod>2026-09-21</lastmod>
-
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
     <image:image>
       <image:loc>https://shashankportfolio-jet.vercel.app/images/og-image.png</image:loc>
+      <image:title>Shashank Shinde — Software Test Engineer &amp; QA Automation Portfolio</image:title>
     </image:image>
+  </url>
+
+  <!-- 2. Core: About -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/about</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 3. Core: Experience -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/experience</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 4. Core: Skills Hub -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/skills</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 5. Core: Projects Hub -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/projects</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 6. Dedicated Skill: Selenium Automation -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/skills/selenium-automation</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 7. Dedicated Skill: Playwright Automation -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/skills/playwright-automation</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 8. Dedicated Skill: API Testing -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/skills/api-testing</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 9. Dedicated Skill: Performance Testing -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/skills/performance-testing</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 10. Dedicated Skill: Mobile Testing -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/skills/mobile-testing</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 11. Project Case Study: DRIWE -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/projects/driwe-qa-case-study</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 12. Project Case Study: Grosido -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/projects/grosido-qa-case-study</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 13. Project Case Study: E-Commerce -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/projects/ecommerce-testing-case-study</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 14. Project Case Study: Ride Sharing -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/projects/ride-sharing-testing-case-study</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 15. Project Case Study: Urban Build -->
+  <url>
+    <loc>https://shashankportfolio-jet.vercel.app/projects/urban-build-testing-case-study</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

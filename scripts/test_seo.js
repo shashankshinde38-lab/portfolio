@@ -28,6 +28,11 @@ async function runExhaustiveAudit() {
   // Headings
   const h1Matches = [...html.matchAll(/<h1[^>]*>([\s\S]*?)<\/h1>/gi)];
   assert("Single H1 on page", h1Matches.length === 1, `Found ${h1Matches.length} H1`);
+  assert(
+    "H1 contains recommended entity name and role",
+    h1Matches[0]?.[1]?.includes("Shashank Shinde — Software Test Engineer &amp; QA Automation Engineer") ||
+      h1Matches[0]?.[1]?.includes("Shashank Shinde — Software Test Engineer & QA Automation Engineer")
+  );
 
   const h2Matches = [...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/gi)];
   assert("Multiple semantic H2 landmarks", h2Matches.length >= 7, `Found ${h2Matches.length} H2 sections`);
@@ -36,6 +41,15 @@ async function runExhaustiveAudit() {
   assert("Canonical URL configured", html.includes('rel="canonical"'));
   assert("Viewport meta configured", html.includes('name="viewport"'));
   assert("Theme color configured", html.includes('name="theme-color"'));
+  assert(
+    "Meta title matches exact target",
+    html.includes("<title>Shashank Shinde | Software Test Engineer &amp; QA Automation Engineer</title>") ||
+      html.includes("<title>Shashank Shinde | Software Test Engineer & QA Automation Engineer</title>")
+  );
+  assert(
+    "Meta description matches exact target",
+    html.includes('content="Shashank Shinde is a Software Test Engineer and QA Automation Engineer based in Pune, specializing in Selenium, Playwright, API testing, Postman, JMeter, Appium and software quality assurance."')
+  );
 
   // Open Graph & Twitter
   console.log("\n--- 2. SOCIAL MEDIA & OPEN GRAPH METADATA ---");
@@ -95,6 +109,16 @@ async function runExhaustiveAudit() {
         assert("Person worksFor Profcyma Solutions", person.worksFor?.name === "Profcyma Solutions Pvt. Ltd.");
         assert("Person hasOccupation configured", Boolean(person.hasOccupation));
       }
+
+      const profilePage = graph.find((g) => g["@type"] === "ProfilePage");
+      if (profilePage) {
+        assert("ProfilePage mainEntity references #person", profilePage.mainEntity?.["@id"]?.includes("#person"));
+      }
+
+      const webSite = graph.find((g) => g["@type"] === "WebSite");
+      if (webSite) {
+        assert("WebSite publisher references #person", webSite.publisher?.["@id"]?.includes("#person"));
+      }
     } catch (e) {
       assert("JSON-LD valid syntax", false, e.message);
     }
@@ -109,6 +133,17 @@ async function runExhaustiveAudit() {
   assert("Authentic test cases metric (500+)", html.includes("500+"));
   assert("Authentic virtual users metric (100k+)", html.includes("100k+"));
   assert("Authentic automation metric (~40%)", html.includes("~40%"));
+  assert(
+    "Testing Lab contains Playwright & JMeter crawlable description",
+    html.includes("Playwright End-to-End Testing") &&
+      html.includes("Apache JMeter Load Testing") &&
+      html.includes("Demonstrations")
+  );
+  assert(
+    "Testing Lab contains Defect Investigation crawlable description",
+    html.includes("Defect Investigation") &&
+      html.includes("negative fare calculations during booking velocity surges")
+  );
 
   // llms.txt & llms-full.txt
   console.log("\n--- 6. MACHINE-READABLE STANDARDS (llms.txt) ---");
@@ -130,12 +165,15 @@ async function runExhaustiveAudit() {
   const robotsText = await robotsRes.text();
   assert("robots.txt disallows /admin", robotsText.includes("Disallow: /admin"));
   assert("robots.txt disallows /api", robotsText.includes("Disallow: /api"));
+  assert("robots.txt explicitly allows Googlebot", robotsText.includes("User-agent: Googlebot"));
+  assert("robots.txt explicitly allows Bingbot", robotsText.includes("User-agent: Bingbot"));
+  assert("robots.txt explicitly allows OAI-SearchBot", robotsText.includes("User-agent: OAI-SearchBot"));
   assert("robots.txt declares sitemap", robotsText.includes("Sitemap:"));
 
   const sitemapRes = await fetch("http://localhost:3000/sitemap.xml");
   assert("sitemap.xml HTTP 200", sitemapRes.status === 200);
   const sitemapText = await sitemapRes.text();
-  assert("sitemap.xml has current lastmod", sitemapText.includes("2026-09-21"));
+  assert("sitemap.xml has current lastmod", sitemapText.includes("2026-09-22"));
   assert("sitemap.xml has image schema", sitemapText.includes("<image:loc>"));
 
   // Security & Indexing Control

@@ -1,15 +1,33 @@
-# Shashank Shinde — Software Test Engineer & QA Automation Specialist
+# Shashank Shinde — Software Test Engineer & QA Automation Engineer
 
-> Software Test Engineer and SDET based in Pune, India. Specializing in automated regression suites (Selenium WebDriver, Playwright), distributed performance load testing (Apache JMeter), REST API contract testing (Postman, REST Assured), and CI/CD pipeline quality gates (GitHub Actions).
+> Software Test Engineer and QA Automation Engineer based in Pune, Maharashtra, India. Specializing in manual and automated quality engineering, automated regression suites (Selenium WebDriver, Playwright), distributed performance load testing (Apache JMeter), REST API contract testing (Postman, REST Assured), mobile testing (Appium), and CI/CD quality gates.
 
 ## Professional Overview
 - Name: Shashank Shinde
-- Primary Title: Software Test Engineer / QA Automation Specialist / SDET
-- Current Organization: Profcyma Solutions Pvt. Ltd., Pune, India
+- Primary Title: Software Test Engineer
+- Secondary Descriptor: QA Automation Engineer
 - Location: Pune, Maharashtra, India
+- Current Organization: Profcyma Solutions Pvt. Ltd., Pune, India
 - Availability: Open to Software Test Engineer, QA Automation Engineer, and SDET opportunities
 - Official Portfolio: https://shashankportfolio-jet.vercel.app/
 - Full Technical Dossier: https://shashankportfolio-jet.vercel.app/llms-full.txt
+
+## Canonical Route Directory (15 Canonical URLs)
+- Homepage: https://shashankportfolio-jet.vercel.app/
+- About Profile: https://shashankportfolio-jet.vercel.app/about
+- Professional Experience: https://shashankportfolio-jet.vercel.app/experience
+- QA Skills Hub: https://shashankportfolio-jet.vercel.app/skills
+- QA Projects Hub: https://shashankportfolio-jet.vercel.app/projects
+- Selenium Automation: https://shashankportfolio-jet.vercel.app/skills/selenium-automation
+- Playwright Automation: https://shashankportfolio-jet.vercel.app/skills/playwright-automation
+- API Testing & Postman: https://shashankportfolio-jet.vercel.app/skills/api-testing
+- Performance Testing & JMeter: https://shashankportfolio-jet.vercel.app/skills/performance-testing
+- Mobile Testing & Appium: https://shashankportfolio-jet.vercel.app/skills/mobile-testing
+- DRIWE QA Case Study: https://shashankportfolio-jet.vercel.app/projects/driwe-qa-case-study
+- Grosido QA Case Study: https://shashankportfolio-jet.vercel.app/projects/grosido-qa-case-study
+- E-Commerce QA Case Study: https://shashankportfolio-jet.vercel.app/projects/ecommerce-testing-case-study
+- Ride-Sharing QA Case Study: https://shashankportfolio-jet.vercel.app/projects/ride-sharing-testing-case-study
+- Urban Build QA Case Study: https://shashankportfolio-jet.vercel.app/projects/urban-build-testing-case-study
 
 ## Core Testing Capabilities & Toolkit
 
