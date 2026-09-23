@@ -1297,19 +1297,22 @@ export default function Projects() {
                             </div>
                           </div>
 
-                          <a
-                            href="#simulator"
+                          <Link
+                            href={CASE_STUDY_URLS[project.id] || "/projects"}
                             className="view-full-report-btn"
+                            data-track-event="case_study_view"
+                            data-track-project={project.id}
+                            aria-label={`View full QA case study for ${project.name}`}
                           >
                             <span>
-                              View Full Report
+                              View QA Case Study
                             </span>
 
-                            <ExternalLink
+                            <ArrowUpRight
                               size={12}
                               aria-hidden="true"
                             />
-                          </a>
+                          </Link>
                         </div>
 
                         {/* RIGHT */}
@@ -1535,6 +1538,8 @@ export default function Projects() {
                             <Link
                               className="project-resource-link"
                               href={CASE_STUDY_URLS[project.id]}
+                              data-track-event="case_study_view"
+                              data-track-project={project.id}
                               aria-label={`Read full QA case study for ${project.name}`}
                               style={{
                                 background: "rgba(99, 102, 241, 0.16)",
@@ -1542,7 +1547,7 @@ export default function Projects() {
                                 color: "#c7d2fe",
                               }}
                             >
-                              <span>Read Full Case Study</span>
+                              <span>View QA Case Study</span>
                               <ArrowUpRight size={13} aria-hidden="true" />
                             </Link>
                           )}

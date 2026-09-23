@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
+  Activity,
   ArrowUpRight,
   Bug,
   CheckCircle2,
@@ -89,21 +90,81 @@ export default function RideSharingCaseStudyPage() {
         </h2>
         <div className="content-grid-3">
           <div className="feature-glass-card">
-            <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">Application Type</h4>
+            <h3 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">Application Type</h3>
             <p className="text-white font-semibold mb-1">Android Mobile Application</p>
             <p className="text-xs text-slate-300">Real-time driver route publishing and rider seat booking on Android.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-xs font-mono text-indigo-400 uppercase tracking-wider mb-1">API Testing Scope</h4>
+            <h3 className="text-xs font-mono text-indigo-400 uppercase tracking-wider mb-1">API Testing Scope</h3>
             <p className="text-white font-semibold mb-1">22 REST Endpoints</p>
             <p className="text-xs text-slate-300">Trip CRUD, seat inventory allocation, cancellation, driver telemetry.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-1">Defect Management</h4>
+            <h3 className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-1">Defect Management</h3>
             <p className="text-white font-semibold mb-1">JIRA Lifecycle Tracking</p>
             <p className="text-xs text-slate-300">Authored reproducible steps, network payload logs, and database snapshots.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Testing Challenge & QA Responsibility */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Terminal size={22} className="text-indigo-400" aria-hidden="true" />
+          Testing Challenge &amp; QA Responsibility
+        </h2>
+        <div className="content-grid-2">
+          <div className="feature-glass-card">
+            <h3 className="feature-card-title text-cyan-300 mb-2">The Race Condition Contention Challenge</h3>
+            <p className="feature-card-desc">
+              When drivers post rides with limited seating capacity, high demand leads to multiple riders attempting to claim
+              the final seat within milliseconds of each other. The core QA challenge was proving that simultaneous booking
+              bursts could not bypass inventory limits or leave seat counts in an inconsistent state.
+            </p>
+          </div>
+
+          <div className="feature-glass-card">
+            <h3 className="feature-card-title text-indigo-300 mb-2">Shashank&apos;s QA Responsibility</h3>
+            <p className="feature-card-desc">
+              Formulated the API testing matrix across 22 REST endpoints using Postman, engineered concurrency burst test scenarios
+              to stress transactional isolation, reconciled post-booking SQL database state records, and logged reproducible defect
+              reports in JIRA with exact network timing payloads.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Critical Workflows Validated */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Activity size={22} className="text-cyan-400" aria-hidden="true" />
+          Critical Workflows Validated
+        </h2>
+        <div className="content-grid-3">
+          <div className="feature-glass-card">
+            <h3 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">Workflow 01</h3>
+            <p className="text-white font-semibold mb-1">Driver Route Publishing &amp; Geofencing</p>
+            <p className="text-xs text-slate-300">
+              Verified driver trip departure times, pickup waypoint geofencing, seat pricing rules, and route activation state transitions.
+            </p>
+          </div>
+
+          <div className="feature-glass-card">
+            <h3 className="text-xs font-mono text-indigo-400 uppercase tracking-wider mb-1">Workflow 02</h3>
+            <p className="text-white font-semibold mb-1">Concurrent Seat Booking Contention</p>
+            <p className="text-xs text-slate-300">
+              Tested simultaneous rider seat booking requests against limited capacity inventories, verifying atomic inventory decrement and conflict responses.
+            </p>
+          </div>
+
+          <div className="feature-glass-card">
+            <h3 className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-1">Workflow 03</h3>
+            <p className="text-white font-semibold mb-1">Trip Cancellation &amp; Seat Release</p>
+            <p className="text-xs text-slate-300">
+              Asserted instant inventory replenishment, waitlist notifications, and automatic fee refund calculations when passengers cancel reservations.
+            </p>
           </div>
         </div>
       </section>
@@ -132,12 +193,21 @@ export default function RideSharingCaseStudyPage() {
               seat within a 12-millisecond window.
             </p>
             <p>
+              <strong className="text-white">Reproduction:</strong>
+              <br />
+              1. Driver publishes ride with max physical capacity of 4 seats; 3 seats are booked.
+              <br />
+              2. Two passenger test clients simultaneously fire POST `/api/v1/trips/:tripId/book` within a 12ms window.
+              <br />
+              3. Microservice executes non-locking `SELECT available_seats FROM trips` in parallel threads.
+            </p>
+            <p>
               <strong className="text-white">Symptom:</strong> Both client requests read the available seat count as 1
               before either write transaction committed. Both reservations received HTTP 200 OK confirmations, pushing
               total passenger occupancy to 5 in a physical 4-passenger vehicle.
             </p>
             <p>
-              <strong className="text-white">Engineering Fix:</strong> Enforced database-level pessimistic locking
+              <strong className="text-white">Validation &amp; Engineering Fix:</strong> Enforced database-level pessimistic locking
               (`SELECT FOR UPDATE`) on the seat inventory table during checkout, rejecting conflicting concurrent
               requests with an HTTP 409 Conflict.
             </p>
@@ -159,6 +229,42 @@ pm.test("Vehicle capacity invariant: confirmed passengers <= max physical seats"
         </div>
       </section>
 
+      {/* First-Hand QA Insights & Lessons Learned */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Zap size={22} className="text-amber-400" aria-hidden="true" />
+          First-Hand Lessons Learned &amp; QA Takeaways
+        </h2>
+        <div className="content-grid-3">
+          <div className="insight-card">
+            <span className="insight-card-tag">Concurrency QA</span>
+            <h3 className="insight-card-title">Row-Level Database Locking</h3>
+            <p className="insight-card-desc">
+              Checking available seat counts in application memory (`if (seats &gt; 0)`) always breaks under load.
+              Pessimistic row locking (`SELECT FOR UPDATE`) or optimistic versioning is essential to guarantee inventory integrity.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">API Design</span>
+            <h3 className="insight-card-title">Semantic HTTP Status Codes</h3>
+            <p className="insight-card-desc">
+              When a seat is seized by another user during checkout, the API must return HTTP 409 Conflict with an actionable
+              explanation, allowing the mobile client to prompt the user to re-select without crashing.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Telemetry QA</span>
+            <h3 className="insight-card-title">Token Lifecycle During Long-Polling</h3>
+            <p className="insight-card-desc">
+              Continuous GPS telemetry streaming requires automated token refresh logic to prevent background location pings
+              from dropping silently when JWT sessions expire during active trips.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Verified Outcomes */}
       <section className="content-section">
         <h2 className="content-section-title">
@@ -167,17 +273,17 @@ pm.test("Vehicle capacity invariant: confirmed passengers <= max physical seats"
         </h2>
         <div className="content-grid-3">
           <div className="feature-glass-card">
-            <h4 className="text-2xl font-bold text-white font-mono mb-1">180+</h4>
+            <div className="text-2xl font-bold text-white font-mono mb-1">180+</div>
             <p className="text-xs text-slate-300">Test Cases Designed across driver trip creation and rider matching.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-2xl font-bold text-cyan-300 font-mono mb-1">22</h4>
+            <div className="text-2xl font-bold text-cyan-300 font-mono mb-1">22</div>
             <p className="text-xs text-slate-300">REST API Endpoints validated for request contracts and status codes.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-2xl font-bold text-emerald-300 font-mono mb-1">64</h4>
+            <div className="text-2xl font-bold text-emerald-300 font-mono mb-1">64</div>
             <p className="text-xs text-slate-300">Defects Logged in JIRA (including 12 critical concurrency &amp; UI flaws).</p>
           </div>
         </div>
@@ -187,16 +293,20 @@ pm.test("Vehicle capacity invariant: confirmed passengers <= max physical seats"
       <section className="content-section">
         <h2 className="content-section-title">
           <Zap size={22} className="text-cyan-400" aria-hidden="true" />
-          Related QA Skills
+          Related QA Skills &amp; Knowledge Graph
         </h2>
-        <div className="content-grid-2">
+        <div className="content-grid-3">
           <Link href="/skills/api-testing" className="feature-glass-card hover:border-violet-500">
-            <h4 className="text-violet-300 font-semibold mb-1">REST API Validation →</h4>
+            <h3 className="text-violet-300 font-semibold mb-1">REST API Validation →</h3>
             <p className="text-xs text-slate-300">Postman assertion design, status codes, and schema validation.</p>
           </Link>
           <Link href="/skills/mobile-testing" className="feature-glass-card hover:border-sky-500">
-            <h4 className="text-sky-300 font-semibold mb-1">Android Mobile Testing →</h4>
+            <h3 className="text-sky-300 font-semibold mb-1">Android Mobile Testing →</h3>
             <p className="text-xs text-slate-300">Real-time driver route matching and touch interaction validation.</p>
+          </Link>
+          <Link href="/skills/performance-testing" className="feature-glass-card hover:border-emerald-500">
+            <h3 className="text-emerald-300 font-semibold mb-1">Apache JMeter Load Testing →</h3>
+            <p className="text-xs text-slate-300">Stress testing API endpoints under simulated user concurrency.</p>
           </Link>
         </div>
       </section>

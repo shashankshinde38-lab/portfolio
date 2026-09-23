@@ -249,6 +249,34 @@
   margin: 0;
 }
 
+.subpage-author-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-size: 0.85rem;
+  color: rgba(148, 163, 184, 0.85);
+  font-family: var(--font-mono);
+}
+
+.subpage-author-name strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.subpage-author-sep {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.subpage-author-role {
+  color: #67e8f9;
+}
+
+.subpage-author-location {
+  color: rgba(148, 163, 184, 0.7);
+}
+
 /* ==========================================================================
    CONTENT CARDS & DIRECT ANSWER BOX
    ========================================================================== */
@@ -590,8 +618,39 @@
    ========================================================================== */
 
 @media (max-width: 900px) {
+  .subpage-header-inner {
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
   .subpage-nav-links {
+    display: flex;
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-top: 2px;
+    gap: 8px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .subpage-nav-links::-webkit-scrollbar {
     display: none;
+  }
+
+  .subpage-nav-link {
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+  }
+
+  .subpage-social-actions {
+    margin-left: auto;
   }
 
   .subpage-footer-inner {
@@ -620,3 +679,48 @@
     justify-content: center;
   }
 }
+
+/* ==========================================================================
+   FIRST-HAND QA INSIGHTS & LESSONS (GEO)
+   ========================================================================== */
+
+.insight-card {
+  padding: 22px;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
+}
+
+.insight-card:hover {
+  border-color: rgba(245, 158, 11, 0.45);
+  transform: translateY(-2px);
+  background: rgba(20, 28, 48, 0.7);
+}
+
+.insight-card-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fbbf24;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.insight-card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 8px;
+}
+
+.insight-card-desc {
+  font-size: 0.88rem;
+  color: rgba(203, 213, 225, 0.85);
+  line-height: 1.55;
+  margin: 0;
+}
+

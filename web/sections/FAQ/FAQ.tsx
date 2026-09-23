@@ -22,28 +22,28 @@ interface FaqItem {
 
 const FAQ_ITEMS: FaqItem[] = [
   {
-    q: "What does a Software Test Engineer do?",
+    q: "Who is Shashank Shinde and what does he do?",
     directAnswer:
-      "A Software Test Engineer verifies that software systems meet functional, performance, and security requirements by designing test strategies, writing automated test suites, and discovering defects before code reaches production.",
+      "Shashank Shinde is a Software Test Engineer and QA Automation Engineer based in Pune, Maharashtra, India. He specializes in automated web testing, mobile application QA, REST API validation, and performance load testing.",
     detail:
-      "At Profcyma Solutions, Shashank manages quality across the full Software Testing Life Cycle (STLC) — from requirement analysis and test matrix authoring to automated regression pipeline gates, API contract verification, load testing, and release sign-off.",
+      "Working at Profcyma Solutions Pvt. Ltd., he manages quality across the full Software Testing Life Cycle (STLC) — from test strategy and test matrix design to automated regression pipeline gates, API schema validation, and 100,000-user distributed load simulations.",
     tags: [
+      "Shashank Shinde",
       "Software Test Engineer",
-      "Full STLC",
-      "Quality Gates",
-      "Defect Prevention",
+      "QA Automation Engineer",
+      "Pune, India",
     ],
     link: {
-      text: "Read Shashank's full QA role & engineering track record",
-      href: "/experience",
+      text: "Read Shashank's full professional background & qualifications",
+      href: "/about",
     },
   },
   {
-    q: "What testing tools do I use?",
+    q: "What testing tools does Shashank Shinde use?",
     directAnswer:
-      "My everyday testing toolkit spans Selenium WebDriver, Playwright, Apache JMeter, Postman, Appium, TestNG, and JIRA.",
+      "Shashank Shinde uses Selenium WebDriver, Playwright, Apache JMeter, Postman, Appium, TestNG, and JIRA for comprehensive software quality assurance.",
     detail:
-      "For web UI automation, I use Selenium WebDriver with Java and Playwright with TypeScript. For performance and stress testing, I engineer distributed thread groups in Apache JMeter. For API testing, I rely on Postman and REST Assured. For mobile automation, I use Appium across Android real devices and emulators.",
+      "For web UI automation, he uses Selenium WebDriver with Java and Playwright with TypeScript. For performance and stress testing, he engineers distributed thread groups in Apache JMeter. For API validation, he relies on Postman and REST Assured assertions. For mobile QA, he uses Appium across physical Android devices and emulators.",
     tags: [
       "Selenium WebDriver",
       "Playwright",
@@ -53,67 +53,52 @@ const FAQ_ITEMS: FaqItem[] = [
       "JIRA",
     ],
     link: {
-      text: "Explore complete QA technical skills & automation tools",
+      text: "Explore Shashank's complete QA skills & automation directory",
       href: "/skills",
     },
   },
   {
-    q: "What automation frameworks do I work with?",
+    q: "What Selenium automation experience does Shashank Shinde have?",
     directAnswer:
-      "I design and maintain modular test automation frameworks based on the Page Object Model (POM) pattern using Selenium WebDriver with TestNG and Cucumber BDD.",
+      "Shashank Shinde has hands-on experience designing modular Page Object Model (POM) test automation frameworks in Java using Selenium WebDriver and TestNG.",
     detail:
-      "These frameworks feature parallel test execution, data-driven test configurations, automated reporting, and headless execution integrated into CI/CD build pipelines using GitHub Actions.",
+      "His Selenium frameworks incorporate dynamic explicit waits, TestNG parallel execution, data-driven test configurations, and Cucumber BDD integration. On the Grosido grocery platform, his automation framework reduced regression cycle execution time by ~40%.",
     tags: [
+      "Selenium WebDriver",
       "Page Object Model (POM)",
-      "Cucumber BDD",
       "TestNG",
-      "CI/CD Pipelines",
+      "Cucumber BDD",
+      "~40% Regression Gain",
     ],
     link: {
-      text: "Deep dive into Selenium WebDriver & POM framework architecture",
+      text: "Inspect Selenium WebDriver framework architecture & case studies",
       href: "/skills/selenium-automation",
     },
   },
   {
-    q: "What types of applications do I test?",
+    q: "What Playwright testing experience does Shashank Shinde have?",
     directAnswer:
-      "I test high-concurrency web platforms, multi-tenant mobile applications (Android), e-commerce marketplaces, and on-demand mobility systems.",
+      "Shashank Shinde implements modern end-to-end browser automation suites using Playwright with TypeScript across Chromium, WebKit, and Firefox rendering engines.",
     detail:
-      "Production systems tested include DRIWE Cab & Courier (real-time geolocation and surge pricing), Grosido (grocery cart inventory and checkout synchronization), an E-Commerce Ecosystem (multi-role customer, vendor, and delivery portals), and Urban Build (lead generation platform).",
+      "His Playwright test suites leverage auto-waiting web-first assertions, isolated browser contexts for multi-role workflows, network request interception for backend validation, and Trace Viewer artifacts for rapid defect isolation without flaky sleep timeouts.",
     tags: [
-      "E-Commerce",
-      "Mobility & Logistics",
-      "Android Apps",
-      "Web Applications",
+      "Playwright",
+      "TypeScript",
+      "Auto-Waiting",
+      "BrowserContext",
+      "Trace Viewer",
     ],
     link: {
-      text: "Browse all 5 production software testing case studies",
-      href: "/projects",
-    },
-  },
-  {
-    q: "How do I approach regression testing?",
-    directAnswer:
-      "I use a multi-tiered regression strategy combining an automated smoke suite on every pull request, scheduled nightly full regression runs, and risk-based exploratory testing around modified code paths.",
-    detail:
-      "By automating core user journeys with Selenium WebDriver and TestNG, I reduced regression cycle execution time by ~40% and cut manual test overhead by 25% across sprint deliveries.",
-    tags: [
-      "Regression Testing",
-      "Automated Smoke Gates",
-      "~40% Cycle Reduction",
-      "Continuous Testing",
-    ],
-    link: {
-      text: "Inspect Playwright E2E automation & regression workflows",
+      text: "Inspect Playwright E2E browser automation & test execution",
       href: "/skills/playwright-automation",
     },
   },
   {
-    q: "What API testing experience do I have?",
+    q: "What API testing experience does Shashank Shinde have?",
     directAnswer:
-      "I validate RESTful web APIs for HTTP response codes, JSON schema contract conformity, payload integrity, authentication tokens, and webhook idempotency.",
+      "Shashank Shinde validates RESTful web APIs for HTTP status codes, JSON schema contract conformity, payload integrity, authentication tokens, and webhook idempotency using Postman and REST Assured.",
     detail:
-      "Using Postman collections and REST Assured assertions, I test authentication flows (OAuth 2.0 / JWT), verify database state consistency via SQL, and validate payment gateway webhooks (Razorpay) to prevent race conditions and duplicate deductions.",
+      "His API testing includes verifying authentication mechanisms (OAuth 2.0 / JWT), validating 20+ endpoints on platforms like the Ride Sharing Application, reconciling database states via SQL queries, and testing payment webhooks to prevent duplicate deductions.",
     tags: [
       "REST API Testing",
       "Postman",
@@ -122,16 +107,16 @@ const FAQ_ITEMS: FaqItem[] = [
       "OAuth/JWT",
     ],
     link: {
-      text: "Review REST API testing, Postman assertions & webhook validation",
+      text: "Review REST API validation, Postman collections & webhook tests",
       href: "/skills/api-testing",
     },
   },
   {
-    q: "What performance testing tools do I use?",
+    q: "How does Shashank Shinde use Apache JMeter for performance testing?",
     directAnswer:
-      "I use Apache JMeter to conduct distributed load, stress, spike, and endurance performance testing under heavy concurrent traffic.",
+      "Shashank Shinde uses Apache JMeter to conduct distributed load, stress, spike, and endurance performance testing for high-traffic web applications and REST APIs.",
     detail:
-      "On the DRIWE mobility platform, I designed distributed JMeter thread groups simulating 100,000 concurrent virtual users to identify server latency thresholds, database connection pool bottlenecks, and API throughput limits under surge pricing conditions.",
+      "On the DRIWE mobility and logistics platform, he designed distributed JMeter thread groups simulating up to 100,000 concurrent virtual users to evaluate server response latencies (P99), throughput capacity, and database connection pool saturation under peak surge pricing.",
     tags: [
       "Apache JMeter",
       "Performance Testing",
@@ -139,43 +124,79 @@ const FAQ_ITEMS: FaqItem[] = [
       "Load & Stress Testing",
     ],
     link: {
-      text: "Inspect Apache JMeter 100,000 user concurrency case study",
+      text: "Inspect Apache JMeter 100,000 concurrent user performance case study",
       href: "/skills/performance-testing",
     },
   },
   {
-    q: "How can a recruiter contact me?",
+    q: "What mobile testing experience does Shashank Shinde have?",
     directAnswer:
-      "Recruiters and hiring managers can reach me directly by email at shashankshinde38@gmail.com, phone at +91 80808 52689, or via LinkedIn at linkedin.com/in/shashank-shinde7.",
+      "Shashank Shinde performs automated and manual mobile quality assurance for Android applications using Appium, Android SDK emulators, and physical devices.",
     detail:
-      "I am based in Pune, India, open to Software Test Engineer, QA Engineer, and SDET opportunities, typically respond within 24 hours, and have a downloadable PDF resume available directly on this portfolio.",
+      "His mobile QA covers screen resolution fragmentation, OS version differences, touch gestures, background lifecycle interrupts, and network throttling (3G, offline draft persistence). On the Urban Build platform, he diagnosed and resolved a rapid multi-tap duplicate lead submission bug.",
+    tags: [
+      "Appium",
+      "Android Testing",
+      "Device Fragmentation",
+      "Network Throttling",
+      "Mobile QA",
+    ],
+    link: {
+      text: "Inspect Appium & Android mobile testing case studies",
+      href: "/skills/mobile-testing",
+    },
+  },
+  {
+    q: "What QA projects and real-world case studies has Shashank Shinde worked on?",
+    directAnswer:
+      "Shashank Shinde has tested 5 major production platforms covering on-demand mobility, online grocery delivery, multi-role e-commerce marketplaces, ride sharing, and lead generation.",
+    detail:
+      "His verified case studies include DRIWE (100k-user JMeter load simulation), Grosido (Selenium POM regression cutting cycle time by ~40%), E-Commerce (cross-browser webhook idempotency), Ride Sharing (concurrency seat race condition), and Urban Build (mobile form debounce verification).",
+    tags: [
+      "DRIWE",
+      "Grosido",
+      "E-Commerce Ecosystem",
+      "Ride Sharing",
+      "Urban Build",
+    ],
+    link: {
+      text: "Browse all 5 production QA case studies & defect reports",
+      href: "/projects",
+    },
+  },
+  {
+    q: "How does Shashank Shinde approach regression testing and defect prevention?",
+    directAnswer:
+      "Shashank Shinde implements a multi-tiered quality strategy combining automated smoke gates on every pull request, scheduled nightly regression sweeps, and risk-based exploratory testing.",
+    detail:
+      "By participating early in sprint backlog grooming and automating high-risk user journeys in Selenium and Playwright, he prevents defects before release, reducing regression execution cycles by ~40% and cutting manual testing overhead by 25%.",
+    tags: [
+      "Regression Testing",
+      "Automated Smoke Gates",
+      "Early Defect Detection",
+      "Quality Strategy",
+    ],
+    link: {
+      text: "Read Shashank's STLC engineering processes & quality gates",
+      href: "/experience",
+    },
+  },
+  {
+    q: "How can recruiters and engineering teams contact Shashank Shinde?",
+    directAnswer:
+      "Shashank Shinde can be reached directly via email at shashankshinde38@gmail.com, telephone at +91 80808 52689, or through LinkedIn at linkedin.com/in/shashank-shinde7.",
+    detail:
+      "Based in Pune, Maharashtra, India, he is available for Software Test Engineer, QA Automation Engineer, and SDET opportunities, typically responds within 24 hours, and offers a verified downloadable PDF resume on his portfolio.",
     tags: [
       "Email",
       "Phone",
       "LinkedIn",
       "Resume Download",
-      "24h Response",
+      "Pune, India",
     ],
     link: {
-      text: "Jump to contact channels & recruiter information",
+      text: "Open contact form and direct communication channels",
       href: "/#contact",
-    },
-  },
-  {
-    q: "Who is Shashank Shinde and what is his professional background?",
-    directAnswer:
-      "Shashank Shinde is a Software Test Engineer and SDET based in Pune, India, currently working at Profcyma Solutions Pvt. Ltd.",
-    detail:
-      "He holds a Bachelor of Engineering in Information Technology and completed professional SDET certification at SEED Infotech Pune. He has built automated regression suites, validated critical API endpoints, and led load simulations across multiple production client deployments.",
-    tags: [
-      "Shashank Shinde",
-      "Profcyma Solutions",
-      "SEED Infotech SDET",
-      "B.E. IT",
-    ],
-    link: {
-      text: "Read Shashank's full biography, education & testing certifications",
-      href: "/about",
     },
   },
 ];

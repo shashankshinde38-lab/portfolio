@@ -188,7 +188,7 @@ export default function SkillsPage() {
         </h2>
         <div className="content-grid-3">
           <div className="feature-glass-card">
-            <h4 className="text-white font-semibold mb-2">Languages &amp; Runtimes</h4>
+            <h3 className="text-white font-semibold mb-2">Languages &amp; Runtimes</h3>
             <p className="text-sm text-slate-300 leading-relaxed">
               <strong className="text-cyan-300">Java:</strong> Core language for Selenium POM suites and TestNG.
               <br />
@@ -200,7 +200,7 @@ export default function SkillsPage() {
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-white font-semibold mb-2">DevOps &amp; Quality Gates</h4>
+            <h3 className="text-white font-semibold mb-2">DevOps &amp; Quality Gates</h3>
             <p className="text-sm text-slate-300 leading-relaxed">
               <strong className="text-emerald-300">GitHub Actions:</strong> Automated build pipeline quality triggers.
               <br />
@@ -211,7 +211,7 @@ export default function SkillsPage() {
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-white font-semibold mb-2">QA Methodologies</h4>
+            <h3 className="text-white font-semibold mb-2">QA Methodologies</h3>
             <p className="text-sm text-slate-300 leading-relaxed">
               <strong className="text-cyan-300">Regression Testing:</strong> Smoke, sanity, and full regression sweeps.
               <br />

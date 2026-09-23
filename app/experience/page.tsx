@@ -102,8 +102,8 @@ export default function ExperiencePage() {
             {/* Cluster 01 */}
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-indigo-400 font-mono text-sm font-semibold">
-                <Workflow size={16} />
-                <span>01 · PLAN &amp; BUILD</span>
+                <Workflow size={16} aria-hidden="true" />
+                <h3 className="text-sm font-semibold text-indigo-400 font-mono">01 · PLAN &amp; BUILD</h3>
               </div>
               <ul className="text-sm text-slate-300 space-y-2 list-disc list-inside">
                 <li>
@@ -124,8 +124,8 @@ export default function ExperiencePage() {
             {/* Cluster 02 */}
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-cyan-400 font-mono text-sm font-semibold">
-                <CheckCircle2 size={16} />
-                <span>02 · TEST &amp; VALIDATE</span>
+                <CheckCircle2 size={16} aria-hidden="true" />
+                <h3 className="text-sm font-semibold text-cyan-400 font-mono">02 · TEST &amp; VALIDATE</h3>
               </div>
               <ul className="text-sm text-slate-300 space-y-2 list-disc list-inside">
                 <li>
@@ -146,8 +146,8 @@ export default function ExperiencePage() {
             {/* Cluster 03 */}
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-violet-400 font-mono text-sm font-semibold">
-                <Rocket size={16} />
-                <span>03 · SHIP &amp; VERIFY</span>
+                <Rocket size={16} aria-hidden="true" />
+                <h3 className="text-sm font-semibold text-violet-400 font-mono">03 · SHIP &amp; VERIFY</h3>
               </div>
               <ul className="text-sm text-slate-300 space-y-2 list-disc list-inside">
                 <li>

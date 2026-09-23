@@ -9,6 +9,7 @@ import {
   Plug,
   ShieldCheck,
   Terminal,
+  Zap,
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
@@ -171,22 +172,58 @@ pm.test("Webhook signature matches expected cryptographic header", function () {
         </div>
       </section>
 
+      {/* First-Hand QA Insights & Lessons Learned */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Zap size={22} className="text-amber-400" aria-hidden="true" />
+          First-Hand Lessons Learned &amp; API Engineering Takeaways
+        </h2>
+        <div className="content-grid-3">
+          <div className="insight-card">
+            <span className="insight-card-tag">HTTP Semantics</span>
+            <h3 className="insight-card-title">Precise Error Status Codes</h3>
+            <p className="insight-card-desc">
+              Asserting HTTP 409 Conflict for state collisions and 422 Unprocessable Entity for schema violations forces backend
+              APIs to provide clear actionable error bodies rather than masking logic bugs under generic 500 Internal Errors.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Security &amp; Webhooks</span>
+            <h3 className="insight-card-title">Cryptographic Signature QA</h3>
+            <p className="insight-card-desc">
+              Testing webhook intake pipelines with forged and expired HMAC SHA-256 signatures guarantees that unauthorized external
+              POST payloads cannot falsely credit user accounts or mark unpaid orders as fulfilled.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">State Verification</span>
+            <h3 className="insight-card-title">Direct SQL Ledger Assertions</h3>
+            <p className="insight-card-desc">
+              Never rely solely on API response JSON for verification. Querying the underlying database tables (PostgreSQL/MySQL)
+              verifies that transactions committed atomically without leaving phantom records or negative balances.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Project Evidence */}
       <section className="content-section">
         <h2 className="content-section-title">
           <ShieldCheck size={22} className="text-emerald-400" aria-hidden="true" />
-          Related Project Evidence
+          Related Project Evidence &amp; Knowledge Graph
         </h2>
         <div className="content-grid-3">
           <Link href="/projects/ecommerce-testing-case-study" className="feature-glass-card hover:border-cyan-500">
-            <h3 className="feature-card-title text-white mb-2">E-Commerce Ecosystem</h3>
+            <h3 className="feature-card-title text-white mb-2">E-Commerce Ecosystem →</h3>
             <p className="feature-card-desc">
               Discovered and resolved refund webhook double-deduction flaw across multi-vendor settlement ledgers.
             </p>
           </Link>
 
           <Link href="/projects/ride-sharing-testing-case-study" className="feature-glass-card hover:border-indigo-500">
-            <h3 className="feature-card-title text-white mb-2">Ride Sharing Application</h3>
+            <h3 className="feature-card-title text-white mb-2">Ride Sharing Application →</h3>
             <p className="feature-card-desc">
               Validated 22 REST API endpoints; resolved concurrent seat reservation race condition causing 5/4
               over-allocation.
@@ -194,10 +231,32 @@ pm.test("Webhook signature matches expected cryptographic header", function () {
           </Link>
 
           <Link href="/projects/driwe-qa-case-study" className="feature-glass-card hover:border-violet-500">
-            <h3 className="feature-card-title text-white mb-2">DRIWE Logistics Platform</h3>
+            <h3 className="feature-card-title text-white mb-2">DRIWE Logistics Platform →</h3>
             <p className="feature-card-desc">
               Validated Razorpay webhook retry schedules and server-side promo idempotency keys during surge pricing.
             </p>
+          </Link>
+        </div>
+      </section>
+
+      {/* Related QA Skills */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Plug size={22} className="text-violet-400" aria-hidden="true" />
+          Related Testing Capabilities
+        </h2>
+        <div className="content-grid-3">
+          <Link href="/skills/performance-testing" className="feature-glass-card hover:border-emerald-500">
+            <h3 className="text-emerald-300 font-semibold mb-1">Apache JMeter Load Testing →</h3>
+            <p className="text-xs text-slate-300">Distributed API stress testing under 100k simulated concurrent virtual users.</p>
+          </Link>
+          <Link href="/skills/playwright-automation" className="feature-glass-card hover:border-indigo-500">
+            <h3 className="text-indigo-300 font-semibold mb-1">Playwright TS/JS →</h3>
+            <p className="text-xs text-slate-300">Network interception, route mocking, and API contract assertions in browser.</p>
+          </Link>
+          <Link href="/skills/selenium-automation" className="feature-glass-card hover:border-cyan-500">
+            <h3 className="text-cyan-300 font-semibold mb-1">Selenium WebDriver →</h3>
+            <p className="text-xs text-slate-300">End-to-end browser automation validating frontend and API integrations.</p>
           </Link>
         </div>
       </section>

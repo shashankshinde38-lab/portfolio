@@ -164,7 +164,7 @@ export default function Simulator() {
                   </Link>{" "}
                   Demonstrations:
                 </strong>{" "}
-                Interactive execution of automated browser regression suites (Chromium checkout workflows, authentication tokens, and webhook assertions) and distributed performance simulations (100,000 concurrent virtual users under peak traffic).
+                This interactive simulator demonstrates automated browser regression execution and distributed load testing in real time. It represents Shashank Shinde&apos;s core QA skills in Playwright (browser E2E automation) and Apache JMeter (distributed concurrency simulation). The workflows validate Chromium multi-role checkout journeys, token authentication handshakes, and 100,000-user concurrency thresholds with latency SLA monitoring.
               </p>
             </div>
 
@@ -214,7 +214,7 @@ export default function Simulator() {
             <div className="simulator-semantic-desc">
               <p>
                 <strong>Defect Investigation &amp; Concurrency Edge-Case Analysis:</strong>{" "}
-                Interactive root-cause analysis and code-level assertions for critical pre-production defects, including{" "}
+                This defect triage simulator demonstrates pre-production root-cause analysis and automated assertion verification. It represents Shashank Shinde&apos;s QA capabilities in race condition isolation, webhook idempotency, and database state integrity. Workflows validated include{" "}
                 <Link href="/projects/driwe-qa-case-study" style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "3px" }}>
                   negative fare calculations during booking velocity surges
                 </Link>
@@ -222,7 +222,7 @@ export default function Simulator() {
                 <Link href="/projects/ride-sharing-testing-case-study" style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "3px" }}>
                   inventory reservation race conditions
                 </Link>
-                , and session privilege flaws.
+                , and distributed cache desynchronization.
               </p>
             </div>
 

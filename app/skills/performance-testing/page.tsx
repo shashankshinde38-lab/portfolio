@@ -165,11 +165,47 @@ print(f'✅ Load SLA Verified: P99={p99:.1f}ms, ErrorRate={err_rate:.2f}%')
         </div>
       </section>
 
+      {/* First-Hand QA Insights & Lessons Learned */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Zap size={22} className="text-amber-400" aria-hidden="true" />
+          First-Hand Lessons Learned &amp; Performance Engineering Takeaways
+        </h2>
+        <div className="content-grid-3">
+          <div className="insight-card">
+            <span className="insight-card-tag">Harness Calibration</span>
+            <h3 className="insight-card-title">Distributed Ramp-Up Pacing</h3>
+            <p className="insight-card-desc">
+              Ramping up 100,000 virtual users too aggressively exhausts local OS ephemeral ports and socket descriptors on test runner
+              nodes. Staggering thread initialization avoids artificial test-harness client errors.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Database Bottlenecks</span>
+            <h3 className="insight-card-title">Connection Pool Sizing</h3>
+            <p className="insight-card-desc">
+              High-concurrency bottlenecks almost always emerge in database connection pools (HikariCP/PgBouncer) before saturating CPU.
+              Monitoring active vs idle pool threads is crucial to prevent connection timeout cascades.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">SLA Verification</span>
+            <h3 className="insight-card-title">P99 Latency vs Averages</h3>
+            <p className="insight-card-desc">
+              Average response times mask severe user experience degradation during traffic spikes. Validating the 99th percentile (P99)
+              is the only reliable metric to guarantee real-world user response guarantees under peak loads.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Relevant Project Evidence */}
       <section className="content-section">
         <h2 className="content-section-title">
           <ShieldCheck size={22} className="text-emerald-400" aria-hidden="true" />
-          Related Project Evidence
+          Related Project Evidence &amp; Knowledge Graph
         </h2>
         <div className="feature-glass-card border-indigo-500/30">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
@@ -187,10 +223,32 @@ print(f'✅ Load SLA Verified: P99={p99:.1f}ms, ErrorRate={err_rate:.2f}%')
             velocity.
           </p>
           <div className="flex items-center gap-4 text-xs font-mono text-slate-400">
-            <span><strong>100k+</strong> Concurrent Virtual Users</span>
+            <span><strong>100,000</strong> Concurrent Virtual Users</span>
             <span><strong>42ms</strong> Average Latency</span>
             <span><strong>99.9%</strong> Uptime SLA Verified</span>
           </div>
+        </div>
+      </section>
+
+      {/* Related QA Skills */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Gauge size={22} className="text-emerald-400" aria-hidden="true" />
+          Related Testing Capabilities
+        </h2>
+        <div className="content-grid-3">
+          <Link href="/skills/api-testing" className="feature-glass-card hover:border-violet-500">
+            <h3 className="text-violet-300 font-semibold mb-1">REST API Validation →</h3>
+            <p className="text-xs text-slate-300">Contract testing and webhook validation under load.</p>
+          </Link>
+          <Link href="/skills/playwright-automation" className="feature-glass-card hover:border-indigo-500">
+            <h3 className="text-indigo-300 font-semibold mb-1">Playwright TS/JS →</h3>
+            <p className="text-xs text-slate-300">Browser front-end performance and network waterfall analysis.</p>
+          </Link>
+          <Link href="/skills/selenium-automation" className="feature-glass-card hover:border-cyan-500">
+            <h3 className="text-cyan-300 font-semibold mb-1">Selenium WebDriver →</h3>
+            <p className="text-xs text-slate-300">End-to-end user journey automation under synthetic concurrency.</p>
+          </Link>
         </div>
       </section>
     </SubpageLayout>

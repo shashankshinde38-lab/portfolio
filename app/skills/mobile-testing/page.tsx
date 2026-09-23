@@ -167,15 +167,51 @@ public void verifyRapidMultiTapEnquiryDebounce() throws InterruptedException {
         </div>
       </section>
 
+      {/* First-Hand QA Insights & Lessons Learned */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Zap size={22} className="text-amber-400" aria-hidden="true" />
+          First-Hand Lessons Learned &amp; Mobile QA Takeaways
+        </h2>
+        <div className="content-grid-3">
+          <div className="insight-card">
+            <span className="insight-card-tag">Touch &amp; Interaction</span>
+            <h3 className="insight-card-title">Immediate Touch Debouncing</h3>
+            <p className="insight-card-desc">
+              Never wait for server acknowledgment to disable mobile inputs. Rapid double or triple taps on high-latency networks
+              will flood backend APIs unless submit buttons freeze instantly upon the first touch.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Device Testing</span>
+            <h3 className="insight-card-title">Physical Hardware vs Emulators</h3>
+            <p className="insight-card-desc">
+              Emulators fail to reproduce OEM background process killers, custom battery optimization profiles, and touch sensor
+              latency. Validating on real Android hardware across diverse screen resolutions is indispensable.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Network Transitions</span>
+            <h3 className="insight-card-title">Offline &amp; Reconnection Sync</h3>
+            <p className="insight-card-desc">
+              Testing network dropouts mid-form submission ensures local SQLite caching safely queues draft data and resubmits
+              cleanly upon signal restoration without duplicating records.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Project Evidence */}
       <section className="content-section">
         <h2 className="content-section-title">
           <ShieldCheck size={22} className="text-emerald-400" aria-hidden="true" />
-          Related Mobile Project Evidence
+          Related Mobile Project Evidence &amp; Knowledge Graph
         </h2>
         <div className="content-grid-2">
           <Link href="/projects/urban-build-testing-case-study" className="feature-glass-card hover:border-cyan-500">
-            <h3 className="feature-card-title text-white mb-2">Urban Build — Lead Generation Platform</h3>
+            <h3 className="feature-card-title text-white mb-2">Urban Build — Lead Generation Platform →</h3>
             <p className="feature-card-desc">
               Diagnosed rapid multi-tap duplicate lead bug firing repeated SMS dispatches on slow mobile networks.
               Enforced debounce and fingerprinting fixes.
@@ -183,10 +219,32 @@ public void verifyRapidMultiTapEnquiryDebounce() throws InterruptedException {
           </Link>
 
           <Link href="/projects/ride-sharing-testing-case-study" className="feature-glass-card hover:border-indigo-500">
-            <h3 className="feature-card-title text-white mb-2">Ride Sharing Android Application</h3>
+            <h3 className="feature-card-title text-white mb-2">Ride Sharing Android Application →</h3>
             <p className="feature-card-desc">
               Validated driver route telemetry, passenger seat matching, and real-time Android geolocation updates.
             </p>
+          </Link>
+        </div>
+      </section>
+
+      {/* Related QA Skills */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Layers size={22} className="text-sky-400" aria-hidden="true" />
+          Related Testing Capabilities
+        </h2>
+        <div className="content-grid-3">
+          <Link href="/skills/api-testing" className="feature-glass-card hover:border-violet-500">
+            <h3 className="text-violet-300 font-semibold mb-1">REST API Validation →</h3>
+            <p className="text-xs text-slate-300">Backend mobile API contract verification, JWT tokens, and payload testing.</p>
+          </Link>
+          <Link href="/skills/playwright-automation" className="feature-glass-card hover:border-indigo-500">
+            <h3 className="text-indigo-300 font-semibold mb-1">Playwright TS/JS →</h3>
+            <p className="text-xs text-slate-300">Mobile viewport emulation and automated touch gesture assertions.</p>
+          </Link>
+          <Link href="/skills/selenium-automation" className="feature-glass-card hover:border-cyan-500">
+            <h3 className="text-cyan-300 font-semibold mb-1">Selenium WebDriver →</h3>
+            <p className="text-xs text-slate-300">Cross-platform test automation frameworks and Page Object Model design.</p>
           </Link>
         </div>
       </section>

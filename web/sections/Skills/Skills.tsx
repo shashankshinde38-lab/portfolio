@@ -26,6 +26,33 @@ const SKILL_LINK_MAP: Record<string, string> = {
   "Android Testing": "/skills/mobile-testing",
 };
 
+const SKILL_GROUP_EVIDENCE: Record<string, { label: string; href: string }> = {
+  "Automation Testing": {
+    label: "View Automation Evidence (Grosido)",
+    href: "/projects/grosido-qa-case-study",
+  },
+  "API Testing": {
+    label: "View API Case Study (Ride Sharing)",
+    href: "/projects/ride-sharing-testing-case-study",
+  },
+  "Performance Testing": {
+    label: "View 100k JMeter Evidence (DRIWE)",
+    href: "/projects/driwe-qa-case-study",
+  },
+  "Mobile Testing": {
+    label: "View Mobile QA Evidence (Urban Build)",
+    href: "/projects/urban-build-testing-case-study",
+  },
+  "Testing Methodologies": {
+    label: "View Work Experience & Testing Lifecycle",
+    href: "/experience",
+  },
+  "Languages & Tools": {
+    label: "View All 5 Production Case Studies",
+    href: "/projects",
+  },
+};
+
 const SKILL_TONES = [
   "cyan",
   "sky",
@@ -254,6 +281,37 @@ export default function Skills() {
                     )}
                   </ul>
                 </div>
+
+                {/* Evidence Link to Case Study */}
+                {SKILL_GROUP_EVIDENCE[group.group] && (
+                  <div
+                    className="skill-card-evidence-wrap"
+                    style={{
+                      marginTop: "14px",
+                      paddingTop: "12px",
+                      borderTop: "1px solid rgba(255, 255, 255, 0.07)",
+                    }}
+                  >
+                    <Link
+                      href={SKILL_GROUP_EVIDENCE[group.group].href}
+                      data-track-event="case_study_view"
+                      data-track-location="skill_card_footer"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        fontSize: "0.8rem",
+                        fontWeight: 600,
+                        color: "#93c5fd",
+                        textDecoration: "none",
+                      }}
+                      aria-label={`${group.group}: ${SKILL_GROUP_EVIDENCE[group.group].label}`}
+                    >
+                      <span>{SKILL_GROUP_EVIDENCE[group.group].label}</span>
+                      <ArrowUpRight size={13} aria-hidden="true" />
+                    </Link>
+                  </div>
+                )}
 
                 {/* Bottom accent */}
 

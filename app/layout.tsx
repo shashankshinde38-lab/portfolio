@@ -120,7 +120,7 @@ const jsonLdData = {
         "@type": "PostalAddress",
         addressLocality: "Pune",
         addressRegion: "Maharashtra",
-        addressCountry: "India",
+        addressCountry: "IN",
       },
       sameAs: [
         "https://www.linkedin.com/in/shashank-shinde7/",

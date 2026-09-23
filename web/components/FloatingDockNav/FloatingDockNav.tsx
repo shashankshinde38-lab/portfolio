@@ -14,6 +14,7 @@ import {
   Sparkles,
   User,
 } from "lucide-react";
+import { initAnalyticsListener } from "@/web/utils/analytics";
 import "./FloatingDockNav.css";
 
 /* ------------------------------------------------------------------ */
@@ -122,6 +123,8 @@ export default function FloatingDockNav({
   /* ---------------------------------------------------------------- */
 
   useEffect(() => {
+    initAnalyticsListener();
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 80);
     };
@@ -265,6 +268,8 @@ export default function FloatingDockNav({
           <a
             className="nav-cta-talk"
             href="#contact"
+            data-track-event="contact_start"
+            data-track-location="nav_desktop"
             aria-current={
               activeSection === "contact" ? "location" : undefined
             }
@@ -281,7 +286,9 @@ export default function FloatingDockNav({
           <a
             className="nav-cta-resume"
             href="/files/Shashank_Shinde_Resume.pdf"
-            download
+            download="Shashank_Shinde_Resume.pdf"
+            data-track-event="resume_download"
+            data-track-location="nav_desktop"
           >
             <ArrowDownToLine
               size={14}
@@ -301,6 +308,8 @@ export default function FloatingDockNav({
           <a
             href="#contact"
             className="mobile-cta-talk"
+            data-track-event="contact_start"
+            data-track-location="nav_mobile"
             aria-label="Contact Shashank Shinde"
             onClick={closeMenu}
           >

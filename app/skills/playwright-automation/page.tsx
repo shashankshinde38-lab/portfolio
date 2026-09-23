@@ -170,6 +170,42 @@ test.describe('E-Commerce Multi-Vendor Checkout Suite', () => {
         </div>
       </section>
 
+      {/* First-Hand QA Insights & Lessons Learned */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Zap size={22} className="text-amber-400" aria-hidden="true" />
+          First-Hand Lessons Learned &amp; E2E Engineering Takeaways
+        </h2>
+        <div className="content-grid-3">
+          <div className="insight-card">
+            <span className="insight-card-tag">Triage Acceleration</span>
+            <h3 className="insight-card-title">Trace Viewer Post-Mortems</h3>
+            <p className="insight-card-desc">
+              Exporting Playwright trace archives on CI failures allows frame-by-frame DOM inspection and network timing replay,
+              cutting root-cause investigation time from hours of local reproduction to minutes of visual inspection.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Multi-Role Testing</span>
+            <h3 className="insight-card-title">Context-Isolated User Journeys</h3>
+            <p className="insight-card-desc">
+              Leveraging separate `BrowserContext` instances within the same test enables simultaneous customer, vendor, and admin
+              interactions without cookie leaks, completing multi-tenant tests 3x faster than launching separate browsers.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Resilience Strategy</span>
+            <h3 className="insight-card-title">API Routing over Synthetics</h3>
+            <p className="insight-card-desc">
+              Using `page.route()` to mock flake-prone third-party payment gateways and simulate edge-case network dropouts guarantees
+              repeatable error-handling assertions without triggering live gateway billing fees.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Live Demonstration Link */}
       <section className="content-section">
         <div className="feature-glass-card border-indigo-500/30 flex flex-wrap items-center justify-between gap-4">
@@ -196,16 +232,16 @@ test.describe('E-Commerce Multi-Vendor Checkout Suite', () => {
         </h2>
         <div className="content-grid-3">
           <Link href="/skills/selenium-automation" className="feature-glass-card hover:border-cyan-500">
-            <h4 className="text-cyan-300 font-semibold mb-1">Selenium WebDriver →</h4>
-            <p className="text-xs text-slate-300">Java Page Object Model frameworks for cross-browser enterprise testing.</p>
+            <h3 className="text-cyan-300 font-semibold mb-1">Selenium WebDriver →</h3>
+            <p className="text-xs text-slate-300">Enterprise Java frameworks with Page Object Model architectures.</p>
           </Link>
           <Link href="/skills/api-testing" className="feature-glass-card hover:border-violet-500">
-            <h4 className="text-violet-300 font-semibold mb-1">REST API Testing →</h4>
-            <p className="text-xs text-slate-300">Postman collections and JSON schema validation contracts.</p>
+            <h3 className="text-violet-300 font-semibold mb-1">REST API Testing →</h3>
+            <p className="text-xs text-slate-300">Postman assertion suites and automated backend integration validation.</p>
           </Link>
           <Link href="/skills/performance-testing" className="feature-glass-card hover:border-emerald-500">
-            <h4 className="text-emerald-300 font-semibold mb-1">Apache JMeter Load Testing →</h4>
-            <p className="text-xs text-slate-300">Distributed load simulations up to 100,000 concurrent virtual users.</p>
+            <h3 className="text-emerald-300 font-semibold mb-1">Apache JMeter Load Testing →</h3>
+            <p className="text-xs text-slate-300">Distributed load testing and capacity threshold benchmarks.</p>
           </Link>
         </div>
       </section>

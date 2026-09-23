@@ -140,6 +140,8 @@ export default function SubpageLayout({
               target="_blank"
               rel="noopener noreferrer"
               className="subpage-icon-btn"
+              data-track-event="github_click"
+              data-track-location="subpage_header"
               aria-label="GitHub Profile"
               title="GitHub Profile"
             >
@@ -150,6 +152,8 @@ export default function SubpageLayout({
               target="_blank"
               rel="noopener noreferrer"
               className="subpage-icon-btn"
+              data-track-event="linkedin_click"
+              data-track-location="subpage_header"
               aria-label="LinkedIn Profile"
               title="LinkedIn Profile"
             >
@@ -196,6 +200,20 @@ export default function SubpageLayout({
 
           <h1 className="subpage-title">{title}</h1>
           {subtitle && <p className="subpage-subtitle">{subtitle}</p>}
+
+          <div className="subpage-author-bar">
+            <span className="subpage-author-name">
+              By <strong>Shashank Shinde</strong>
+            </span>
+            <span className="subpage-author-sep" aria-hidden="true">
+              •
+            </span>
+            <span className="subpage-author-role">Software Test Engineer &amp; QA Automation</span>
+            <span className="subpage-author-sep" aria-hidden="true">
+              •
+            </span>
+            <span className="subpage-author-location">Pune, Maharashtra, India</span>
+          </div>
         </section>
 
         {/* Children Slots */}
@@ -216,7 +234,12 @@ export default function SubpageLayout({
               </p>
             </div>
             <div className="subpage-cta-actions">
-              <Link href="/#contact" className="btn-primary btn-3d-glow">
+              <Link
+                href="/#contact"
+                className="btn-primary btn-3d-glow"
+                data-track-event="contact_start"
+                data-track-location="subpage_bottom_cta"
+              >
                 <span>Get in Touch</span>
                 <ArrowUpRight size={16} aria-hidden="true" />
               </Link>
@@ -224,7 +247,10 @@ export default function SubpageLayout({
                 href="/files/Shashank_Shinde_Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
+                download="Shashank_Shinde_Resume.pdf"
                 className="btn-secondary"
+                data-track-event="resume_download"
+                data-track-location="subpage_bottom_cta"
               >
                 <FileText size={15} aria-hidden="true" />
                 <span>Download Resume (PDF)</span>

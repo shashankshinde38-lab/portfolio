@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Layers, Mail, ScanSearch, Send } from "lucide-react";
+import { Activity, ArrowLeft, Layers, Mail, ScanSearch, Send } from "lucide-react";
 import "./not-found.css";
 
 export const metadata: Metadata = {
@@ -23,18 +23,21 @@ export default function NotFound() {
         <h1>
           One edge case
           <br />
-          we couldn't find.
+          we couldn&apos;t find.
         </h1>
         <p>
           Assertion failed: The requested URL was not found in the test execution routing table.
-          Let's get you back to the verified test suites.
+          Let&apos;s get you back to the verified test suites.
         </p>
         <div className="not-found-actions">
           <Link href="/" className="btn-primary btn-3d-glow" aria-label="Return to portfolio homepage">
             <ArrowLeft size={16} /> Back to Portfolio
           </Link>
-          <Link href="/#cases" className="btn-secondary btn-3d-glass" aria-label="View QA projects">
+          <Link href="/projects" className="btn-secondary btn-3d-glass" aria-label="View QA projects">
             <Layers size={16} /> Explore Projects
+          </Link>
+          <Link href="/skills" className="btn-secondary btn-3d-glass" aria-label="View QA skills">
+            <Activity size={16} /> QA Skills Directory
           </Link>
           <Link href="/#contact" className="btn-secondary btn-3d-glass" aria-label="Contact Shashank Shinde">
             <Send size={15} /> Contact Me

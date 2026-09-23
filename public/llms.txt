@@ -68,7 +68,7 @@
 - Scope: Driver geospatial allocation, dynamic surge pricing calculations, coupon validations, Razorpay payment webhooks, and 100,000-user distributed load testing.
 - Key Defect: Discovered a negative fare race condition where rapid promo code re-application during surge velocity produced negative booking totals (-₹45), mistakenly crediting rider wallets.
 - Resolution: Introduced atomic checkout locking, server-side idempotency keys, and JMeter concurrency assertions.
-- Outcome: 240+ defects logged and tracked in JIRA; verified 99.9% uptime under 100,000 simulated concurrent users.
+- Outcome: 78 defects logged and tracked in JIRA (including 14 critical severity bugs pre-release); verified 99.9% uptime under 100,000 simulated concurrent users.
 
 ### 2. Grosido — Grocery Delivery Platform (Web Admin + Mobile Apps)
 - Industry: E-Commerce / Grocery Delivery

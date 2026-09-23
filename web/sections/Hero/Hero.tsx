@@ -169,10 +169,12 @@ export default function Hero() {
             <a
               className="btn-primary btn-3d-glow hero-primary-action"
               href="#cases"
-              aria-label="View featured software testing projects and case studies"
+              data-track-event="project_view"
+              data-track-location="hero"
+              aria-label="View featured software testing projects and QA case studies"
             >
               <span>
-                View My Work
+                View QA Case Studies
               </span>
 
               <ArrowUpRight
@@ -185,6 +187,8 @@ export default function Hero() {
               className="btn-secondary btn-3d-glass hero-secondary-action"
               href="/files/Shashank_Shinde_Resume.pdf"
               download="Shashank_Shinde_Resume.pdf"
+              data-track-event="resume_download"
+              data-track-location="hero"
               aria-label="Download Shashank Shinde Software Test Engineer Resume PDF"
             >
               <ArrowDownToLine
@@ -193,7 +197,7 @@ export default function Hero() {
               />
 
               <span>
-                Download resume
+                Download Resume
               </span>
             </a>
           </div>

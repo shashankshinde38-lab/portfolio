@@ -230,11 +230,11 @@ export default function About() {
 
                   <div className="profile-title-block">
                     <h3>
-                      QA Engineer
+                      Shashank Shinde
                     </h3>
 
                     <p className="profile-subtext">
-                      Quality Advocate. Risk Detective.
+                      Software Test Engineer · QA Automation
                     </p>
                   </div>
                 </div>
@@ -303,7 +303,17 @@ export default function About() {
               <dl className="profile-details-mini">
                 <div>
                   <dt>
-                    Current role
+                    Role
+                  </dt>
+
+                  <dd>
+                    Software Test Engineer
+                  </dd>
+                </div>
+
+                <div>
+                  <dt>
+                    Company
                   </dt>
 
                   <dd>
@@ -317,27 +327,37 @@ export default function About() {
                   </dt>
 
                   <dd>
-                    Pune, India
+                    Pune, Maharashtra, India
                   </dd>
                 </div>
 
                 <div>
                   <dt>
-                    Education
+                    Specializations
                   </dt>
 
                   <dd>
-                    B.E. Information Tech
+                    Automation · API · Load QA
                   </dd>
                 </div>
 
                 <div>
                   <dt>
-                    Focus
+                    Primary Tools
                   </dt>
 
                   <dd>
-                    Automation · API · Load
+                    Selenium · Playwright · JMeter
+                  </dd>
+                </div>
+
+                <div>
+                  <dt>
+                    Credentials
+                  </dt>
+
+                  <dd>
+                    B.E. IT · SEED SDET
                   </dd>
                 </div>
               </dl>

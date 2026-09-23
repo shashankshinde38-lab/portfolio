@@ -89,47 +89,83 @@ export default function DriweCaseStudyPage() {
         </h2>
         <div className="content-grid-3">
           <div className="feature-glass-card">
-            <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">Application Type</h4>
+            <h3 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">Application Type</h3>
             <p className="text-white font-semibold mb-1">On-Demand Mobility &amp; Logistics</p>
             <p className="text-xs text-slate-300">Android Customer App, Android Driver App, Cloud Dispatch Engine.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-xs font-mono text-indigo-400 uppercase tracking-wider mb-1">QA Role &amp; Client</h4>
+            <h3 className="text-xs font-mono text-indigo-400 uppercase tracking-wider mb-1">QA Role &amp; Client</h3>
             <p className="text-white font-semibold mb-1">QA Engineer · Profcyma Solutions</p>
             <p className="text-xs text-slate-300">Full STLC test planning, load simulation, defect tracking in JIRA.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-1">Tools &amp; Stack</h4>
+            <h3 className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-1">Tools &amp; Stack</h3>
             <p className="text-white font-semibold mb-1">JMeter · Postman · JIRA · SQL</p>
             <p className="text-xs text-slate-300">Distributed thread groups, REST APIs, Razorpay webhooks, Android emulators.</p>
           </div>
         </div>
       </section>
 
-      {/* Testing Scope & Strategy */}
+      {/* Testing Challenge & QA Responsibility */}
       <section className="content-section">
         <h2 className="content-section-title">
           <Terminal size={22} className="text-indigo-400" aria-hidden="true" />
-          Testing Scope &amp; Strategy
+          Testing Challenge &amp; QA Responsibility
         </h2>
         <div className="content-grid-2">
           <div className="feature-glass-card">
-            <h3 className="feature-card-title text-cyan-300 mb-2">High-Concurrency Load Testing</h3>
+            <h3 className="feature-card-title text-cyan-300 mb-2">The High-Concurrency Challenge</h3>
             <p className="feature-card-desc">
-              Configured distributed Apache JMeter master-slave thread groups generating 100,000 concurrent user requests
-              against booking endpoints. Monitored database connection pool limits, queue backpressure, and 99th
-              percentile response latencies under dynamic surge pricing multipliers.
+              During surge demand spikes, thousands of riders simultaneously request cabs while hundreds of drivers stream GPS telemetry.
+              The primary QA challenge was validating server latency thresholds, preventing database connection pool starvation, and ensuring
+              that fast-moving ride status updates never permitted payment calculation anomalies or double-booking.
             </p>
           </div>
 
           <div className="feature-glass-card">
-            <h3 className="feature-card-title text-indigo-300 mb-2">Payment Gateway &amp; Webhook Reliability</h3>
+            <h3 className="feature-card-title text-indigo-300 mb-2">Shashank&apos;s QA Responsibility</h3>
             <p className="feature-card-desc">
-              Validated Razorpay webhook intake endpoints against network drops, delayed callback deliveries, and
-              simultaneous retry dispatches, ensuring payment status transitions occurred idempotently without double
-              credits or stuck authorizations.
+              Led complete quality engineering from test matrix creation to production sign-off. Formulated distributed Apache JMeter
+              thread group configurations simulating up to 100,000 concurrent users, designed Postman REST API collection assertions,
+              verified Razorpay webhook idempotency, and authored reproducible JIRA defect logs.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Important Workflows Validated */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Activity size={22} className="text-cyan-400" aria-hidden="true" />
+          Critical Workflows Validated
+        </h2>
+        <div className="content-grid-3">
+          <div className="feature-glass-card">
+            <h3 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">Workflow 01</h3>
+            <p className="text-white font-semibold mb-1">Driver Trip Dispatch &amp; Handshake</p>
+            <p className="text-xs text-slate-300">
+              Validated real-time geofence matching, driver broadcast notifications, trip accept timeouts, and automatic reroute handshakes
+              across simultaneous dispatch threads.
+            </p>
+          </div>
+
+          <div className="feature-glass-card">
+            <h3 className="text-xs font-mono text-indigo-400 uppercase tracking-wider mb-1">Workflow 02</h3>
+            <p className="text-white font-semibold mb-1">Surge Pricing &amp; Promo Computation</p>
+            <p className="text-xs text-slate-300">
+              Verified dynamic surge multipliers combined with promotional discount coupons, asserting that total fare calculations maintain
+              strict non-negative bounds under high-frequency recalculations.
+            </p>
+          </div>
+
+          <div className="feature-glass-card">
+            <h3 className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-1">Workflow 03</h3>
+            <p className="text-white font-semibold mb-1">Razorpay Webhook &amp; Wallet Settlement</p>
+            <p className="text-xs text-slate-300">
+              Asserted asynchronous payment status transitions, network disconnect retries, webhook signature verifications, and wallet balance
+              adjustments without duplicate credits.
             </p>
           </div>
         </div>
@@ -158,12 +194,21 @@ export default function DriweCaseStudyPage() {
               driver acceptances coincided with rapid client-side promo code re-applications within a 45ms window.
             </p>
             <p>
+              <strong className="text-white">Reproduction:</strong>
+              <br />
+              1. Rider creates booking request with active ₹100 discount coupon applied.
+              <br />
+              2. System initiates surge pricing adjustment (+1.5x) while rider rapidly toggles promo codes in mobile client.
+              <br />
+              3. Dispatch microservice calculates base fare concurrently with coupon subtraction in separate asynchronous database calls.
+            </p>
+            <p>
               <strong className="text-white">Symptom:</strong> Base fare was recalculated concurrently while discount
               subtractions executed out of order, resulting in negative totals (-₹45). The payment intake treated the
               negative balance as positive cashback, crediting the rider&apos;s platform wallet for taking a ride.
             </p>
             <p>
-              <strong className="text-white">Engineering Fix:</strong> Enforced atomic checkout locks on the booking
+              <strong className="text-white">Validation &amp; Engineering Fix:</strong> Enforced atomic checkout locks on the booking
               record, server-side promotional idempotency keys, and explicit non-negative boundary assertions: `Math.max(0,
               baseFare - promoDiscount)`.
             </p>
@@ -185,6 +230,42 @@ expect(response.status).toBe(200);`}
         </div>
       </section>
 
+      {/* First-Hand QA Insights & Lessons Learned */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Zap size={22} className="text-amber-400" aria-hidden="true" />
+          First-Hand Lessons Learned &amp; QA Takeaways
+        </h2>
+        <div className="content-grid-3">
+          <div className="insight-card">
+            <span className="insight-card-tag">Concurrency Insight</span>
+            <h3 className="insight-card-title">Atomic Fare Calculations</h3>
+            <p className="insight-card-desc">
+              Dynamic surge multipliers and promotional deductions must never execute as detached asynchronous DB writes.
+              Enforcing atomic transaction blocks prevents out-of-order balance calculations under concurrency.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Webhook Architecture</span>
+            <h3 className="insight-card-title">Strict Idempotency Keys</h3>
+            <p className="insight-card-desc">
+              Payment gateway callbacks must be deduplicated using unique event IDs. When network lags trigger gateway retries,
+              the system must return HTTP 200 without executing duplicate wallet balance adjustments.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Performance Testing</span>
+            <h3 className="insight-card-title">JMeter Concurrency Ramp-Up</h3>
+            <p className="insight-card-desc">
+              Testing 100,000 virtual users requires balanced ramp-up pacing across distributed master-slave nodes to prevent
+              artificial client-side socket starvation from masquerading as backend server latency.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Verified Results & Outcomes */}
       <section className="content-section">
         <h2 className="content-section-title">
@@ -193,17 +274,17 @@ expect(response.status).toBe(200);`}
         </h2>
         <div className="content-grid-3">
           <div className="feature-glass-card">
-            <h4 className="text-2xl font-bold text-white font-mono mb-1">412</h4>
+            <div className="text-2xl font-bold text-white font-mono mb-1">412</div>
             <p className="text-xs text-slate-300">Test Cases Designed &amp; Executed across customer and driver flows.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-2xl font-bold text-cyan-300 font-mono mb-1">78</h4>
+            <div className="text-2xl font-bold text-cyan-300 font-mono mb-1">78</div>
             <p className="text-xs text-slate-300">Defects Logged in JIRA (including 14 critical severity defects caught pre-release).</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-2xl font-bold text-emerald-300 font-mono mb-1">100,000</h4>
+            <div className="text-2xl font-bold text-emerald-300 font-mono mb-1">100,000</div>
             <p className="text-xs text-slate-300">Concurrent Virtual Users Simulated in JMeter verifying 99.9% uptime SLA.</p>
           </div>
         </div>
@@ -213,19 +294,19 @@ expect(response.status).toBe(200);`}
       <section className="content-section">
         <h2 className="content-section-title">
           <Zap size={22} className="text-cyan-400" aria-hidden="true" />
-          Related QA Skills
+          Related QA Skills &amp; Knowledge Graph
         </h2>
         <div className="content-grid-3">
           <Link href="/skills/performance-testing" className="feature-glass-card hover:border-emerald-500">
-            <h4 className="text-emerald-300 font-semibold mb-1">Apache JMeter Load Testing →</h4>
+            <h3 className="text-emerald-300 font-semibold mb-1">Apache JMeter Load Testing →</h3>
             <p className="text-xs text-slate-300">Distributed stress simulation, latency thresholds, and server resource monitoring.</p>
           </Link>
           <Link href="/skills/api-testing" className="feature-glass-card hover:border-violet-500">
-            <h4 className="text-violet-300 font-semibold mb-1">REST API Testing →</h4>
+            <h3 className="text-violet-300 font-semibold mb-1">REST API Testing →</h3>
             <p className="text-xs text-slate-300">Postman collection runs, Razorpay webhook validation, and status codes.</p>
           </Link>
           <Link href="/skills/mobile-testing" className="feature-glass-card hover:border-sky-500">
-            <h4 className="text-sky-300 font-semibold mb-1">Android Mobile Testing →</h4>
+            <h3 className="text-sky-300 font-semibold mb-1">Android Mobile Testing →</h3>
             <p className="text-xs text-slate-300">Customer and driver mobile testing across real devices and emulators.</p>
           </Link>
         </div>

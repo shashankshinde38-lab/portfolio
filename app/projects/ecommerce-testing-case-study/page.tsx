@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
+  Activity,
   ArrowUpRight,
   Bug,
   CheckCircle2,
@@ -86,21 +87,80 @@ export default function EcommerceCaseStudyPage() {
         </h2>
         <div className="content-grid-3">
           <div className="feature-glass-card">
-            <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">User Roles Tested</h4>
+            <h3 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">User Roles Tested</h3>
             <p className="text-white font-semibold mb-1">4 Distinct Roles</p>
             <p className="text-xs text-slate-300">Customer shoppers, vendor sellers, warehouse dispatchers, and system administrators.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-xs font-mono text-indigo-400 uppercase tracking-wider mb-1">Cross-Browser Scope</h4>
+            <h3 className="text-xs font-mono text-indigo-400 uppercase tracking-wider mb-1">Cross-Browser Scope</h3>
             <p className="text-white font-semibold mb-1">5 Major Browsers</p>
             <p className="text-xs text-slate-300">Google Chrome, Mozilla Firefox, Microsoft Edge, Apple Safari, and Opera parity.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-1">Critical Defect Scope</h4>
+            <h3 className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-1">Critical Defect Scope</h3>
             <p className="text-white font-semibold mb-1">18 Critical Bugs</p>
             <p className="text-xs text-slate-300">Caught and mitigated prior to production launch, including payment and returns defects.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Testing Challenge & QA Responsibility */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Terminal size={22} className="text-indigo-400" aria-hidden="true" />
+          Testing Challenge &amp; QA Responsibility
+        </h2>
+        <div className="content-grid-2">
+          <div className="feature-glass-card">
+            <h3 className="feature-card-title text-cyan-300 mb-2">The Multi-Tenant Settlement Challenge</h3>
+            <p className="feature-card-desc">
+              In a multi-vendor marketplace, single orders often contain items from separate third-party sellers. The core testing
+              challenge was verifying that partial item cancellations, discount coupons, and return refunds accurately calculated seller commissions
+              and tax splits across multiple currencies without financial ledger discrepancies.
+            </p>
+          </div>
+
+          <div className="feature-glass-card">
+            <h3 className="feature-card-title text-indigo-300 mb-2">Shashank&apos;s QA Responsibility</h3>
+            <p className="feature-card-desc">
+              Formulated the comprehensive cross-browser test automation matrix, authored Postman test suites simulating delayed and duplicate
+              payment webhooks, reconciled financial database ledgers using SQL assertions, and verified UI layout parity across 5 major browser engines.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Critical Workflows Validated */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Activity size={22} className="text-cyan-400" aria-hidden="true" />
+          Critical Workflows Validated
+        </h2>
+        <div className="content-grid-3">
+          <div className="feature-glass-card">
+            <h3 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">Workflow 01</h3>
+            <p className="text-white font-semibold mb-1">Multi-Vendor Cart &amp; Split Settlement</p>
+            <p className="text-xs text-slate-300">
+              Verified automated splitting of customer orders across independent vendors, asserting that commission withholdings and platform fees match vendor contract rates.
+            </p>
+          </div>
+
+          <div className="feature-glass-card">
+            <h3 className="text-xs font-mono text-indigo-400 uppercase tracking-wider mb-1">Workflow 02</h3>
+            <p className="text-white font-semibold mb-1">Partial Item Returns &amp; Re-dispatch</p>
+            <p className="text-xs text-slate-300">
+              Tested customer return authorization workflows where returning one item in a three-item order recalculates promotional thresholds and adjusts seller payouts.
+            </p>
+          </div>
+
+          <div className="feature-glass-card">
+            <h3 className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-1">Workflow 03</h3>
+            <p className="text-white font-semibold mb-1">Cross-Browser Checkout Parity</p>
+            <p className="text-xs text-slate-300">
+              Validated payment iframe interactions, session cookie isolation, and responsive cart drawers across Chrome, Firefox, Edge, Safari, and Opera.
+            </p>
           </div>
         </div>
       </section>
@@ -129,12 +189,21 @@ export default function EcommerceCaseStudyPage() {
               network latency spikes, the payment gateway retried the webhook callback.
             </p>
             <p>
+              <strong className="text-white">Reproduction:</strong>
+              <br />
+              1. Customer initiates partial return on item #2 from order with 3 items.
+              <br />
+              2. Return microservice triggers refund webhook to gateway and ledger service.
+              <br />
+              3. Simulating 3,500ms network timeout triggers payment gateway automatic retry dispatch with identical payload.
+            </p>
+            <p>
               <strong className="text-white">Symptom:</strong> The receiving webhook endpoint lacked idempotency
               fingerprinting. It processed the retry receipt as a new event, deducting the seller commission fee a second
               time and producing negative settlement ledger balances for merchants.
             </p>
             <p>
-              <strong className="text-white">Engineering Fix:</strong> Implemented distributed Redis transaction locking
+              <strong className="text-white">Validation &amp; Engineering Fix:</strong> Implemented distributed Redis transaction locking
               using <code>tx:&#123;transactionId&#125;</code> idempotency keys and built automated payment regression assertions verifying that
               each refund transaction commits exactly once.
             </p>
@@ -155,6 +224,42 @@ expect(sellerLedger.getBalance(sellerId)).toBeGreaterThanOrEqual(0.00);`}
         </div>
       </section>
 
+      {/* First-Hand QA Insights & Lessons Learned */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Zap size={22} className="text-amber-400" aria-hidden="true" />
+          First-Hand Lessons Learned &amp; QA Takeaways
+        </h2>
+        <div className="content-grid-3">
+          <div className="insight-card">
+            <span className="insight-card-tag">Financial QA</span>
+            <h3 className="insight-card-title">Database Idempotency Enforcements</h3>
+            <p className="insight-card-desc">
+              Application-level deduplication is vulnerable to high-throughput concurrency. Financial ledger mutations must enforce
+              unique database constraints on external transaction IDs.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Calculation Math</span>
+            <h3 className="insight-card-title">Tax &amp; Discount Rounding Rules</h3>
+            <p className="insight-card-desc">
+              When percentage discounts apply across multi-item baskets, asserting half-up rounding rules at the item level versus order
+              level is essential to avoid 1-cent financial discrepancies.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Cross-Browser Testing</span>
+            <h3 className="insight-card-title">Native Control Discrepancies</h3>
+            <p className="insight-card-desc">
+              Safari (WebKit) and Chrome (Blink) render date pickers and payment modal overlays differently. Automated tests must assert
+              both DOM visibility and element clickability across all targets.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Verified Outcomes */}
       <section className="content-section">
         <h2 className="content-section-title">
@@ -163,17 +268,17 @@ expect(sellerLedger.getBalance(sellerId)).toBeGreaterThanOrEqual(0.00);`}
         </h2>
         <div className="content-grid-3">
           <div className="feature-glass-card">
-            <h4 className="text-2xl font-bold text-white font-mono mb-1">520</h4>
+            <div className="text-2xl font-bold text-white font-mono mb-1">520</div>
             <p className="text-xs text-slate-300">Test Cases Designed across complete order-to-delivery workflow.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-2xl font-bold text-cyan-300 font-mono mb-1">18</h4>
+            <div className="text-2xl font-bold text-cyan-300 font-mono mb-1">18</div>
             <p className="text-xs text-slate-300">Critical Severity Bugs caught and mitigated prior to production launch.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-2xl font-bold text-emerald-300 font-mono mb-1">5 Browsers</h4>
+            <div className="text-2xl font-bold text-emerald-300 font-mono mb-1">5 Browsers</div>
             <p className="text-xs text-slate-300">Cross-Browser Parity verified across desktop Chrome, Edge, Firefox, Safari.</p>
           </div>
         </div>
@@ -183,16 +288,20 @@ expect(sellerLedger.getBalance(sellerId)).toBeGreaterThanOrEqual(0.00);`}
       <section className="content-section">
         <h2 className="content-section-title">
           <Zap size={22} className="text-cyan-400" aria-hidden="true" />
-          Related QA Skills
+          Related QA Skills &amp; Knowledge Graph
         </h2>
-        <div className="content-grid-2">
+        <div className="content-grid-3">
           <Link href="/skills/selenium-automation" className="feature-glass-card hover:border-cyan-500">
-            <h4 className="text-cyan-300 font-semibold mb-1">Selenium WebDriver →</h4>
+            <h3 className="text-cyan-300 font-semibold mb-1">Selenium WebDriver →</h3>
             <p className="text-xs text-slate-300">Automating cross-browser e-commerce checkout and returns flows.</p>
           </Link>
           <Link href="/skills/api-testing" className="feature-glass-card hover:border-violet-500">
-            <h4 className="text-violet-300 font-semibold mb-1">REST API Validation →</h4>
+            <h3 className="text-violet-300 font-semibold mb-1">REST API Validation →</h3>
             <p className="text-xs text-slate-300">Webhook idempotency, payment signatures, and schema conformity.</p>
+          </Link>
+          <Link href="/skills/playwright-automation" className="feature-glass-card hover:border-indigo-500">
+            <h3 className="text-indigo-300 font-semibold mb-1">Playwright TS/JS →</h3>
+            <p className="text-xs text-slate-300">Fast modern browser contexts for multi-role user testing.</p>
           </Link>
         </div>
       </section>

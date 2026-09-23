@@ -29,6 +29,7 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
+import { trackEvent } from "@/web/utils/analytics";
 
 import "./ContactSection.css";
 
@@ -159,6 +160,7 @@ export default function ContactSection() {
   const [emailCopied, setEmailCopied] = useState(false);
 
   const formRef = useRef<HTMLFormElement | null>(null);
+  const hasTrackedStart = useRef(false);
 
   /* Premium reason dropdown */
 
@@ -229,6 +231,11 @@ export default function ContactSection() {
   ) => {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement;
     const { name, value } = target;
+
+    if (!hasTrackedStart.current) {
+      hasTrackedStart.current = true;
+      trackEvent("contact_start", { location: "contact_form" });
+    }
 
     setFormData((previous) => ({
       ...previous,
@@ -694,6 +701,7 @@ export default function ContactSection() {
 
       setFormStatus("sent");
       setShowSuccessModal(true);
+      trackEvent("contact_submit_success", { reasonCategory: liveReason });
 
       setFormData({
         fullName: "",
@@ -793,9 +801,8 @@ export default function ContactSection() {
         </div>
 
         <p className="form-heading-description">
-          Tell me a little about what you have in mind.
-          I&apos;ll use the details below only to respond
-          to your enquiry.
+          Discuss QA, testing, and automation opportunities, or request detailed test artifact walkthroughs.
+          I&apos;ll use the details below only to respond to your enquiry.
         </p>
 
         {/* =====================================================
@@ -1434,7 +1441,7 @@ export default function ContactSection() {
               aria-hidden="true"
             />
 
-            Your details stay private and are only used to reply.
+            Professional enquiries only. Your details stay private and are only used to reply.
           </p>
         </form>
       </div>

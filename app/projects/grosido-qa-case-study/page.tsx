@@ -85,47 +85,80 @@ export default function GrosidoCaseStudyPage() {
         </h2>
         <div className="content-grid-3">
           <div className="feature-glass-card">
-            <h4 className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-1">Architecture</h4>
+            <h3 className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-1">Architecture</h3>
             <p className="text-white font-semibold mb-1">3 Integrated Modules</p>
             <p className="text-xs text-slate-300">Customer Android App, Web Admin Panel, and Delivery Partner App.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">QA Role &amp; Focus</h4>
+            <h3 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">QA Role &amp; Focus</h3>
             <p className="text-white font-semibold mb-1">Automation &amp; Functional QA</p>
             <p className="text-xs text-slate-300">Inventory sync, cart promotions, order dispatch, regression suites.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-xs font-mono text-indigo-400 uppercase tracking-wider mb-1">Automation Stack</h4>
+            <h3 className="text-xs font-mono text-indigo-400 uppercase tracking-wider mb-1">Automation Stack</h3>
             <p className="text-white font-semibold mb-1">Selenium · TestNG · Java · POM</p>
             <p className="text-xs text-slate-300">Data-driven providers, parallel runners, and JIRA defect lifecycle.</p>
           </div>
         </div>
       </section>
 
-      {/* Test Strategy */}
+      {/* Testing Challenge & QA Responsibility */}
       <section className="content-section">
         <h2 className="content-section-title">
-          <Code2 size={22} className="text-cyan-400" aria-hidden="true" />
-          Test Automation Strategy
+          <Terminal size={22} className="text-indigo-400" aria-hidden="true" />
+          Testing Challenge &amp; QA Responsibility
         </h2>
         <div className="content-grid-2">
           <div className="feature-glass-card">
-            <h3 className="feature-card-title text-cyan-300 mb-2">Page Object Model (POM) Modularization</h3>
+            <h3 className="feature-card-title text-cyan-300 mb-2">The Multi-Module Synchronization Challenge</h3>
             <p className="feature-card-desc">
-              Encapsulated cart actions, product search locators, and payment authorization steps into isolated page
-              classes. Tests interact exclusively through high-level business methods, ensuring clean test maintenance
-              when frontend layouts update.
+              Grosido coordinates real-time inventory and pricing across an e-commerce web admin dashboard, customer mobile app,
+              and logistics delivery app. The key QA challenge was verifying that sudden price changes, coupon revocations, and
+              limited-stock flash sales synced instantaneously across all 3 modules without serving stale cached prices during checkout.
             </p>
           </div>
 
           <div className="feature-glass-card">
-            <h3 className="feature-card-title text-emerald-300 mb-2">Sprint Smoke &amp; Sanity Cycles</h3>
+            <h3 className="feature-card-title text-emerald-300 mb-2">Shashank&apos;s QA Responsibility</h3>
             <p className="feature-card-desc">
-              Structured a two-tiered test execution strategy: a rapid smoke suite verifying critical purchase flows
-              on each sprint build, followed by nightly full regression sweeps covering catalog search, coupons, and
-              driver dispatch.
+              Architected a maintainable Selenium WebDriver automation framework using Java and the Page Object Model (POM).
+              Authored two-tiered CI smoke and regression suites in TestNG, designed data-driven test providers with Apache POI,
+              and validated Redis cache invalidation hooks during flash sales.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Critical Workflows Validated */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Code2 size={22} className="text-cyan-400" aria-hidden="true" />
+          Critical Workflows Validated
+        </h2>
+        <div className="content-grid-3">
+          <div className="feature-glass-card">
+            <h3 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">Workflow 01</h3>
+            <p className="text-white font-semibold mb-1">Dynamic Cart &amp; Promo Recalculation</p>
+            <p className="text-xs text-slate-300">
+              Verified coupon code applications, cart item quantity alterations, and tax re-evaluations across multiple product categories.
+            </p>
+          </div>
+
+          <div className="feature-glass-card">
+            <h3 className="text-xs font-mono text-indigo-400 uppercase tracking-wider mb-1">Workflow 02</h3>
+            <p className="text-white font-semibold mb-1">Admin Catalog Price Mutations</p>
+            <p className="text-xs text-slate-300">
+              Tested immediate synchronization between web admin catalog adjustments and consumer cart subtotals to prevent stale pricing leaks.
+            </p>
+          </div>
+
+          <div className="feature-glass-card">
+            <h3 className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-1">Workflow 03</h3>
+            <p className="text-white font-semibold mb-1">Delivery Dispatch &amp; Handover</p>
+            <p className="text-xs text-slate-300">
+              Validated customer order packing, delivery boy partner route assignment, and real-time OTP confirmation handovers.
             </p>
           </div>
         </div>
@@ -154,12 +187,21 @@ export default function GrosidoCaseStudyPage() {
               checkout carts, the store administrator updated catalog prices or revoked the promotion in the Admin Panel.
             </p>
             <p>
+              <strong className="text-white">Reproduction:</strong>
+              <br />
+              1. Customer adds grocery item with active 20% discount to cart.
+              <br />
+              2. Store administrator revokes promotional price in Admin Dashboard and updates base price from ₹120 to ₹150.
+              <br />
+              3. Customer proceeds to final payment review without refreshing product listing page.
+            </p>
+            <p>
               <strong className="text-white">Symptom:</strong> The customer cart UI retained the stale discounted pricing,
               while the payment gateway backend billed the full updated baseline amount upon checkout authorization,
               triggering customer complaints.
             </p>
             <p>
-              <strong className="text-white">Engineering Fix:</strong> Added automated Redis cache eviction hooks on
+              <strong className="text-white">Validation &amp; Engineering Fix:</strong> Added automated Redis cache eviction hooks on
               product catalog price mutations and built Selenium POM assertions verifying that active carts re-validate
               item pricing against the live inventory database before checkout authorization.
             </p>
@@ -181,6 +223,42 @@ assertThat(cartPage.getSubtotal())
         </div>
       </section>
 
+      {/* First-Hand QA Insights & Lessons Learned */}
+      <section className="content-section">
+        <h2 className="content-section-title">
+          <Zap size={22} className="text-amber-400" aria-hidden="true" />
+          First-Hand Lessons Learned &amp; QA Takeaways
+        </h2>
+        <div className="content-grid-3">
+          <div className="insight-card">
+            <span className="insight-card-tag">Caching Strategy</span>
+            <h3 className="insight-card-title">Cart Read-Through Validation</h3>
+            <p className="insight-card-desc">
+              Catalog caches optimize browsing speed, but checkout sessions must execute an atomic read-through to live inventory
+              before payment tokenization to prevent pricing disparities.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Automation Architecture</span>
+            <h3 className="insight-card-title">POM Locator Encapsulation</h3>
+            <p className="insight-card-desc">
+              Abstracting locators into dedicated Page Classes shields test logic from breaking when frontend developers update
+              component styles or class selectors, reducing script maintenance overhead.
+            </p>
+          </div>
+
+          <div className="insight-card">
+            <span className="insight-card-tag">Test Reliability</span>
+            <h3 className="insight-card-title">Dynamic Synchronization</h3>
+            <p className="insight-card-desc">
+              Eliminating arbitrary `Thread.sleep()` in favor of explicit `WebDriverWait` with expected conditions cut false-positive
+              flaky test failures by over 80% across parallel CI test runs.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Verified Outcomes */}
       <section className="content-section">
         <h2 className="content-section-title">
@@ -189,17 +267,17 @@ assertThat(cartPage.getSubtotal())
         </h2>
         <div className="content-grid-3">
           <div className="feature-glass-card">
-            <h4 className="text-2xl font-bold text-white font-mono mb-1">638</h4>
+            <div className="text-2xl font-bold text-white font-mono mb-1">638</div>
             <p className="text-xs text-slate-300">Test Cases Designed &amp; Maintained across 3 application modules.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-2xl font-bold text-emerald-300 font-mono mb-1">~40%</h4>
+            <div className="text-2xl font-bold text-emerald-300 font-mono mb-1">~40%</div>
             <p className="text-xs text-slate-300">Reduction in Regression Cycle Time through Selenium + TestNG framework.</p>
           </div>
 
           <div className="feature-glass-card">
-            <h4 className="text-2xl font-bold text-cyan-300 font-mono mb-1">112</h4>
+            <div className="text-2xl font-bold text-cyan-300 font-mono mb-1">112</div>
             <p className="text-xs text-slate-300">Defects Logged and Resolved in JIRA (including 23 critical severity issues).</p>
           </div>
         </div>
@@ -209,19 +287,19 @@ assertThat(cartPage.getSubtotal())
       <section className="content-section">
         <h2 className="content-section-title">
           <Zap size={22} className="text-cyan-400" aria-hidden="true" />
-          Related QA Skills
+          Related QA Skills &amp; Knowledge Graph
         </h2>
         <div className="content-grid-3">
           <Link href="/skills/selenium-automation" className="feature-glass-card hover:border-cyan-500">
-            <h4 className="text-cyan-300 font-semibold mb-1">Selenium WebDriver →</h4>
+            <h3 className="text-cyan-300 font-semibold mb-1">Selenium WebDriver →</h3>
             <p className="text-xs text-slate-300">Page Object Model design and automated TestNG parallel suites.</p>
           </Link>
           <Link href="/skills/api-testing" className="feature-glass-card hover:border-violet-500">
-            <h4 className="text-violet-300 font-semibold mb-1">REST API Testing →</h4>
+            <h3 className="text-violet-300 font-semibold mb-1">REST API Testing →</h3>
             <p className="text-xs text-slate-300">Postman collection validation for order processing APIs.</p>
           </Link>
           <Link href="/skills/mobile-testing" className="feature-glass-card hover:border-sky-500">
-            <h4 className="text-sky-300 font-semibold mb-1">Android Mobile Testing →</h4>
+            <h3 className="text-sky-300 font-semibold mb-1">Android Mobile Testing →</h3>
             <p className="text-xs text-slate-300">Grocery customer app and delivery boy partner mobile QA.</p>
           </Link>
         </div>
