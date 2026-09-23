@@ -18,7 +18,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/skills/performance-tes
 export const metadata: Metadata = {
   title: "Apache JMeter Performance & Load Testing | Shashank Shinde — Software Test Engineer",
   description:
-    "Explore Shashank Shinde's performance engineering with Apache JMeter. Distributed load simulation, 100k virtual users, latency SLA thresholds, and connection pool bottlenecks.",
+    "Apache JMeter performance testing by Shashank Shinde: distributed load simulation, 100k virtual users, latency SLA benchmarks, and bottleneck isolation.",
   alternates: {
     canonical: pageUrl,
   },

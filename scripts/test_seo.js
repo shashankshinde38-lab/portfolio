@@ -48,7 +48,8 @@ async function runExhaustiveAudit() {
   );
   assert(
     "Meta description matches exact target",
-    html.includes('content="Shashank Shinde is a Software Test Engineer and QA Automation Engineer based in Pune, specializing in Selenium, Playwright, API testing, Postman, JMeter, Appium and software quality assurance."')
+    html.includes('content="Shashank Shinde is a Software Test Engineer &amp; QA Automation specialist in Pune, skilled in Selenium, Playwright, API testing, Postman, JMeter, and Appium."') ||
+      html.includes('content="Shashank Shinde is a Software Test Engineer & QA Automation specialist in Pune, skilled in Selenium, Playwright, API testing, Postman, JMeter, and Appium."')
   );
 
   // Open Graph & Twitter

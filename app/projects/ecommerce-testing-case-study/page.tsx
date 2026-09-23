@@ -20,7 +20,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/projects/ecommerce-tes
 export const metadata: Metadata = {
   title: "E-Commerce Marketplace QA Case Study | Shashank Shinde — Software Test Engineer",
   description:
-    "Explore Shashank Shinde's QA case study for an E-Commerce marketplace: 5-browser cross-browser testing, payment checkout regression, and refund webhook double-deduction fix.",
+    "QA case study for E-Commerce by Shashank Shinde: 5-browser test matrix, payment checkout regression, and refund webhook double-deduction mitigation.",
   alternates: {
     canonical: pageUrl,
   },

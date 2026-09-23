@@ -22,7 +22,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/projects/ride-sharing-
 export const metadata: Metadata = {
   title: "Ride Sharing Application QA Case Study | Shashank Shinde — Software Test Engineer",
   description:
-    "Explore Shashank Shinde's QA case study for an Android Ride Sharing app: 22 REST API endpoints, real-time seat matching, and concurrent over-allocation race condition fix.",
+    "QA case study for Ride Sharing by Shashank Shinde: 22 REST API endpoints, seat matching validation, and concurrent over-allocation race condition fix.",
   alternates: {
     canonical: pageUrl,
   },

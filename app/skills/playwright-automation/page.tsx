@@ -17,7 +17,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/skills/playwright-auto
 export const metadata: Metadata = {
   title: "Playwright E2E Automation Testing | Shashank Shinde — Software Test Engineer",
   description:
-    "Explore Shashank Shinde's Playwright test automation engineering in TypeScript. Auto-waiting assertions, isolated browser contexts, network mocking, and CI/CD gates.",
+    "Playwright test automation engineering in TypeScript by Shashank Shinde: auto-waiting assertions, browser contexts, network mocking, and CI/CD gates.",
   alternates: {
     canonical: pageUrl,
   },

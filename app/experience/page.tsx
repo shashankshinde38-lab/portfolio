@@ -17,7 +17,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/experience";
 export const metadata: Metadata = {
   title: "Work Experience | Shashank Shinde — Software Test Engineer",
   description:
-    "Explore Shashank Shinde's professional QA engineering work history at Profcyma Solutions in Pune. Full STLC test plans, CI/CD gates, automation, and release validation.",
+    "Explore Shashank Shinde's QA work history at Profcyma Solutions in Pune: STLC test execution, CI/CD gates, automated regression, and release sign-offs.",
   alternates: {
     canonical: pageUrl,
   },

@@ -18,7 +18,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/projects/grosido-qa-ca
 export const metadata: Metadata = {
   title: "Grosido Grocery Delivery QA Case Study | Shashank Shinde — Software Test Engineer",
   description:
-    "Explore Shashank Shinde's QA case study for Grosido: Selenium WebDriver POM automation framework, ~40% regression cycle time reduction, and cache desync bug fix.",
+    "QA case study for Grosido by Shashank Shinde: Selenium POM framework, 40% faster regression cycles, and distributed cache desync defect mitigation.",
   alternates: {
     canonical: pageUrl,
   },

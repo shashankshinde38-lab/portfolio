@@ -18,7 +18,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/skills/api-testing";
 export const metadata: Metadata = {
   title: "REST API Testing & Postman Validation | Shashank Shinde — Software Test Engineer",
   description:
-    "Learn about Shashank Shinde's REST API testing experience using Postman and REST Assured. JSON schema validation, webhook idempotency, and status code verification.",
+    "REST API testing expertise by Shashank Shinde: Postman, REST Assured, JSON schema validation, webhook idempotency, and contract assertion pipelines.",
   alternates: {
     canonical: pageUrl,
   },

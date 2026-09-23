@@ -21,7 +21,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/projects/urban-build-t
 export const metadata: Metadata = {
   title: "Urban Build Lead Generation QA Case Study | Shashank Shinde — Software Test Engineer",
   description:
-    "Explore Shashank Shinde's QA case study for Urban Build: Android lead generation testing, high-latency mobile networks, and rapid multi-tap duplicate lead bug fix.",
+    "QA case study for Urban Build by Shashank Shinde: Android lead capture, high-latency network testing, and rapid multi-tap duplicate lead prevention.",
   alternates: {
     canonical: pageUrl,
   },

@@ -20,7 +20,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/about";
 export const metadata: Metadata = {
   title: "About Shashank Shinde | Software Test Engineer & QA Automation Specialist",
   description:
-    "Learn about Shashank Shinde's professional QA background, engineering approach, SDET qualifications, education from University of Pune, and testing philosophy.",
+    "Learn about Shashank Shinde: QA background, SDET qualifications, University of Pune education, automation approach, and testing philosophy.",
   alternates: {
     canonical: pageUrl,
   },

@@ -18,7 +18,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/skills/selenium-automa
 export const metadata: Metadata = {
   title: "Selenium Automation Testing | Shashank Shinde — Software Test Engineer",
   description:
-    "Learn about Shashank Shinde's Selenium WebDriver automation experience using Java, TestNG, Page Object Model, Cucumber BDD, and CI/CD regression testing.",
+    "Selenium WebDriver automation in Java & TestNG by Shashank Shinde: Page Object Model, Cucumber BDD frameworks, and CI/CD regression test pipelines.",
   alternates: {
     canonical: pageUrl,
   },

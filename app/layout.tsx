@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: "%s | Shashank Shinde",
   },
   description:
-    "Shashank Shinde is a Software Test Engineer and QA Automation Engineer based in Pune, specializing in Selenium, Playwright, API testing, Postman, JMeter, Appium and software quality assurance.",
+    "Shashank Shinde is a Software Test Engineer & QA Automation specialist in Pune, skilled in Selenium, Playwright, API testing, Postman, JMeter, and Appium.",
   authors: [{ name: "Shashank Shinde", url: siteUrl }],
   creator: "Shashank Shinde",
   publisher: "Shashank Shinde",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Shashank Shinde | Software Test Engineer & QA Automation Engineer",
     description:
-      "Shashank Shinde is a Software Test Engineer and QA Automation Engineer based in Pune, specializing in Selenium, Playwright, API testing, Postman, JMeter, Appium and software quality assurance.",
+      "Shashank Shinde is a Software Test Engineer & QA Automation specialist in Pune, skilled in Selenium, Playwright, API testing, Postman, JMeter, and Appium.",
     type: "profile",
     url: siteUrl,
     siteName: "Shashank Shinde Portfolio",
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Shashank Shinde | Software Test Engineer & QA Automation Engineer",
     description:
-      "Shashank Shinde is a Software Test Engineer and QA Automation Engineer based in Pune, specializing in Selenium, Playwright, API testing, Postman, JMeter, Appium and software quality assurance.",
+      "Shashank Shinde is a Software Test Engineer & QA Automation specialist in Pune, skilled in Selenium, Playwright, API testing, Postman, JMeter, and Appium.",
     images: [`${siteUrl}/images/og-image.png`],
   },
   robots: {

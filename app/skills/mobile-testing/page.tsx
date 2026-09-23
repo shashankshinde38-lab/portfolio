@@ -18,7 +18,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/skills/mobile-testing"
 export const metadata: Metadata = {
   title: "Appium & Android Mobile Testing | Shashank Shinde — Software Test Engineer",
   description:
-    "Explore Shashank Shinde's mobile QA testing experience with Appium and Android native applications. Real devices, emulators, network throttling, and rapid multi-tap handling.",
+    "Mobile QA testing with Appium and Android native apps by Shashank Shinde: real-device testing, emulator suites, network throttling, and gesture automation.",
   alternates: {
     canonical: pageUrl,
   },

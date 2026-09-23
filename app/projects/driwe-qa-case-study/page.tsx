@@ -21,7 +21,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/projects/driwe-qa-case
 export const metadata: Metadata = {
   title: "DRIWE Cab & Courier QA Case Study | Shashank Shinde — Software Test Engineer",
   description:
-    "Explore Shashank Shinde's QA case study for DRIWE: 100k-user distributed Apache JMeter load testing, Razorpay webhook validation, and negative fare race condition fix.",
+    "QA case study for DRIWE by Shashank Shinde: 100k distributed JMeter load testing, Razorpay webhook validation, and negative-fare race condition fix.",
   alternates: {
     canonical: pageUrl,
   },

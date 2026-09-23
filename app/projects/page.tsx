@@ -21,7 +21,7 @@ const pageUrl = "https://shashankportfolio-jet.vercel.app/projects";
 export const metadata: Metadata = {
   title: "Software Testing Projects & QA Case Studies | Shashank Shinde",
   description:
-    "Explore 5 real-world QA case studies by Shashank Shinde. End-to-end automation, distributed JMeter load testing, API validation, and critical defect discoveries.",
+    "Explore 5 QA case studies by Shashank Shinde: automated regression, distributed JMeter load testing, REST API validation, and defect investigations.",
   alternates: {
     canonical: pageUrl,
   },
