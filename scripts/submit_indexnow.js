@@ -13,7 +13,7 @@ import fs from "fs";
 import path from "path";
 
 const HOST = "shashankportfolio-jet.vercel.app";
-const KEY = "e5d7a8c4f9214b7bb901b0b5c1638210";
+const KEY = "91285c30ae1a43bdada96ae3b552634f";
 const KEY_LOCATION = `https://${HOST}/${KEY}.txt`;
 
 const URL_LIST = [

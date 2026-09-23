@@ -2,7 +2,7 @@
 
 **Target Domain**: [https://shashankportfolio-jet.vercel.app/](https://shashankportfolio-jet.vercel.app/)  
 **Sitemap**: [https://shashankportfolio-jet.vercel.app/sitemap.xml](https://shashankportfolio-jet.vercel.app/sitemap.xml)  
-**IndexNow Key**: [https://shashankportfolio-jet.vercel.app/e5d7a8c4f9214b7bb901b0b5c1638210.txt](https://shashankportfolio-jet.vercel.app/e5d7a8c4f9214b7bb901b0b5c1638210.txt)
+**IndexNow Key**: [https://shashankportfolio-jet.vercel.app/91285c30ae1a43bdada96ae3b552634f.txt](https://shashankportfolio-jet.vercel.app/91285c30ae1a43bdada96ae3b552634f.txt)
 
 This document provides exact, manual steps to register, verify, submit, and monitor the portfolio in Google Search Console, Bing Webmaster Tools, and the IndexNow protocol.
 
@@ -93,8 +93,8 @@ IndexNow allows search engines (Bing, Yandex, Naver, Seznam) to immediately disc
 
 ### Step 3.1: Verification Key Verification
 Confirm that your IndexNow key file is accessible publicly:
-👉 Open in browser: `https://shashankportfolio-jet.vercel.app/e5d7a8c4f9214b7bb901b0b5c1638210.txt`  
-It should display: `e5d7a8c4f9214b7bb901b0b5c1638210`
+👉 Open in browser: `https://shashankportfolio-jet.vercel.app/91285c30ae1a43bdada96ae3b552634f.txt`  
+It should display: `91285c30ae1a43bdada96ae3b552634f`
 
 ### Step 3.2: Submitting URLs via Script
 Whenever you push a significant update to your portfolio or deploy to Vercel, run the submission script:
