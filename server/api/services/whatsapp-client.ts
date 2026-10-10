@@ -80,22 +80,64 @@ export class WhatsAppApiClient {
   private baseURL: string;
   private token: string;
   private defaultSessionId?: string;
+  private cachedResolvedSessionId?: string;
 
   constructor(options?: { baseURL?: string; token?: string; defaultSessionId?: string }) {
-    this.baseURL = (
+    let rawUrl = (
       options?.baseURL ||
+      process.env.WHATSAPP_API_URL ||
       process.env.WHATSAPP_API_BASE_URL ||
       DEFAULT_BASE_URL
-    ).replace(/\/+$/, "");
+    ).trim();
 
-    const token = options?.token || process.env.WHATSAPP_API_TOKEN;
+    // If configured with full endpoint (e.g. ".../api/v1/send"), strip "/send" to obtain base API path
+    if (rawUrl.endsWith("/send")) {
+      rawUrl = rawUrl.slice(0, -5);
+    }
+    this.baseURL = rawUrl.replace(/\/+$/, "");
+
+    const token = (
+      options?.token ||
+      process.env.WHATSAPP_API_KEY ||
+      process.env.WHATSAPP_API_TOKEN
+    )?.trim();
+
     if (!token) {
       throw new Error(
-        "[WhatsAppApiClient] WHATSAPP_API_TOKEN is required in server environment variables."
+        "[WhatsAppApiClient] WHATSAPP_API_KEY or WHATSAPP_API_TOKEN is required in server environment variables."
       );
     }
     this.token = token;
-    this.defaultSessionId = options?.defaultSessionId || process.env.WHATSAPP_SESSION_ID;
+
+    const envSessionId = (options?.defaultSessionId || process.env.WHATSAPP_SESSION_ID || "").trim();
+    this.defaultSessionId = envSessionId ? envSessionId : undefined;
+  }
+
+  /**
+   * Resolves the target session ID.
+   * If not explicitly configured, queries GET /sessions to auto-detect the active connected session.
+   */
+  public async resolveSessionId(): Promise<string | undefined> {
+    if (this.defaultSessionId) {
+      return this.defaultSessionId;
+    }
+    if (this.cachedResolvedSessionId) {
+      return this.cachedResolvedSessionId;
+    }
+
+    try {
+      const res = await this.getSessions();
+      const sessions = (res.data?.sessions || res.sessions || []) as WhatsAppSession[];
+      const connected = sessions.find((s) => s.isConnected || s.status === "CONNECTED");
+      if (connected?.sessionId) {
+        this.cachedResolvedSessionId = connected.sessionId;
+        console.log(`[WhatsApp] Auto-detected active connected session: ${connected.sessionId}`);
+        return connected.sessionId;
+      }
+    } catch (err) {
+      console.warn("[WhatsApp] Failed to auto-detect active session from /sessions:", err);
+    }
+    return undefined;
   }
 
   /**
@@ -120,7 +162,10 @@ export class WhatsAppApiClient {
     return Math.min(MAX_RETRY_DELAY_MS, Math.round(expDelay + jitter));
   }
 
-  private isRetryable(status: number): boolean {
+  private isRetryable(status: number, errorCode?: string): boolean {
+    if (errorCode === "SESSION_DISCONNECTED") {
+      return false; // Do not retry disconnected sessions
+    }
     return status === 429 || status === 502 || status === 503 || status === 504;
   }
 
@@ -187,7 +232,17 @@ export class WhatsAppApiClient {
           (typeof payload.error === "string" ? payload.error : "") ||
           `WhatsApp API error (${response.status})`;
 
-        if (this.isRetryable(response.status) && attempt < MAX_RETRIES) {
+        // Special handling for SESSION_DISCONNECTED: fail fast without burning retry budget
+        if (response.status === 503 && (errorCode === "SESSION_DISCONNECTED" || payload.error === "SESSION_DISCONNECTED")) {
+          throw new WhatsAppApiError(
+            errorMessage,
+            503,
+            "SESSION_DISCONNECTED",
+            payload
+          );
+        }
+
+        if (this.isRetryable(response.status, errorCode) && attempt < MAX_RETRIES) {
           attempt++;
           const waitTime = this.calculateDelay(attempt);
           console.warn(
@@ -261,7 +316,9 @@ export class WhatsAppApiClient {
   }
 
   /**
-   * Dispatches a single WhatsApp message. Supports text, image, document, etc.
+   * Dispatches a single WhatsApp message with non-blocking resilient error handling.
+   * If session is disconnected (503), gateway error occurs (500), or network fails:
+   * logs a warning and returns { success: false, error: ... } without throwing.
    */
   public async sendMessage(
     payload: SendMessagePayload,
@@ -269,21 +326,67 @@ export class WhatsAppApiClient {
   ): Promise<WhatsAppApiResponse> {
     const to = WhatsAppApiClient.normalizePhone(payload.to);
     if (!to) {
-      throw new WhatsAppApiError("A valid recipient phone number is required.", 400, "VALIDATION_ERROR");
+      console.warn("[WhatsApp] Invalid recipient phone number, skipping delivery.");
+      return {
+        success: false,
+        error: "VALIDATION_ERROR",
+        message: "A valid recipient phone number is required.",
+      };
     }
 
     const key = idempotencyKey || WhatsAppApiClient.generateIdempotencyKey("msg");
+    const sessionId = payload.sessionId || (await this.resolveSessionId());
+
     const body: SendMessagePayload = {
       ...payload,
       to,
-      sessionId: payload.sessionId || this.defaultSessionId,
+      ...(sessionId ? { sessionId } : {}),
     };
 
-    return this.request("/send", {
-      method: "POST",
-      body,
-      idempotencyKey: key,
-    });
+    try {
+      return await this.request("/send", {
+        method: "POST",
+        body,
+        idempotencyKey: key,
+      });
+    } catch (err: unknown) {
+      if (err instanceof WhatsAppApiError) {
+        if (err.status === 503 || err.errorCode === "SESSION_DISCONNECTED") {
+          console.warn(`[WhatsApp] Session disconnected, skipping delivery: ${err.message}`);
+          return {
+            success: false,
+            error: "SESSION_DISCONNECTED",
+            message: err.message,
+            status: "DISCONNECTED",
+          };
+        }
+        if (err.status >= 500) {
+          console.warn(`[WhatsApp] Gateway error (${err.status}), skipping delivery: ${err.message}`);
+          return {
+            success: false,
+            error: err.errorCode || `HTTP_${err.status}`,
+            message: err.message,
+            status: "ERROR",
+          };
+        }
+        console.warn(`[WhatsApp] API error (${err.status}), skipping delivery: ${err.message}`);
+        return {
+          success: false,
+          error: err.errorCode || `HTTP_${err.status}`,
+          message: err.message,
+          status: "FAILED",
+        };
+      }
+
+      const errMsg = (err as Error)?.message || String(err);
+      console.warn(`[WhatsApp] Network or communication failure, skipping delivery: ${errMsg}`);
+      return {
+        success: false,
+        error: "NETWORK_ERROR",
+        message: errMsg,
+        status: "FAILED",
+      };
+    }
   }
 
   /**
@@ -397,7 +500,7 @@ export class WhatsAppApiClient {
 let cachedClient: WhatsAppApiClient | null = null;
 
 export function getWhatsAppClient(): WhatsAppApiClient | null {
-  if (!process.env.WHATSAPP_API_TOKEN) {
+  if (!process.env.WHATSAPP_API_KEY && !process.env.WHATSAPP_API_TOKEN) {
     return null;
   }
   if (!cachedClient) {

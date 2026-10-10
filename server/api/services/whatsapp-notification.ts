@@ -98,15 +98,19 @@ export async function sendEnquiryWhatsAppNotifications(
     }
 
     if (!adminSent) {
-      await client.sendMessage({
+      const adminRes = await client.sendMessage({
         to: adminPhone,
         message: adminCaption,
         type: "text",
       });
+      if (adminRes.success) {
+        result.adminDelivered = true;
+        console.log(`[whatsapp-notification] Successfully alerted admin on WhatsApp (${adminPhone}).`);
+      } else {
+        result.adminError = adminRes.error || adminRes.message || "Delivery skipped";
+        console.warn(`[whatsapp-notification] Admin alert skipped or unconfirmed: ${result.adminError}`);
+      }
     }
-
-    result.adminDelivered = true;
-    console.log(`[whatsapp-notification] Successfully alerted admin on WhatsApp (${adminPhone}).`);
   } catch (err: unknown) {
     const msg = (err as Error)?.message || String(err);
     result.adminError = msg;
@@ -130,14 +134,19 @@ export async function sendEnquiryWhatsAppNotifications(
         "🌐 https://shashankportfolio-jet.vercel.app",
       ].join("\n");
 
-      await client.sendMessage({
+      const senderRes = await client.sendMessage({
         to: params.mobile.trim(),
         message: senderText,
         type: "text",
       });
 
-      result.senderDelivered = true;
-      console.log(`[whatsapp-notification] Successfully sent confirmation to sender on WhatsApp (${params.mobile}).`);
+      if (senderRes.success) {
+        result.senderDelivered = true;
+        console.log(`[whatsapp-notification] Successfully sent confirmation to sender on WhatsApp (${params.mobile}).`);
+      } else {
+        result.senderError = senderRes.error || senderRes.message || "Delivery skipped";
+        console.warn(`[whatsapp-notification] Sender confirmation skipped or unconfirmed: ${result.senderError}`);
+      }
     } catch (err: unknown) {
       const msg = (err as Error)?.message || String(err);
       result.senderError = msg;

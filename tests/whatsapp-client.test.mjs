@@ -187,3 +187,65 @@ test("Database migration script defines image_url column and index for enquiries
   assert.match(migration, /add\s+column\s+if\s+not\s+exists\s+image_url\s+text/i);
   assert.match(migration, /create\s+index\s+if\s+not\s+exists\s+enquiries_image_url_idx/i);
 });
+
+test("WhatsApp dispatch handles 503 SESSION_DISCONNECTED gracefully without throwing", async () => {
+  const mock = await createMockServer((req, res) => {
+    res.writeHead(503, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify({
+        success: false,
+        error: "SESSION_DISCONNECTED",
+        message: "WhatsApp session 'wa_test' is not currently connected.",
+      })
+    );
+  });
+
+  try {
+    const res = await fetch(`${mock.baseURL}/send`, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer wat_live_mock",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ to: "918080852689", message: "Disconnected test" }),
+    });
+
+    const data = await res.json();
+    assert.equal(res.status, 503);
+    assert.equal(data.success, false);
+    assert.equal(data.error, "SESSION_DISCONNECTED");
+  } finally {
+    await mock.close();
+  }
+});
+
+test("WhatsApp session auto-detection finds connected session from /sessions", async () => {
+  const mock = await createMockServer((req, res) => {
+    if (req.url.includes("/sessions")) {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({
+          success: true,
+          sessions: [
+            { sessionId: "wa_archived", status: "ARCHIVED", isConnected: false },
+            { sessionId: "wa_active_connected", status: "CONNECTED", isConnected: true },
+          ],
+        })
+      );
+    }
+  });
+
+  try {
+    const res = await fetch(`${mock.baseURL}/sessions`, {
+      method: "GET",
+      headers: { Authorization: "Bearer wat_live_mock" },
+    });
+    const data = await res.json();
+    assert.equal(data.success, true);
+    const active = data.sessions.find((s) => s.isConnected);
+    assert.equal(active.sessionId, "wa_active_connected");
+  } finally {
+    await mock.close();
+  }
+});
+
