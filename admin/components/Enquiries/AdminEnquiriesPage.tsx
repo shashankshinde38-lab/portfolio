@@ -23,6 +23,8 @@ import {
   CalendarClock,
   CheckCircle2,
   CircleDot,
+  ExternalLink,
+  Image as ImageIcon,
   Inbox,
   Mail,
   MailOpen,
@@ -1646,6 +1648,16 @@ export default function AdminEnquiriesPage() {
                                     : "Show more"}
                                 </button>
                               )}
+
+                            {row.image_url && (
+                              <div
+                                className="admin-table-image-badge"
+                                title="Image attached to enquiry"
+                              >
+                                <ImageIcon size={11} />
+                                <span>Image Attached</span>
+                              </div>
+                            )}
                           </td>
 
                           {/* RECEIVED */}
@@ -2034,6 +2046,50 @@ export default function AdminEnquiriesPage() {
                       }
                     </div>
                   </div>
+
+                  {/* -----------------------------------------
+                      ATTACHED IMAGE / MEDIA
+                  ----------------------------------------- */}
+
+                  {selected.image_url && (
+                    <div className="admin-modal-media-section">
+                      <div className="admin-modal-section-heading">
+                        <div>
+                          <ImageIcon
+                            size={15}
+                          />
+
+                          <span>
+                            Attached Image
+                          </span>
+                        </div>
+
+                        <a
+                          href={selected.image_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="admin-image-open-external"
+                        >
+                          <ExternalLink
+                            size={12}
+                          />
+
+                          <span>
+                            Open Full Size
+                          </span>
+                        </a>
+                      </div>
+
+                      <div className="admin-modal-image-preview-wrapper">
+                        <img
+                          src={selected.image_url}
+                          alt={`Attachment from ${selected.name}`}
+                          className="admin-modal-image-preview"
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
+                  )}
 
                   {/* -----------------------------------------
                       FEEDBACK

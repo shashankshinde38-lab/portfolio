@@ -17,6 +17,8 @@ export const enquiryCreateSchema = z.object({
   message: z.string().trim().min(1, "Message is required").max(1000, "Message cannot exceed 1000 characters"),
   reason: z.string().trim().max(100).optional(),
   website: z.string().trim().max(0).optional(),
+  image_url: z.string().trim().max(2000).optional().or(z.literal("")).or(z.null()),
+  image_data: z.string().optional().or(z.literal("")).or(z.null()),
 });
 
 export const enquiryStatusSchema = z.object({
@@ -32,6 +34,7 @@ export type Enquiry = {
   mobile: string | null;
   message: string;
   reason?: string | null;
+  image_url?: string | null;
   status: EnquiryStatus;
   created_at: string;
 };

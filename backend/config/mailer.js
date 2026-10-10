@@ -2210,8 +2210,7 @@ Stored in the secure Supabase enquiries inbox
   </table>
 
 </body>
-</html>
-    `,
+</html>`,
   };
 
   console.log(`[Mailer] Sending notification to ${mailOptions.to}...`);

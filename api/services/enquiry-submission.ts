@@ -1,12 +1,15 @@
 import "server-only";
 import { after } from "next/server";
+import crypto from "node:crypto";
 
 import { noStoreJson, publicError, safeApiMessage } from "@/api/helpers/api-response";
 import { insertEnquiry } from "@/api/services/enquiries";
 import { enquiryCreateSchema } from "@/api/schemas/enquiry-schema";
 import { sendContactNotification } from "@/api/services/mailer";
+import { sendEnquiryWhatsAppNotifications } from "@/api/services/whatsapp-notification";
+import { getSupabaseAdmin } from "@/api/helpers/supabase";
 
-const MAX_REQUEST_BYTES = 16_384;
+const MAX_REQUEST_BYTES = 524_288; // 512 KB
 
 function success(id?: string) {
   return noStoreJson(
@@ -35,6 +38,34 @@ function extract10DigitMobile(rawMobile?: string | null): string | null {
   return null;
 }
 
+async function uploadBase64Image(dataUrl: string): Promise<string | null> {
+  try {
+    const match = dataUrl.match(/^data:(image\/[a-zA-Z+]+);base64,(.+)$/);
+    if (!match) return null;
+    const mimeType = match[1];
+    const base64Data = match[2];
+    const buffer = Buffer.from(base64Data, "base64");
+    const ext = mimeType.split("/")[1] || "jpg";
+    const fileName = `enquiry_${Date.now()}_${crypto.randomBytes(4).toString("hex")}.${ext}`;
+
+    const admin = getSupabaseAdmin();
+    const { error } = await admin.storage
+      .from("enquiry-images")
+      .upload(fileName, buffer, { contentType: mimeType, upsert: true });
+
+    if (error) {
+      console.warn("[enquiry-submission] Base64 upload failed:", error);
+      return null;
+    }
+
+    const { data } = admin.storage.from("enquiry-images").getPublicUrl(fileName);
+    return data.publicUrl;
+  } catch (err) {
+    console.warn("[enquiry-submission] uploadBase64Image error:", err);
+    return null;
+  }
+}
+
 export async function submitEnquiry(req: Request) {
   try {
     const contentLength = Number(req.headers.get("content-length") || 0);
@@ -46,6 +77,9 @@ export async function submitEnquiry(req: Request) {
     }
     if (typeof body.website === "string" && body.website.trim()) return success();
 
+    const rawImageUrl = body.image_url || body.imageUrl || null;
+    const rawImageData = body.image_data || body.imageData || null;
+
     const parsed = enquiryCreateSchema.safeParse({
       name: body.name ?? body.full_name,
       email: body.email,
@@ -53,6 +87,8 @@ export async function submitEnquiry(req: Request) {
       message: body.message,
       reason: body.reason,
       website: body.website,
+      image_url: rawImageUrl,
+      image_data: rawImageData,
     });
     if (!parsed.success) {
       const errors: Record<string, string> = {};
@@ -63,7 +99,7 @@ export async function submitEnquiry(req: Request) {
       return publicError("Please check the highlighted fields.", 400, { errors });
     }
 
-    const { name, email, mobile, message, reason } = parsed.data;
+    const { name, email, mobile, message, reason, image_url, image_data } = parsed.data;
     const safeReason = reason || "General Inquiry";
     const rawMobile = mobile?.trim() || null;
     const dbMobile = extract10DigitMobile(rawMobile);
@@ -76,15 +112,22 @@ export async function submitEnquiry(req: Request) {
       }
     }
 
+    let resolvedImageUrl = image_url?.trim() || null;
+    if (!resolvedImageUrl && image_data) {
+      resolvedImageUrl = await uploadBase64Image(image_data);
+    }
+
     const { id } = await insertEnquiry({
       name,
       email,
       mobile: dbMobile,
       message: storedMessage,
       reason: safeReason,
+      image_url: resolvedImageUrl,
     });
 
     after(async () => {
+      // 1. Send Email Notification
       try {
         await sendContactNotification({
           full_name: name,
@@ -94,9 +137,24 @@ export async function submitEnquiry(req: Request) {
           message,
         });
       } catch (mailErr) {
-        console.warn("[enquiries] Notification delivery failed after the enquiry was stored:", mailErr);
+        console.warn("[enquiries] Email notification delivery failed:", mailErr);
+      }
+
+      // 2. Send WhatsApp Notifications (both sender & admin)
+      try {
+        await sendEnquiryWhatsAppNotifications({
+          name,
+          email,
+          mobile: rawMobile || dbMobile,
+          reason: safeReason,
+          message,
+          imageUrl: resolvedImageUrl,
+        });
+      } catch (waErr) {
+        console.warn("[enquiries] WhatsApp notification delivery failed:", waErr);
       }
     });
+
     return success(id);
   } catch (error: unknown) {
     console.error("[enquiries] submitEnquiry failed:", error);
