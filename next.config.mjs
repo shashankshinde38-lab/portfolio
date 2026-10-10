@@ -13,6 +13,14 @@ const nextConfig = {
   turbopack: {
     root: projectRoot,
   },
+  async rewrites() {
+    return [
+      {
+        source: "/api/contact",
+        destination: "/api/enquiries",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

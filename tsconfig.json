@@ -23,6 +23,9 @@
       }
     ],
     "paths": {
+      "@/api/*": [
+        "./server/api/*"
+      ],
       "@/*": [
         "./*"
       ]
@@ -36,8 +39,8 @@
     "web/**/*.tsx",
     "admin/**/*.ts",
     "admin/**/*.tsx",
-    "api/**/*.ts",
-    "api/**/*.tsx",
+    "server/**/*.ts",
+    "server/**/*.tsx",
     "proxy.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
