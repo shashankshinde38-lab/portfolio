@@ -335,12 +335,12 @@ export class WhatsAppApiClient {
     }
 
     const key = idempotencyKey || WhatsAppApiClient.generateIdempotencyKey("msg");
-    const sessionId = payload.sessionId || (await this.resolveSessionId());
+    const targetSessionId = payload.sessionId?.trim() || this.defaultSessionId?.trim() || undefined;
 
     const body: SendMessagePayload = {
       ...payload,
       to,
-      ...(sessionId ? { sessionId } : {}),
+      ...(targetSessionId ? { sessionId: targetSessionId } : {}),
     };
 
     try {
@@ -402,10 +402,12 @@ export class WhatsAppApiClient {
       to: WhatsAppApiClient.normalizePhone(r.to),
     }));
 
+    const targetSessionId = payload.sessionId?.trim() || this.defaultSessionId?.trim() || undefined;
+
     const body: SendBulkPayload = {
       ...payload,
       recipients: sanitizedRecipients,
-      sessionId: payload.sessionId || this.defaultSessionId,
+      ...(targetSessionId ? { sessionId: targetSessionId } : {}),
     };
 
     return this.request("/send-bulk", {
@@ -452,11 +454,13 @@ export class WhatsAppApiClient {
     category?: "TRANSACTIONAL" | "MARKETING" | "SUPPORT" | string;
     sessionId?: string;
   }): Promise<WhatsAppApiResponse> {
+    const targetSessionId = payload.sessionId?.trim() || this.defaultSessionId?.trim() || undefined;
+
     return this.request("/templates", {
       method: "POST",
       body: {
         ...payload,
-        sessionId: payload.sessionId || this.defaultSessionId,
+        ...(targetSessionId ? { sessionId: targetSessionId } : {}),
       },
     });
   }

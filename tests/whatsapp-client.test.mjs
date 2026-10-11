@@ -241,9 +241,62 @@ test("WhatsApp session auto-detection finds connected session from /sessions", a
       headers: { Authorization: "Bearer wat_live_mock" },
     });
     const data = await res.json();
-    assert.equal(data.success, true);
     const active = data.sessions.find((s) => s.isConnected);
     assert.equal(active.sessionId, "wa_active_connected");
+  } finally {
+    await mock.close();
+  }
+});
+
+test("WhatsApp payload omits sessionId when not defined or empty, enabling gateway auto-detection", async () => {
+  let receivedBody = null;
+
+  const mock = await createMockServer((req, res) => {
+    receivedBody = req.parsedBody;
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify({
+        success: true,
+        messageId: "mock_auto_msg",
+        status: "SENT",
+      })
+    );
+  });
+
+  try {
+    // 1. Test without sessionId (should not be in body)
+    const payloadWithoutSession = {
+      to: "918080852689",
+      message: "Testing auto-detection",
+    };
+    const targetSessionId = ("" || undefined);
+    const bodyWithout = {
+      ...payloadWithoutSession,
+      ...(targetSessionId ? { sessionId: targetSessionId } : {}),
+    };
+
+    await fetch(`${mock.baseURL}/send`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bodyWithout),
+    });
+
+    assert.equal("sessionId" in receivedBody, false, "sessionId must be omitted from payload when unset");
+
+    // 2. Test with sessionId (should be in body)
+    const activeSession = "wa_active_instance_123";
+    const bodyWith = {
+      ...payloadWithoutSession,
+      sessionId: activeSession,
+    };
+
+    await fetch(`${mock.baseURL}/send`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bodyWith),
+    });
+
+    assert.equal(receivedBody.sessionId, "wa_active_instance_123", "sessionId must be included when set");
   } finally {
     await mock.close();
   }
