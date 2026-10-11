@@ -337,8 +337,9 @@ export class WhatsAppApiClient {
     const key = idempotencyKey || WhatsAppApiClient.generateIdempotencyKey("msg");
     const targetSessionId = payload.sessionId?.trim() || this.defaultSessionId?.trim() || undefined;
 
+    const { sessionId: _ignoredSessionId, ...restPayload } = payload;
     const body: SendMessagePayload = {
-      ...payload,
+      ...restPayload,
       to,
       ...(targetSessionId ? { sessionId: targetSessionId } : {}),
     };
@@ -403,9 +404,10 @@ export class WhatsAppApiClient {
     }));
 
     const targetSessionId = payload.sessionId?.trim() || this.defaultSessionId?.trim() || undefined;
+    const { sessionId: _ignoredBulkSessionId, ...restBulkPayload } = payload;
 
     const body: SendBulkPayload = {
-      ...payload,
+      ...restBulkPayload,
       recipients: sanitizedRecipients,
       ...(targetSessionId ? { sessionId: targetSessionId } : {}),
     };
@@ -455,11 +457,12 @@ export class WhatsAppApiClient {
     sessionId?: string;
   }): Promise<WhatsAppApiResponse> {
     const targetSessionId = payload.sessionId?.trim() || this.defaultSessionId?.trim() || undefined;
+    const { sessionId: _ignoredTemplateSessionId, ...restTemplatePayload } = payload;
 
     return this.request("/templates", {
       method: "POST",
       body: {
-        ...payload,
+        ...restTemplatePayload,
         ...(targetSessionId ? { sessionId: targetSessionId } : {}),
       },
     });

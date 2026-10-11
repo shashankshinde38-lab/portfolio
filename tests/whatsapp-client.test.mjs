@@ -268,10 +268,12 @@ test("WhatsApp payload omits sessionId when not defined or empty, enabling gatew
     const payloadWithoutSession = {
       to: "918080852689",
       message: "Testing auto-detection",
+      sessionId: "",
     };
-    const targetSessionId = ("" || undefined);
+    const targetSessionId = (payloadWithoutSession.sessionId?.trim() || undefined);
+    const { sessionId: _ignored, ...rest } = payloadWithoutSession;
     const bodyWithout = {
-      ...payloadWithoutSession,
+      ...rest,
       ...(targetSessionId ? { sessionId: targetSessionId } : {}),
     };
 
@@ -281,7 +283,7 @@ test("WhatsApp payload omits sessionId when not defined or empty, enabling gatew
       body: JSON.stringify(bodyWithout),
     });
 
-    assert.equal("sessionId" in receivedBody, false, "sessionId must be omitted from payload when unset");
+    assert.equal("sessionId" in receivedBody, false, "sessionId must be omitted from payload when unset or empty");
 
     // 2. Test with sessionId (should be in body)
     const activeSession = "wa_active_instance_123";
