@@ -18,7 +18,7 @@ export interface WhatsAppNotificationResult {
   senderError?: string;
 }
 
-const DEFAULT_ADMIN_PHONE = "918080852689";
+const DEFAULT_ADMIN_PHONE = "918999246557";
 
 function formatISTTimestamp(): string {
   try {

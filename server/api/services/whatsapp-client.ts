@@ -174,6 +174,7 @@ export class WhatsAppApiClient {
     headers.set("Authorization", `Bearer ${this.token}`);
     headers.set("x-api-key", this.token);
     headers.set("Content-Type", "application/json");
+    headers.set("bypass-tunnel-reminder", "true");
     if (idempotencyKey) {
       headers.set("Idempotency-Key", idempotencyKey);
     }
