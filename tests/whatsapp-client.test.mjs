@@ -248,7 +248,7 @@ test("WhatsApp session auto-detection finds connected session from /sessions", a
   }
 });
 
-test("WhatsApp payload omits sessionId when not defined or empty, enabling gateway auto-detection", async () => {
+test("WhatsApp payload includes instanceId when set and omits when unset or empty", async () => {
   let receivedBody = null;
 
   const mock = await createMockServer((req, res) => {
@@ -264,17 +264,21 @@ test("WhatsApp payload omits sessionId when not defined or empty, enabling gatew
   });
 
   try {
-    // 1. Test without sessionId (should not be in body)
-    const payloadWithoutSession = {
+    // 1. Test without instanceId/sessionId (should not be in body)
+    const payloadWithoutInstance = {
       to: "918080852689",
       message: "Testing auto-detection",
+      instanceId: "",
       sessionId: "",
     };
-    const targetSessionId = (payloadWithoutSession.sessionId?.trim() || undefined);
-    const { sessionId: _ignored, ...rest } = payloadWithoutSession;
+    const targetInstanceId =
+      payloadWithoutInstance.instanceId?.trim() ||
+      payloadWithoutInstance.sessionId?.trim() ||
+      undefined;
+    const { instanceId: _i, sessionId: _s, ...rest } = payloadWithoutInstance;
     const bodyWithout = {
       ...rest,
-      ...(targetSessionId ? { sessionId: targetSessionId } : {}),
+      ...(targetInstanceId ? { instanceId: targetInstanceId } : {}),
     };
 
     await fetch(`${mock.baseURL}/send`, {
@@ -283,13 +287,14 @@ test("WhatsApp payload omits sessionId when not defined or empty, enabling gatew
       body: JSON.stringify(bodyWithout),
     });
 
+    assert.equal("instanceId" in receivedBody, false, "instanceId must be omitted from payload when unset or empty");
     assert.equal("sessionId" in receivedBody, false, "sessionId must be omitted from payload when unset or empty");
 
-    // 2. Test with sessionId (should be in body)
-    const activeSession = "wa_active_instance_123";
+    // 2. Test with instanceId (matching curl specification)
+    const activeInstance = "wa_inst_example";
     const bodyWith = {
-      ...payloadWithoutSession,
-      sessionId: activeSession,
+      ...rest,
+      instanceId: activeInstance,
     };
 
     await fetch(`${mock.baseURL}/send`, {
@@ -298,7 +303,9 @@ test("WhatsApp payload omits sessionId when not defined or empty, enabling gatew
       body: JSON.stringify(bodyWith),
     });
 
-    assert.equal(receivedBody.sessionId, "wa_active_instance_123", "sessionId must be included when set");
+    assert.equal(receivedBody.instanceId, "wa_inst_example", "instanceId must be included when set");
+    assert.equal(receivedBody.to, "918080852689");
+    assert.equal(receivedBody.message, "Testing auto-detection");
   } finally {
     await mock.close();
   }

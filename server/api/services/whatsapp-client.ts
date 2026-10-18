@@ -7,6 +7,7 @@ export interface SendMessagePayload {
   message?: string;
   type?: "text" | "image" | "video" | "audio" | "document" | string;
   mediaUrl?: string;
+  instanceId?: string;
   sessionId?: string;
   fileName?: string;
   delayMs?: number;
@@ -21,6 +22,7 @@ export interface SendBulkRecipient {
 export interface SendBulkPayload {
   recipients: SendBulkRecipient[];
   message: string;
+  instanceId?: string;
   sessionId?: string;
   delayBetweenMessagesMs?: number;
 }
@@ -32,6 +34,7 @@ export interface WhatsAppApiResponse<T = unknown> {
   status?: string;
   to?: string;
   timestamp?: string;
+  instanceId?: string;
   sessionId?: string;
   data?: T;
   error?: string;
@@ -45,6 +48,7 @@ export interface WhatsAppApiResponse<T = unknown> {
 
 export interface WhatsAppSession {
   sessionId: string;
+  instanceId?: string | null;
   name?: string;
   status: "CONNECTED" | "DISCONNECTED" | "CONNECTING" | "SCAN_QR" | string;
   isConnected: boolean;
@@ -79,10 +83,16 @@ const MAX_RETRY_DELAY_MS = 10_000;
 export class WhatsAppApiClient {
   private baseURL: string;
   private token: string;
+  private defaultInstanceId?: string;
   private defaultSessionId?: string;
-  private cachedResolvedSessionId?: string;
+  private cachedResolvedInstanceId?: string;
 
-  constructor(options?: { baseURL?: string; token?: string; defaultSessionId?: string }) {
+  constructor(options?: {
+    baseURL?: string;
+    token?: string;
+    defaultInstanceId?: string;
+    defaultSessionId?: string;
+  }) {
     let rawUrl = (
       options?.baseURL ||
       process.env.WHATSAPP_API_URL ||
@@ -109,35 +119,50 @@ export class WhatsAppApiClient {
     }
     this.token = token;
 
-    const envSessionId = (options?.defaultSessionId || process.env.WHATSAPP_SESSION_ID || "").trim();
-    this.defaultSessionId = envSessionId ? envSessionId : undefined;
+    const envInstanceId = (
+      options?.defaultInstanceId ||
+      options?.defaultSessionId ||
+      process.env.WHATSAPP_INSTANCE_ID ||
+      process.env.WHATSAPP_SESSION_ID ||
+      ""
+    ).trim();
+    this.defaultInstanceId = envInstanceId ? envInstanceId : undefined;
+    this.defaultSessionId = this.defaultInstanceId;
   }
 
   /**
-   * Resolves the target session ID.
-   * If not explicitly configured, queries GET /sessions to auto-detect the active connected session.
+   * Resolves the target instance/session ID.
+   * If not explicitly configured, queries GET /sessions to auto-detect the active connected instance.
    */
-  public async resolveSessionId(): Promise<string | undefined> {
-    if (this.defaultSessionId) {
-      return this.defaultSessionId;
+  public async resolveInstanceId(): Promise<string | undefined> {
+    if (this.defaultInstanceId) {
+      return this.defaultInstanceId;
     }
-    if (this.cachedResolvedSessionId) {
-      return this.cachedResolvedSessionId;
+    if (this.cachedResolvedInstanceId) {
+      return this.cachedResolvedInstanceId;
     }
 
     try {
       const res = await this.getSessions();
       const sessions = (res.data?.sessions || res.sessions || []) as WhatsAppSession[];
       const connected = sessions.find((s) => s.isConnected || s.status === "CONNECTED");
-      if (connected?.sessionId) {
-        this.cachedResolvedSessionId = connected.sessionId;
-        console.log(`[WhatsApp] Auto-detected active connected session: ${connected.sessionId}`);
-        return connected.sessionId;
+      const resolved = connected?.instanceId || connected?.sessionId;
+      if (resolved) {
+        this.cachedResolvedInstanceId = resolved;
+        console.log(`[WhatsApp] Auto-detected active connected instance: ${resolved}`);
+        return resolved;
       }
     } catch (err) {
-      console.warn("[WhatsApp] Failed to auto-detect active session from /sessions:", err);
+      console.warn("[WhatsApp] Failed to auto-detect active instance from /sessions:", err);
     }
     return undefined;
+  }
+
+  /**
+   * Backward-compatible alias for resolveInstanceId.
+   */
+  public async resolveSessionId(): Promise<string | undefined> {
+    return this.resolveInstanceId();
   }
 
   /**
@@ -335,13 +360,22 @@ export class WhatsAppApiClient {
     }
 
     const key = idempotencyKey || WhatsAppApiClient.generateIdempotencyKey("msg");
-    const targetSessionId = payload.sessionId?.trim() || this.defaultSessionId?.trim() || undefined;
+    const targetInstanceId =
+      payload.instanceId?.trim() ||
+      payload.sessionId?.trim() ||
+      this.defaultInstanceId?.trim() ||
+      undefined;
 
-    const { sessionId: _ignoredSessionId, ...restPayload } = payload;
+    const {
+      instanceId: _ignoredInstanceId,
+      sessionId: _ignoredSessionId,
+      ...restPayload
+    } = payload;
+
     const body: SendMessagePayload = {
       ...restPayload,
       to,
-      ...(targetSessionId ? { sessionId: targetSessionId } : {}),
+      ...(targetInstanceId ? { instanceId: targetInstanceId } : {}),
     };
 
     try {
@@ -403,13 +437,22 @@ export class WhatsAppApiClient {
       to: WhatsAppApiClient.normalizePhone(r.to),
     }));
 
-    const targetSessionId = payload.sessionId?.trim() || this.defaultSessionId?.trim() || undefined;
-    const { sessionId: _ignoredBulkSessionId, ...restBulkPayload } = payload;
+    const targetInstanceId =
+      payload.instanceId?.trim() ||
+      payload.sessionId?.trim() ||
+      this.defaultInstanceId?.trim() ||
+      undefined;
+
+    const {
+      instanceId: _ignoredBulkInstanceId,
+      sessionId: _ignoredBulkSessionId,
+      ...restBulkPayload
+    } = payload;
 
     const body: SendBulkPayload = {
       ...restBulkPayload,
       recipients: sanitizedRecipients,
-      ...(targetSessionId ? { sessionId: targetSessionId } : {}),
+      ...(targetInstanceId ? { instanceId: targetInstanceId } : {}),
     };
 
     return this.request("/send-bulk", {
@@ -454,16 +497,26 @@ export class WhatsAppApiClient {
     name: string;
     content: string;
     category?: "TRANSACTIONAL" | "MARKETING" | "SUPPORT" | string;
+    instanceId?: string;
     sessionId?: string;
   }): Promise<WhatsAppApiResponse> {
-    const targetSessionId = payload.sessionId?.trim() || this.defaultSessionId?.trim() || undefined;
-    const { sessionId: _ignoredTemplateSessionId, ...restTemplatePayload } = payload;
+    const targetInstanceId =
+      payload.instanceId?.trim() ||
+      payload.sessionId?.trim() ||
+      this.defaultInstanceId?.trim() ||
+      undefined;
+
+    const {
+      instanceId: _ignoredTemplateInstanceId,
+      sessionId: _ignoredTemplateSessionId,
+      ...restTemplatePayload
+    } = payload;
 
     return this.request("/templates", {
       method: "POST",
       body: {
         ...restTemplatePayload,
-        ...(targetSessionId ? { sessionId: targetSessionId } : {}),
+        ...(targetInstanceId ? { instanceId: targetInstanceId } : {}),
       },
     });
   }
