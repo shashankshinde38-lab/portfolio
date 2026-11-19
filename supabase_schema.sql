@@ -73,3 +73,24 @@ CREATE POLICY "Service role can upload enquiry images"
   TO service_role 
   WITH CHECK (bucket_id = 'enquiry-images');
 
+-- 7. Admin Sessions Table (for persistent multi-device admin access)
+CREATE TABLE IF NOT EXISTS public.admin_sessions (
+  token_hash VARCHAR(64) PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_admin_sessions_expires_at ON public.admin_sessions (expires_at);
+
+ALTER TABLE public.admin_sessions ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Service role has full access to admin_sessions" ON public.admin_sessions;
+CREATE POLICY "Service role has full access to admin_sessions" 
+  ON public.admin_sessions 
+  FOR ALL 
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
+
+

@@ -58,7 +58,8 @@ export async function POST(
       const response = noStoreJson({ success: true });
       setAdminAccessCookie(response, result.sessionToken, result.expiresIn);
       return response;
-    } catch {
+    } catch (err: unknown) {
+      console.error("[admin-login] error:", err);
       return publicError("Admin access is temporarily unavailable.", 503);
     }
   }
