@@ -10,7 +10,7 @@ test("admin PIN is never shipped in client-facing source", async () => {
     "app/admin/login/page.tsx",
     "app/admin/dashboard/page.tsx",
     "app/admin/enquiries/page.tsx",
-    "components/admin/AdminShell.tsx",
+    "admin/components/Shell/AdminShell.tsx",
   ];
   const bundle = (await Promise.all(clientFiles.map(read))).join("\n");
   assert.doesNotMatch(bundle, /752002/);
@@ -19,8 +19,8 @@ test("admin PIN is never shipped in client-facing source", async () => {
 });
 
 test("server login delegates the PIN check to Supabase Auth", async () => {
-  const login = await read("app/api/admin/login/route.ts");
-  const auth = await read("lib/admin-auth.ts");
+  const login = await read("app/api/admin/[...slug]/route.ts");
+  const auth = await read("server/api/services/admin-auth.ts");
   assert.match(auth, /signInWithPassword/);
   assert.match(auth, /ADMIN_EMAIL/);
   assert.match(auth, /ADMIN_USER_ID/);
@@ -31,7 +31,7 @@ test("server login delegates the PIN check to Supabase Auth", async () => {
 });
 
 test("admin cookies are opaque and backed by a revocable server-side session", async () => {
-  const auth = await read("lib/admin-auth.ts");
+  const auth = await read("server/api/services/admin-auth.ts");
   assert.match(auth, /randomBytes/);
   assert.match(auth, /createHash/);
   assert.match(auth, /admin_sessions/);
@@ -54,16 +54,25 @@ test("admin session storage is private and expires", async () => {
 
 test("database migration denies direct browser access to enquiry data", async () => {
   const migration = await read("supabase/migrations/20260905010000_secure_admin_enquiries.sql");
-  assert.match(migration, /revoke\s+all\s+on\s+table\s+public\.enquiries\s+from\s+public\s*,\s*anon\s*,\s*authenticated/i);
-  assert.match(migration, /revoke\s+all\s+on\s+table\s+public\.contact_messages\s+from\s+public\s*,\s*anon\s*,\s*authenticated/i);
+  assert.match(
+    migration,
+    /revoke\s+all\s+on\s+table\s+public\.enquiries\s+from\s+public\s*,\s*anon\s*,\s*authenticated/i,
+  );
+  assert.match(
+    migration,
+    /revoke\s+all\s+on\s+table\s+public\.contact_messages\s+from\s+public\s*,\s*anon\s*,\s*authenticated/i,
+  );
   assert.match(migration, /enable\s+row\s+level\s+security/i);
   assert.doesNotMatch(migration, /with\s+check\s*\(\s*true\s*\)/i);
 });
 
 test("Next proxy and the private footer entry are present", async () => {
   await access(new URL("../proxy.ts", import.meta.url));
-  const page = await read("app/page.tsx");
-  const login = await read("app/admin/login/page.tsx");
+  const page = await read("web/components/SiteFooter/SiteFooter.tsx");
+  const login = await read("admin/components/Login/AdminLoginPage.tsx");
   assert.match(page, /href=["']\/admin\/login["']/);
-  assert.match(login, /type=["']password["']/);
+  assert.match(
+    login,
+    /type=(["']password["']|\{\s*showPin\s*\?\s*["']text["']\s*:\s*["']password["']\s*\})/,
+  );
 });

@@ -1,0 +1,431 @@
+.timeline-section-root {
+  position: relative;
+  background-color: var(--surface, #F6F3F0);
+  color: var(--text-primary, #1A1818);
+  font-family: var(--font-onest, 'Onest', sans-serif);
+  padding: 6.5rem 0 8rem;
+  border-bottom: 1px solid var(--border-subtle, #D5CDCA);
+  overflow: hidden;
+}
+
+.timeline-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Header: Section Eyebrow, Main Title, and Subtitle */
+.timeline-header {
+  margin-bottom: 3.5rem;
+}
+
+.timeline-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--secondary, #A4552C);
+  margin-bottom: 0.75rem;
+}
+
+.timeline-main-title {
+  font-size: clamp(2.5rem, 5.5vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary, #1A1818);
+  margin: 0 0 1rem;
+}
+
+.timeline-subtitle {
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  color: var(--text-muted, #7A7470);
+  font-family: var(--font-garamond, 'EB Garamond', serif);
+  font-style: italic;
+  margin: 0;
+}
+
+/* Timeline Interactive Layout Grid */
+.timeline-interactive-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Left Column: Rolling Big Year, Step Counter & Stepper Navigation */
+.timeline-left-column {
+  position: sticky;
+  top: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Rolling Year Display with Odometer Columns */
+.rolling-year-wrap {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-garamond, 'EB Garamond', serif);
+  font-size: clamp(4.5rem, 8vw, 7.5rem);
+  font-weight: 700;
+  color: var(--text-primary, #1A1818);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.digit-roller-col {
+  position: relative;
+  height: 1em;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.digit-strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.digit-strip span {
+  display: block;
+  height: 1em;
+  line-height: 1em;
+  text-align: center;
+}
+
+/* Step Counter & Progress Track */
+.timeline-counter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timeline-counter-text {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #7A7470);
+}
+
+.timeline-counter-cur {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--secondary, #A4552C);
+  font-family: var(--font-garamond, 'EB Garamond', serif);
+}
+
+.timeline-progress-track {
+  width: 100%;
+  height: 3px;
+  background: var(--border-subtle, #D5CDCA);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.timeline-progress-fill {
+  height: 100%;
+  background: var(--secondary, #A4552C);
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 999px;
+}
+
+/* Stepper Navigation Buttons */
+.timeline-steppers {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.timeline-step-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  color: var(--text-primary, #1A1818);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.timeline-step-btn:hover:not(:disabled) {
+  background: var(--text-primary, #1A1818);
+  color: var(--surface, #F6F3F0);
+  border-color: var(--text-primary, #1A1818);
+  transform: scale(1.05);
+}
+
+.timeline-step-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Quick Milestone Dots */
+.timeline-milestone-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border-subtle, #D5CDCA);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s ease;
+}
+
+.timeline-dot.active {
+  background: var(--secondary, #A4552C);
+  transform: scale(1.3);
+}
+
+/* Right Column: Active Milestone Presentation Card */
+.timeline-card-presentation {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  border-radius: 8px;
+  padding: 3rem;
+  box-shadow: 0 15px 40px rgba(26, 24, 24, 0.04);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-card-presentation::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 5px;
+  background: var(--secondary, #A4552C);
+}
+
+.timeline-period-badge {
+  display: inline-block;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--neutral, #E8E4E0);
+  border-radius: 999px;
+  color: var(--text-primary, #1A1818);
+  margin-bottom: 1.25rem;
+}
+
+.timeline-card-role {
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary, #1A1818);
+  margin: 0 0 0.5rem;
+  line-height: 1.15;
+}
+
+.timeline-card-org {
+  font-size: 1.15rem;
+  color: var(--secondary, #A4552C);
+  font-family: var(--font-garamond, 'EB Garamond', serif);
+  font-style: italic;
+  margin: 0 0 1.5rem;
+}
+
+.timeline-card-highlight {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--text-primary, #1A1818);
+  margin: 0 0 2rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border-subtle, #D5CDCA);
+}
+
+/* Responsibilities List */
+.timeline-responsibilities-title {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted, #7A7470);
+  margin: 0 0 1rem;
+}
+
+.timeline-responsibilities-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.timeline-responsibilities-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-primary, #1A1818);
+}
+
+.timeline-bullet {
+  color: var(--secondary, #A4552C);
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+/* Verified Metrics & Tech Stack */
+.timeline-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border-subtle, #D5CDCA);
+}
+
+.timeline-metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.timeline-metric-item {
+  background: var(--surface, #F6F3F0);
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.timeline-metric-val {
+  font-family: var(--font-garamond, 'EB Garamond', serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary, #1A1818);
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+
+.timeline-metric-lbl {
+  font-size: 0.72rem;
+  color: var(--text-muted, #7A7470);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.timeline-tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.timeline-tag {
+  font-size: 0.72rem;
+  font-family: monospace;
+  padding: 0.25rem 0.65rem;
+  background: var(--neutral, #E8E4E0);
+  color: var(--text-primary, #1A1818);
+  border-radius: 3px;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .timeline-interactive-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .timeline-left-column {
+    position: static;
+  }
+  .timeline-card-presentation {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .timeline-section-root {
+    padding: 4.5rem 0 5.5rem;
+  }
+  .timeline-container {
+    padding: 0 1.25rem;
+  }
+  .timeline-main-title {
+    font-size: 2.2rem;
+  }
+  .rolling-year-wrap {
+    font-size: 4rem;
+  }
+}
+
+/* ===================================================================
+   DARK THEME REFINEMENTS FOR EXPERIENCE TIMELINE
+   =================================================================== */
+html.dark-theme .timeline-section-root,
+body.dark-theme .timeline-section-root {
+  background-color: var(--surface-alt, #1C1917);
+}
+
+html.dark-theme .timeline-main-title,
+body.dark-theme .timeline-main-title {
+  color: #EDE8E4;
+}
+
+html.dark-theme .timeline-card-presentation,
+body.dark-theme .timeline-card-presentation {
+  background: #141211;
+  border-color: #3D352F;
+}
+
+html.dark-theme .timeline-card-role,
+body.dark-theme .timeline-card-role {
+  color: #EDE8E4;
+}
+
+html.dark-theme .timeline-card-highlight,
+body.dark-theme .timeline-card-highlight {
+  color: #B5ACA8;
+  border-bottom-color: #3D352F;
+}
+
+html.dark-theme .timeline-responsibilities-list li,
+body.dark-theme .timeline-responsibilities-list li {
+  color: #EDE8E4;
+}
+
+html.dark-theme .rolling-year-wrap,
+body.dark-theme .rolling-year-wrap {
+  color: #EDE8E4;
+}
+
+html.dark-theme .timeline-step-btn,
+body.dark-theme .timeline-step-btn {
+  border-color: #3D352F;
+  color: #EDE8E4;
+}
+
+html.dark-theme .timeline-step-btn:hover:not(:disabled),
+body.dark-theme .timeline-step-btn:hover:not(:disabled) {
+  background: var(--secondary, #A4552C);
+  border-color: var(--secondary, #A4552C);
+  color: #FFFFFF;
+}
+
+html.dark-theme .timeline-metric-val,
+body.dark-theme .timeline-metric-val {
+  color: #EDE8E4;
+}
+
+html.dark-theme .timeline-tag,
+body.dark-theme .timeline-tag {
+  background: #25211E;
+  color: #EDE8E4;
+}

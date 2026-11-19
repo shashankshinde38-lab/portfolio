@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgManual" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#191614"/>
+      <stop offset="100%" stop-color="#241E1A"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="640" height="400" fill="url(#bgManual)" rx="8"/>
+  <rect x="2" y="2" width="636" height="396" fill="none" stroke="#A4552C" stroke-width="1.5" stroke-opacity="0.3" rx="7"/>
+
+  <!-- Title -->
+  <text x="32" y="44" fill="#E8E4E0" font-family="'Onest', sans-serif" font-size="15" font-weight="700" letter-spacing="1.2">STLC DEFECT TRIAGE · REQUIREMENT TRACEABILITY (RTM)</text>
+  <rect x="470" y="28" width="138" height="24" rx="12" fill="#A4552C" fill-opacity="0.25" stroke="#A4552C" stroke-width="1"/>
+  <text x="539" y="44" fill="#E8A882" font-family="'Onest', sans-serif" font-size="11" font-weight="600" text-anchor="middle">100% RTM COVERAGE</text>
+
+  <!-- Left: RTM Matrix Table -->
+  <rect x="32" y="76" width="310" height="295" rx="6" fill="#14110F" stroke="#3D352F" stroke-width="1"/>
+  <text x="48" y="102" fill="#D5CDCA" font-family="'Onest', sans-serif" font-size="12" font-weight="700">REQUIREMENT TRACEABILITY MATRIX</text>
+  
+  <!-- Table Header -->
+  <rect x="44" y="116" width="286" height="24" rx="3" fill="#2C2420"/>
+  <text x="56" y="132" fill="#A4552C" font-family="monospace" font-size="10" font-weight="700">REQ_ID</text>
+  <text x="120" y="132" fill="#A4552C" font-family="monospace" font-size="10" font-weight="700">TEST_CASE</text>
+  <text x="210" y="132" fill="#A4552C" font-family="monospace" font-size="10" font-weight="700">SEVERITY</text>
+  <text x="280" y="132" fill="#A4552C" font-family="monospace" font-size="10" font-weight="700">STATUS</text>
+
+  <!-- Row 1 -->
+  <rect x="44" y="146" width="286" height="26" rx="2" fill="#1B1715"/>
+  <text x="56" y="163" fill="#E8E4E0" font-family="monospace" font-size="10">REQ-101</text>
+  <text x="120" y="163" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="10">Auth Token Expiry</text>
+  <text x="210" y="163" fill="#E57373" font-family="monospace" font-size="10">HIGH</text>
+  <text x="280" y="163" fill="#81C784" font-family="monospace" font-size="10">PASS ✓</text>
+
+  <!-- Row 2 -->
+  <rect x="44" y="178" width="286" height="26" rx="2" fill="#1B1715"/>
+  <text x="56" y="195" fill="#E8E4E0" font-family="monospace" font-size="10">REQ-108</text>
+  <text x="120" y="195" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="10">BVA Limit ($999,999)</text>
+  <text x="210" y="195" fill="#FFB74D" font-family="monospace" font-size="10">MEDIUM</text>
+  <text x="280" y="195" fill="#81C784" font-family="monospace" font-size="10">PASS ✓</text>
+
+  <!-- Row 3 -->
+  <rect x="44" y="210" width="286" height="26" rx="2" fill="#1B1715"/>
+  <text x="56" y="227" fill="#E8E4E0" font-family="monospace" font-size="10">REQ-114</text>
+  <text x="120" y="227" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="10">Concurrent Session</text>
+  <text x="210" y="227" fill="#EF5350" font-family="monospace" font-size="10">CRITICAL</text>
+  <text x="280" y="227" fill="#81C784" font-family="monospace" font-size="10">PASS ✓</text>
+
+  <!-- Row 4 -->
+  <rect x="44" y="242" width="286" height="26" rx="2" fill="#1B1715"/>
+  <text x="56" y="259" fill="#E8E4E0" font-family="monospace" font-size="10">REQ-129</text>
+  <text x="120" y="259" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="10">SQL Injection Probe</text>
+  <text x="210" y="259" fill="#EF5350" font-family="monospace" font-size="10">CRITICAL</text>
+  <text x="280" y="259" fill="#81C784" font-family="monospace" font-size="10">PASS ✓</text>
+
+  <!-- Right: Defect Severity Distribution -->
+  <rect x="360" y="76" width="248" height="295" rx="6" fill="#14110F" stroke="#3D352F" stroke-width="1"/>
+  <text x="376" y="102" fill="#D5CDCA" font-family="'Onest', sans-serif" font-size="12" font-weight="700">DEFECT SEVERITY TRIAGE</text>
+
+  <!-- Donut / Progress Bar breakdown -->
+  <text x="376" y="136" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="11">Critical / Blocker (Isolated Before Release)</text>
+  <rect x="376" y="146" width="216" height="8" rx="4" fill="#2C2420"/>
+  <rect x="376" y="146" width="185" height="8" rx="4" fill="#EF5350"/>
+
+  <text x="376" y="186" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="11">High (Functional Inconsistencies)</text>
+  <rect x="376" y="196" width="216" height="8" rx="4" fill="#2C2420"/>
+  <rect x="376" y="196" width="150" height="8" rx="4" fill="#FFB74D"/>
+
+  <text x="376" y="236" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="11">Medium / UI Edge Cases</text>
+  <rect x="376" y="246" width="216" height="8" rx="4" fill="#2C2420"/>
+  <rect x="376" y="246" width="95" height="8" rx="4" fill="#81C784"/>
+
+  <!-- Footer badge -->
+  <rect x="376" y="295" width="216" height="52" rx="6" fill="#241913" stroke="#A4552C" stroke-width="1"/>
+  <text x="484" y="318" fill="#E8A882" font-family="'Onest', sans-serif" font-size="11" font-weight="700" text-anchor="middle">240+ DEFECTS ISOLATED</text>
+  <text x="484" y="334" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="10" text-anchor="middle">Zero escapades to production</text>
+</svg>

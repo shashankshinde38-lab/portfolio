@@ -4,43 +4,43 @@
 
 .admin-shell {
   --admin-shell-bg:
-    #070a0e;
+    #0E0C0B;
 
   --admin-shell-panel:
-    #0b1117;
+    #141211;
 
   --admin-shell-panel-2:
-    #0c151a;
+    #1C1917;
 
   --admin-shell-accent:
-    #67e8f9;
+    #D4AF37;
 
   --admin-shell-accent-2:
-    #38bdf8;
+    #A4552C;
 
   --admin-shell-green:
-    #22c55e;
+    #2D8A4E;
 
   --admin-shell-green-light:
-    #4ade80;
+    #34D399;
 
   --admin-shell-red:
-    #f87171;
+    #B3261E;
 
   --admin-shell-text:
-    #f8fafc;
+    #F6F3F0;
 
   --admin-shell-muted:
-    #94a3b8;
+    #ACA09A;
 
   --admin-shell-muted-2:
-    #64748b;
+    #7A7470;
 
   --admin-shell-border:
-    rgba(255,
-      255,
-      255,
-      0.07);
+    rgba(212,
+      175,
+      55,
+      0.16);
 
   --admin-shell-ease:
     cubic-bezier(0.22,

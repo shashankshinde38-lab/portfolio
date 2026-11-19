@@ -1,0 +1,64 @@
+/* Optional consistency layer for the supplied global stylesheet.
+   Scoped to general components; QA doors remain governed by QADoorsFrame.css. */
+:root {
+   --reference-gutter: clamp(16px, 4vw, 48px);
+}
+
+html,
+body {
+   min-width: 0;
+}
+
+.page-container {
+   width: min(1440px, calc(100% - 2 * var(--reference-gutter)));
+}
+
+@media (max-width: 640px) {
+   .page-container {
+      width: calc(100% - 32px);
+   }
+}
+
+img,
+video,
+canvas {
+   max-width: 100%;
+}
+
+.btn-primary {
+   background: var(--primary);
+   color: var(--text-inverse);
+}
+
+.btn-primary:hover {
+   background: var(--secondary);
+}
+
+.btn-secondary {
+   border-color: var(--border);
+}
+
+.btn-secondary:hover {
+   border-color: var(--secondary);
+   background: rgba(164, 85, 44, .08);
+}
+
+:focus-visible {
+   outline-color: var(--secondary);
+}
+
+::selection {
+   background: rgba(164, 85, 44, .22);
+   color: var(--text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+   html {
+      scroll-behavior: auto;
+   }
+
+   .door-wall-section * {
+      animation-duration: .01ms;
+      transition-duration: .01ms;
+   }
+}

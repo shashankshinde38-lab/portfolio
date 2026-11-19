@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 import { ALL_PROJECTS } from "@/web/data/portfolio-data";
+import { projectPreviews } from "@/web/data/project-previews";
+import ProjectPreviewList from "@/web/components/laptopshowcase/ProjectPreviewList";
 
 const pageUrl = "https://shashankportfolio-jet.vercel.app/projects";
 
@@ -100,24 +102,25 @@ export default function ProjectsIndexPage() {
           <Terminal size={22} className="text-cyan-400" aria-hidden="true" />
           Production QA Case Studies
         </h2>
+        <ProjectPreviewList projects={projectPreviews}>
         <div className="space-y-6">
-          {ALL_PROJECTS.map((proj) => {
+          {ALL_PROJECTS.map((proj, index) => {
             const dedicatedUrl = CASE_STUDY_ROUTES[proj.id] || "/projects";
 
             return (
-              <article key={proj.id} className="feature-glass-card border-white/10 hover:border-cyan-500/40">
+              <article key={proj.id} className="feature-glass-card" data-preview-index={index}>
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
                   <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded text-xs font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                    <span className="px-2.5 py-0.5 rounded text-xs font-mono bg-[rgba(164,85,44,0.1)] text-terracotta border border-[rgba(164,85,44,0.25)]">
                       {proj.id}
                     </span>
-                    <span className="text-xs font-mono text-slate-400 uppercase">{proj.industry}</span>
+                    <span className="text-xs font-mono text-[var(--text-muted)] uppercase">{proj.industry}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {proj.stack.map((tech) => (
                       <span
                         key={tech}
-                        className="px-2 py-0.5 rounded text-[11px] font-mono bg-white/5 text-slate-300 border border-white/5"
+                        className="px-2 py-0.5 rounded text-[11px] font-mono bg-[var(--surface-alt)] text-[var(--text-primary)] border border-[var(--border-subtle)]"
                       >
                         {tech}
                       </span>
@@ -125,29 +128,29 @@ export default function ProjectsIndexPage() {
                   </div>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-2">{proj.name}</h3>
-                <p className="text-sm text-slate-300 mb-4 leading-relaxed">{proj.summary}</p>
+                <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">{proj.name}</h3>
+                <p className="text-sm text-[var(--text-muted)] mb-4 leading-relaxed">{proj.summary}</p>
 
                 {/* Key Defect Highlight */}
-                <div className="p-3.5 rounded-lg bg-red-950/20 border border-red-500/20 mb-4">
-                  <div className="flex items-center gap-2 text-xs font-mono text-red-400 font-semibold mb-1">
+                <div className="p-3.5 rounded-lg bg-[rgba(164,85,44,0.08)] dark:bg-[rgba(164,85,44,0.18)] border border-[rgba(164,85,44,0.25)] dark:border-[rgba(164,85,44,0.4)] mb-4">
+                  <div className="flex items-center gap-2 text-xs font-mono text-terracotta font-semibold mb-1">
                     <Bug size={14} />
                     <span>CRITICAL DEFECT RESOLVED: {proj.defect.title}</span>
                   </div>
-                  <p className="text-xs text-slate-300">{proj.defect.symptom}</p>
+                  <p className="text-xs text-[var(--text-muted)]">{proj.defect.symptom}</p>
                 </div>
 
                 {/* Bottom Bar with Link to Dedicated Deep Dive */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/5">
-                  <div className="flex items-center gap-4 text-xs font-mono text-slate-400">
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[var(--border-subtle)]">
+                  <div className="flex items-center gap-4 text-xs font-mono text-[var(--text-muted)]">
                     {proj.metrics.map((m) => (
                       <span key={m.k}>
-                        <strong className="text-white">{m.v}</strong> {m.k}
+                        <strong className="text-[var(--text-primary)]">{m.v}</strong> {m.k}
                       </span>
                     ))}
                   </div>
 
-                  <Link href={dedicatedUrl} className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400 hover:text-cyan-300 hover:underline">
+                  <Link href={dedicatedUrl} className="inline-flex items-center gap-1.5 text-xs font-semibold text-terracotta hover:underline">
                     <span>Read Full QA Case Study</span>
                     <ArrowUpRight size={14} />
                   </Link>
@@ -156,6 +159,7 @@ export default function ProjectsIndexPage() {
             );
           })}
         </div>
+        </ProjectPreviewList>
       </section>
 
       {/* Cross-Link to Technical Skills */}

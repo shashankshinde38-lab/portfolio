@@ -57,19 +57,19 @@ export function AdminVerificationRing({
             <radialGradient id="adminOrbitCoreGlow">
               <stop
                 offset="0%"
-                stopColor="#67e8f9"
-                stopOpacity="0.26"
+                stopColor="#D4AF37"
+                stopOpacity="0.32"
               />
 
               <stop
                 offset="45%"
-                stopColor="#38bdf8"
-                stopOpacity="0.08"
+                stopColor="#A4552C"
+                stopOpacity="0.12"
               />
 
               <stop
                 offset="100%"
-                stopColor="#38bdf8"
+                stopColor="#A4552C"
                 stopOpacity="0"
               />
             </radialGradient>
@@ -141,7 +141,7 @@ export function AdminVerificationRing({
             cy="0"
             r="20"
             fill="none"
-            stroke="rgba(103,232,249,0.24)"
+            stroke="rgba(212,175,55,0.35)"
             strokeWidth="0.8"
             strokeDasharray="2.5 5.5"
             animate={{
@@ -170,7 +170,7 @@ export function AdminVerificationRing({
             cx="0"
             cy="0"
             r="4.2"
-            fill="#dff7ff"
+            fill="#FFF0AD"
             filter="url(#adminOrbitCoreBlur)"
             animate={{
               scale:

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrosido" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A1818"/>
+      <stop offset="100%" stop-color="#282321"/>
+    </linearGradient>
+    <linearGradient id="accentGrosido" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#A4552C"/>
+      <stop offset="100%" stop-color="#D47A4A"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="640" height="400" fill="url(#bgGrosido)" rx="8"/>
+  <rect x="2" y="2" width="636" height="396" fill="none" stroke="#A4552C" stroke-width="1.5" stroke-opacity="0.3" rx="7"/>
+
+  <!-- Grid Blueprint Lines -->
+  <g stroke="#3D3734" stroke-width="0.8" opacity="0.4">
+    <line x1="0" y1="80" x2="640" y2="80"/>
+    <line x1="0" y1="160" x2="640" y2="160"/>
+    <line x1="0" y1="240" x2="640" y2="240"/>
+    <line x1="0" y1="320" x2="640" y2="320"/>
+    <line x1="160" y1="0" x2="160" y2="400"/>
+    <line x1="320" y1="0" x2="320" y2="400"/>
+    <line x1="480" y1="0" x2="480" y2="400"/>
+  </g>
+
+  <!-- Header -->
+  <text x="32" y="48" fill="#E8E4E0" font-family="'Onest', sans-serif" font-size="16" font-weight="700" letter-spacing="1.5">GROSIDO · E-COMMERCE CHECKOUT POM</text>
+  <rect x="490" y="32" width="118" height="24" rx="12" fill="#2E7D32" fill-opacity="0.2" stroke="#2E7D32" stroke-width="1"/>
+  <text x="549" y="48" fill="#4CAF50" font-family="'Onest', sans-serif" font-size="11" font-weight="600" text-anchor="middle">120+ SUITES PASSED</text>
+
+  <!-- Architecture Flow Boxes -->
+  <!-- Box 1: Product Catalog -->
+  <rect x="32" y="100" width="160" height="110" rx="6" fill="#221E1C" stroke="#A4552C" stroke-width="1.2"/>
+  <text x="46" y="126" fill="#A4552C" font-family="'Onest', sans-serif" font-size="11" font-weight="700">PAGE OBJECT MODEL</text>
+  <text x="46" y="148" fill="#FFFFFF" font-family="'Onest', sans-serif" font-size="14" font-weight="600">ProductGrid.ts</text>
+  <text x="46" y="172" fill="#A89F9B" font-family="monospace" font-size="10">• SKU auto-waiting</text>
+  <text x="46" y="190" fill="#A89F9B" font-family="monospace" font-size="10">• Dynamic stock lock</text>
+
+  <!-- Flow Arrow 1 -->
+  <path d="M 192 155 L 236 155" stroke="#D47A4A" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <polygon points="236,155 228,150 228,160" fill="#D47A4A"/>
+
+  <!-- Box 2: Cart Reservation Engine -->
+  <rect x="240" y="100" width="160" height="110" rx="6" fill="#221E1C" stroke="#A4552C" stroke-width="1.2"/>
+  <text x="254" y="126" fill="#A4552C" font-family="'Onest', sans-serif" font-size="11" font-weight="700">RESERVATION LOGIC</text>
+  <text x="254" y="148" fill="#FFFFFF" font-family="'Onest', sans-serif" font-size="14" font-weight="600">CartFlow.spec.ts</text>
+  <text x="254" y="172" fill="#A89F9B" font-family="monospace" font-size="10">• TTL: 900s timeout</text>
+  <text x="254" y="190" fill="#A89F9B" font-family="monospace" font-size="10">• Discount idempotency</text>
+
+  <!-- Flow Arrow 2 -->
+  <polygon points="444,155 436,150 436,160" fill="#D47A4A"/>
+  <line x1="400" y1="155" x2="444" y2="155" stroke="#D47A4A" stroke-width="2" stroke-dasharray="4,3"/>
+
+  <!-- Box 3: Payment & Order Finalizer -->
+  <rect x="448" y="100" width="160" height="110" rx="6" fill="#221E1C" stroke="#2E7D32" stroke-width="1.2"/>
+  <text x="462" y="126" fill="#4CAF50" font-family="'Onest', sans-serif" font-size="11" font-weight="700">STAGED ASSERTIONS</text>
+  <text x="462" y="148" fill="#FFFFFF" font-family="'Onest', sans-serif" font-size="14" font-weight="600">NetPayable == $51.60</text>
+  <text x="462" y="172" fill="#A89F9B" font-family="monospace" font-size="10">• Zero unhandled errors</text>
+  <text x="462" y="190" fill="#A89F9B" font-family="monospace" font-size="10">• 0.00% double billing</text>
+
+  <!-- Bottom Terminal Snippet -->
+  <rect x="32" y="235" width="576" height="135" rx="6" fill="#131110" stroke="#3D3734" stroke-width="1"/>
+  <circle cx="50" cy="254" r="4" fill="#FF5F56"/>
+  <circle cx="64" cy="254" r="4" fill="#FFBD2E"/>
+  <circle cx="78" cy="254" r="4" fill="#27C93F"/>
+  <text x="100" y="258" fill="#7A7470" font-family="monospace" font-size="11">grosido-e2e-regression-pipeline.sh</text>
+
+  <text x="46" y="286" fill="#4CAF50" font-family="monospace" font-size="11">✓ [chromium] › CartCheckoutFixture.spec.ts:18:5 › validate tiered volume discount (3.2s)</text>
+  <text x="46" y="308" fill="#4CAF50" font-family="monospace" font-size="11">✓ [firefox]  › CartCheckoutFixture.spec.ts:18:5 › validate tiered volume discount (3.6s)</text>
+  <text x="46" y="330" fill="#4CAF50" font-family="monospace" font-size="11">✓ [webkit]   › CartCheckoutFixture.spec.ts:18:5 › validate tiered volume discount (4.1s)</text>
+  <text x="46" y="352" fill="#D47A4A" font-family="monospace" font-size="11">TOTAL: 120 passed, 0 failed, 0 skipped — Sprint Regression Cut by ~40%</text>
+</svg>
+

@@ -1,0 +1,655 @@
+/* ===================================================================
+   HERO SECTION — BALANCED MEDIUM EDITORIAL SCALE & FULL RESPONSIVENESS
+   =================================================================== */
+
+.hero-section {
+  position: relative;
+  min-height: calc(100svh - 20px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(var(--header-height, 72px) + 1.5rem) clamp(1.25rem, 4vw, 3.5rem) 1.25rem;
+  background: radial-gradient(120% 90% at 50% 25%, #FAF8F5 0%, #F5F1EC 48%, #ECE7E1 100%);
+  color: var(--text-primary, #1A1818);
+  font-family: var(--font-onest, 'Onest', sans-serif);
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 0 0 20px 20px;
+  transition: background 0.3s ease;
+}
+
+.hero-main-container {
+  max-width: var(--container-max, 1360px);
+  width: 100%;
+  margin: auto auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+  padding: 0.5rem 0 1.25rem;
+}
+
+.hero-copy {
+  max-width: min(680px, 58%);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 4;
+}
+
+/* ===================================================================
+   TOP STATUS & IDENTITY EYEBROW (MEDIUM)
+   =================================================================== */
+.hero-eyebrow-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.hero-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.28rem 0.8rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  box-shadow: 0 1px 3px rgba(26, 24, 24, 0.04);
+}
+
+.hero-status-dot {
+  width: 6.5px;
+  height: 6.5px;
+  border-radius: 50%;
+  background-color: #22C55E;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.75);
+  animation: pulseStatusDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseStatusDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.85; }
+}
+
+.hero-status-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary, #5A5450);
+}
+
+.hero-eyebrow-sep {
+  color: var(--border-subtle, #D5CDCA);
+  font-size: 0.8rem;
+}
+
+.hero-eyebrow-role {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted, #7A7470);
+  letter-spacing: 0.02em;
+}
+
+/* ===================================================================
+   BALANCED MEDIUM H1 & DESK FLIP CALENDAR
+   =================================================================== */
+.hero-h1 {
+  font-size: clamp(2.2rem, 4.4vw, 3.75rem);
+  font-weight: 750;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--text-primary, #1A1818);
+  margin: 0 0 1.25rem;
+  max-width: 860px;
+}
+
+.hero-h1-line {
+  display: block;
+}
+
+.hero-h1 .soft {
+  color: rgba(26, 24, 24, 0.45);
+  font-weight: 500;
+  font-size: 0.9em;
+}
+
+.hero-calendar-wrap {
+  display: block;
+  margin-top: 0.25rem;
+  margin-bottom: 0.15rem;
+}
+
+/* ===================================================================
+   VALUE PROPOSITION & DESCRIPTION (MEDIUM)
+   =================================================================== */
+.hero-description {
+  font-size: clamp(0.95rem, 1.25vw, 1.125rem);
+  font-weight: 420;
+  line-height: 1.6;
+  color: var(--text-secondary, #5A5450);
+  max-width: 680px;
+  margin: 0 0 1.75rem;
+}
+
+/* ===================================================================
+   HERO CTAS: BALANCED PILL BUTTONS
+   =================================================================== */
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.pill {
+  display: inline-block;
+  border-radius: 9999px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+  text-decoration: none;
+}
+
+.pill__in {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 0.7rem 1.5rem;
+  white-space: nowrap;
+  font-family: var(--font-onest, 'Onest', sans-serif);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pill--arrow .pill__in {
+  padding: 0.38rem 0.45rem 0.38rem 1.35rem;
+}
+
+.pill--dark .pill__in {
+  background: var(--text-primary, #1A1818);
+  color: var(--surface, #F6F3F0);
+  box-shadow: 0 3px 12px rgba(26, 24, 24, 0.12);
+}
+
+.pill--dark:hover .pill__in {
+  background: var(--secondary, #A4552C);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(164, 85, 44, 0.25);
+}
+
+.pill--outline .pill__in {
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  background: transparent;
+  color: var(--text-primary, #1A1818);
+}
+
+.pill--outline:hover .pill__in {
+  border-color: var(--secondary, #A4552C);
+  color: var(--secondary, #A4552C);
+  transform: translateY(-2px);
+}
+
+.pill--card-trigger .pill__in {
+  border: 1px solid rgba(212, 175, 55, 0.65);
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--text-primary, #1A1818);
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.1);
+}
+
+.pill--card-trigger:hover .pill__in {
+  border-color: #D4AF37;
+  background: rgba(212, 175, 55, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 16px rgba(212, 175, 55, 0.24);
+}
+
+.pill__sparkle-icon {
+  color: #D4AF37;
+}
+
+.pill__badge {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  transition: transform 0.22s ease;
+}
+
+.pill:hover .pill__badge {
+  transform: translateX(3px);
+}
+
+/* ===================================================================
+   METRICS GRID (MEDIUM & REFINED)
+   =================================================================== */
+.hero-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1rem, 2vw, 1.75rem);
+  width: 100%;
+  max-width: 1040px;
+  margin-bottom: 1.75rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid rgba(26, 24, 24, 0.1);
+  border-bottom: 1px solid rgba(26, 24, 24, 0.1);
+}
+
+.hero-metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-right: 0.35rem;
+  transition: transform 0.2s ease;
+}
+
+.hero-metric-card:hover {
+  transform: translateY(-2px);
+}
+
+.hero-metric-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.hero-metric-num {
+  font-family: var(--font-garamond, 'EB Garamond', Georgia, serif);
+  font-size: clamp(1.55rem, 2.4vw, 2.2rem);
+  font-weight: 700;
+  color: var(--text-primary, #1A1818);
+  line-height: 1;
+}
+
+.hero-metric-tag {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--secondary, #A4552C);
+  background: rgba(164, 85, 44, 0.08);
+  padding: 2px 6px;
+  border-radius: 9999px;
+  border: 1px solid rgba(164, 85, 44, 0.18);
+}
+
+.hero-metric-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-primary, #1A1818);
+  letter-spacing: -0.01em;
+}
+
+.hero-metric-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted, #7A7470);
+  line-height: 1.35;
+}
+
+/* ===================================================================
+   CORE QA DISCIPLINES PILLS (MEDIUM)
+   =================================================================== */
+.hero-doors-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  margin-top: 0.2rem;
+}
+
+.hero-doors-label {
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  color: var(--text-muted, #7A7470);
+  text-transform: uppercase;
+}
+
+.hero-doors-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.hero-door-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.32rem 0.72rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-secondary, #5A5450);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.hero-door-chip:hover {
+  background: #FFFFFF;
+  border-color: var(--secondary, #A4552C);
+  color: var(--secondary, #A4552C);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(26, 24, 24, 0.06);
+}
+
+.door-chip-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.door-navy { background-color: #1E3A5F; }
+.door-burgundy { background-color: #4A1525; }
+.door-sage { background-color: #557A60; }
+.door-terracotta { background-color: #B85D38; }
+
+/* ===================================================================
+   BOTTOM STATUS BAR: AVAILABLE FOR WORK & SCROLL TRIGGER
+   =================================================================== */
+.hero-bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-subtle, #D5CDCA);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--text-muted, #7A7470);
+  text-transform: uppercase;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.hero-bottom-scroll-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: none;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--text-muted, #7A7470);
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.hero-bottom-scroll-trigger:hover {
+  color: var(--secondary, #A4552C);
+}
+
+/* ===================================================================
+   DARK THEME SPECIFIC STYLES
+   =================================================================== */
+html.dark-theme .hero-section,
+body.dark-theme .hero-section {
+  background: radial-gradient(120% 90% at 50% 25%, #191615 0%, #141211 50%, #0E0D0C 100%);
+  color: #EDE8E4;
+}
+
+html.dark-theme .hero-status-pill,
+body.dark-theme .hero-status-pill {
+  background: rgba(30, 27, 25, 0.75);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html.dark-theme .hero-status-text,
+body.dark-theme .hero-status-text {
+  color: #EDE8E4;
+}
+
+html.dark-theme .hero-eyebrow-sep,
+body.dark-theme .hero-eyebrow-sep {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+html.dark-theme .hero-eyebrow-role,
+body.dark-theme .hero-eyebrow-role {
+  color: #A09894;
+}
+
+html.dark-theme .hero-h1,
+body.dark-theme .hero-h1 {
+  color: #EDE8E4;
+}
+
+html.dark-theme .hero-h1 .soft,
+body.dark-theme .hero-h1 .soft {
+  color: rgba(237, 232, 228, 0.45);
+}
+
+html.dark-theme .hero-description,
+body.dark-theme .hero-description {
+  color: #B5ACA8;
+}
+
+html.dark-theme .pill--outline .pill__in,
+body.dark-theme .pill--outline .pill__in {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #EDE8E4;
+}
+
+html.dark-theme .pill--outline:hover .pill__in,
+body.dark-theme .pill--outline:hover .pill__in {
+  border-color: #D47547;
+  color: #D47547;
+}
+
+html.dark-theme .pill--card-trigger .pill__in,
+body.dark-theme .pill--card-trigger .pill__in {
+  background: rgba(40, 35, 30, 0.6);
+  border-color: rgba(212, 175, 55, 0.65);
+  color: #EDE8E4;
+}
+
+html.dark-theme .hero-metrics-grid,
+body.dark-theme .hero-metrics-grid {
+  border-top-color: rgba(255, 255, 255, 0.1);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+html.dark-theme .hero-metric-num,
+body.dark-theme .hero-metric-num {
+  color: #F7E4B5;
+}
+
+html.dark-theme .hero-metric-title,
+body.dark-theme .hero-metric-title {
+  color: #EDE8E4;
+}
+
+html.dark-theme .hero-metric-desc,
+body.dark-theme .hero-metric-desc {
+  color: #A09894;
+}
+
+html.dark-theme .hero-metric-tag,
+body.dark-theme .hero-metric-tag {
+  background: rgba(212, 117, 71, 0.15);
+  border-color: rgba(212, 117, 71, 0.35);
+  color: #F7B08A;
+}
+
+html.dark-theme .hero-door-chip,
+body.dark-theme .hero-door-chip {
+  background: rgba(30, 27, 25, 0.75);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #EDE8E4;
+}
+
+html.dark-theme .hero-door-chip:hover,
+body.dark-theme .hero-door-chip:hover {
+  background: rgba(45, 40, 37, 0.95);
+  border-color: #D47547;
+  color: #D47547;
+}
+
+html.dark-theme .hero-bottom-bar,
+body.dark-theme .hero-bottom-bar {
+  border-top-color: rgba(255, 255, 255, 0.12);
+  color: #A09894;
+}
+
+/* ===================================================================
+   RESPONSIVE BREAKPOINTS (CHECKED FOR EACH & EVERY SCREEN SIZE)
+   =================================================================== */
+
+/* 1. Laptop / Small Desktop (max-width: 1200px) */
+@media (max-width: 1200px) {
+  .hero-main-container {
+    max-width: 960px;
+  }
+  .hero-h1 {
+    font-size: clamp(2.1rem, 4vw, 3.4rem);
+  }
+}
+
+/* 2. Tablet Landscape / Medium Screens (max-width: 992px) */
+@media (max-width: 992px) {
+  .hero-section {
+    padding-top: calc(var(--header-height, 72px) + 1.25rem);
+    padding-inline: clamp(1.25rem, 3.5vw, 2.5rem);
+    min-height: auto;
+  }
+
+  .hero-main-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-copy {
+    max-width: 100%;
+  }
+
+  .hero-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+/* 3. Tablet Portrait (max-width: 768px) */
+@media (max-width: 768px) {
+  .hero-section {
+    padding-top: calc(var(--header-height, 72px) + 1rem);
+    padding-inline: 1.25rem;
+    border-radius: 0 0 16px 16px;
+  }
+
+  .hero-eyebrow-container {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-h1 {
+    font-size: clamp(1.85rem, 6.4vw, 2.6rem);
+    letter-spacing: -0.025em;
+    margin-bottom: 1rem;
+  }
+
+  .hero-description {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-cta-group {
+    gap: 0.65rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .pill__in {
+    font-size: 0.8rem;
+    padding: 0.65rem 1.35rem;
+  }
+
+  .hero-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  .hero-doors-preview {
+    gap: 0.65rem;
+  }
+
+  .hero-bottom-bar {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+    padding-top: 1rem;
+  }
+}
+
+/* 4. Mobile Devices (max-width: 480px) */
+@media (max-width: 480px) {
+  .hero-section {
+    padding-inline: 1rem;
+  }
+
+  .hero-h1 {
+    font-size: clamp(1.65rem, 7.2vw, 2.1rem);
+  }
+
+  .hero-status-text {
+    font-size: 0.7rem;
+  }
+
+  .hero-eyebrow-role {
+    font-size: 0.7rem;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .pill {
+    width: 100%;
+  }
+
+  .pill__in {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pill--arrow .pill__in {
+    justify-content: space-between;
+  }
+
+  .hero-metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .hero-doors-pills {
+    gap: 0.4rem;
+  }
+
+  .hero-door-chip {
+    font-size: 0.7rem;
+    padding: 0.28rem 0.6rem;
+  }
+}

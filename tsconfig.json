@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -23,12 +19,8 @@
       }
     ],
     "paths": {
-      "@/api/*": [
-        "./server/api/*"
-      ],
-      "@/*": [
-        "./*"
-      ]
+      "@/api/*": ["./server/api/*"],
+      "@/*": ["./*"]
     }
   },
   "include": [
@@ -43,10 +35,9 @@
     "server/**/*.tsx",
     "proxy.ts",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    ".next-reference-build/types/**/*.ts",
+    ".next-reference-build/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "backend"
-  ]
+  "exclude": ["node_modules", "backend"]
 }

@@ -3,18 +3,18 @@
    ========================================================================== */
 
 .admin-enquiries-page {
-  --enquiry-cyan: #67e8f9;
-  --enquiry-blue: #38bdf8;
-  --enquiry-violet: #a78bfa;
-  --enquiry-green: #4ade80;
-  --enquiry-red: #f87171;
+  --enquiry-cyan: #D4AF37;
+  --enquiry-blue: #A4552C;
+  --enquiry-violet: #E5C29F;
+  --enquiry-green: #2D8A4E;
+  --enquiry-red: #B3261E;
 
-  --enquiry-text: #f8fafc;
-  --enquiry-muted: #94a3b8;
-  --enquiry-muted-2: #64748b;
+  --enquiry-text: #F6F3F0;
+  --enquiry-muted: #ACA09A;
+  --enquiry-muted-2: #7A7470;
 
   --enquiry-border:
-    rgba(255, 255, 255, 0.065);
+    rgba(212, 175, 55, 0.16);
 
   --enquiry-ease:
     cubic-bezier(0.22, 1, 0.36, 1);

@@ -1,0 +1,313 @@
+.door-wall-section {
+  position: relative;
+  width: 100%;
+  padding-block: clamp(64px, 10vh, 120px);
+  background-color: var(--surface, #F6F3F0);
+  border-top: 1px solid var(--border-light, rgba(213, 205, 202, 0.45));
+  border-bottom: 1px solid var(--border-light, rgba(213, 205, 202, 0.45));
+  overflow: clip;
+}
+
+.door-wall-header-container {
+  max-width: var(--container-max, 1360px);
+  margin-inline: auto;
+  padding-inline: var(--space-gutter, clamp(18px, 4vw, 48px));
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-bottom: clamp(36px, 5vh, 60px);
+}
+
+.door-wall-heading {
+  max-width: 680px;
+}
+
+.door-wall-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-onest), sans-serif;
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+  color: var(--secondary, #A4552C);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.door-wall-kicker-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--secondary, #A4552C);
+}
+
+.door-wall-title {
+  font-family: var(--font-onest), sans-serif;
+  font-size: clamp(2rem, 4.4vw, 3.8rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--primary, #1A1818);
+  margin-bottom: 12px;
+}
+
+.door-wall-tagline {
+  font-family: var(--font-garamond), Georgia, serif;
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  color: var(--muted, #7A7470);
+  line-height: 1.5;
+}
+
+/* Arrow Controls */
+.door-wall-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.door-control-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border, #D5CDCA);
+  color: var(--primary, #1A1818);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-subtle, 0 2px 10px rgba(26, 24, 24, 0.04));
+}
+
+.door-control-btn:hover:not(:disabled) {
+  background-color: var(--primary, #1A1818);
+  color: #F6F3F0;
+  border-color: var(--primary, #1A1818);
+}
+
+.door-control-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.door-counter {
+  font-family: var(--font-garamond), Georgia, serif;
+  font-size: 1.1rem;
+  color: var(--muted, #7A7470);
+  min-width: 60px;
+  text-align: center;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Door Track */
+.door-track {
+  width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+  padding-bottom: 24px;
+}
+
+.door-track::-webkit-scrollbar {
+  display: none;
+}
+
+.door-track:active {
+  cursor: grabbing;
+}
+
+.door-track-inner {
+  display: flex;
+  gap: clamp(20px, 2.5vw, 32px);
+  padding-inline: var(--space-gutter, clamp(18px, 4vw, 48px));
+  width: max-content;
+}
+
+/* Door Panel */
+.skill-door-panel {
+  width: clamp(300px, 28vw, 380px);
+  min-height: 520px;
+  perspective: 1200px;
+  user-select: none;
+}
+
+.door-frame {
+  height: 100%;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border, #D5CDCA);
+  border-radius: var(--radius-panel, 12px);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-door, 0 16px 40px rgba(26, 24, 24, 0.06));
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-door-panel:hover .door-frame {
+  border-color: var(--secondary, #A4552C);
+  box-shadow: 0 20px 48px rgba(164, 85, 44, 0.14);
+  transform: translateY(-4px);
+}
+
+/* Door Header Plaque */
+.door-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(213, 205, 202, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FAF8F5;
+}
+
+.door-num {
+  font-family: var(--font-garamond), Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--primary, #1A1818);
+  font-feature-settings: "tnum" 1;
+}
+
+.door-tag {
+  font-family: var(--font-onest), sans-serif;
+  font-size: 0.65rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  color: var(--muted, #7A7470);
+  text-transform: uppercase;
+}
+
+.door-status-pill {
+  font-family: var(--font-onest), sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  background-color: rgba(164, 85, 44, 0.08);
+  color: var(--secondary, #A4552C);
+  border: 1px solid rgba(164, 85, 44, 0.2);
+}
+
+/* Door Leaf */
+.door-leaf {
+  padding: 28px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  position: relative;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAF8F6 100%);
+}
+
+.door-brass-knocker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed rgba(213, 205, 202, 0.6);
+}
+
+.door-title {
+  font-family: var(--font-onest), sans-serif;
+  font-size: 1.45rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--primary, #1A1818);
+  margin-bottom: 4px;
+  line-height: 1.25;
+}
+
+.door-subtitle {
+  font-family: var(--font-garamond), Georgia, serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--secondary, #A4552C);
+  margin-bottom: 18px;
+}
+
+.door-metric-box {
+  padding: 14px 16px;
+  background-color: #F6F3F0;
+  border: 1px solid var(--border-light, rgba(213, 205, 202, 0.45));
+  border-radius: var(--radius-control, 6px);
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.door-metric-val {
+  font-family: var(--font-garamond), Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--primary, #1A1818);
+}
+
+.door-metric-desc {
+  font-family: var(--font-onest), sans-serif;
+  font-size: 0.74rem;
+  color: var(--muted, #7A7470);
+  line-height: 1.35;
+}
+
+.door-desc {
+  font-family: var(--font-onest), sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary, #5A5450);
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.door-tools-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.door-tool-badge {
+  font-family: var(--font-onest), sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background-color: rgba(26, 24, 24, 0.05);
+  color: var(--text-secondary, #5A5450);
+  border: 1px solid rgba(213, 205, 202, 0.4);
+}
+
+/* Step Through Door CTA */
+.door-enter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 44px;
+  padding: 0 18px;
+  background-color: var(--primary, #1A1818);
+  color: #F6F3F0;
+  border-radius: var(--radius-control, 6px);
+  font-family: var(--font-onest), sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.22s var(--ease-out, ease);
+  margin-top: auto;
+}
+
+.door-enter-btn:hover {
+  background-color: var(--secondary, #A4552C);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(164, 85, 44, 0.25);
+}
+

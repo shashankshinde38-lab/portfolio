@@ -1,17 +1,20 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import {
-  ArrowUpRight,
   ChevronRight,
   Home,
-  Mail,
   FileText,
-  Github,
-  Linkedin,
   ShieldCheck,
   Sparkles,
+  ArrowUpRight,
 } from "lucide-react";
-import AmbientBackdrop from "@/web/components/AmbientBackdrop/AmbientBackdrop";
+import SiteHeader from "@/web/components/SiteHeader/SiteHeader";
+import SiteFooter from "@/web/components/SiteFooter/SiteFooter";
+import MultiStepContactOverlay from "@/web/components/MultiStepContact/MultiStepContactOverlay";
+import AbilityCard3D from "@/web/components/AbilityCard3D/AbilityCard3D";
 import "./SubpageLayout.css";
 
 const siteUrl = "https://shashankportfolio-jet.vercel.app";
@@ -40,6 +43,9 @@ export default function SubpageLayout({
   description,
   children,
 }: SubpageLayoutProps) {
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [isCardOpen, setIsCardOpen] = useState(false);
+
   // Breadcrumb schema list
   const breadcrumbListSchema = {
     "@context": "https://schema.org",
@@ -49,7 +55,11 @@ export default function SubpageLayout({
       "@type": "ListItem",
       position: idx + 1,
       name: crumb.label,
-      item: crumb.href ? (crumb.href.startsWith("http") ? crumb.href : `${siteUrl}${crumb.href}`) : pageUrl,
+      item: crumb.href
+        ? crumb.href.startsWith("http")
+          ? crumb.href
+          : `${siteUrl}${crumb.href}`
+        : pageUrl,
     })),
   };
 
@@ -80,9 +90,6 @@ export default function SubpageLayout({
 
   return (
     <div className="subpage-shell">
-      {/* Background Volumetric Glows */}
-      <AmbientBackdrop />
-
       {/* Schema Injection */}
       <script
         type="application/ld+json"
@@ -99,69 +106,11 @@ export default function SubpageLayout({
         Skip to content
       </a>
 
-      {/* Top Navigation */}
-      <header className="subpage-header">
-        <div className="subpage-header-inner">
-          <Link href="/" className="subpage-brand" aria-label="Shashank Shinde Homepage">
-            <span className="subpage-brand-mark">
-              S<span>.</span>
-            </span>
-            <span className="subpage-brand-name">
-              shashank<span className="subpage-brand-last"> shinde</span>
-              <span className="subpage-brand-period">.</span>
-            </span>
-          </Link>
-
-          <nav className="subpage-nav-links" aria-label="Secondary navigation">
-            <Link href="/" className="subpage-nav-link">
-              Home
-            </Link>
-            <Link href="/about" className="subpage-nav-link">
-              About
-            </Link>
-            <Link href="/experience" className="subpage-nav-link">
-              Experience
-            </Link>
-            <Link href="/skills" className="subpage-nav-link">
-              Skills
-            </Link>
-            <Link href="/projects" className="subpage-nav-link">
-              Projects
-            </Link>
-            <Link href="/#contact" className="subpage-nav-link subpage-contact-pill">
-              <Mail size={13} aria-hidden="true" />
-              <span>Contact</span>
-            </Link>
-          </nav>
-
-          <div className="subpage-social-actions">
-            <a
-              href="https://github.com/shashankshinde38-lab"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="subpage-icon-btn"
-              data-track-event="github_click"
-              data-track-location="subpage_header"
-              aria-label="GitHub Profile"
-              title="GitHub Profile"
-            >
-              <Github size={15} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/shashank-shinde7/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="subpage-icon-btn"
-              data-track-event="linkedin_click"
-              data-track-location="subpage_header"
-              aria-label="LinkedIn Profile"
-              title="LinkedIn Profile"
-            >
-              <Linkedin size={15} />
-            </a>
-          </div>
-        </div>
-      </header>
+      {/* Global Fixed Header (Replica of therishithakor.com with live clock, bulb toggle & routing) */}
+      <SiteHeader
+        onOpenContact={() => setIsContactOpen(true)}
+        onOpenCard={() => setIsCardOpen(true)}
+      />
 
       {/* Main Content Area */}
       <main id="subpage-content" className="subpage-main">
@@ -191,7 +140,7 @@ export default function SubpageLayout({
           </nav>
         </div>
 
-        {/* Page Hero Header */}
+        {/* Page Hero Header (Rishi Thakor Editorial Typography) */}
         <section className="subpage-hero">
           <div className="subpage-kicker">
             <Sparkles size={14} className="subpage-kicker-icon" aria-hidden="true" />
@@ -199,7 +148,7 @@ export default function SubpageLayout({
           </div>
 
           <h1 className="subpage-title">{title}</h1>
-          {subtitle && <p className="subpage-subtitle">{subtitle}</p>}
+          {subtitle && <p className="subpage-subtitle font-serif">{subtitle}</p>}
 
           <div className="subpage-author-bar">
             <span className="subpage-author-name">
@@ -208,7 +157,7 @@ export default function SubpageLayout({
             <span className="subpage-author-sep" aria-hidden="true">
               •
             </span>
-            <span className="subpage-author-role">Software Test Engineer &amp; QA Automation</span>
+            <span className="subpage-author-role">Software Test Engineer &amp; QA Specialist</span>
             <span className="subpage-author-sep" aria-hidden="true">
               •
             </span>
@@ -216,7 +165,7 @@ export default function SubpageLayout({
           </div>
         </section>
 
-        {/* Children Slots */}
+        {/* Case Study Body Content */}
         <div className="subpage-body">{children}</div>
 
         {/* Recruiter Bottom CTA Banner */}
@@ -234,23 +183,20 @@ export default function SubpageLayout({
               </p>
             </div>
             <div className="subpage-cta-actions">
-              <Link
-                href="/#contact"
-                className="btn-primary btn-3d-glow"
-                data-track-event="contact_start"
-                data-track-location="subpage_bottom_cta"
+              <button
+                type="button"
+                onClick={() => setIsContactOpen(true)}
+                className="btn-primary"
               >
                 <span>Get in Touch</span>
                 <ArrowUpRight size={16} aria-hidden="true" />
-              </Link>
+              </button>
               <a
                 href="/files/Shashank_Shinde_Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 download="Shashank_Shinde_Resume.pdf"
                 className="btn-secondary"
-                data-track-event="resume_download"
-                data-track-location="subpage_bottom_cta"
               >
                 <FileText size={15} aria-hidden="true" />
                 <span>Download Resume (PDF)</span>
@@ -260,98 +206,20 @@ export default function SubpageLayout({
         </section>
       </main>
 
-      {/* Subpage Footer */}
-      <footer className="subpage-footer">
-        <div className="subpage-footer-inner">
-          <div className="subpage-footer-brand">
-            <Link href="/" className="brand">
-              <span className="brand-mark">
-                s<span>.</span>
-              </span>
-              <span>
-                shashank shinde<span className="brand-period">.</span>
-              </span>
-            </Link>
-            <p>Thoughtful testing. Resilient software. Continuous release confidence.</p>
-          </div>
+      {/* Global Site Footer */}
+      <SiteFooter onOpenContact={() => setIsContactOpen(true)} />
 
-          <div className="subpage-footer-links">
-            <div className="subpage-footer-col">
-              <h4>Navigation</h4>
-              <ul>
-                <li>
-                  <Link href="/">Home Overview</Link>
-                </li>
-                <li>
-                  <Link href="/about">About Shashank</Link>
-                </li>
-                <li>
-                  <Link href="/experience">Work Experience</Link>
-                </li>
-                <li>
-                  <Link href="/skills">All QA Skills</Link>
-                </li>
-                <li>
-                  <Link href="/projects">Case Studies</Link>
-                </li>
-              </ul>
-            </div>
+      {/* 5-Step Project Enquiry & Contact Overlay */}
+      <MultiStepContactOverlay
+        isOpen={isContactOpen}
+        onClose={() => setIsContactOpen(false)}
+      />
 
-            <div className="subpage-footer-col">
-              <h4>Skill Deep-Dives</h4>
-              <ul>
-                <li>
-                  <Link href="/skills/selenium-automation">Selenium WebDriver</Link>
-                </li>
-                <li>
-                  <Link href="/skills/playwright-automation">Playwright TS/JS</Link>
-                </li>
-                <li>
-                  <Link href="/skills/api-testing">REST API Validation</Link>
-                </li>
-                <li>
-                  <Link href="/skills/performance-testing">JMeter Performance</Link>
-                </li>
-                <li>
-                  <Link href="/skills/mobile-testing">Appium Mobile Testing</Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className="subpage-footer-col">
-              <h4>QA Case Studies</h4>
-              <ul>
-                <li>
-                  <Link href="/projects/driwe-qa-case-study">DRIWE Mobility Platform</Link>
-                </li>
-                <li>
-                  <Link href="/projects/grosido-qa-case-study">Grosido Grocery Platform</Link>
-                </li>
-                <li>
-                  <Link href="/projects/ecommerce-testing-case-study">E-Commerce Marketplace</Link>
-                </li>
-                <li>
-                  <Link href="/projects/ride-sharing-testing-case-study">Ride Sharing Concurrency</Link>
-                </li>
-                <li>
-                  <Link href="/projects/urban-build-testing-case-study">Urban Build Mobile Lead Gen</Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="subpage-footer-bottom">
-          <p>
-            Written &amp; maintained by <strong>Shashank Shinde</strong> · Software Test Engineer &amp; QA Automation Engineer — Pune, Maharashtra, India.
-          </p>
-          <div className="subpage-footer-bottom-links">
-            <Link href="/#faq">FAQ &amp; Insights</Link>
-            <span className="sep">•</span>
-            <Link href="/#contact">Contact</Link>
-          </div>
-        </div>
-      </footer>
+      {/* 3D Holographic Ability Card */}
+      <AbilityCard3D
+        isOpen={isCardOpen}
+        onClose={() => setIsCardOpen(false)}
+      />
     </div>
   );
 }

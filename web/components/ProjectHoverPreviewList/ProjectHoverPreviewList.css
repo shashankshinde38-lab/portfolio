@@ -1,0 +1,233 @@
+.hover-preview-container {
+  position: relative;
+  width: 100%;
+  margin: 3.5rem 0;
+}
+
+.hover-preview-header {
+  border-bottom: 1px solid var(--border-subtle, #D5CDCA);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hover-preview-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary, #1A1818);
+  margin: 0;
+}
+
+.hover-preview-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.hover-preview-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.75rem 1rem;
+  border-bottom: 1px solid var(--border-subtle, #D5CDCA);
+  text-decoration: none;
+  color: var(--text-primary, #1A1818);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.hover-preview-row:hover {
+  background: rgba(232, 228, 224, 0.4);
+  padding-left: 1.5rem;
+}
+
+.hover-row-left {
+  display: flex;
+  align-items: baseline;
+  gap: 2rem;
+  flex: 1;
+}
+
+.hover-row-num {
+  font-size: 1.15rem;
+  color: var(--secondary, #A4552C);
+  font-family: var(--font-garamond, 'EB Garamond', serif);
+  font-weight: 600;
+  min-width: 28px;
+}
+
+.hover-row-name-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.hover-row-name {
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+.hover-preview-row:hover .hover-row-name {
+  color: var(--secondary, #A4552C);
+}
+
+.hover-row-domain {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted, #7A7470);
+  text-transform: uppercase;
+}
+
+.hover-row-right {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.hover-row-metric {
+  font-family: var(--font-garamond, 'EB Garamond', serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary, #1A1818);
+}
+
+.hover-row-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary, #1A1818);
+  transition: all 0.25s ease;
+}
+
+.hover-preview-row:hover .hover-row-arrow {
+  background: var(--text-primary, #1A1818);
+  color: var(--surface, #F6F3F0);
+  border-color: var(--text-primary, #1A1818);
+  transform: translate(3px, -3px);
+}
+
+/* Floating Image Hover Preview Overlay for Desktop */
+.floating-preview-card {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 360px;
+  height: 250px;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  background: #141211;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.92);
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.floating-preview-card.visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.floating-preview-card-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.floating-preview-media {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: #0E0C0B;
+}
+
+.floating-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.floating-preview-caption {
+  height: 50px;
+  padding: 0 14px;
+  background: #1A1818;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.floating-caption-name {
+  font-family: var(--font-onest, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #EDE8E4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.floating-caption-tag {
+  font-family: var(--font-onest, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--secondary, #A4552C);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Mobile Inline Previews */
+.mobile-inline-preview {
+  display: none;
+  width: 100%;
+  height: 160px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 1rem;
+  border: 1px solid var(--border-subtle, #D5CDCA);
+}
+
+.mobile-inline-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 800px) {
+  .hover-row-left {
+    gap: 1rem;
+  }
+
+  .hover-row-name {
+    font-size: 1.15rem;
+  }
+
+  .hover-row-right {
+    gap: 1rem;
+  }
+
+  .floating-preview-card {
+    display: none !important;
+  }
+
+  .mobile-inline-preview {
+    display: block;
+  }
+}

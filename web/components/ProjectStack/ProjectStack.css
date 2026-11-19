@@ -1,0 +1,170 @@
+/* Cards share a containing block. A later card physically paints above earlier cards. */
+html .project-stack {
+  position: relative;
+  display: flow-root;
+  isolation: isolate;
+  padding-bottom: 12vh;
+  overflow: visible;
+}
+html .project-stack > [data-project-card] {
+  position: sticky;
+  top: var(--project-sticky-top, calc(82px + var(--project-index) * 14px));
+  z-index: calc(var(--project-index) + 1);
+  min-height: 0;
+  margin: 0 0 6vh;
+  border-radius: 28px;
+  background: var(--surface-card);
+  box-shadow: 0 18px 40px -12px #1a18182b;
+  overflow: hidden;
+  transform-origin: 50% 0;
+  transform: scale(var(--project-scale, 1));
+  transition: none;
+}
+html .project-stack > .lp-scene {
+  contain: none;
+}
+html .project-stack .project-stack-shade {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  border-radius: inherit;
+  background: #000;
+  opacity: var(--project-shade, 0);
+  pointer-events: none;
+}
+html .project-stack .lp-scene-inner {
+  position: relative;
+  top: auto;
+  min-height: min(calc(100svh - 192px), 720px);
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: 40px;
+  padding: 48px 52px;
+  border: 1px solid color-mix(in srgb, var(--border) 35%, transparent);
+  border-radius: inherit;
+  background: transparent;
+  box-shadow: none;
+}
+html .project-stack .lp-scene-copy,
+html .project-stack .lp-device-sticky {
+  position: relative;
+  top: auto;
+}
+html .project-stack .lp-scene-copy {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+html .project-stack .lp-scene-device-column {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+html .project-stack .lp-scene--reverse .lp-scene-inner {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+}
+html .project-stack .lp-scene--reverse .lp-scene-copy {
+  grid-column: 2;
+  grid-row: 1;
+}
+html .project-stack .lp-scene--reverse .lp-scene-device-column {
+  grid-column: 1;
+  grid-row: 1;
+}
+html .project-stack .lp-scene-divider {
+  display: none;
+}
+html .project-stack .lp-scene-copy-main > h3 {
+  font-size: clamp(30px, 3.4vw, 46px);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+html .project-stack .lp-scene-copy-main {
+  padding: 22px 0 0;
+}
+html .project-stack .lp-scene-index {
+  border: 0;
+  padding: 0;
+}
+html .project-stack > .phone-project {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  min-height: min(calc(100svh - 192px), 720px);
+  padding: 48px 52px;
+  gap: 40px;
+}
+html .project-stack > .phone-project .phone-project-copy {
+  grid-column: 1;
+  grid-row: 1;
+}
+html .project-stack > .phone-project .phone-device {
+  grid-column: 2;
+  grid-row: 1;
+}
+html .project-stack > .phone-project:nth-child(even) {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+}
+html .project-stack > .phone-project:nth-child(even) .phone-project-copy {
+  grid-column: 2;
+}
+html .project-stack > .phone-project:nth-child(even) .phone-device {
+  grid-column: 1;
+}
+@media (max-width: 1199px) {
+  html .project-stack .lp-scene-inner,
+  html .project-stack > .phone-project {
+    padding: 32px;
+    gap: 28px;
+  }
+}
+@media (max-width: 900px) {
+  html .project-stack > [data-project-card] {
+    border-radius: 22px;
+  }
+  html .project-stack .lp-scene-inner,
+  html .project-stack .lp-scene--reverse .lp-scene-inner,
+  html .project-stack > .phone-project,
+  html .project-stack > .phone-project:nth-child(even) {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+    padding: 22px 20px;
+    gap: 20px;
+  }
+  html .project-stack .lp-scene .lp-scene-copy,
+  html .project-stack .lp-scene--reverse .lp-scene-copy,
+  html .project-stack > .phone-project .phone-project-copy {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  html .project-stack .lp-scene .lp-scene-device-column,
+  html .project-stack .lp-scene--reverse .lp-scene-device-column,
+  html .project-stack > .phone-project .phone-device {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  html .project-stack .lp-scene-copy-main {
+    padding-top: 10px;
+  }
+  html .project-stack .lp-scene-copy-main > h3 {
+    font-size: 28px;
+  }
+  html .project-stack .lp-scene-bottom {
+    margin-top: 18px;
+  }
+  html .project-stack > .phone-project .phone-device {
+    width: min(100%, 240px);
+    height: 470px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html .project-stack > [data-project-card] {
+    position: relative;
+    top: auto;
+    transform: none;
+  }
+  html .project-stack .project-stack-shade {
+    opacity: 0;
+  }
+}

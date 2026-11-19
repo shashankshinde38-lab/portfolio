@@ -1,0 +1,1502 @@
+/* ========================================================================
+   ABILITY CARD 3D — FULL REFERENCE-BASED STYLES
+   Original TSX remains intact (~795 lines); effects stay functional.
+   Layout reference: Rishi Thakor's ability-card recording, November 2026.
+   Decorative artwork: newly drawn SVG (CardEngravings.tsx).
+   ======================================================================== */
+
+/* -- Design tokens ------------------------------------------------------- */
+:root {
+  --ability-gold-light: #fff0ad;
+  --ability-gold: #d9a74b;
+  --ability-gold-dark: #78491b;
+  --ability-rose: #946a78;
+  --ability-parchment: #f1e2bb;
+  --ability-ink: #271e1b;
+  --ability-card-ratio: 0.716;
+  --ability-perspective: 1700px;
+  --ability-anim: cubic-bezier(.22, .72, .11, 1);
+}
+
+/* -- Complete viewport: ambient soot and spotlight --------------------- */
+.ability-card-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 47% 70% at 50% 75%, #4c2109 0%, #241207 36%, transparent 84%),
+    radial-gradient(ellipse 55% 90% at 50% 44%, #261807 0%, #100c09 53%, #070707 100%);
+  color: #eee4cc;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: contain;
+}
+
+.ability-card-modal-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 27% 44% at 49% 55%, rgba(222, 122, 18, .13), transparent 84%),
+    radial-gradient(ellipse 40% 65% at 52% 66%, rgba(175, 62, 11, .09), transparent 91%);
+  filter: blur(24px);
+  animation: ability-fire-glow 9s ease-in-out infinite alternate;
+}
+
+.ability-card-modal-backdrop::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 69% 95% at 50% 54%, transparent 42%, rgba(0, 0, 0, .65) 96%);
+}
+
+@keyframes ability-fire-glow {
+  from {
+    opacity: .68;
+    transform: scale(.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* -- Three.js gold embers ------------------------------------------------ */
+.ability-particles-canvas {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  opacity: .92;
+}
+
+/* -- Thin top heads-up display ------------------------------------------ */
+.ability-hud-top {
+  position: absolute;
+  z-index: 30;
+  top: clamp(15px, 2.8vh, 30px);
+  left: clamp(18px, 1.75vw, 37px);
+  right: clamp(18px, 1.75vw, 37px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.ability-brand-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  opacity: .92;
+  transition: opacity 600ms ease;
+}
+
+.ability-brand-group[aria-hidden="true"] {
+  opacity: 0;
+}
+
+.ability-brand-name {
+  color: #ece5d7;
+  font-family: "Onest", Inter, system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 550;
+  line-height: 1.4;
+  letter-spacing: .32em;
+}
+
+.ability-brand-subtitle {
+  color: #aca09a;
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.ability-close-btn {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-width: 78px;
+  min-height: 37px;
+  padding: 8px 14px;
+  border: 1px solid rgba(228, 225, 214, .24);
+  border-radius: 22px;
+  background: rgba(14, 13, 12, .7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #f5f2ec;
+  font: 600 11px/1.2 "Onest", sans-serif;
+  cursor: pointer;
+  transition: border-color 220ms ease, background 220ms ease, transform 220ms ease;
+}
+
+.ability-close-btn:hover,
+.ability-close-btn:focus-visible {
+  border-color: rgba(247, 210, 143, .62);
+  background: rgba(62, 43, 26, .88);
+  transform: translateY(-1px);
+}
+
+.ability-close-btn:focus-visible,
+.ability-card-stage:focus-visible,
+.ability-mobile-flip-btn:focus-visible,
+.ability-flip-pill-btn:focus-visible,
+.ability-expand-pill-btn:focus-visible {
+  outline: 2px solid #edcc84;
+  outline-offset: 4px;
+}
+
+/* -- 3D scene and card size --------------------------------------------- */
+.ability-card-stage-wrap {
+  position: relative;
+  z-index: 10;
+  width: min(470px, 32vw, calc(74dvh * var(--ability-card-ratio)));
+  aspect-ratio: 716 / 1000;
+  display: grid;
+  place-items: center;
+  perspective: var(--ability-perspective);
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+  transform: translateY(-3px);
+  opacity: 1;
+  transition: opacity 750ms ease, filter 750ms ease;
+}
+
+.ability-card-modal-backdrop[data-card-ready="false"] .ability-card-stage-wrap {
+  opacity: 0;
+  filter: blur(7px);
+  pointer-events: none;
+}
+
+.ability-card-modal-backdrop[data-card-ready="true"] .ability-card-stage-wrap {
+  animation: ability-card-reveal 1050ms var(--ability-anim) both;
+}
+
+@keyframes ability-card-reveal {
+  from {
+    opacity: 0;
+    filter: blur(9px);
+    transform: translateY(14px) scale(.93);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(-3px) scale(1);
+  }
+}
+
+.ability-card-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.ability-card-stage.is-dragging {
+  cursor: grabbing;
+}
+
+.ability-card-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 17px;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform 1080ms cubic-bezier(.19, .72, .15, 1);
+  will-change: transform;
+}
+
+.ability-card-body.flipped {
+  transform: rotateY(180deg);
+}
+
+.ability-card-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 17px;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  box-shadow:
+    0 0 1px 1px rgba(255, 242, 166, .86),
+    0 0 12px rgba(252, 207, 91, .58),
+    0 0 28px rgba(233, 146, 30, .32),
+    0 24px 48px rgba(0, 0, 0, .71),
+    0 40px 80px rgba(0, 0, 0, .38);
+}
+
+/* -- Front: pink-purple metallic print --------------------------------- */
+.ability-card-face-front {
+  background:
+    radial-gradient(ellipse 75% 25% at 45% 17%, rgba(255, 213, 222, .27), transparent 80%),
+    radial-gradient(ellipse 65% 85% at 96% 80%, rgba(49, 22, 29, .3), transparent 80%),
+    radial-gradient(ellipse 65% 60% at 7% 74%, rgba(209, 139, 125, .19), transparent 75%),
+    repeating-linear-gradient(148deg, rgba(255, 255, 255, .012) 0 1px, transparent 1px 4px),
+    linear-gradient(145deg, #bd8e9e 0%, #a77b86 32%, #855f6b 69%, #9a707b 100%);
+}
+
+.ability-card-face-front::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: .29;
+  background:
+    repeating-linear-gradient(14deg, transparent 0 2px, rgba(36, 23, 23, .06) 2px 3px),
+    radial-gradient(ellipse at 50% 100%, rgba(54, 16, 23, .35), transparent 52%);
+  mix-blend-mode: multiply;
+}
+
+.ability-card-face-front::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  box-shadow: inset 0 0 8px 2px #543719b3, inset 0 0 18px #edc56d66;
+  border-radius: inherit;
+}
+
+/* The SVG is intentionally a foreground overlay: intricate gold flourishes
+   continue over all window and parchment edges, exactly like gilded embossing. */
+.ability-gilt-frame {
+  position: absolute;
+  z-index: 9;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 1px rgba(23, 10, 7, .76)) drop-shadow(0 0 1px rgba(255, 233, 142, .5));
+}
+
+.ability-hologram-foil {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 47% 23% at var(--foil-x, 50%) var(--foil-y, 50%), rgba(255, 246, 193, .54), transparent 98%),
+    linear-gradient(116deg, transparent 8%, rgba(255, 251, 225, .06) 35%, rgba(255, 234, 158, .20) 48%, transparent 65%);
+  mix-blend-mode: screen;
+  opacity: .28;
+  transition: opacity 250ms ease;
+}
+
+.ability-card-stage:hover .ability-hologram-foil {
+  opacity: .57;
+}
+
+.card-inner-frame {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Onest", Inter, system-ui, sans-serif;
+  color: var(--ability-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* -- Name label --------------------------------------------------------- */
+.card-nameplate-banner {
+  position: absolute;
+  z-index: 4;
+  top: 4.6%;
+  left: 17%;
+  width: 66%;
+  height: 7.3%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 13px;
+  border-radius: 46% / 50%;
+  background:
+    radial-gradient(ellipse at 48% 12%, rgba(255, 255, 241, .92), transparent 68%),
+    linear-gradient(#f8f0d9, #dfd0a8 88%, #d0bd91);
+  box-shadow: inset 0 0 12px #96764888, 0 2px 3px #43261433;
+}
+
+.card-gold-name {
+  display: block;
+  margin: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(14px, 1.25vw, 19px);
+  font-weight: 800;
+  line-height: 1.06;
+  text-align: center;
+  letter-spacing: -.035em;
+  text-shadow: 0 1px #ffffff8a;
+}
+
+/* -- Art window: warm bokeh and un-stretched WebP cutout ---------------- */
+.card-emblem-box {
+  position: absolute;
+  z-index: 3;
+  top: 14.9%;
+  left: 8.65%;
+  width: 82.7%;
+  height: 35.8%;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #493b3a;
+  isolation: isolate;
+  box-shadow: inset 0 0 20px #2419178a;
+}
+
+.card-portrait-bokeh {
+  position: absolute;
+  inset: -5%;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 89% 20%, #b99e84a8 0 4%, transparent 11%),
+    radial-gradient(circle at 92% 44%, #b39a6aad 0 9%, transparent 17%),
+    radial-gradient(circle at 74% 77%, #94744da8 0 8%, transparent 19%),
+    radial-gradient(circle at 20% 18%, #455644ab 0 5%, transparent 14%),
+    radial-gradient(circle at 14% 58%, #4b364c 0 17%, transparent 30%),
+    radial-gradient(circle at 37% 84%, #314c4280 0 12%, transparent 27%),
+    linear-gradient(110deg, #31353a, #625659 43%, #5a4b35 100%);
+  filter: blur(9px) saturate(.8);
+  transform: scale(1.1);
+}
+
+.card-emblem-box::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(27, 17, 16, .12) 0%, transparent 36%, rgba(27, 14, 12, .28) 100%);
+  box-shadow: inset 0 0 22px rgba(31, 17, 17, .46);
+  pointer-events: none;
+}
+
+.card-emblem-box>img {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  top: 3%;
+  left: -23.5%;
+  width: 147%;
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+  object-position: center top;
+  filter: saturate(.86) contrast(1.08) sepia(.07);
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.card-emblem-svg {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  opacity: .94;
+}
+
+.card-emblem-badge {
+  position: absolute;
+  z-index: 4;
+  display: block;
+  left: 30%;
+  bottom: -100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* -- Decorative blank plate below portrait ------------------------------ */
+.card-filigree-divider {
+  position: absolute;
+  z-index: 4;
+  top: 53.3%;
+  left: 22%;
+  width: 56%;
+  height: 3.8%;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 18px;
+  background:
+    linear-gradient(90deg, #e4cba4, #fbf1cf 30%, #e0c69a 82%, #c3a376);
+  box-shadow: inset 0 0 7px #7056386b;
+  color: #b4904e;
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: 15px;
+  letter-spacing: .03em;
+}
+
+.card-filigree-line {
+  display: block;
+  width: 27%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #9c7945 50%, transparent);
+}
+
+/* -- Parchment stat block ------------------------------------------------ */
+.card-skills-table {
+  position: absolute;
+  z-index: 4;
+  top: 60.3%;
+  left: 9.1%;
+  width: 81.8%;
+  height: 21.4%;
+  padding: 8px 16px 9px;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  color: #27201b;
+  background:
+    radial-gradient(ellipse 70% 90% at 50% 36%, #fcf2d4 0%, #e9d8b3 70%, #d7c49c 100%);
+  box-shadow: inset 0 0 15px #79572b43;
+}
+
+.card-skill-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(68px, 90px) 26px;
+  column-gap: 9px;
+  align-items: center;
+  white-space: nowrap;
+  font-size: clamp(10px, 1vw, 13px);
+  line-height: 1.18;
+}
+
+.card-skill-title {
+  font-size: inherit;
+  font-weight: 780;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -.025em;
+}
+
+.card-skill-dots {
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  padding: 0 1px;
+}
+
+.card-skill-dots>i {
+  display: inline-block;
+  flex: 0 0 5px;
+  width: 5px;
+  height: 5px;
+  border: 1px solid #4f3b2a;
+  background: transparent;
+  transform: rotate(45deg);
+}
+
+.card-skill-dots>i[data-filled="true"] {
+  background: #38291f;
+}
+
+.card-skill-score {
+  justify-self: end;
+  font-size: clamp(12px, 1.1vw, 16px);
+  font-weight: 830;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* -- Bottom oval metadata ------------------------------------------------ */
+.card-bottom-meta-bar {
+  position: absolute;
+  z-index: 4;
+  top: 85.5%;
+  left: 16.1%;
+  width: 67.8%;
+  height: 4.15%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 3px;
+  padding: 2px 8px;
+  overflow: hidden;
+  border-radius: 20px;
+  color: #3d3023;
+  background: linear-gradient(90deg, #ddcca8, #f8eacd 43%, #d5bf98);
+  font-size: clamp(5px, .5vw, 7px);
+  letter-spacing: -.015em;
+  box-shadow: inset 0 0 8px #71512a4d;
+}
+
+.card-bottom-meta-bar>span {
+  white-space: nowrap;
+}
+
+.card-bottom-meta-bar>span:nth-child(2),
+.card-bottom-meta-bar>span:nth-child(4) {
+  opacity: .5;
+}
+
+.card-bottom-meta-bar strong {
+  font-size: 1.22em;
+  font-weight: 800;
+}
+
+/* -- Back: ebony lattice and gold astrolabe ------------------------------ */
+.ability-card-face-back {
+  transform: rotateY(180deg);
+  background:
+    radial-gradient(ellipse at 50% 41%, #251c17 0%, #161210 58%, #0b0908 100%);
+}
+
+.ability-card-face-back::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: .22;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 7px, rgba(217, 190, 132, .10) 7px 8px),
+    repeating-linear-gradient(-45deg, transparent 0 7px, rgba(217, 190, 132, .1) 7px 8px);
+}
+
+.ability-card-face-back::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 12px #c99d5f44;
+}
+
+.ability-compass-graphic {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  filter: drop-shadow(0 0 1px rgba(235, 192, 108, .38));
+  pointer-events: none;
+}
+
+/* -- Instructions / interaction HUD ------------------------------------ */
+.ability-hud-bottom {
+  position: absolute;
+  z-index: 25;
+  left: 50%;
+  bottom: clamp(13px, 2.5vh, 25px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: min(92vw, 630px);
+  pointer-events: none;
+}
+
+.ability-instructions {
+  display: block;
+  text-align: center;
+  white-space: nowrap;
+  color: rgba(223, 191, 135, .55);
+  font: 500 9px/1.4 "Onest", system-ui, sans-serif;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.ability-touch-instructions {
+  display: none;
+}
+
+.ability-mobile-flip-btn,
+.ability-flip-pill-btn,
+.ability-expand-pill-btn {
+  pointer-events: auto;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border: 1px solid rgba(218, 168, 90, .52);
+  border-radius: 20px;
+  background: rgba(23, 16, 12, .8);
+  color: #eddaac;
+  font: 650 10px/1.1 "Onest", sans-serif;
+  letter-spacing: .065em;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+
+.ability-mobile-flip-btn {
+  display: none;
+}
+
+.ability-flip-pill-btn,
+.ability-expand-pill-btn {
+  display: inline-flex;
+}
+
+.ability-mobile-flip-btn:hover,
+.ability-flip-pill-btn:hover,
+.ability-expand-pill-btn:hover {
+  background: #4c2d15;
+  border-color: #f5d494;
+}
+
+/* -- Loading system from original TSX ----------------------------------- */
+.ability-loader {
+  position: absolute;
+  z-index: 29;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(205px, 65vw);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.ability-loader-inner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.ability-loader-name {
+  margin-bottom: 5px;
+  color: #e5ddca;
+  font: 650 9px/1.5 "Onest", sans-serif;
+  letter-spacing: .23em;
+  text-transform: uppercase;
+}
+
+.ability-loader-track {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  overflow: hidden;
+  background: #5b4834;
+}
+
+.ability-loader-track>span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #d8a54d, #fff0af);
+  transform-origin: left center;
+  transition: transform 130ms linear;
+}
+
+.ability-loader-label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  color: #baa080;
+  text-transform: uppercase;
+  font: 500 7px/1.5 "Onest", sans-serif;
+  letter-spacing: .09em;
+}
+
+.ability-loader-label b {
+  font-weight: 600;
+}
+
+/* -- Original credential panel on rear: preserved, not removed ---------- */
+.ability-credentials {
+  position: absolute;
+  z-index: 22;
+  top: 50%;
+  left: calc(50% + min(25vw, 350px));
+  transform: translateY(-50%);
+  width: min(320px, 33vw);
+  color: #f1e8d1;
+  font-family: "Onest", Inter, sans-serif;
+  font-size: 12px;
+}
+
+.ability-credentials-trigger {
+  border: 1px solid #e5bc6a69;
+  border-radius: 19px;
+  background: #16100dce;
+  color: #efd59b;
+  padding: 9px 13px;
+  font: 650 10px "Onest", sans-serif;
+  cursor: pointer;
+}
+
+.ability-credentials-trigger:hover {
+  background: #3c2817;
+}
+
+.ability-credentials-panel {
+  max-height: 66dvh;
+  overflow: auto;
+  margin-top: 10px;
+  border: 1px solid rgba(217, 167, 75, .36);
+  border-radius: 15px;
+  background: #130f0de6;
+  box-shadow: 0 18px 32px #0007;
+  backdrop-filter: blur(12px);
+}
+
+.ability-credentials-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+}
+
+.card-back-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card-back-title {
+  margin: 0;
+  color: #f7dfab;
+  font: 700 19px/1.2 "EB Garamond", Georgia, serif;
+}
+
+.card-back-subtitle {
+  font-size: 10px;
+  line-height: 1.4;
+  color: #b9a995;
+}
+
+.card-metrics-grid-2x2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.card-metric-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid #b48c4855;
+  padding: 9px;
+  border-radius: 7px;
+}
+
+.card-metric-val {
+  font-weight: 800;
+  color: #ffe0a0;
+  font-size: 18px;
+}
+
+.card-metric-lbl {
+  color: #c8b8a2;
+  font-size: 9px;
+}
+
+.card-credentials-box {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.card-cred-row {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.card-cred-row svg {
+  flex: none;
+  color: #d4af37;
+}
+
+.card-tech-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.card-tech-chip {
+  padding: 5px 7px;
+  background: #c7983e17;
+  color: #e9d2a3;
+  border: 1px solid #bd97403e;
+  border-radius: 15px;
+  font-size: 9px;
+}
+
+.card-gold-seal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border-top: 1px solid #caa45e55;
+  color: #eec987;
+  font-size: 9px;
+  letter-spacing: .06em;
+  text-align: center;
+}
+
+/* -- Inline hero mode: preserve your original isInline + onExpand ------- */
+.ability-card-inline-container {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: min(680px, 80dvh);
+  min-height: 370px;
+  overflow: hidden;
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse 50% 70% at 50% 63%, rgba(100, 47, 13, .49), transparent 78%),
+    radial-gradient(ellipse at 50% 50%, #1d130e, #070706);
+}
+
+.ability-particles-inline {
+  z-index: 1;
+}
+
+.ability-card-stage-wrap-inline {
+  z-index: 5;
+  width: min(365px, 39%, calc(67dvh * var(--ability-card-ratio)));
+  max-height: calc(100% - 65px);
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ability-inline-hud {
+  position: absolute;
+  z-index: 20;
+  bottom: 13px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ability-inline-actions {
+  display: inline-flex;
+  gap: 9px;
+}
+
+.ability-card-inline-container .ability-credentials {
+  top: auto;
+  bottom: 73px;
+  left: auto;
+  right: 10px;
+  transform: none;
+  width: min(280px, 42%);
+}
+
+/* -- Tablet -------------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .ability-credentials {
+    left: auto;
+    right: 16px;
+    width: 240px;
+  }
+
+  .ability-card-stage-wrap {
+    width: min(440px, 48vw, calc(74dvh * var(--ability-card-ratio)));
+  }
+
+  .card-skill-row {
+    font-size: clamp(10px, 1.16vw, 13px);
+  }
+}
+
+@media (max-width: 760px) {
+  .ability-card-modal-backdrop {
+    background: radial-gradient(ellipse at 50% 70%, #3c1a0c, #070605 80%);
+  }
+
+  .ability-card-stage-wrap {
+    width: min(83vw, calc(69dvh * var(--ability-card-ratio)));
+  }
+
+  .ability-card-stage-wrap-inline {
+    width: min(74vw, calc(64dvh * var(--ability-card-ratio)));
+  }
+
+  .ability-hud-top {
+    top: 17px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .ability-brand-name {
+    font-size: 9px;
+  }
+
+  .ability-brand-subtitle {
+    font-size: 12px;
+  }
+
+  .ability-close-btn {
+    min-height: 36px;
+    padding: 8px 11px;
+  }
+
+  .ability-hud-bottom {
+    bottom: 16px;
+    gap: 9px;
+  }
+
+  .ability-desktop-instructions {
+    display: none;
+  }
+
+  .ability-touch-instructions {
+    display: block;
+  }
+
+  .ability-mobile-flip-btn {
+    display: inline-flex;
+  }
+
+  .ability-instructions {
+    font-size: 8px;
+    letter-spacing: .12em;
+  }
+
+  .ability-credentials {
+    left: 50%;
+    right: auto;
+    top: auto;
+    bottom: 83px;
+    transform: translateX(-50%);
+    width: min(320px, 86vw);
+  }
+
+  .ability-credentials-panel {
+    max-height: 36dvh;
+  }
+
+  .ability-card-inline-container .ability-credentials {
+    bottom: 68px;
+    right: 10px;
+    width: 70%;
+  }
+
+  .card-gold-name {
+    font-size: clamp(13px, 4vw, 19px);
+  }
+
+  .card-skill-row {
+    grid-template-columns: minmax(0, 1fr) minmax(57px, 74px) 21px;
+    column-gap: 5px;
+    font-size: clamp(9px, 2.6vw, 12px);
+  }
+
+  .card-skill-dots {
+    gap: 2.5px;
+  }
+
+  .card-skill-dots>i {
+    flex-basis: 4px;
+    width: 4px;
+    height: 4px;
+  }
+
+  .card-skill-score {
+    font-size: 12px;
+  }
+
+  .card-skills-table {
+    padding: 6px 11px;
+  }
+
+  .card-bottom-meta-bar {
+    font-size: 5.4px;
+    padding: 0 5px;
+  }
+
+  .ability-inline-hud .ability-instructions {
+    font-size: 6.8px;
+  }
+}
+
+@media (max-width: 400px) {
+  .ability-card-stage-wrap {
+    width: min(89vw, calc(66dvh * var(--ability-card-ratio)));
+  }
+
+  .ability-brand-name {
+    letter-spacing: .15em;
+  }
+
+  .card-skills-table {
+    padding: 4px 9px;
+  }
+
+  .card-skill-row {
+    grid-template-columns: minmax(0, 1fr) 57px 17px;
+    column-gap: 3px;
+    font-size: 8.6px;
+  }
+
+  .card-skill-dots {
+    gap: 1.8px;
+  }
+
+  .card-skill-dots>i {
+    flex-basis: 3px;
+    width: 3px;
+    height: 3px;
+  }
+
+  .card-skill-score {
+    font-size: 10px;
+  }
+
+  .card-bottom-meta-bar {
+    font-size: 4.8px;
+  }
+
+  .ability-instructions {
+    font-size: 6.9px;
+  }
+}
+
+@media (max-height: 675px) and (min-width: 761px) {
+  .ability-card-stage-wrap {
+    width: min(370px, calc(69dvh * var(--ability-card-ratio)));
+  }
+
+  .ability-hud-bottom {
+    bottom: 8px;
+  }
+
+  .ability-hud-top {
+    top: 12px;
+  }
+
+  .card-gold-name {
+    font-size: 14px;
+  }
+
+  .card-skills-table {
+    padding: 5px 9px;
+  }
+
+  .card-skill-row {
+    font-size: 10px;
+  }
+
+  .card-skill-score {
+    font-size: 11px;
+  }
+}
+
+/* -- Accessibility ------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ability-card-modal-backdrop::before {
+    animation: none;
+  }
+
+  .ability-card-modal-backdrop[data-card-ready="true"] .ability-card-stage-wrap {
+    animation: none;
+  }
+
+  .ability-card-body,
+  .ability-card-stage-wrap,
+  .ability-hologram-foil,
+  .ability-loader-track>span {
+    transition-duration: .01ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+
+  .ability-close-btn,
+  .ability-mobile-flip-btn,
+  .ability-credentials-trigger {
+    border: 1px solid ButtonText;
+  }
+
+  .ability-card-stage:focus-visible {
+    outline: 3px solid Highlight;
+  }
+}
+
+/* =======================================================================
+   REFERENCE-MATCH PASS — 19 NOVEMBER 2026
+   The reference image is a ~470 x 700 collectible-card composition.
+   IMPORTANT: All earlier rules above remain; these are narrow refinements
+   so the original component, hooks, Three.js and both display modes survive.
+   ======================================================================= */
+
+:root {
+  --ability-card-ratio: .682;
+  --ability-perspective: 1350px;
+  --ability-stage-glow: rgba(247, 170, 54, .33);
+  --ability-frame-gold: #fff3b6;
+  --ability-print-rose: #9a6d7c;
+}
+
+/* Reference: black field, concentrated amber pool behind the lower card. */
+.ability-card-modal-backdrop {
+  background:
+    radial-gradient(ellipse 34% 50% at 50% 78%, rgba(102, 42, 6, .76), transparent 91%),
+    radial-gradient(ellipse 38% 55% at 50% 51%, rgba(75, 36, 13, .52), transparent 84%),
+    radial-gradient(ellipse 85% 94% at 50% 50%, #17100b 0%, #070606 70%, #020202 100%);
+}
+
+.ability-card-modal-backdrop::before {
+  opacity: .8;
+  background: radial-gradient(ellipse 21% 31% at 50% 70%, rgba(234, 122, 13, .29), transparent 87%);
+  filter: blur(32px);
+}
+
+.ability-card-modal-backdrop::after {
+  background:
+    radial-gradient(ellipse 68% 89% at 50% 55%, transparent 29%, rgba(0, 0, 0, .55) 97%);
+}
+
+.ability-card-stage-wrap {
+  width: min(475px, 33vw, calc(81dvh * var(--ability-card-ratio)));
+  aspect-ratio: 682 / 1000;
+  transform: translateY(1px);
+  filter: drop-shadow(0 18px 23px rgba(8, 4, 3, .46));
+}
+
+.ability-card-modal-backdrop[data-card-ready="true"] .ability-card-stage-wrap {
+  animation: ability-card-reveal-matched 1100ms cubic-bezier(.2, .8, .18, 1) both;
+}
+
+@keyframes ability-card-reveal-matched {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(18px) scale(.91);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(1px) scale(1);
+  }
+}
+
+.ability-card-stage {
+  --foil-x: 50%;
+  --foil-y: 50%;
+  --portrait-pan-x: 0px;
+  --portrait-pan-y: 0px;
+  --glint-rotation: 0deg;
+}
+
+.ability-card-face {
+  border-radius: 17px;
+  box-shadow:
+    0 0 0 1px rgba(255, 244, 180, .95),
+    0 0 2px 2px rgba(224, 161, 66, .89),
+    0 0 10px 2px rgba(251, 193, 68, .67),
+    0 0 26px 4px rgba(243, 147, 26, .32),
+    0 32px 46px rgba(0, 0, 0, .64);
+}
+
+.ability-card-face-front {
+  background:
+    radial-gradient(ellipse 52% 20% at 52% 12%, rgba(247, 200, 206, .59), transparent 92%),
+    radial-gradient(ellipse 31% 46% at 7% 53%, rgba(255, 185, 177, .28), transparent 87%),
+    radial-gradient(ellipse 48% 57% at 88% 77%, rgba(70, 31, 51, .28), transparent 93%),
+    linear-gradient(140deg, #c2959f 0%, #a57a89 38%, #8e6677 72%, #aa7a89 100%);
+}
+
+.ability-card-face-front::before {
+  opacity: .42;
+  background:
+    url("./images/foil-grain.png") 0 0 / 190px 190px repeat,
+    radial-gradient(ellipse at 50% 100%, rgba(55, 18, 27, .33), transparent 64%);
+}
+
+.ability-print-grain {
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: url("./images/foil-grain.png") 0 0 / 256px 256px repeat;
+  opacity: .65;
+  mix-blend-mode: overlay;
+}
+
+/* Real foil has both a broad drifting glow and a narrow directional glint. */
+.ability-hologram-foil {
+  z-index: 11;
+  background:
+    radial-gradient(ellipse 45% 30% at var(--foil-x) var(--foil-y), rgba(255, 248, 199, .34), transparent 83%),
+    linear-gradient(107deg, transparent 15%, rgba(255, 255, 255, .02) 31%, rgba(255, 245, 189, .18) 42%, transparent 53%);
+  opacity: .25;
+  transition: opacity 250ms ease;
+}
+
+.ability-metal-specular {
+  position: absolute;
+  inset: -4%;
+  z-index: 12;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(106deg, transparent 24%, rgba(255, 251, 220, .045) 34%, rgba(255, 253, 212, .18) 43%, transparent 51%);
+  transform: rotate(var(--glint-rotation, 0deg));
+  mix-blend-mode: screen;
+  transition: opacity 400ms ease;
+}
+
+.ability-card-stage:hover .ability-metal-specular {
+  opacity: .93;
+}
+
+.ability-card-stage:hover .ability-hologram-foil {
+  opacity: .68;
+}
+
+.ability-gilt-frame {
+  filter:
+    drop-shadow(0 1px .65px rgba(33, 10, 6, .86)) drop-shadow(0 -1px .45px rgba(255, 248, 190, .54)) drop-shadow(0 0 1px rgba(255, 220, 108, .26));
+}
+
+/* Align the content with the embossed ornaments, not with a generic card. */
+.card-nameplate-banner {
+  top: 4.9%;
+  height: 6.9%;
+  background:
+    url("./images/paper-grain.png") 0 0 / 185px 185px repeat,
+    radial-gradient(ellipse at 50% 6%, #fff9de 0%, #f5eac8 48%, #d8bd8e 100%);
+  box-shadow: inset 0 0 12px rgba(111, 73, 33, .42), 0 2px 2px rgba(40, 20, 12, .19);
+}
+
+.card-gold-name {
+  color: #33241f;
+  font-size: clamp(14px, 1.17vw, 19px);
+  letter-spacing: -.024em;
+  text-shadow: 0 1px rgba(255, 255, 255, .76), 0 -1px rgba(121, 74, 47, .22);
+}
+
+.card-emblem-box {
+  top: 14.55%;
+  height: 36.0%;
+  background: #27222a;
+  box-shadow: inset 0 0 24px rgba(13, 6, 16, .66), 0 1px 4px rgba(26, 15, 12, .38);
+}
+
+.card-portrait-bokeh {
+  inset: -8%;
+  background:
+    radial-gradient(circle at 89% 32%, rgba(254, 226, 166, .78) 0 2%, transparent 8%),
+    radial-gradient(circle at 81% 59%, rgba(218, 188, 143, .62) 0 8%, transparent 20%),
+    radial-gradient(circle at 97% 81%, rgba(168, 129, 104, .45) 0 11%, transparent 21%),
+    radial-gradient(circle at 15% 61%, rgba(58, 47, 83, .92) 0 15%, transparent 39%),
+    radial-gradient(circle at 48% 31%, rgba(97, 61, 85, .58) 0 10%, transparent 35%),
+    radial-gradient(circle at 34% 82%, rgba(46, 80, 64, .64) 0 11%, transparent 37%),
+    linear-gradient(114deg, #262432 0%, #423340 43%, #786048 80%, #382928 100%);
+  filter: blur(9px) saturate(.95);
+}
+
+.card-portrait-light-leaks {
+  position: absolute;
+  z-index: 1;
+  inset: -4%;
+  background:
+    radial-gradient(ellipse 15% 62% at 72% 39%, rgba(244, 177, 73, .19), transparent 92%),
+    radial-gradient(ellipse 15% 55% at 35% 72%, rgba(151, 58, 155, .19), transparent 100%);
+  filter: blur(17px);
+  pointer-events: none;
+}
+
+.card-emblem-box>img {
+  top: 1%;
+  left: -23.5%;
+  width: 147%;
+  height: auto;
+  filter:
+    contrast(1.13) brightness(.96) saturate(.74) sepia(.13) drop-shadow(0 4px 14px rgba(5, 3, 4, .26));
+  transform: translate3d(var(--portrait-pan-x), var(--portrait-pan-y), 0);
+  transition: transform 180ms ease-out;
+}
+
+.card-emblem-box::after {
+  background:
+    url("./images/foil-grain.png") 0 0 / 170px 170px repeat,
+    radial-gradient(ellipse at 50% 48%, transparent 50%, rgba(18, 7, 10, .38) 100%),
+    linear-gradient(to bottom, rgba(21, 8, 15, .22), transparent 25%, transparent 61%, rgba(24, 8, 12, .31));
+  opacity: .75;
+}
+
+.card-filigree-divider {
+  top: 53.3%;
+  height: 3.85%;
+  background:
+    url("./images/paper-grain.png") repeat,
+    linear-gradient(90deg, #e6d09f, #fff1ce 42%, #d9bd8e);
+}
+
+.card-skills-table {
+  top: 58.4%;
+  height: 21.9%;
+  padding: 9px 16px;
+  background:
+    url("./images/paper-grain.png") repeat,
+    radial-gradient(ellipse 92% 100% at 50% 36%, #fff1cf 0%, #edd9ad 68%, #d7ba8d 100%);
+  box-shadow: inset 0 0 19px rgba(100, 57, 23, .37);
+}
+
+.card-skill-row {
+  grid-template-columns: minmax(0, 1fr) minmax(74px, 99px) 25px;
+  column-gap: 9px;
+  font-size: clamp(10px, .86vw, 13px);
+}
+
+.card-skill-title {
+  font-weight: 800;
+}
+
+.card-skill-score {
+  font-weight: 850;
+}
+
+.card-skill-dots>i {
+  width: 5px;
+  height: 5px;
+  flex-basis: 5px;
+}
+
+.card-bottom-meta-bar {
+  top: 84.4%;
+  height: 3.4%;
+  background:
+    url("./images/paper-grain.png") repeat,
+    linear-gradient(90deg, #dbc499, #faf0d5 42%, #ddc59b);
+}
+
+/* The back stays a quiet black metal plate with fine gold compass lines. */
+.ability-card-face-back {
+  background:
+    radial-gradient(ellipse 64% 58% at 50% 49%, rgba(45, 30, 24, .47), transparent 82%),
+    #0b0807;
+}
+
+.ability-card-face-back::before {
+  opacity: .12;
+  background:
+    url("./images/foil-grain.png") repeat,
+    repeating-linear-gradient(45deg, transparent 0 6px, rgba(209, 177, 115, .12) 6px 7px),
+    repeating-linear-gradient(-45deg, transparent 0 6px, rgba(209, 177, 115, .12) 6px 7px);
+}
+
+.ability-compass-graphic {
+  filter: drop-shadow(0 0 2px rgba(238, 204, 119, .34));
+}
+
+.ability-hud-bottom {
+  bottom: clamp(13px, 2.6vh, 28px);
+}
+
+.ability-instructions {
+  color: rgba(215, 188, 141, .7);
+  font-size: 10px;
+  letter-spacing: .22em;
+}
+
+/* Responsive geometry: preserve the same photo/card ratio on all screens. */
+@media (max-width: 1100px) and (min-width: 761px) {
+  .ability-card-stage-wrap {
+    width: min(450px, 48vw, calc(79dvh * var(--ability-card-ratio)));
+  }
+}
+
+@media (max-width: 760px) {
+  .ability-card-stage-wrap {
+    width: min(84vw, calc(75dvh * var(--ability-card-ratio)));
+  }
+
+  .ability-card-stage-wrap-inline {
+    width: min(72vw, calc(65dvh * var(--ability-card-ratio)));
+  }
+
+  .card-skills-table {
+    padding: 5px 9px;
+  }
+
+  .card-skill-row {
+    grid-template-columns: minmax(0, 1fr) minmax(52px, 70px) 20px;
+    column-gap: 4px;
+    font-size: clamp(9px, 2.5vw, 11px);
+  }
+
+  .card-skill-dots {
+    gap: 2px;
+  }
+
+  .card-skill-dots>i {
+    width: 3px;
+    height: 3px;
+    flex-basis: 3px;
+  }
+
+  .card-bottom-meta-bar {
+    font-size: 5px;
+  }
+}
+
+@media (max-width: 400px) {
+  .ability-card-stage-wrap {
+    width: min(89vw, calc(73dvh * var(--ability-card-ratio)));
+  }
+
+  .card-skill-row {
+    grid-template-columns: minmax(0, 1fr) 53px 16px;
+    gap: 3px;
+    font-size: 8.2px;
+  }
+}
+
+@media (max-height: 675px) and (min-width: 761px) {
+  .ability-card-stage-wrap {
+    width: min(382px, calc(75dvh * var(--ability-card-ratio)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ability-metal-specular {
+    display: none;
+  }
+
+  .card-emblem-box>img {
+    transition: none;
+  }
+
+  .ability-card-modal-backdrop[data-card-ready="true"] .ability-card-stage-wrap {
+    animation: none;
+  }
+}

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgBench" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1B1612"/>
+      <stop offset="100%" stop-color="#261E16"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="640" height="400" fill="url(#bgBench)" rx="8"/>
+  <rect x="2" y="2" width="636" height="396" fill="none" stroke="#FF9800" stroke-width="1.5" stroke-opacity="0.3" rx="7"/>
+
+  <!-- Title -->
+  <text x="32" y="44" fill="#E8E4E0" font-family="'Onest', sans-serif" font-size="15" font-weight="700" letter-spacing="1.2">DATABASE BENCHMARK · HIKARICP &amp; REDIS LATENCY HEATMAP</text>
+  <rect x="470" y="28" width="138" height="24" rx="12" fill="#FF9800" fill-opacity="0.25" stroke="#FF9800" stroke-width="1"/>
+  <text x="539" y="44" fill="#FFE0B2" font-family="'Onest', sans-serif" font-size="11" font-weight="600" text-anchor="middle">P99 SLA &lt; 180MS</text>
+
+  <!-- Left: Connection Pool Starvation Graph -->
+  <rect x="32" y="76" width="310" height="295" rx="6" fill="#14100D" stroke="#3D3025" stroke-width="1"/>
+  <text x="48" y="102" fill="#D5CDCA" font-family="'Onest', sans-serif" font-size="12" font-weight="700">CONNECTION POOL (HIKARICP) DYNAMICS</text>
+
+  <!-- Bar comparison -->
+  <g transform="translate(48, 125)">
+    <!-- Default Configuration -->
+    <text x="0" y="14" fill="#EF5350" font-family="'Onest', sans-serif" font-size="11" font-weight="700">DEFAULT POOL (10 CONNECTIONS) — STARVATION</text>
+    <rect x="0" y="24" width="278" height="22" rx="3" fill="#241B18"/>
+    <rect x="0" y="24" width="250" height="22" rx="3" fill="#EF5350" fill-opacity="0.85"/>
+    <text x="12" y="39" fill="#FFFFFF" font-family="monospace" font-size="10">P99 Latency: 2,480ms (Connection Wait Timeout)</text>
+
+    <!-- Tuned Pool -->
+    <text x="0" y="78" fill="#81C784" font-family="'Onest', sans-serif" font-size="11" font-weight="700">TUNED HIKARICP (50 CONNS + REDIS CACHE)</text>
+    <rect x="0" y="88" width="278" height="22" rx="3" fill="#1B2418"/>
+    <rect x="0" y="88" width="48" height="22" rx="3" fill="#81C784" fill-opacity="0.85"/>
+    <text x="56" y="103" fill="#81C784" font-family="monospace" font-size="10">P99: 142ms ✓ (94% Improvement)</text>
+  </g>
+
+  <!-- Redis Hit Rate Strip -->
+  <rect x="48" y="260" width="278" height="92" rx="4" fill="#0D0B0A" stroke="#3D3025" stroke-width="1"/>
+  <text x="60" y="282" fill="#FFB74D" font-family="'Onest', sans-serif" font-size="10" font-weight="700">REDIS L2 CACHE HIT RATIO: 98.4%</text>
+  <rect x="60" y="294" width="254" height="12" rx="6" fill="#241E1A"/>
+  <rect x="60" y="294" width="248" height="12" rx="6" fill="#FF9800"/>
+  <text x="60" y="328" fill="#B5ACA8" font-family="monospace" font-size="9">Throughput: 8,450 req/sec @ 0.00% Error Rate</text>
+
+  <!-- Right: JMeter Distributed Workers -->
+  <rect x="360" y="76" width="248" height="295" rx="6" fill="#14100D" stroke="#3D3025" stroke-width="1"/>
+  <text x="376" y="102" fill="#D5CDCA" font-family="'Onest', sans-serif" font-size="12" font-weight="700">DISTRIBUTED WORKERS</text>
+
+  <g transform="translate(376, 125)">
+    <text x="0" y="16" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="11">JMeter Controller Node</text>
+    <text x="175" y="16" fill="#81C784" font-family="monospace" font-size="10">ONLINE</text>
+
+    <text x="0" y="46" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="11">JMeter Worker Pod #1</text>
+    <text x="175" y="46" fill="#81C784" font-family="monospace" font-size="10">25k VU</text>
+
+    <text x="0" y="76" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="11">JMeter Worker Pod #2</text>
+    <text x="175" y="76" fill="#81C784" font-family="monospace" font-size="10">25k VU</text>
+
+    <text x="0" y="106" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="11">JMeter Worker Pod #3</text>
+    <text x="175" y="106" fill="#81C784" font-family="monospace" font-size="10">25k VU</text>
+
+    <text x="0" y="136" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="11">JMeter Worker Pod #4</text>
+    <text x="175" y="136" fill="#81C784" font-family="monospace" font-size="10">25k VU</text>
+  </g>
+
+  <rect x="376" y="285" width="216" height="65" rx="6" fill="#2E1C12" stroke="#FF9800" stroke-width="1"/>
+  <text x="484" y="312" fill="#FFE0B2" font-family="'Onest', sans-serif" font-size="16" font-weight="700" text-anchor="middle">100k TOTAL USERS</text>
+  <text x="484" y="332" fill="#B5ACA8" font-family="'Onest', sans-serif" font-size="10" text-anchor="middle">0 HTTP 5xx Server Exceptions</text>
+</svg>

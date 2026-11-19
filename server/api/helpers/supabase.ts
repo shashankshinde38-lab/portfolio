@@ -16,14 +16,21 @@ function requireSupabaseUrl() {
 
 export function getSupabaseAdmin() {
   if (adminClient) return adminClient;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!key) throw new Error("Supabase service role is not configured.");
+  const key =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (!key) throw new Error("Supabase key is not configured.");
   adminClient = createClient(requireSupabaseUrl(), key, clientOptions);
   return adminClient;
 }
 
 export function getSupabaseAuthClient(accessToken?: string) {
-  const key = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const key =
+    process.env.SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   if (!key) throw new Error("Supabase Auth is not configured.");
   return createClient(requireSupabaseUrl(), key, {
     ...clientOptions,
@@ -36,6 +43,9 @@ export function getSupabaseAuthClient(accessToken?: string) {
 export function supabaseServerConfigured() {
   return Boolean(
     (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL) &&
-      process.env.SUPABASE_SERVICE_ROLE_KEY
+    (process.env.SUPABASE_SERVICE_ROLE_KEY ||
+      process.env.SUPABASE_ANON_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY)
   );
 }

@@ -10,7 +10,7 @@ import {
   type HTMLAttributes,
 } from "react";
 import "./TiltCard.css";
-
+import { Snowfall } from 'falling-snow';
 interface TiltCardProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode;
   className?: string;

@@ -36,3 +36,8 @@ dist-ssr
 .workspace/
 reference-videos/
 .pnpm-store/
+
+# Reference audit outputs and isolated production build
+artifacts/
+.next-reference-build/
+portfolio-upgrade.zip

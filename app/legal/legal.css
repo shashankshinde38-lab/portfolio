@@ -1,0 +1,217 @@
+.legal-page-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface, #F6F3F0);
+  color: var(--text-primary, #1A1818);
+  font-family: var(--font-onest, 'Onest', sans-serif);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.legal-main {
+  flex: 1;
+  padding-top: 72px;
+}
+
+.legal-hero-section {
+  padding: 4.5rem 0 3.5rem;
+  border-bottom: 1px solid var(--border-subtle, #D5CDCA);
+  background: linear-gradient(180deg, var(--surface-alt, #EFEBE7) 0%, var(--surface, #F6F3F0) 100%);
+}
+
+.legal-hero-title {
+  font-size: clamp(2.4rem, 4.5vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+  margin: 1.5rem 0 1.25rem;
+  color: var(--text-primary, #1A1818);
+}
+
+.legal-hero-lead {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--text-muted, #7A7470);
+  max-width: 800px;
+  margin: 0;
+}
+
+.legal-body-section {
+  padding: 4.5rem 0 6rem;
+}
+
+.legal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.legal-card {
+  background: var(--surface-card, #FFFFFF);
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  border-radius: 8px;
+  padding: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: 0 4px 20px rgba(26, 24, 24, 0.04);
+  transition: all 0.3s ease;
+}
+
+.legal-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.legal-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.legal-card-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+  color: var(--text-primary, #1A1818);
+}
+
+.legal-card-content p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-primary, #1A1818);
+  margin: 0 0 1rem;
+}
+
+.legal-card-content p:last-child {
+  margin-bottom: 0;
+}
+
+.legal-card-content code {
+  background: var(--surface-alt, #E8E4E0);
+  color: var(--secondary, #A4552C);
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-family: var(--font-mono, monospace);
+  border: 1px solid var(--border-subtle, #D5CDCA);
+}
+
+.legal-credits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.legal-credit-item {
+  background: var(--surface-alt, #F6F3F0);
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  padding: 1.25rem;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transition: all 0.3s ease;
+}
+
+.credit-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary, #1A1818);
+}
+
+.credit-license {
+  font-size: 0.72rem;
+  color: var(--secondary, #A4552C);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.credit-note {
+  font-size: 0.82rem;
+  color: var(--text-muted, #7A7470);
+  line-height: 1.5;
+  margin: 0.5rem 0 0;
+}
+
+/* ==========================================================================
+   DARK THEME EXPLICIT OVERRIDES
+   ========================================================================== */
+
+html.dark-theme .legal-page-root,
+body.dark-theme .legal-page-root {
+  background-color: var(--surface, #141211);
+  color: var(--text-primary, #EDE8E4);
+}
+
+html.dark-theme .legal-hero-section,
+body.dark-theme .legal-hero-section {
+  border-color: #3D352F;
+  background: linear-gradient(180deg, #1C1917 0%, #141211 100%);
+}
+
+html.dark-theme .legal-hero-title,
+body.dark-theme .legal-hero-title {
+  color: #EDE8E4;
+}
+
+html.dark-theme .legal-hero-lead,
+body.dark-theme .legal-hero-lead {
+  color: #9E9690;
+}
+
+html.dark-theme .legal-card,
+body.dark-theme .legal-card {
+  background: #1C1917;
+  border-color: #3D352F;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-theme .legal-card-title,
+body.dark-theme .legal-card-title {
+  color: #EDE8E4;
+}
+
+html.dark-theme .legal-card-content p,
+body.dark-theme .legal-card-content p {
+  color: #EDE8E4;
+}
+
+html.dark-theme .legal-card-content code,
+body.dark-theme .legal-card-content code {
+  background: #25211E;
+  color: #D47547;
+  border-color: #3D352F;
+}
+
+html.dark-theme .legal-credit-item,
+body.dark-theme .legal-credit-item {
+  background: #231F1C;
+  border-color: #3D352F;
+}
+
+html.dark-theme .credit-name,
+body.dark-theme .credit-name {
+  color: #EDE8E4;
+}
+
+html.dark-theme .credit-license,
+body.dark-theme .credit-license {
+  color: #D47547;
+}
+
+html.dark-theme .credit-note,
+body.dark-theme .credit-note {
+  color: #9E9690;
+}
+
+@media (max-width: 900px) {
+  .legal-grid {
+    grid-template-columns: 1fr;
+  }
+  .legal-credits-grid {
+    grid-template-columns: 1fr;
+  }
+}

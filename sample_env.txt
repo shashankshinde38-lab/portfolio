@@ -1,0 +1,45 @@
+================================================================================
+SHASHANK SHINDE PORTFOLIO - ENVIRONMENT VARIABLES SETUP
+================================================================================
+
+Create a file named: .env.local
+Inside the directory: portfolio/
+
+Copy and paste the template below into portfolio/.env.local and fill in your keys:
+
+--------------------------------------------------------------------------------
+NEXT_PUBLIC_SUPABASE_URL=https://hewlazutzsczzhvtjmax.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_bcRcnJIIhd0RWwqiPRno8w_dvfP_i2x
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_bcRcnJIIhd0RWwqiPRno8w_dvfP_i2x
+SUPABASE_URL=https://hewlazutzsczzhvtjmax.supabase.co
+SUPABASE_ANON_KEY=sb_publishable_bcRcnJIIhd0RWwqiPRno8w_dvfP_i2x
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_secret_key_here
+
+# Admin Panel Security
+ADMIN_PIN=752002
+ADMIN_SESSION_SECRET=local-admin-session-secret-752002
+--------------------------------------------------------------------------------
+
+EXPLANATION OF VARIABLES:
+1. NEXT_PUBLIC_SUPABASE_URL
+   The API gateway URL for your Supabase project (hewlazutzsczzhvtjmax).
+
+2. NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY / SUPABASE_ANON_KEY
+   The public publishable key for browser and public access to Supabase.
+
+3. SUPABASE_SERVICE_ROLE_KEY
+   The secret service role key for privileged backend API and database operations.
+   (Keep this secret! Do NOT commit this key to GitHub).
+
+4. ADMIN_PIN
+   The 6-digit access code (752002) required to unlock the Admin Dashboard at /admin/login.
+
+5. ADMIN_SESSION_SECRET
+   A secure salt string used by the server to create session cookies upon successful PIN verification.
+
+================================================================================
+SUPABASE SQL SETUP:
+If you haven't executed the database tables yet, open Supabase SQL Editor and
+run the script in 'supabase_schema.sql':
+https://supabase.com/dashboard/project/hewlazutzsczzhvtjmax/sql/new
+================================================================================

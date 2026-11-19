@@ -1,0 +1,481 @@
+/* ===================================================================
+   SITE HEADER — COMPLETE REPLICA WITH FUNCTIONAL BUTTONS
+   =================================================================== */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9000;
+  height: var(--header-height, 72px);
+  background-color: var(--surface, #F6F3F0);
+  border-bottom: 1px solid var(--border-subtle, #D5CDCA);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  pointer-events: auto !important;
+}
+
+.site-header-scrolled {
+  background-color: rgba(246, 243, 240, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 20px rgba(26, 24, 24, 0.05);
+}
+
+.site-header-inner {
+  max-width: 1520px;
+  height: 100%;
+  margin-inline: auto;
+  padding-left: clamp(16px, 2.5vw, 36px);
+  padding-right: clamp(75px, 6vw, 110px); /* Leave ample clearance for suspended bulb */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(12px, 2vw, 28px);
+  position: relative;
+  z-index: 9001;
+  pointer-events: auto !important;
+}
+
+/* ===================================================================
+   BRAND LOGO (Always Visible on Desktop & Mobile)
+   =================================================================== */
+.site-header-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-onest, 'Onest', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  color: var(--text-primary, #1A1818);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.site-header-brand:hover {
+  color: var(--secondary, #A4552C);
+}
+
+.brand-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #22C55E;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.7);
+}
+
+/* ===================================================================
+   DESKTOP DIRECT NAVIGATION LINKS
+   =================================================================== */
+.header-nav-desktop {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.4vw, 22px);
+  margin-right: auto;
+}
+
+.header-nav-link {
+  font-family: var(--font-onest, 'Onest', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--text-secondary, #5A5450);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease, transform 0.2s ease;
+  position: relative;
+  z-index: 9002;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+.header-nav-link:hover {
+  color: var(--secondary, #A4552C);
+}
+
+.header-nav-link.is-active {
+  color: var(--secondary, #A4552C);
+  font-weight: 650;
+}
+
+.header-nav-link-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  font: inherit;
+}
+
+/* ===================================================================
+   RIGHT GROUP: TIME CAPSULE & ACTION BUTTONS
+   =================================================================== */
+.site-header-right-group {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1vw, 14px);
+  flex-shrink: 0;
+}
+
+/* Live Time Capsule */
+.header-time-capsule {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  font-family: var(--font-onest, 'Onest', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary, #5A5450);
+  box-shadow: 0 1px 4px rgba(26, 24, 24, 0.04);
+  white-space: nowrap;
+}
+
+.time-capsule-label {
+  color: var(--text-muted, #7A7470);
+  font-weight: 450;
+}
+
+.time-capsule-time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--text-primary, #1A1818);
+}
+
+.time-capsule-sep {
+  color: var(--tertiary, #D5CDCA);
+}
+
+.time-capsule-date {
+  font-weight: 500;
+  color: var(--text-secondary, #5A5450);
+}
+
+/* ===================================================================
+   HEADER ACTION BUTTONS (3D CARD, START ENQUIRY, MENU)
+   =================================================================== */
+.site-header-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  font-family: var(--font-onest, 'Onest', sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 9002;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* 3D Card Pill */
+.site-header-card-btn {
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--text-primary, #1A1818);
+  border: 1px solid rgba(212, 175, 55, 0.65);
+}
+
+.site-header-card-btn:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: #D4AF37;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+}
+
+/* Start Enquiry Pill */
+.site-header-enquiry-btn {
+  background: var(--text-primary, #1A1818);
+  color: var(--surface, #F6F3F0);
+  border: 1px solid var(--text-primary, #1A1818);
+  box-shadow: 0 2px 8px rgba(26, 24, 24, 0.16);
+}
+
+.site-header-enquiry-btn:hover {
+  background: var(--secondary, #A4552C);
+  border-color: var(--secondary, #A4552C);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(164, 85, 44, 0.32);
+}
+
+/* Menu Trigger Burger Button (ALWAYS VISIBLE) */
+.site-header-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--text-primary, #1A1818);
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  font-family: var(--font-onest, 'Onest', sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 9002;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.site-header-menu-btn:hover {
+  border-color: var(--secondary, #A4552C);
+  color: var(--secondary, #A4552C);
+}
+
+.menu-icon-burger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 14px;
+  height: 12px;
+}
+
+.burger-line {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background-color: currentColor;
+  border-radius: 1px;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.site-header-menu-btn.is-active .line-1 {
+  transform: translateY(2.75px) rotate(45deg);
+}
+
+.site-header-menu-btn.is-active .line-2 {
+  transform: translateY(-2.75px) rotate(-45deg);
+}
+
+/* ===================================================================
+   HANGING BULB & PULL CORD (TOP-RIGHT SUSPENDED, SWITCHES THEME)
+   =================================================================== */
+.header-hanging-bulb-wrap {
+  position: fixed;
+  top: 0;
+  right: clamp(20px, 3vw, 40px);
+  z-index: 9500;
+  pointer-events: none;
+}
+
+.hanging-bulb-btn {
+  pointer-events: auto;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  outline: none;
+  transform-origin: top center;
+  transition: transform 0.2s ease;
+}
+
+.hanging-bulb-btn:hover {
+  filter: brightness(1.15);
+}
+
+.hanging-bulb-btn:active {
+  transform: translateY(12px);
+}
+
+.hanging-bulb-btn.is-pulling {
+  animation: pullSpring 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes pullSpring {
+  0% { transform: translateY(0); }
+  35% { transform: translateY(24px); }
+  60% { transform: translateY(-7px); }
+  80% { transform: translateY(3px); }
+  100% { transform: translateY(0); }
+}
+
+.hanging-cord-line {
+  width: 2px;
+  height: 85px;
+  background: linear-gradient(180deg, #A8A19B 0%, #7A726C 100%);
+  box-shadow: 1px 0 2px rgba(0, 0, 0, 0.15);
+  transition: background 0.3s ease;
+}
+
+.hanging-bulb-btn.is-dark .hanging-cord-line {
+  background: linear-gradient(180deg, #8A7256 0%, #C29548 100%);
+}
+
+.hanging-cord-brass-collar {
+  width: 7px;
+  height: 6px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #E6CB8A 0%, #A07B37 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.hanging-bulb-acorn {
+  width: 18px;
+  height: 28px;
+  border-radius: 9px 9px 14px 14px;
+  background: linear-gradient(145deg, #8A5230 0%, #5E3218 50%, #3D1C08 100%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  position: relative;
+  transition: all 0.35s ease;
+}
+
+.hanging-bulb-btn.is-dark .hanging-bulb-acorn {
+  background: linear-gradient(145deg, #FFF6DD 0%, #FFB703 40%, #E85D04 100%);
+  box-shadow: 
+    0 0 24px 6px rgba(255, 183, 3, 0.55),
+    0 0 45px 12px rgba(255, 183, 3, 0.25),
+    0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.bulb-filament-glow {
+  display: none;
+}
+
+.hanging-bulb-btn.is-dark .bulb-filament-glow {
+  display: block;
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFFFFF 0%, rgba(255, 235, 150, 0.8) 50%, transparent 100%);
+  filter: blur(1px);
+  animation: pulseFilament 2.5s infinite alternate ease-in-out;
+}
+
+@keyframes pulseFilament {
+  0% { opacity: 0.85; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1.05); }
+}
+
+/* ===================================================================
+   DARK THEME SPECIFIC OVERRIDES FOR SITE HEADER
+   =================================================================== */
+html.dark-theme .site-header,
+body.dark-theme .site-header {
+  background-color: var(--surface, #141211);
+  border-bottom-color: rgba(61, 53, 47, 0.45);
+}
+
+html.dark-theme .site-header-brand,
+body.dark-theme .site-header-brand {
+  color: #EDE8E4;
+}
+
+html.dark-theme .header-time-capsule,
+body.dark-theme .header-time-capsule {
+  background: rgba(30, 27, 25, 0.75);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #B5ACA8;
+}
+
+html.dark-theme .time-capsule-time,
+body.dark-theme .time-capsule-time {
+  color: #EDE8E4;
+}
+
+html.dark-theme .header-nav-link,
+body.dark-theme .header-nav-link {
+  color: #EDE8E4;
+}
+
+html.dark-theme .header-nav-link:hover,
+body.dark-theme .header-nav-link:hover {
+  color: var(--secondary, #A4552C);
+}
+
+html.dark-theme .site-header-card-btn,
+body.dark-theme .site-header-card-btn {
+  background: rgba(40, 35, 30, 0.6);
+  color: #EDE8E4;
+  border-color: rgba(212, 175, 55, 0.65);
+}
+
+html.dark-theme .site-header-enquiry-btn,
+body.dark-theme .site-header-enquiry-btn {
+  background: #EDE8E4;
+  color: #141211;
+  border-color: #EDE8E4;
+}
+
+html.dark-theme .site-header-enquiry-btn:hover,
+body.dark-theme .site-header-enquiry-btn:hover {
+  background: #D47547;
+  color: #FFFFFF;
+  border-color: #D47547;
+}
+
+html.dark-theme .site-header-menu-btn,
+body.dark-theme .site-header-menu-btn {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #EDE8E4;
+}
+
+/* ===================================================================
+   RESPONSIVE BREAKPOINTS
+   =================================================================== */
+@media (max-width: 1240px) {
+  .header-nav-desktop {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .time-capsule-date,
+  .time-capsule-sep {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .header-time-capsule {
+    display: none;
+  }
+  .site-header-inner {
+    padding-left: 1rem;
+    padding-right: clamp(60px, 14vw, 75px);
+  }
+  .site-header-card-btn span {
+    display: none;
+  }
+  .site-header-card-btn {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header-brand {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+  }
+  .site-header-enquiry-btn {
+    padding: 0 10px;
+    font-size: 0.66rem;
+  }
+  .site-header-menu-btn {
+    padding: 0 10px;
+  }
+}

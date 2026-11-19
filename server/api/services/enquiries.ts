@@ -160,6 +160,21 @@ async function countEnquiries(status?: EnquiryStatus) {
   return count ?? 0;
 }
 
+export async function deleteEnquiry(id: string) {
+  const { data, error } = await getSupabaseAdmin()
+    .from(TABLE)
+    .delete()
+    .eq("id", id)
+    .select("id")
+    .maybeSingle();
+
+  if (error) {
+    console.error("[enquiries] deleteEnquiry failed:", error);
+    throw error;
+  }
+  return data ? { id: String(data.id) } : null;
+}
+
 export async function enquiryStats() {
   const [total, fresh, read, resolved] = await Promise.all([
     countEnquiries(),

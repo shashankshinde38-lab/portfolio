@@ -1,26 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
-import "@/web/styles/base.css";
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space-grotesk",
-  weight: ["500", "600", "700"],
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
-  weight: ["400", "500"],
-  display: "swap",
-});
+import SkipLink from "@/web/components/SkipLink/SkipLink";
+import SpecialtyDoorNavigation from "@/web/components/QADoorsFrame/SpecialtyDoorNavigation";
+import SmoothScroll from "@/web/components/SmoothScroll/SmoothScroll";
+import "./globals.css";
+import "@/web/styles/reference-fidelity.css";
 
 const siteUrl = "https://shashankportfolio-jet.vercel.app";
 
@@ -91,7 +74,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#05080a",
+  themeColor: "#F6F3F0",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -176,11 +159,7 @@ const jsonLdData = {
             url: "https://trailblazer.me/id/shashankshinde",
           },
           educationalLevel: "Professional",
-          competencyRequired: [
-            "Platform Configuration",
-            "Validation Rules",
-            "Security Governance",
-          ],
+          competencyRequired: ["Platform Configuration", "Validation Rules", "Security Governance"],
         },
       ],
       hasOccupation: {
@@ -258,8 +237,7 @@ const jsonLdData = {
       "@id": `${siteUrl}/#website`,
       url: siteUrl,
       name: "Shashank Shinde Portfolio",
-      description:
-        "Software Test Engineer & QA Automation Engineer portfolio of Shashank Shinde.",
+      description: "Software Test Engineer & QA Automation Engineer portfolio of Shashank Shinde.",
       inLanguage: "en-US",
       author: {
         "@id": `${siteUrl}/#person`,
@@ -390,7 +368,8 @@ const jsonLdData = {
               "End-to-end quality testing of high-concurrency cab and parcel delivery platform. Built Apache JMeter distributed thread groups simulating 100,000 concurrent users. Discovered critical negative fare race condition during surge pricing velocity. 412 test cases designed, 78 defects found, 14 critical, 92% test coverage achieved.",
             creator: { "@id": `${siteUrl}/#person` },
             about: "Transportation & Logistics QA",
-            keywords: "Apache JMeter, Load Testing, Race Condition, Surge Pricing, API Testing, JIRA",
+            keywords:
+              "Apache JMeter, Load Testing, Race Condition, Surge Pricing, API Testing, JIRA",
             url: "https://play.google.com/store/apps/details?id=com.driwe",
           },
         },
@@ -404,7 +383,8 @@ const jsonLdData = {
               "Comprehensive QA for online grocery platform with inventory, checkout and delivery workflows across Customer App, Admin Panel, and Delivery App. Built Selenium WebDriver + Page Object Model framework cutting regression cycle time by 40%. 638 test cases, 112 defects found, 23 critical, 94% coverage.",
             creator: { "@id": `${siteUrl}/#person` },
             about: "E-Commerce / Grocery Delivery QA",
-            keywords: "Selenium WebDriver, Page Object Model, TestNG, Regression Testing, Cache Desync",
+            keywords:
+              "Selenium WebDriver, Page Object Model, TestNG, Regression Testing, Cache Desync",
             url: "https://www.groscido.com/",
           },
         },
@@ -418,7 +398,8 @@ const jsonLdData = {
               "Full marketplace ecosystem testing across Customer, Seller, Admin, and Delivery modules. Cross-browser test suites across 5 browsers. Discovered critical refund webhook double-deduction bug in payment processing. 18 critical bugs caught before production.",
             creator: { "@id": `${siteUrl}/#person` },
             about: "E-Commerce Marketplace QA",
-            keywords: "Selenium WebDriver, Cross-Browser Testing, Payment Webhook, Idempotency, Refund Testing",
+            keywords:
+              "Selenium WebDriver, Cross-Browser Testing, Payment Webhook, Idempotency, Refund Testing",
             url: "https://play.google.com/store/apps/details?id=com.profcymasolutions.urban_prime_mart",
           },
         },
@@ -455,19 +436,24 @@ const jsonLdData = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      data-scroll-behavior="smooth"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');document.documentElement.classList.toggle('dark-theme',t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches));}catch(e){}})();`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
         />
       </head>
-      <body className="antialiased min-h-screen">{children}</body>
+      <body className="antialiased min-h-screen selection:bg-[#A4552C]/20 selection:text-[#1A1818]">
+        <SkipLink />
+        <SmoothScroll />
+        <SpecialtyDoorNavigation />
+        {children}
+      </body>
     </html>
   );
 }
-

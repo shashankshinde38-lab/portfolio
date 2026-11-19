@@ -1,0 +1,220 @@
+.story-page-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface, #F6F3F0);
+  color: var(--text-primary, #1A1818);
+  font-family: var(--font-onest, 'Onest', sans-serif);
+}
+
+.story-main {
+  flex: 1;
+  padding-top: 80px;
+}
+
+.story-hero-section {
+  padding: 4.5rem 0 3.5rem;
+  border-bottom: 1px solid var(--border-subtle, #D5CDCA);
+  background: linear-gradient(180deg, rgba(232, 228, 224, 0.4) 0%, rgba(246, 243, 240, 0) 100%);
+}
+
+.story-hero-title {
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+  margin: 1.5rem 0 1.25rem;
+  max-width: 960px;
+}
+
+.story-hero-lead {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--text-muted, #7A7470);
+  max-width: 800px;
+  margin: 0 0 2.5rem;
+}
+
+.story-hero-stats {
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border-subtle, #D5CDCA);
+  padding-top: 2rem;
+}
+
+.story-stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.story-stat-num {
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: var(--text-primary, #1A1818);
+}
+
+.story-stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #7A7470);
+}
+
+/* Body / Chapters */
+.story-body-section {
+  padding: 4.5rem 0 6rem;
+}
+
+.story-chapter {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 3.5rem;
+  padding-bottom: 4rem;
+  margin-bottom: 4rem;
+  border-bottom: 1px solid var(--border-subtle, #D5CDCA);
+}
+
+.story-chapter:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2rem;
+}
+
+.story-chapter-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.story-chapter-num {
+  font-size: 2.5rem;
+  color: var(--secondary, #A4552C);
+  line-height: 1;
+}
+
+.story-chapter-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--text-muted, #7A7470);
+  text-transform: uppercase;
+}
+
+.story-chapter-title {
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.25rem;
+}
+
+.story-role-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted, #7A7470);
+  margin-bottom: 1.5rem;
+}
+
+.story-prose p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-primary, #1A1818);
+  margin-bottom: 1.25rem;
+}
+
+.story-highlights-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.story-highlights-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.story-edu-card {
+  display: flex;
+  gap: 1.25rem;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  padding: 1.75rem;
+  border-radius: 4px;
+  margin-bottom: 1.25rem;
+}
+
+.story-edu-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+
+.story-edu-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted, #7A7470);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Callout Box */
+.story-cta-box {
+  background: var(--neutral, #E8E4E0);
+  border: 1px solid var(--border-subtle, #D5CDCA);
+  padding: 3rem 2.5rem;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.story-cta-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+}
+
+.story-cta-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted, #7A7470);
+  margin: 0;
+  max-width: 600px;
+}
+
+.story-cta-secondary {
+  padding: 0.85rem 1.75rem;
+  background: transparent;
+  border: 1px solid var(--text-primary, #1A1818);
+  color: var(--text-primary, #1A1818);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+}
+
+.story-cta-secondary:hover {
+  background: var(--text-primary, #1A1818);
+  color: var(--surface, #F6F3F0);
+}
+
+@media (max-width: 850px) {
+  .story-chapter {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+

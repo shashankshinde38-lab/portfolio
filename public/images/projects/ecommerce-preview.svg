@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgLedger" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#191715"/>
+      <stop offset="100%" stop-color="#24201C"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="640" height="400" fill="url(#bgLedger)" rx="8"/>
+  <rect x="2" y="2" width="636" height="396" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-opacity="0.3" rx="7"/>
+
+  <!-- Title -->
+  <text x="32" y="48" fill="#E8E4E0" font-family="'Onest', sans-serif" font-size="16" font-weight="700" letter-spacing="1.5">E-COMMERCE · SETTLEMENT LEDGER RECONCILIATION</text>
+  <rect x="475" y="32" width="133" height="24" rx="12" fill="#D4AF37" fill-opacity="0.2" stroke="#D4AF37" stroke-width="1"/>
+  <text x="541" y="48" fill="#F7E4B5" font-family="'Onest', sans-serif" font-size="11" font-weight="600" text-anchor="middle">₹0.00 LEDGER DRIFT</text>
+
+  <!-- Left: Defect Breakdown Column -->
+  <rect x="32" y="80" width="280" height="290" rx="6" fill="#13100E" stroke="#3D3528" stroke-width="1"/>
+  <text x="46" y="105" fill="#FF5252" font-family="'Onest', sans-serif" font-size="11" font-weight="700">DEFECT: IEEE 754 FLOAT LOSS</text>
+
+  <rect x="46" y="120" width="252" height="60" rx="4" fill="#B3261E" fill-opacity="0.15" stroke="#B3261E" stroke-width="0.8"/>
+  <text x="56" y="138" fill="#FF8A80" font-family="monospace" font-size="10.5">0.1 + 0.2 != 0.3 (Primitive Double)</text>
+  <text x="56" y="156" fill="#E8DCD8" font-family="'Onest', sans-serif" font-size="10">Discrepancy: -₹13.16 per 18,400 orders</text>
+  <text x="56" y="172" fill="#E8DCD8" font-family="'Onest', sans-serif" font-size="10">Accumulated into ₹3,840 monthly discrepancy</text>
+
+  <text x="46" y="205" fill="#4CAF50" font-family="'Onest', sans-serif" font-size="11" font-weight="700">FIX: BIGDECIMAL ROUND_HALF_EVEN</text>
+
+  <rect x="46" y="215" width="252" height="85" rx="4" fill="#2E7D32" fill-opacity="0.15" stroke="#2E7D32" stroke-width="0.8"/>
+  <text x="56" y="235" fill="#81C784" font-family="monospace" font-size="10.5">BigDecimal.valueOf(grossAmount)</text>
+  <text x="56" y="252" fill="#81C784" font-family="monospace" font-size="10.5">  .multiply(discountRatio)</text>
+  <text x="56" y="270" fill="#81C784" font-family="monospace" font-size="10.5">  .setScale(2, RoundingMode.HALF_EVEN)</text>
+  <text x="56" y="290" fill="#E8E4E0" font-family="'Onest', sans-serif" font-size="10">Audit Proof: Verified 0.00 paise drift</text>
+
+  <rect x="46" y="325" width="252" height="32" rx="4" fill="#1C1814"/>
+  <text x="172" y="345" fill="#D4AF37" font-family="'Onest', sans-serif" font-size="11" font-weight="600" text-anchor="middle">50,000 Synthetic Transactions Tested</text>
+
+  <!-- Right: STLC Test Management & Defect Triage Log -->
+  <rect x="328" y="80" width="280" height="290" rx="6" fill="#13100E" stroke="#3D3528" stroke-width="1"/>
+  <text x="344" y="105" fill="#D4AF37" font-family="'Onest', sans-serif" font-size="11" font-weight="700">ATLASSIAN JIRA DEFECT METRICS</text>
+
+  <g font-family="monospace" font-size="11" fill="#E0D7CA">
+    <text x="344" y="132" fill="#D4AF37">// Ticket: DEF-882 (Settlement Engine)</text>
+    <text x="344" y="152">Severity: SEV-1 (CRITICAL FINANCIAL)</text>
+    <text x="344" y="172">Priority: HIGH / BLOCKER RELEASE</text>
+    <text x="344" y="192">Component: Merchant Payout Ledger</text>
+    
+    <text x="344" y="222" fill="#D4AF37">// Regression Verification Suite</text>
+    <text x="344" y="242">assertLedgerBalance(expected, actual)</text>
+    <text x="344" y="262" fill="#4CAF50">✓ Gross Total:   ₹4,892,120.00</text>
+    <text x="344" y="282" fill="#4CAF50">✓ Vendor Payout: ₹4,402,908.00</text>
+    <text x="344" y="302" fill="#4CAF50">✓ Platform Comm:   ₹489,212.00</text>
+    <text x="344" y="322" fill="#4CAF50">✓ Net Drift:             ₹0.00</text>
+  </g>
+
+  <rect x="344" y="338" width="248" height="20" rx="3" fill="#D4AF37" fill-opacity="0.15"/>
+  <text x="468" y="352" fill="#F7E4B5" font-family="'Onest', sans-serif" font-size="10" font-weight="600" text-anchor="middle">Quarterly Statutory Audit: SIGNED OFF</text>
+</svg>
+

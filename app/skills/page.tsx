@@ -61,6 +61,53 @@ export default function SkillsPage() {
       pageUrl={pageUrl}
       description="Technical testing capabilities, automation frameworks, API validation, and performance load engineering by Shashank Shinde in Pune, India."
     >
+      {/* Reference Design Primary Specialties Banner */}
+      <section className="mb-8 p-6 rounded-lg bg-[#1A1818] text-[#F6F3F0] border border-[#D5CDCA]/30">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span className="text-xs font-mono uppercase tracking-widest text-[#A4552C] font-semibold">
+              PRIMARY SPECIALTY DISCIPLINES
+            </span>
+            <h2 className="text-xl font-bold mt-1 text-[#F6F3F0]">
+              Interactive QA Capabilities &amp; Architecture Hubs
+            </h2>
+            <p className="text-xs text-[#D5CDCA] mt-1 max-width-xl">
+              Explore the 5 core testing disciplines with interactive code snippets, verified defect case studies, and live metrics:
+            </p>
+          </div>
+          <Link
+            href="/qa-lab"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded bg-[#A4552C] text-white text-xs font-semibold tracking-wider uppercase hover:bg-[#8F4722] transition-colors"
+          >
+            <span>LAUNCH QA LAB (2D CANVAS)</span>
+            <ArrowUpRight size={14} />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-4 pt-4 border-t border-white/10">
+          <Link href="/automation-testing" className="p-2.5 rounded bg-white/5 hover:bg-white/10 border border-white/5 transition-colors">
+            <span className="text-[10px] font-mono text-[#A4552C] block">01</span>
+            <span className="text-xs font-medium text-white block mt-0.5">Automation Testing →</span>
+          </Link>
+          <Link href="/api-testing" className="p-2.5 rounded bg-white/5 hover:bg-white/10 border border-white/5 transition-colors">
+            <span className="text-[10px] font-mono text-[#A4552C] block">02</span>
+            <span className="text-xs font-medium text-white block mt-0.5">API &amp; Contracts →</span>
+          </Link>
+          <Link href="/performance-testing" className="p-2.5 rounded bg-white/5 hover:bg-white/10 border border-white/5 transition-colors">
+            <span className="text-[10px] font-mono text-[#A4552C] block">03</span>
+            <span className="text-xs font-medium text-white block mt-0.5">Performance Load →</span>
+          </Link>
+          <Link href="/mobile-testing" className="p-2.5 rounded bg-white/5 hover:bg-white/10 border border-white/5 transition-colors">
+            <span className="text-[10px] font-mono text-[#A4552C] block">04</span>
+            <span className="text-xs font-medium text-white block mt-0.5">Mobile Testing →</span>
+          </Link>
+          <Link href="/manual-testing" className="p-2.5 rounded bg-white/5 hover:bg-white/10 border border-white/5 transition-colors">
+            <span className="text-[10px] font-mono text-[#A4552C] block">05</span>
+            <span className="text-xs font-medium text-white block mt-0.5">Manual &amp; STLC →</span>
+          </Link>
+        </div>
+      </section>
+
       {/* Direct Answer Box */}
       <section className="aeo-direct-answer-card" aria-label="Direct answer overview">
         <div className="aeo-direct-answer-header">

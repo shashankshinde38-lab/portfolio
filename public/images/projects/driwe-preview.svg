@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgDriwe" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14171E"/>
+      <stop offset="100%" stop-color="#1C212B"/>
+    </linearGradient>
+    <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#A4552C" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#A4552C" stop-opacity="0.0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="640" height="400" fill="url(#bgDriwe)" rx="8"/>
+  <rect x="2" y="2" width="636" height="396" fill="none" stroke="#A4552C" stroke-width="1.5" stroke-opacity="0.3" rx="7"/>
+
+  <!-- Title -->
+  <text x="32" y="48" fill="#E8E4E0" font-family="'Onest', sans-serif" font-size="16" font-weight="700" letter-spacing="1.5">DRIWE · 100K CONCURRENCY LOAD BENCHMARK</text>
+  <rect x="475" y="32" width="133" height="24" rx="12" fill="#B3261E" fill-opacity="0.2" stroke="#B3261E" stroke-width="1"/>
+  <text x="541" y="48" fill="#FF5252" font-family="'Onest', sans-serif" font-size="11" font-weight="600" text-anchor="middle">CRITICAL RACE CAUGHT</text>
+
+  <!-- Metric Badges -->
+  <rect x="32" y="75" width="130" height="48" rx="4" fill="#1C2028" stroke="#333A48" stroke-width="1"/>
+  <text x="44" y="93" fill="#8B95A5" font-family="'Onest', sans-serif" font-size="10" font-weight="600">VIRTUAL THREADS</text>
+  <text x="44" y="113" fill="#FFFFFF" font-family="'Onest', sans-serif" font-size="16" font-weight="700">100,000</text>
+
+  <rect x="172" y="75" width="130" height="48" rx="4" fill="#1C2028" stroke="#333A48" stroke-width="1"/>
+  <text x="184" y="93" fill="#8B95A5" font-family="'Onest', sans-serif" font-size="10" font-weight="600">P99 LATENCY SLA</text>
+  <text x="184" y="113" fill="#4CAF50" font-family="'Onest', sans-serif" font-size="16" font-weight="700">740 ms</text>
+
+  <rect x="312" y="75" width="140" height="48" rx="4" fill="#1C2028" stroke="#333A48" stroke-width="1"/>
+  <text x="324" y="93" fill="#8B95A5" font-family="'Onest', sans-serif" font-size="10" font-weight="600">POST-FIX ERROR RATE</text>
+  <text x="324" y="113" fill="#4CAF50" font-family="'Onest', sans-serif" font-size="16" font-weight="700">0.00%</text>
+
+  <rect x="462" y="75" width="146" height="48" rx="4" fill="#1C2028" stroke="#333A48" stroke-width="1"/>
+  <text x="474" y="93" fill="#8B95A5" font-family="'Onest', sans-serif" font-size="10" font-weight="600">HIKARICP DB POOL</text>
+  <text x="474" y="113" fill="#D47A4A" font-family="'Onest', sans-serif" font-size="16" font-weight="700">Scaled 20 → 80</text>
+
+  <!-- JMeter Concurrency Graph Canvas -->
+  <rect x="32" y="140" width="576" height="150" rx="6" fill="#0E1015" stroke="#252B36" stroke-width="1"/>
+  
+  <!-- Graph Axes -->
+  <line x1="50" y1="265" x2="590" y2="265" stroke="#2E3544" stroke-width="1"/>
+  <line x1="50" y1="160" x2="50" y2="265" stroke="#2E3544" stroke-width="1"/>
+  <text x="40" y="165" fill="#6B778C" font-family="monospace" font-size="9" text-anchor="end">100k</text>
+  <text x="40" y="215" fill="#6B778C" font-family="monospace" font-size="9" text-anchor="end">50k</text>
+  <text x="40" y="268" fill="#6B778C" font-family="monospace" font-size="9" text-anchor="end">0</text>
+
+  <!-- Ramp-up & Load Curve -->
+  <path d="M 50 265 L 120 250 L 220 190 L 320 175 L 420 175 L 500 175 L 580 265 Z" fill="url(#areaGrad)"/>
+  <path d="M 50 265 L 120 250 L 220 190 L 320 175 L 420 175 L 500 175 L 580 265" fill="none" stroke="#D47A4A" stroke-width="2.5"/>
+
+  <!-- Spike & Defect Annotation -->
+  <circle cx="280" cy="180" r="5" fill="#FF5252" stroke="#FFFFFF" stroke-width="1.5"/>
+  <line x1="280" y1="180" x2="330" y2="155" stroke="#FF5252" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <rect x="335" y="146" width="180" height="22" rx="3" fill="#B3261E" fill-opacity="0.9"/>
+  <text x="345" y="161" fill="#FFFFFF" font-family="'Onest', sans-serif" font-size="10" font-weight="600">Bug: Negative Fare (-₹45)</text>
+
+  <!-- Resolution Box -->
+  <rect x="32" y="305" width="576" height="65" rx="6" fill="#1C2028" stroke="#333A48" stroke-width="1"/>
+  <text x="46" y="328" fill="#D47A4A" font-family="'Onest', sans-serif" font-size="11" font-weight="700">ROOT CAUSE &amp; FIX VERIFIED:</text>
+  <text x="46" y="350" fill="#E8E4E0" font-family="'Onest', sans-serif" font-size="11">
+    Atomic Redis mutex locks applied to booking acceptance. HikariCP connection pool tuned, eliminating 504 gateway drops.
+  </text>
+</svg>
+
