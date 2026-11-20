@@ -3013,3 +3013,249 @@ textarea.form-input {
     animation: none !important;
   }
 }
+
+/* ==========================================================================
+   LIGHT & DARK THEME ADAPTATION
+   Guarantees 100% visible, high-contrast text and controls in both themes.
+   ========================================================================== */
+
+/* Light theme defaults */
+html:not(.dark-theme) .contact-section {
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .contact-kicker {
+  color: #A4552C;
+}
+
+html:not(.dark-theme) .contact-kicker-icon {
+  color: #A4552C;
+  border-color: rgba(164, 85, 44, 0.25);
+  background: rgba(164, 85, 44, 0.08);
+}
+
+html:not(.dark-theme) .contact-section-heading h2 {
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .contact-copy-intro h3 {
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .contact-copy-intro p {
+  color: #5A5450;
+}
+
+html:not(.dark-theme) .contact-availability {
+  background: rgba(46, 125, 50, 0.06);
+  border-color: rgba(46, 125, 50, 0.2);
+}
+
+html:not(.dark-theme) .contact-availability-title {
+  color: #1B5E20;
+}
+
+html:not(.dark-theme) .contact-availability-sub {
+  color: #2E7D32;
+}
+
+html:not(.dark-theme) .direct-email-chip,
+html:not(.dark-theme) .contact-resume-btn {
+  background: #FFFFFF;
+  border-color: #D5CDCA;
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .contact-links > a {
+  background: #FFFFFF;
+  border-color: #D5CDCA;
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .contact-form-panel {
+  background: #FFFFFF;
+  border-color: #D5CDCA;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08);
+}
+
+html:not(.dark-theme) .form-heading-title {
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .form-heading-desc {
+  color: #635C57;
+}
+
+html:not(.dark-theme) .form-heading-icon {
+  color: #A4552C;
+  border-color: rgba(164, 85, 44, 0.25);
+  background: rgba(164, 85, 44, 0.06);
+}
+
+html:not(.dark-theme) .form-field-header label {
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .field-character-counter {
+  color: #7A7470;
+}
+
+html:not(.dark-theme) .form-input {
+  background: #FDFCFA;
+  border-color: #D5CDCA;
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .form-input::placeholder {
+  color: #8C847E;
+}
+
+html:not(.dark-theme) .form-input:focus {
+  border-color: #A4552C;
+  box-shadow: 0 0 0 3px rgba(164, 85, 44, 0.12);
+}
+
+html:not(.dark-theme) .premium-select-trigger {
+  background: #FDFCFA;
+  border-color: #D5CDCA;
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .premium-select-trigger:focus-visible {
+  border-color: #A4552C;
+}
+
+html:not(.dark-theme) .premium-select-main-icon {
+  color: #A4552C;
+}
+
+html:not(.dark-theme) .premium-select-placeholder {
+  color: #8C847E;
+}
+
+html:not(.dark-theme) .premium-select-menu {
+  background: #FFFFFF;
+  border-color: #D5CDCA;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.14);
+}
+
+html:not(.dark-theme) .premium-select-option {
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .premium-select-option:hover,
+html:not(.dark-theme) .premium-select-option.is-keyboard-active {
+  background: #F8F5F2;
+}
+
+html:not(.dark-theme) .premium-option-title {
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .premium-option-desc {
+  color: #635C57;
+}
+
+html:not(.dark-theme) .success-dialog {
+  background: #FFFFFF;
+  border-color: #D5CDCA;
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .success-dialog-title {
+  color: #1A1818;
+}
+
+html:not(.dark-theme) .success-dialog-message {
+  color: #5A5450;
+}
+
+/* Dark theme overrides */
+html.dark-theme .contact-section,
+body.dark-theme .contact-section {
+  color: #EDE8E4;
+}
+
+html.dark-theme .contact-copy-intro h3,
+body.dark-theme .contact-copy-intro h3 {
+  color: #EDE8E4;
+}
+
+html.dark-theme .contact-copy-intro p,
+body.dark-theme .contact-copy-intro p {
+  color: #A0968E;
+}
+
+html.dark-theme .contact-form-panel,
+body.dark-theme .contact-form-panel {
+  background: linear-gradient(145deg, #181513, #12100E);
+  border-color: #38302A;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+}
+
+html.dark-theme .form-heading-title,
+body.dark-theme .form-heading-title {
+  color: #EDE8E4;
+}
+
+html.dark-theme .form-heading-desc,
+body.dark-theme .form-heading-desc {
+  color: #A0968E;
+}
+
+html.dark-theme .form-field-header label,
+body.dark-theme .form-field-header label {
+  color: #EDE8E4;
+}
+
+html.dark-theme .form-input,
+body.dark-theme .form-input {
+  background: #1E1A18;
+  border-color: #3D352F;
+  color: #EDE8E4;
+}
+
+html.dark-theme .form-input::placeholder,
+body.dark-theme .form-input::placeholder {
+  color: #7A726C;
+}
+
+html.dark-theme .premium-select-trigger,
+body.dark-theme .premium-select-trigger {
+  background: #1E1A18;
+  border-color: #3D352F;
+  color: #EDE8E4;
+}
+
+html.dark-theme .premium-select-menu,
+body.dark-theme .premium-select-menu {
+  background: #1E1A18;
+  border-color: #38302A;
+}
+
+html.dark-theme .premium-option-title,
+body.dark-theme .premium-option-title {
+  color: #EDE8E4;
+}
+
+html.dark-theme .premium-option-desc,
+body.dark-theme .premium-option-desc {
+  color: #A0968E;
+}
+
+html.dark-theme .success-dialog,
+body.dark-theme .success-dialog {
+  background: #1A1715;
+  border-color: #38302A;
+  color: #EDE8E4;
+}
+
+html.dark-theme .success-dialog-title,
+body.dark-theme .success-dialog-title {
+  color: #EDE8E4;
+}
+
+html.dark-theme .success-dialog-message,
+body.dark-theme .success-dialog-message {
+  color: #A0968E;
+}

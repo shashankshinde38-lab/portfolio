@@ -6,11 +6,11 @@ let _transporter: nodemailer.Transporter | null = null;
 export async function getTransporter(): Promise<nodemailer.Transporter | null> {
   if (_transporter) return _transporter;
 
-  const user = process.env.GMAIL_USER;
+  const user = process.env.GMAIL_USER || "shashankshinde38@gmail.com";
   const pass = process.env.GMAIL_APP_PASSWORD;
 
-  if (!user || !pass) {
-    console.warn("[Mailer] Missing GMAIL_USER or GMAIL_APP_PASSWORD. Skipping email notification.");
+  if (!pass) {
+    console.warn("[Mailer] Missing GMAIL_APP_PASSWORD. Skipping email notification.");
     return null;
   }
 
@@ -102,7 +102,7 @@ export async function sendContactNotification(data: {
   }
 
   const mailOptions = {
-    from: `"Shashank Shinde Portfolio" <${process.env.GMAIL_USER}>`,
+    from: `"Shashank Shinde Portfolio" <${process.env.GMAIL_USER || "shashankshinde38@gmail.com"}>`,
     to: process.env.NOTIFICATION_EMAIL || "shashankshinde38@gmail.com",
     replyTo: email,
     subject: `🔔 [Portfolio] ${reason} from ${full_name}`,

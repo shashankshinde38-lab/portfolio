@@ -57,8 +57,15 @@
 }
 
 @keyframes ability-fire-glow {
-  from { opacity: 0.65; transform: scale(0.96); }
-  to   { opacity: 1;    transform: scale(1.06); }
+  from {
+    opacity: 0.65;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.06);
+  }
 }
 
 /* -- Particle Canvas (Drifting Embers) ----------------------------------- */
@@ -94,7 +101,9 @@
   transition: opacity 600ms ease;
 }
 
-.ability-brand-group[aria-hidden="true"] { opacity: 0; }
+.ability-brand-group[aria-hidden="true"] {
+  opacity: 0;
+}
 
 .ability-brand-name {
   color: #f0e8d8;
@@ -192,7 +201,9 @@
   --glint-rotation: 0deg;
 }
 
-.ability-card-stage.is-dragging { cursor: grabbing; }
+.ability-card-stage.is-dragging {
+  cursor: grabbing;
+}
 
 /* =========================================================================
    FIERY CINEMATIC LAUNCH (4-Phase Reveal)
@@ -229,16 +240,14 @@
   pointer-events: none;
   border-radius: 17px;
   opacity: 0;
-  background: linear-gradient(
-    130deg,
-    transparent 0%,
-    transparent 28%,
-    rgba(255, 140, 20, 0.85) 43%,
-    rgba(255, 235, 120, 1) 48%,
-    rgba(255, 160, 30, 0.82) 53%,
-    transparent 68%,
-    transparent 100%
-  );
+  background: linear-gradient(130deg,
+      transparent 0%,
+      transparent 28%,
+      rgba(255, 140, 20, 0.85) 43%,
+      rgba(255, 235, 120, 1) 48%,
+      rgba(255, 160, 30, 0.82) 53%,
+      transparent 68%,
+      transparent 100%);
   mix-blend-mode: screen;
   transform: translateX(-130%);
   will-change: transform, opacity;
@@ -249,11 +258,29 @@
 }
 
 @keyframes ability-burn-cross {
-  0%   { transform: translateX(-130%); opacity: 0; }
-  10%  { opacity: 1; }
-  65%  { transform: translateX(0%);    opacity: 1; }
-  90%  { transform: translateX(70%);   opacity: 0.55; }
-  100% { transform: translateX(140%);  opacity: 0; }
+  0% {
+    transform: translateX(-130%);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  65% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+
+  90% {
+    transform: translateX(70%);
+    opacity: 0.55;
+  }
+
+  100% {
+    transform: translateX(140%);
+    opacity: 0;
+  }
 }
 
 /* Trailing Ember Sparks */
@@ -285,10 +312,24 @@
 }
 
 @keyframes ability-ember-trail {
-  0%   { transform: translate(0, 0) scale(1); opacity: 0; }
-  15%  { opacity: 1; }
-  60%  { transform: translate(calc(55vw + 50px), calc(var(--ember-i) * -4px - 8px)) scale(0.6); opacity: 0.85; }
-  100% { transform: translate(calc(75vw + 70px), calc(var(--ember-i) * -8px - 20px)) scale(0.2); opacity: 0; }
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  60% {
+    transform: translate(calc(55vw + 50px), calc(var(--ember-i) * -4px - 8px)) scale(0.6);
+    opacity: 0.85;
+  }
+
+  100% {
+    transform: translate(calc(75vw + 70px), calc(var(--ember-i) * -8px - 20px)) scale(0.2);
+    opacity: 0;
+  }
 }
 
 .ability-card-stage[data-reveal="settling"] .ability-ember {
@@ -297,8 +338,15 @@
 }
 
 @keyframes ability-ember-drift {
-  0%   { transform: translate(0, 0); opacity: 0.45; }
-  100% { transform: translate(calc(var(--ember-i) * 8px - 26px), -55px) scale(0.15); opacity: 0; }
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.45;
+  }
+
+  100% {
+    transform: translate(calc(var(--ember-i) * 8px - 26px), -55px) scale(0.15);
+    opacity: 0;
+  }
 }
 
 /* Single Rim Pulse on Settling */
@@ -316,10 +364,25 @@
 }
 
 @keyframes ability-rim-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(255, 200, 60, 0); opacity: 0; }
-  25%  { box-shadow: 0 0 26px 8px rgba(255, 175, 45, 0.75); opacity: 1; }
-  60%  { box-shadow: 0 0 42px 14px rgba(255, 135, 25, 0.40); opacity: 0.7; }
-  100% { box-shadow: 0 0 0 0 rgba(255, 100, 10, 0); opacity: 0; }
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 200, 60, 0);
+    opacity: 0;
+  }
+
+  25% {
+    box-shadow: 0 0 26px 8px rgba(255, 175, 45, 0.75);
+    opacity: 1;
+  }
+
+  60% {
+    box-shadow: 0 0 42px 14px rgba(255, 135, 25, 0.40);
+    opacity: 0.7;
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 100, 10, 0);
+    opacity: 0;
+  }
 }
 
 /* =========================================================================
@@ -359,8 +422,8 @@
 .ability-card-face-front {
   background:
     radial-gradient(ellipse 55% 22% at 50% 10%, rgba(255, 215, 165, 0.24), transparent 90%),
-    radial-gradient(ellipse 35% 50% at 5% 55%,  rgba(215, 155, 135, 0.20), transparent 90%),
-    radial-gradient(ellipse 50% 60% at 90% 80%, rgba(55, 22, 40, 0.32),   transparent 95%),
+    radial-gradient(ellipse 35% 50% at 5% 55%, rgba(215, 155, 135, 0.20), transparent 90%),
+    radial-gradient(ellipse 50% 60% at 90% 80%, rgba(55, 22, 40, 0.32), transparent 95%),
     linear-gradient(145deg, #a87989 0%, #906371 35%, #754c5d 70%, #946978 100%);
 }
 
@@ -397,9 +460,7 @@
   overflow: visible;
   pointer-events: none;
   filter:
-    drop-shadow(0 1px 0.65px rgba(33, 10, 6, 0.86))
-    drop-shadow(0 -1px 0.45px rgba(255, 248, 190, 0.54))
-    drop-shadow(0 0 1px rgba(255, 220, 108, 0.28));
+    drop-shadow(0 1px 0.65px rgba(33, 10, 6, 0.86)) drop-shadow(0 -1px 0.45px rgba(255, 248, 190, 0.54)) drop-shadow(0 0 1px rgba(255, 220, 108, 0.28));
 }
 
 /* -- Holographic Foil & Specular Light ----------------------------------- */
@@ -417,7 +478,9 @@
   transition: opacity 250ms ease;
 }
 
-.ability-card-stage:hover .ability-hologram-foil { opacity: 0.62; }
+.ability-card-stage:hover .ability-hologram-foil {
+  opacity: 0.62;
+}
 
 .ability-metal-specular {
   position: absolute;
@@ -431,7 +494,9 @@
   transition: opacity 400ms ease;
 }
 
-.ability-card-stage:hover .ability-metal-specular { opacity: 0.88; }
+.ability-card-stage:hover .ability-metal-specular {
+  opacity: 0.88;
+}
 
 .ability-print-grain {
   position: absolute;
@@ -557,16 +622,15 @@
 .card-portrait-img {
   position: absolute;
   z-index: 2;
-  top: 0;
+  top: -2%;
   left: 50%;
   transform: translate3d(calc(-50% + var(--portrait-subject-x, 0px)), var(--portrait-subject-y, 0px), 0);
-  width: 100%;
-  height: 108%;
-  object-fit: cover;
-  object-position: center 10%;
+  width: auto;
+  height: 114%;
+  max-width: none;
+  object-fit: contain;
   filter:
-    contrast(1.08) brightness(1.02) saturate(0.92) sepia(0.05)
-    drop-shadow(0 6px 18px rgba(0, 0, 0, 0.70));
+    contrast(1.05) brightness(1.02) saturate(0.96) drop-shadow(0 6px 16px rgba(0, 0, 0, 0.75));
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
@@ -581,7 +645,7 @@
   z-index: 3;
   pointer-events: none;
   background:
-    linear-gradient(to left,  rgba(212, 175, 55, 0.24) 0%, transparent 30%),
+    linear-gradient(to left, rgba(212, 175, 55, 0.24) 0%, transparent 30%),
     linear-gradient(to right, rgba(50, 20, 70, 0.22) 0%, transparent 30%);
 }
 
@@ -597,8 +661,7 @@
       rgba(18, 8, 14, 0.16) 0%,
       transparent 22%,
       transparent 64%,
-      rgba(20, 8, 12, 0.55) 100%
-    );
+      rgba(20, 8, 12, 0.55) 100%);
   opacity: 0.70;
 }
 
@@ -621,19 +684,19 @@
   opacity: 0.7;
 }
 
-/* 3. Bio Plaque (x=139 y=532 w=438 h=44 -> top 52.8%, left 18.5%, w 63.0%, h 4.8%) */
+/* 3. Bio Plaque (x=139 y=532 w=438 h=44 -> top 52.6%, left 18.2%, w 63.6%, h 5.2%) */
 .card-bio-plate {
   position: absolute;
   z-index: 10;
-  top: 52.8%;
-  left: 18.5%;
-  width: 63.0%;
-  height: 4.8%;
+  top: 52.6%;
+  left: 18.2%;
+  width: 63.6%;
+  height: 5.2%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 0 10px;
+  padding: 0 12px;
   border-radius: 20px;
   background:
     url("/images/paper-grain.png") repeat,
@@ -651,10 +714,11 @@
 .card-bio-text {
   margin: 0;
   font-family: "EB Garamond", Georgia, serif;
-  font-size: clamp(7.5px, 0.72vw, 10px);
+  font-size: clamp(8px, 0.78vw, 10.5px);
   line-height: 1.25;
   text-align: center;
-  color: #352518;
+  color: #24160e;
+  font-weight: 550;
   font-style: italic;
   letter-spacing: 0.01em;
   white-space: normal;
@@ -664,18 +728,18 @@
   -webkit-box-orient: vertical;
 }
 
-/* 4. Skills Table (x=49 y=591 w=617 h=235 -> top 59.8%, left 8.0%, w 84.0%, h 22.8%) */
+/* 4. Skills Table (x=49 y=591 w=617 h=235 -> top 59.5%, left 7.6%, w 84.8%, h 23.2%) */
 .card-skills-table {
   position: absolute;
   z-index: 10;
-  top: 59.8%;
-  left: 8.0%;
-  width: 84.0%;
-  height: 22.8%;
-  padding: 8px 16px;
-  display: grid;
-  grid-template-rows: repeat(4, 1fr);
-  row-gap: 2px;
+  top: 59.5%;
+  left: 7.6%;
+  width: 84.8%;
+  height: 23.2%;
+  padding: 6px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
   color: #241c16;
   border-radius: 8px;
   background:
@@ -714,7 +778,7 @@
   flex-shrink: 0;
 }
 
-.card-skill-dots > i {
+.card-skill-dots>i {
   display: inline-block;
   flex: 0 0 4.5px;
   width: 4.5px;
@@ -724,7 +788,7 @@
   transform: rotate(45deg);
 }
 
-.card-skill-dots > i[data-filled="true"] {
+.card-skill-dots>i[data-filled="true"] {
   background: #35261a;
 }
 
@@ -764,8 +828,8 @@
   white-space: nowrap;
 }
 
-.card-bottom-meta-bar > span:nth-child(2),
-.card-bottom-meta-bar > span:nth-child(4) {
+.card-bottom-meta-bar>span:nth-child(2),
+.card-bottom-meta-bar>span:nth-child(4) {
   opacity: 0.45;
 }
 
@@ -839,7 +903,9 @@
   text-transform: uppercase;
 }
 
-.ability-touch-instructions { display: none; }
+.ability-touch-instructions {
+  display: none;
+}
 
 .ability-mobile-flip-btn,
 .ability-flip-pill-btn,
@@ -859,10 +925,14 @@
   transition: background 180ms ease, border-color 180ms ease;
 }
 
-.ability-mobile-flip-btn { display: none; }
+.ability-mobile-flip-btn {
+  display: none;
+}
 
 .ability-flip-pill-btn,
-.ability-expand-pill-btn { display: inline-flex; }
+.ability-expand-pill-btn {
+  display: inline-flex;
+}
 
 .ability-mobile-flip-btn:hover,
 .ability-flip-pill-btn:hover,
@@ -910,7 +980,7 @@
   background: #5b4834;
 }
 
-.ability-loader-track > span {
+.ability-loader-track>span {
   display: block;
   width: 100%;
   height: 100%;
@@ -929,7 +999,9 @@
   letter-spacing: 0.09em;
 }
 
-.ability-loader-label b { font-weight: 600; }
+.ability-loader-label b {
+  font-weight: 600;
+}
 
 /* =========================================================================
    CREDENTIALS PANEL
@@ -956,7 +1028,9 @@
   cursor: pointer;
 }
 
-.ability-credentials-trigger:hover { background: #3c2817; }
+.ability-credentials-trigger:hover {
+  background: #3c2817;
+}
 
 .ability-credentials-panel {
   max-height: 66dvh;
@@ -1034,7 +1108,10 @@
   line-height: 1.45;
 }
 
-.card-cred-row svg { flex: none; color: #d4af37; }
+.card-cred-row svg {
+  flex: none;
+  color: #d4af37;
+}
 
 .card-tech-chips {
   display: flex;
@@ -1080,7 +1157,9 @@
     radial-gradient(ellipse at 50% 50%, #1d130e, #070706);
 }
 
-.ability-particles-inline { z-index: 1; }
+.ability-particles-inline {
+  z-index: 1;
+}
 
 .ability-card-stage-wrap-inline {
   z-index: 5;
@@ -1153,14 +1232,40 @@
     right: 16px;
   }
 
-  .ability-brand-name  { font-size: 9px; }
-  .ability-brand-subtitle { font-size: 12px; }
-  .ability-close-btn { min-height: 35px; padding: 7px 11px; }
-  .ability-hud-bottom { bottom: 15px; gap: 8px; }
-  .ability-desktop-instructions { display: none; }
-  .ability-touch-instructions { display: block; }
-  .ability-mobile-flip-btn { display: inline-flex; }
-  .ability-instructions { font-size: 8px; letter-spacing: 0.12em; }
+  .ability-brand-name {
+    font-size: 9px;
+  }
+
+  .ability-brand-subtitle {
+    font-size: 12px;
+  }
+
+  .ability-close-btn {
+    min-height: 35px;
+    padding: 7px 11px;
+  }
+
+  .ability-hud-bottom {
+    bottom: 15px;
+    gap: 8px;
+  }
+
+  .ability-desktop-instructions {
+    display: none;
+  }
+
+  .ability-touch-instructions {
+    display: block;
+  }
+
+  .ability-mobile-flip-btn {
+    display: inline-flex;
+  }
+
+  .ability-instructions {
+    font-size: 8px;
+    letter-spacing: 0.12em;
+  }
 
   .ability-credentials {
     left: 50%;
@@ -1171,7 +1276,9 @@
     width: min(320px, 86vw);
   }
 
-  .ability-credentials-panel { max-height: 36dvh; }
+  .ability-credentials-panel {
+    max-height: 36dvh;
+  }
 
   .ability-card-inline-container .ability-credentials {
     bottom: 66px;
@@ -1179,27 +1286,50 @@
     width: 70%;
   }
 
-  .card-gold-name { font-size: clamp(12px, 3.8vw, 17px); }
-  .card-role-tag  { font-size: clamp(5.5px, 1.8vw, 7.5px); }
-  .card-bio-text  { font-size: clamp(6.5px, 1.8vw, 8.5px); }
+  .card-gold-name {
+    font-size: clamp(12px, 3.8vw, 17px);
+  }
 
-  .card-skills-table { padding: 6px 12px; }
+  .card-role-tag {
+    font-size: clamp(5.5px, 1.8vw, 7.5px);
+  }
+
+  .card-bio-text {
+    font-size: clamp(6.5px, 1.8vw, 8.5px);
+  }
+
+  .card-skills-table {
+    padding: 6px 12px;
+  }
+
   .card-skill-row {
     grid-template-columns: 1fr auto 24px;
     column-gap: 5px;
     font-size: clamp(8px, 2.4vw, 11px);
   }
 
-  .card-skill-dots { gap: 2.5px; }
-  .card-skill-dots > i {
+  .card-skill-dots {
+    gap: 2.5px;
+  }
+
+  .card-skill-dots>i {
     width: 3.5px;
     height: 3.5px;
     flex-basis: 3.5px;
   }
 
-  .card-skill-score { font-size: 11px; }
-  .card-bottom-meta-bar { font-size: 5px; padding: 0 6px; }
-  .ability-inline-hud .ability-instructions { font-size: 6.8px; }
+  .card-skill-score {
+    font-size: 11px;
+  }
+
+  .card-bottom-meta-bar {
+    font-size: 5px;
+    padding: 0 6px;
+  }
+
+  .ability-inline-hud .ability-instructions {
+    font-size: 6.8px;
+  }
 }
 
 @media (max-width: 400px) {
@@ -1207,8 +1337,13 @@
     width: min(89vw, calc(72dvh * var(--ability-card-ratio)));
   }
 
-  .ability-brand-name { letter-spacing: 0.15em; }
-  .card-skills-table { padding: 4px 8px; }
+  .ability-brand-name {
+    letter-spacing: 0.15em;
+  }
+
+  .card-skills-table {
+    padding: 4px 8px;
+  }
 
   .card-skill-row {
     grid-template-columns: 1fr auto 20px;
@@ -1216,14 +1351,19 @@
     font-size: 8px;
   }
 
-  .card-skill-dots > i {
+  .card-skill-dots>i {
     flex-basis: 3px;
     width: 3px;
     height: 3px;
   }
 
-  .card-skill-score { font-size: 10px; }
-  .card-bottom-meta-bar { font-size: 4.6px; }
+  .card-skill-score {
+    font-size: 10px;
+  }
+
+  .card-bottom-meta-bar {
+    font-size: 4.6px;
+  }
 }
 
 @media (max-height: 675px) and (min-width: 761px) {
@@ -1231,18 +1371,36 @@
     width: min(368px, calc(74dvh * var(--ability-card-ratio)));
   }
 
-  .ability-hud-bottom { bottom: 8px; }
-  .ability-hud-top { top: 12px; }
-  .card-gold-name { font-size: 13px; }
-  .card-skills-table { padding: 5px 10px; }
-  .card-skill-row { font-size: 10px; }
-  .card-skill-score { font-size: 11px; }
+  .ability-hud-bottom {
+    bottom: 8px;
+  }
+
+  .ability-hud-top {
+    top: 12px;
+  }
+
+  .card-gold-name {
+    font-size: 13px;
+  }
+
+  .card-skills-table {
+    padding: 5px 10px;
+  }
+
+  .card-skill-row {
+    font-size: 10px;
+  }
+
+  .card-skill-score {
+    font-size: 11px;
+  }
 }
 
 /* =========================================================================
    ACCESSIBILITY & PREFERS-REDUCED-MOTION
    ========================================================================= */
 @media (prefers-reduced-motion: reduce) {
+
   .ability-card-stage[data-reveal="edge"] .ability-card-body,
   .ability-card-stage[data-reveal="sweeping"] .ability-card-body,
   .ability-card-stage[data-reveal="settling"] .ability-card-body {
@@ -1258,7 +1416,9 @@
     display: none !important;
   }
 
-  .ability-card-modal-backdrop::before { animation: none; }
+  .ability-card-modal-backdrop::before {
+    animation: none;
+  }
 
   .ability-card-body,
   .ability-card-stage-wrap,
@@ -1266,7 +1426,9 @@
     transition-duration: 0.01ms !important;
   }
 
-  .ability-metal-specular { display: none; }
+  .ability-metal-specular {
+    display: none;
+  }
 
   .card-portrait-bokeh,
   .card-portrait-light-leaks,
@@ -1276,6 +1438,7 @@
 }
 
 @media (forced-colors: active) {
+
   .ability-close-btn,
   .ability-mobile-flip-btn,
   .ability-credentials-trigger {

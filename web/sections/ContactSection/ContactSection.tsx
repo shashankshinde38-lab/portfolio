@@ -39,34 +39,28 @@ import "./ContactSection.css";
 
 const CONTACT_REASONS = [
   {
-    value: "QA opportunity",
-    label: "QA / SDET Opportunity",
-    description: "Full-time, contract or engineering role",
+    value: "QA Engineer / SDET Job Opening",
+    label: "QA Engineer / SDET Job Opening",
+    description: "Hire me for a full-time or contract role in manual testing or test automation.",
     Icon: BriefcaseBusiness,
   },
   {
-    value: "Project collaboration",
-    label: "Project Collaboration",
-    description: "Collaborate on software quality or testing",
-    Icon: Handshake,
+    value: "Freelance QA Testing",
+    label: "Freelance QA Testing",
+    description: "Get your website or mobile app tested, with clear steps to reproduce each bug.",
+    Icon: ShieldCheck,
   },
   {
-    value: "Freelance work",
-    label: "Freelance / Consulting",
-    description: "Automation, testing or QA consulting",
+    value: "Freelance Test Automation Development",
+    label: "Freelance Test Automation Development",
+    description: "Build or extend an automated test suite for your web app, mobile app, or API.",
     Icon: Code2,
   },
   {
-    value: "General enquiry",
-    label: "General Enquiry",
-    description: "Professional or portfolio-related enquiry",
-    Icon: MessageCircle,
-  },
-  {
-    value: "Other",
-    label: "Something Else",
-    description: "Anything not covered by the options above",
-    Icon: CircleHelp,
+    value: "Freelance Web Development",
+    label: "Freelance Web Development",
+    description: "Build a website, redesign an existing site, or add a feature to your web app.",
+    Icon: Sparkles,
   },
 ];
 
@@ -158,6 +152,15 @@ export default function ContactSection() {
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
+
+  // Automatically close success modal after 3 seconds
+  useEffect(() => {
+    if (!showSuccessModal) return;
+    const timer = setTimeout(() => {
+      setShowSuccessModal(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [showSuccessModal]);
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const hasTrackedStart = useRef(false);

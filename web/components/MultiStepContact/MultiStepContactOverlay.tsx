@@ -22,29 +22,24 @@ interface MultiStepContactOverlayProps {
 
 const SERVICE_OPTIONS = [
   {
-    id: "qa-opportunity",
-    label: "QA Engineering / SDET Opportunity",
-    desc: "Full-time, contract, or permanent software test engineer opening",
+    id: "qa-sdet-job",
+    label: "QA Engineer / SDET Job Opening",
+    desc: "Hire me for a full-time or contract role in manual testing or test automation.",
   },
   {
     id: "freelance-qa",
-    label: "Freelance QA Project",
-    desc: "Independent test audit, sprint cycle testing, or milestone delivery",
+    label: "Freelance QA Testing",
+    desc: "Get your website or mobile app tested, with clear steps to reproduce each bug.",
   },
   {
-    id: "qa-automation",
-    label: "QA Automation Development",
-    desc: "Custom Selenium, Playwright, or Appium POM test framework build",
+    id: "freelance-automation",
+    label: "Freelance Test Automation Development",
+    desc: "Build or extend an automated test suite for your web app, mobile app, or API.",
   },
   {
-    id: "api-testing",
-    label: "API Testing & Webhook Validation",
-    desc: "REST Assured, Postman suites, webhook idempotency & concurrency",
-  },
-  {
-    id: "performance-load",
-    label: "Performance Testing & Load Benchmarking",
-    desc: "Apache JMeter distributed stress testing (up to 100k virtual users)",
+    id: "freelance-web-dev",
+    label: "Freelance Web Development",
+    desc: "Build a website, redesign an existing site, or add a feature to your web app.",
   },
 ];
 
@@ -85,6 +80,15 @@ export default function MultiStepContactOverlay({ isOpen, onClose }: MultiStepCo
   const [errorMsg, setErrorMsg] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // Automatically close the success modal after 3 seconds
+  useEffect(() => {
+    if (!isSuccess) return;
+    const timer = setTimeout(() => {
+      resetForm();
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [isSuccess]);
 
   // Close on Escape key
   useEffect(() => {
@@ -259,8 +263,9 @@ export default function MultiStepContactOverlay({ isOpen, onClose }: MultiStepCo
                 <span>Direct Email: shashankshinde38@gmail.com</span>
                 <span>Location: Pune, Maharashtra, India (IST)</span>
               </div>
+              <p className="success-autoclose font-mono">Closing automatically in 3 seconds...</p>
               <button type="button" className="contact-btn-primary" onClick={resetForm}>
-                <span>CLOSE WINDOW</span>
+                <span>CLOSE NOW</span>
               </button>
             </div>
           ) : (
