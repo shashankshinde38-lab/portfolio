@@ -14,9 +14,9 @@ interface AbilityCard3DProps {
   onExpand?: () => void;
 }
 
-// Keep the exact image from your existing portfolio asset.
-// Use the supplied WebP in public/images; do not stretch it to fit the art window.
-const ARTWORK = "/images/portfolio_horizontal_centered_468x287.webp";
+// Portrait for the 3D card — vertical crop preferred for the portrait window.
+const PORTRAIT = "/images/shashank-portrait.jpg";
+const PORTRAIT_FALLBACK = "/images/premium_portfolio_portrait.webp";
 
 /** Ten engraved diamonds, reflecting the score printed on each row. */
 function RatingDots({ score }: { score: number }) {
@@ -27,6 +27,143 @@ function RatingDots({ score }: { score: number }) {
         <i key={index} data-filled={index < filledCount} />
       ))}
     </span>
+  );
+}
+
+/** QA-themed emblem for the card back face */
+function QAEmblemBack() {
+  return (
+    <svg
+      className="ability-qa-emblem"
+      viewBox="0 0 280 390"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id="qaGold" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#fff2cc" />
+          <stop offset="30%" stopColor="#e6c655" />
+          <stop offset="60%" stopColor="#b8860b" />
+          <stop offset="100%" stopColor="#d4af37" />
+        </linearGradient>
+        <linearGradient id="qaShield" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#2a1f0e" />
+          <stop offset="100%" stopColor="#1a1208" />
+        </linearGradient>
+        <filter id="qaGlow">
+          <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+          <feMerge>
+            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      {/* Outer ring */}
+      <circle cx="140" cy="180" r="110" stroke="url(#qaGold)" strokeWidth="1.5" strokeOpacity="0.5" strokeDasharray="6 3" />
+      <circle cx="140" cy="180" r="98" stroke="url(#qaGold)" strokeWidth="0.75" strokeOpacity="0.3" />
+
+      {/* Shield */}
+      <path
+        d="M140 68 L195 90 V172 C195 212 170 240 140 254 C110 240 85 212 85 172 V90 L140 68 Z"
+        fill="url(#qaShield)"
+        stroke="url(#qaGold)"
+        strokeWidth="2"
+        filter="url(#qaGlow)"
+      />
+
+      {/* Inner shield bevel */}
+      <path
+        d="M140 80 L183 98 V170 C183 206 161 231 140 244 C119 231 97 206 97 170 V98 L140 80 Z"
+        fill="none"
+        stroke="url(#qaGold)"
+        strokeWidth="0.75"
+        strokeOpacity="0.5"
+      />
+
+      {/* QA monogram */}
+      <text
+        x="140"
+        y="162"
+        fill="url(#qaGold)"
+        fontFamily="'EB Garamond', Georgia, serif"
+        fontSize="38"
+        fontWeight="800"
+        textAnchor="middle"
+        letterSpacing="4"
+        filter="url(#qaGlow)"
+      >
+        QA
+      </text>
+
+      {/* Subtitle */}
+      <text
+        x="140"
+        y="184"
+        fill="#c8a84b"
+        fontFamily="'Onest', sans-serif"
+        fontSize="7.5"
+        fontWeight="700"
+        textAnchor="middle"
+        letterSpacing="4"
+        opacity="0.85"
+      >
+        QUALITY ASSURANCE
+      </text>
+
+      {/* Magnifier icon (manual paths) */}
+      <circle cx="134" cy="207" r="8" stroke="url(#qaGold)" strokeWidth="1.5" fill="none" opacity="0.7" />
+      <line x1="140" y1="213" x2="146" y2="219" stroke="url(#qaGold)" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+
+      {/* Checkmark */}
+      <path d="M151 203 L154 206 L160 199" stroke="url(#qaGold)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.7" />
+
+      {/* Stars at top of shield */}
+      <polygon points="140,60 142,65.5 148,65.5 143.5,69 145.5,74.5 140,71 134.5,74.5 136.5,69 132,65.5 138,65.5" fill="#ffe8a3" opacity="0.9" />
+
+      {/* Bottom decorative arc */}
+      <path d="M80 265 Q140 290 200 265" stroke="url(#qaGold)" strokeWidth="1" strokeOpacity="0.4" fill="none" />
+      <path d="M90 272 Q140 295 190 272" stroke="url(#qaGold)" strokeWidth="0.6" strokeOpacity="0.25" fill="none" />
+
+      {/* Bottom text */}
+      <text
+        x="140"
+        y="310"
+        fill="#d4af37"
+        fontFamily="'Onest', sans-serif"
+        fontSize="6.5"
+        fontWeight="700"
+        textAnchor="middle"
+        letterSpacing="5"
+        opacity="0.65"
+      >
+        SHASHANK SHINDE
+      </text>
+      <text
+        x="140"
+        y="323"
+        fill="#a07a3a"
+        fontFamily="'Onest', sans-serif"
+        fontSize="5.5"
+        fontWeight="600"
+        textAnchor="middle"
+        letterSpacing="4"
+        opacity="0.5"
+      >
+        PUNE · INDIA
+      </text>
+
+      {/* Corner flourishes */}
+      {[[-1, -1], [1, -1], [-1, 1], [1, 1]].map(([sx, sy], i) => (
+        <g key={i} transform={`translate(140 180) scale(${sx} ${sy}) translate(-140 -180)`}>
+          <path d={`M ${140 + sx * 115} ${180 + sy * 100} L ${140 + sx * 105} ${180 + sy * 100}`}
+            stroke="#d4af37" strokeWidth="0.75" strokeOpacity="0.35" />
+          <path d={`M ${140 + sx * 115} ${180 + sy * 100} L ${140 + sx * 115} ${180 + sy * 90}`}
+            stroke="#d4af37" strokeWidth="0.75" strokeOpacity="0.35" />
+        </g>
+      ))}
+    </svg>
   );
 }
 
@@ -50,12 +187,15 @@ function AbilityCardSession({
   const [ready, setReady] = useState(isInline);
   const [artworkFailed, setArtworkFailed] = useState(false);
   const [showCredentials, setShowCredentials] = useState(false);
+  // Track which reveal phase we're in: 'edge' | 'sweeping' | 'settling' | 'resting'
+  const [revealPhase, setRevealPhase] = useState<"edge" | "sweeping" | "settling" | "resting">(
+    isInline ? "resting" : "edge"
+  );
   const artRef = useRef<HTMLImageElement>(null);
   const progressTarget = useRef(0);
   const credentialsButton = useRef<HTMLButtonElement>(null);
 
-  // Readiness milestones come from the actual font and image used on the card.
-  // Animate between completed milestones so a cached asset does not flash a loader.
+  // Readiness milestones
   useEffect(() => {
     if (isInline) return;
     let active = true;
@@ -94,6 +234,26 @@ function AbilityCardSession({
     };
   }, [isInline]);
 
+  // Fiery reveal sequence — fires once when ready
+  useEffect(() => {
+    if (!ready || isInline) return;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (motion.matches) {
+      setRevealPhase("resting");
+      return;
+    }
+    // Phase schedule: edge(0ms) → sweeping(80ms) → settling(700ms) → resting(1500ms)
+    setRevealPhase("edge");
+    const t1 = setTimeout(() => setRevealPhase("sweeping"), 80);
+    const t2 = setTimeout(() => setRevealPhase("settling"), 700);
+    const t3 = setTimeout(() => setRevealPhase("resting"), 1500);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, [ready, isInline]);
+
   // 3D Tilt and Drag Physics
   const tilt = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
   const drag = useRef({ isDragging: false, startX: 0, startY: 0, currentRotX: 0, currentRotY: 0 });
@@ -101,6 +261,8 @@ function AbilityCardSession({
   const highlightTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const tapStart = useRef({ x: 0, y: 0 });
   const pointerType = useRef("mouse");
+  // Portrait parallax CSS vars
+  const portraitRef = useRef<HTMLDivElement>(null);
 
   const isActive = isInline || isOpen;
   const dialogRef = useDialogFocus(isOpen && !isInline);
@@ -117,7 +279,7 @@ function AbilityCardSession({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, isInline, onClose]);
 
-  // Listen for custom trigger to highlight/tilt card from navbar or buttons
+  // Listen for custom trigger to highlight/tilt card
   useEffect(() => {
     const timers = highlightTimers.current;
     const handleHighlight = () => {
@@ -167,7 +329,6 @@ function AbilityCardSession({
         powerPreference: "high-performance",
       });
     } catch {
-      // Graceful fallback for devices without WebGL: the CSS card still works.
       return;
     }
     renderer.setSize(width, height);
@@ -185,7 +346,6 @@ function AbilityCardSession({
     };
     window.addEventListener("resize", handleResize);
 
-    // Create Golden Dust Embers
     const particleCount = isInline ? 95 : 170;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
@@ -203,7 +363,6 @@ function AbilityCardSession({
 
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
 
-    // Soft Circular Gold Particle Texture
     const particleCanvas = document.createElement("canvas");
     particleCanvas.width = 32;
     particleCanvas.height = 32;
@@ -232,7 +391,6 @@ function AbilityCardSession({
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    // Animation Loop
     let isRunning = true;
     const animate = () => {
       if (!isRunning) return;
@@ -279,8 +437,6 @@ function AbilityCardSession({
       drag.current.startX = e.clientX;
       drag.current.startY = e.clientY;
     } else {
-      // Read from the *stable* outer stage rather than the already rotated
-      // card. Using the rotated bounds makes the pointer angle jump/flicker.
       const rect = cardRef.current?.parentElement?.getBoundingClientRect();
       if (!rect) return;
       const centerX = rect.left + rect.width / 2;
@@ -299,10 +455,11 @@ function AbilityCardSession({
       const y = Math.max(-1, Math.min(1, normY));
       tilt.current.targetX = x * 11.5;
       tilt.current.targetY = -y * 10;
-      // Independent parallax offsets keep the portrait and foil lively while
-      // the full card tilts as one physical object.
+      // 3D portrait parallax — bg layer moves less than subject layer
       cardRef.current?.style.setProperty("--portrait-pan-x", `${(-x * 4).toFixed(2)}px`);
       cardRef.current?.style.setProperty("--portrait-pan-y", `${(-y * 3).toFixed(2)}px`);
+      cardRef.current?.style.setProperty("--portrait-subject-x", `${(-x * 7).toFixed(2)}px`);
+      cardRef.current?.style.setProperty("--portrait-subject-y", `${(-y * 5.5).toFixed(2)}px`);
       cardRef.current?.style.setProperty("--glint-rotation", `${(x * 14).toFixed(2)}deg`);
     }
   }, []);
@@ -313,6 +470,8 @@ function AbilityCardSession({
       tilt.current.targetY = 0;
       cardRef.current?.style.setProperty("--portrait-pan-x", "0px");
       cardRef.current?.style.setProperty("--portrait-pan-y", "0px");
+      cardRef.current?.style.setProperty("--portrait-subject-x", "0px");
+      cardRef.current?.style.setProperty("--portrait-subject-y", "0px");
     }
   }, []);
 
@@ -378,9 +537,9 @@ function AbilityCardSession({
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       className={`ability-card-stage ${drag.current.isDragging ? "is-dragging" : ""}`}
+      data-reveal={revealPhase}
       onPointerDown={handlePointerDown}
       onPointerUp={(e) => {
-        // Touchscreen users can tap once to flip. Desktop retains double-click.
         if (
           e.pointerType !== "mouse" &&
           Math.hypot(e.clientX - tapStart.current.x, e.clientY - tapStart.current.y) < 9
@@ -405,25 +564,44 @@ function AbilityCardSession({
       aria-label="3D Ability Card of Shashank Shinde. Press Enter or Space to flip."
       aria-pressed={isFlipped}
     >
+      {/* Fiery burn sweep overlay — appears during reveal only */}
+      <div className="ability-burn-sweep" aria-hidden="true" />
+      {/* Ember sparks — trail along the burn edge */}
+      <div className="ability-ember-sparks" aria-hidden="true">
+        {Array.from({ length: 8 }, (_, i) => (
+          <span key={i} className="ability-ember" style={{ "--ember-i": i } as React.CSSProperties} />
+        ))}
+      </div>
+      {/* Rim pulse — single warm pulse after card settles */}
+      <div className="ability-rim-pulse" aria-hidden="true" />
+
       <div className={`ability-card-body ${isFlipped ? "flipped" : ""}`}>
         {/* FRONT FACE */}
         <div className="ability-card-face ability-card-face-front" aria-hidden={isFlipped}>
           <GiltFrame />
-          {/* Dynamic Holographic Foil Sheen */}
           <div className="ability-hologram-foil" />
           <div className="ability-metal-specular" aria-hidden="true" />
           <div className="ability-print-grain" aria-hidden="true" />
 
-          {/* Inner Card Content */}
           <div className="card-inner-frame">
             {/* 1. Ornate Nameplate Banner */}
             <div className="card-nameplate-banner">
               <h2 className="card-gold-name">Shashank Shinde</h2>
             </div>
 
-            <div className="card-emblem-box">
+            {/* 2. Role subtitle below nameplate */}
+            <div className="card-role-subtitle">
+              <span>QA Specialist</span>
+            </div>
+
+            {/* 3. Portrait window — 3-layer 3D parallax */}
+            <div className="card-emblem-box" ref={portraitRef}>
+              {/* Layer 0: bokeh background (slowest parallax) */}
               <div className="card-portrait-bokeh" aria-hidden="true" />
+              {/* Layer 1: light leaks */}
               <div className="card-portrait-light-leaks" aria-hidden="true" />
+
+              {/* Layer 2: subject image (faster parallax, slight shoulder overflow) */}
               {artworkFailed ? (
                 <svg
                   className="card-emblem-svg"
@@ -431,7 +609,6 @@ function AbilityCardSession({
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  {/* Subtle Background Circuit & Grid Traces */}
                   <path
                     d="M20 90 H260 M140 10 V170"
                     stroke="#D4AF37"
@@ -439,81 +616,18 @@ function AbilityCardSession({
                     strokeOpacity="0.2"
                     strokeDasharray="3 3"
                   />
-                  <circle
-                    cx="140"
-                    cy="90"
-                    r="68"
-                    stroke="#D4AF37"
-                    strokeWidth="0.8"
-                    strokeOpacity="0.25"
-                    strokeDasharray="4 2"
-                  />
-                  <circle
-                    cx="140"
-                    cy="90"
-                    r="54"
-                    stroke="#D4AF37"
-                    strokeWidth="1.2"
-                    strokeOpacity="0.45"
-                  />
-
-                  {/* Outer Laurel Garland Arc */}
-                  <path
-                    d="M85 110 C80 90, 85 65, 105 45 C115 35, 130 30, 140 30 C150 30, 165 35, 175 45 C195 65, 200 90, 195 110 C185 130, 165 145, 140 148 C115 145, 95 130, 85 110 Z"
-                    stroke="#E6C762"
-                    strokeWidth="1.5"
-                    strokeOpacity="0.7"
-                  />
-
-                  {/* Shield Silhouette */}
+                  <circle cx="140" cy="90" r="68" stroke="#D4AF37" strokeWidth="0.8" strokeOpacity="0.25" strokeDasharray="4 2" />
+                  <circle cx="140" cy="90" r="54" stroke="#D4AF37" strokeWidth="1.2" strokeOpacity="0.45" />
                   <path
                     d="M140 38 L170 52 V90 C170 114 156 130 140 138 C124 130 110 114 110 90 V52 L140 38 Z"
                     fill="url(#crestGoldGrad)"
                     stroke="#FFE8A3"
                     strokeWidth="1.6"
                   />
-
-                  {/* Inner Crest Monogram / QA Insignia */}
-                  <text
-                    x="140"
-                    y="86"
-                    fill="#1C1408"
-                    fontFamily="'EB Garamond', serif"
-                    fontSize="24"
-                    fontWeight="800"
-                    textAnchor="middle"
-                    letterSpacing="2"
-                  >
-                    SDET
-                  </text>
-                  <text
-                    x="140"
-                    y="104"
-                    fill="#3D290A"
-                    fontFamily="'Onest', sans-serif"
-                    fontSize="8.5"
-                    fontWeight="700"
-                    textAnchor="middle"
-                    letterSpacing="3"
-                  >
-                    ASSURANCE
-                  </text>
-
-                  {/* Stars / Diamonds */}
-                  <polygon
-                    points="140,24 142.5,29 148,30 143.5,33.5 145,39 140,36 135,39 136.5,33.5 132,30 137.5,29"
-                    fill="#FFEDB3"
-                  />
-
+                  <text x="140" y="84" fill="#1C1408" fontFamily="'EB Garamond', serif" fontSize="22" fontWeight="800" textAnchor="middle" letterSpacing="2">QA</text>
+                  <text x="140" y="102" fill="#3D290A" fontFamily="'Onest', sans-serif" fontSize="8" fontWeight="700" textAnchor="middle" letterSpacing="3">SPECIALIST</text>
                   <defs>
-                    <linearGradient
-                      id="crestGoldGrad"
-                      x1="110"
-                      y1="38"
-                      x2="170"
-                      y2="138"
-                      gradientUnits="userSpaceOnUse"
-                    >
+                    <linearGradient id="crestGoldGrad" x1="110" y1="38" x2="170" y2="138" gradientUnits="userSpaceOnUse">
                       <stop offset="0%" stopColor="#FFF2CC" />
                       <stop offset="35%" stopColor="#D4AF37" />
                       <stop offset="70%" stopColor="#996515" />
@@ -522,48 +636,70 @@ function AbilityCardSession({
                   </defs>
                 </svg>
               ) : (
-                <img
-                  ref={artRef}
-                  src={ARTWORK}
-                  alt="Professional portrait of Shashank Shinde"
-                  draggable={false}
-                  onError={() => setArtworkFailed(true)}
-                />
+                <div className="card-portrait-subject-wrap">
+                  <img
+                    ref={artRef}
+                    src={PORTRAIT}
+                    alt="Professional portrait of Shashank Shinde"
+                    draggable={false}
+                    onError={(e) => {
+                      // Try fallback, then signal failure
+                      const img = e.currentTarget as HTMLImageElement;
+                      if (img.src !== PORTRAIT_FALLBACK) {
+                        img.src = PORTRAIT_FALLBACK;
+                      } else {
+                        setArtworkFailed(true);
+                      }
+                    }}
+                    className="card-portrait-subject-img"
+                  />
+                  {/* Warm rim light on the right edge of subject */}
+                  <div className="card-portrait-rim-light" aria-hidden="true" />
+                </div>
               )}
+
+              {/* Layer 3: overlay vignette + grain */}
+              <div className="card-portrait-overlay" aria-hidden="true" />
               <span className="card-emblem-badge" aria-hidden="true">✦</span>
             </div>
-            {/* 3. Ornate Gold Divider */}
+
+            {/* 4. Bio line */}
+            <div className="card-bio-line">
+              <p>I test web and mobile flows, document defects, and verify fixes before release.</p>
+            </div>
+
+            {/* 5. Ornate Gold Divider */}
             <div className="card-filigree-divider">
               <span className="card-filigree-line" />
               <span>✦ ❖ ✦</span>
               <span className="card-filigree-line" />
             </div>
 
-            {/* 4. Specialization Ratings Table */}
+            {/* 6. Specialization Ratings Table */}
             <div className="card-skills-table">
               <div className="card-skill-row">
-                <span className="card-skill-title">QA Automation</span>
-                <RatingDots score={95} />
-                <span className="card-skill-score">95</span>
-              </div>
-              <div className="card-skill-row">
-                <span className="card-skill-title">Mobile App Testing</span>
+                <span className="card-skill-title">Web &amp; Mobile Testing</span>
                 <RatingDots score={90} />
                 <span className="card-skill-score">90</span>
               </div>
               <div className="card-skill-row">
-                <span className="card-skill-title">Manual QA &amp; STLC</span>
-                <RatingDots score={98} />
-                <span className="card-skill-score">98</span>
+                <span className="card-skill-title">End-to-End Testing</span>
+                <RatingDots score={85} />
+                <span className="card-skill-score">85</span>
               </div>
               <div className="card-skill-row">
-                <span className="card-skill-title">API &amp; Performance</span>
-                <RatingDots score={92} />
-                <span className="card-skill-score">92</span>
+                <span className="card-skill-title">API Testing</span>
+                <RatingDots score={88} />
+                <span className="card-skill-score">88</span>
+              </div>
+              <div className="card-skill-row">
+                <span className="card-skill-title">Regression &amp; Bug Reverification</span>
+                <RatingDots score={85} />
+                <span className="card-skill-score">85</span>
               </div>
             </div>
 
-            {/* 5. Bottom Metadata Bar */}
+            {/* 7. Bottom Metadata Bar */}
             <div className="card-bottom-meta-bar">
               <span>
                 Based: <strong>India (Pune)</strong>
@@ -580,9 +716,10 @@ function AbilityCardSession({
           </div>
         </div>
 
+        {/* BACK FACE */}
         <div className="ability-card-face ability-card-face-back" aria-hidden={!isFlipped}>
-          <Compass />
           <div className="ability-hologram-foil" />
+          <QAEmblemBack />
         </div>
       </div>
     </div>
@@ -614,13 +751,11 @@ function AbilityCardSession({
           }}
         >
           <div className="ability-credentials-content">
-            {/* Back Header */}
             <div className="card-back-header">
               <h3 className="card-back-title">Verified Credentials</h3>
-              <span className="card-back-subtitle">Software Development Engineer in Test</span>
+              <span className="card-back-subtitle">QA Specialist</span>
             </div>
 
-            {/* 2x2 Production Metrics */}
             <div className="card-metrics-grid-2x2">
               <div className="card-metric-cell">
                 <span className="card-metric-val">240+</span>
@@ -640,7 +775,6 @@ function AbilityCardSession({
               </div>
             </div>
 
-            {/* Credentials & Education */}
             <div className="card-credentials-box">
               <div className="card-cred-row">
                 <Award size={14} className="text-[#D4AF37]" />
@@ -662,7 +796,6 @@ function AbilityCardSession({
               </div>
             </div>
 
-            {/* Toolchain Strip */}
             <div className="card-tech-chips">
               <span className="card-tech-chip">Selenium 4</span>
               <span className="card-tech-chip">Playwright</span>
@@ -674,7 +807,6 @@ function AbilityCardSession({
               <span className="card-tech-chip">TypeScript</span>
             </div>
 
-            {/* Gilded Seal */}
             <div className="card-gold-seal">
               <Sparkles size={12} />
               <span>AUTHENTIC QA CERTIFICATION · PUNE, IN</span>
@@ -685,7 +817,7 @@ function AbilityCardSession({
     </div>
   );
 
-  // 1. INLINE MODE (Displayed directly inside the Hero Section stage)
+  // 1. INLINE MODE
   if (isInline) {
     return (
       <div
@@ -694,14 +826,9 @@ function AbilityCardSession({
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
       >
-        {/* Subtle Ambient Golden Particles Canvas */}
         <canvas ref={canvasRef} className="ability-particles-canvas ability-particles-inline" />
-
-        {/* 3D Card Stage Wrap */}
         <div className="ability-card-stage-wrap ability-card-stage-wrap-inline">{cardMarkup}</div>
-
         {credentials}
-        {/* Bottom Interactive HUD for Inline Stage */}
         <div className="ability-inline-hud">
           <span className="ability-instructions">
             MOVE TO TILT · DRAG TO ROTATE · TAP OR ENTER TO FLIP
@@ -734,7 +861,7 @@ function AbilityCardSession({
     );
   }
 
-  // 2. MODAL MODE (Full-screen dark immersive backdrop)
+  // 2. MODAL MODE
   return (
     <div
       ref={dialogRef}
@@ -749,10 +876,8 @@ function AbilityCardSession({
         if (e.target === e.currentTarget && onClose) onClose();
       }}
     >
-      {/* Three.js Golden Particle Embers Canvas */}
       <canvas ref={canvasRef} className="ability-particles-canvas" />
 
-      {/* Top HUD Bar */}
       <div className="ability-hud-top">
         <div className="ability-brand-group" aria-hidden={!ready}>
           <span className="ability-brand-name">SHASHANK SHINDE</span>
@@ -801,7 +926,6 @@ function AbilityCardSession({
       </div>
       {credentials}
 
-      {/* Bottom HUD: Interaction Instructions & Mobile Flip Action */}
       <div className="ability-hud-bottom" inert={!ready}>
         <span className="ability-instructions ability-desktop-instructions">
           Hover to tilt · Drag to rotate · Double-click to flip

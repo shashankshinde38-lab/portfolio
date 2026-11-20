@@ -1,8 +1,7 @@
 /* ========================================================================
-   ABILITY CARD 3D — FULL REFERENCE-BASED STYLES
-   Original TSX remains intact (~795 lines); effects stay functional.
-   Layout reference: Rishi Thakor's ability-card recording, November 2026.
-   Decorative artwork: newly drawn SVG (CardEngravings.tsx).
+   ABILITY CARD 3D — REDESIGNED STYLES
+   Fiery cinematic launch · 3D portrait parallax · QA content
+   Charcoal + brushed-bronze frame, warm gold bevels, dark background.
    ======================================================================== */
 
 /* -- Design tokens ------------------------------------------------------- */
@@ -10,15 +9,16 @@
   --ability-gold-light: #fff0ad;
   --ability-gold: #d9a74b;
   --ability-gold-dark: #78491b;
-  --ability-rose: #946a78;
   --ability-parchment: #f1e2bb;
   --ability-ink: #271e1b;
-  --ability-card-ratio: 0.716;
-  --ability-perspective: 1700px;
+  --ability-card-ratio: 0.682;
+  --ability-perspective: 1350px;
   --ability-anim: cubic-bezier(.22, .72, .11, 1);
+  --ability-stage-glow: rgba(247, 170, 54, .33);
+  --ability-frame-gold: #fff3b6;
 }
 
-/* -- Complete viewport: ambient soot and spotlight --------------------- */
+/* -- Complete viewport: ambient soot and spotlight ---------------------- */
 .ability-card-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -29,8 +29,9 @@
   min-height: 100dvh;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 47% 70% at 50% 75%, #4c2109 0%, #241207 36%, transparent 84%),
-    radial-gradient(ellipse 55% 90% at 50% 44%, #261807 0%, #100c09 53%, #070707 100%);
+    radial-gradient(ellipse 34% 50% at 50% 78%, rgba(102, 42, 6, .76), transparent 91%),
+    radial-gradient(ellipse 38% 55% at 50% 51%, rgba(75, 36, 13, .52), transparent 84%),
+    radial-gradient(ellipse 85% 94% at 50% 50%, #17100b 0%, #070606 70%, #020202 100%);
   color: #eee4cc;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: contain;
@@ -42,10 +43,9 @@
   inset: -20%;
   z-index: 0;
   pointer-events: none;
-  background:
-    radial-gradient(ellipse 27% 44% at 49% 55%, rgba(222, 122, 18, .13), transparent 84%),
-    radial-gradient(ellipse 40% 65% at 52% 66%, rgba(175, 62, 11, .09), transparent 91%);
-  filter: blur(24px);
+  opacity: .8;
+  background: radial-gradient(ellipse 21% 31% at 50% 70%, rgba(234, 122, 13, .29), transparent 87%);
+  filter: blur(32px);
   animation: ability-fire-glow 9s ease-in-out infinite alternate;
 }
 
@@ -55,18 +55,17 @@
   z-index: 1;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse 69% 95% at 50% 54%, transparent 42%, rgba(0, 0, 0, .65) 96%);
+  background: radial-gradient(ellipse 68% 89% at 50% 55%, transparent 29%, rgba(0, 0, 0, .55) 97%);
 }
 
 @keyframes ability-fire-glow {
   from {
-    opacity: .68;
+    opacity: .6;
     transform: scale(.97);
   }
-
   to {
     opacity: 1;
-    transform: scale(1.05);
+    transform: scale(1.06);
   }
 }
 
@@ -163,14 +162,15 @@
 .ability-card-stage-wrap {
   position: relative;
   z-index: 10;
-  width: min(470px, 32vw, calc(74dvh * var(--ability-card-ratio)));
-  aspect-ratio: 716 / 1000;
+  width: min(475px, 33vw, calc(81dvh * var(--ability-card-ratio)));
+  aspect-ratio: 682 / 1000;
   display: grid;
   place-items: center;
   perspective: var(--ability-perspective);
   perspective-origin: 50% 50%;
   transform-style: preserve-3d;
-  transform: translateY(-3px);
+  transform: translateY(1px);
+  filter: drop-shadow(0 18px 23px rgba(8, 4, 3, .46));
   opacity: 1;
   transition: opacity 750ms ease, filter 750ms ease;
 }
@@ -181,22 +181,10 @@
   pointer-events: none;
 }
 
+/* Reveal animation is now driven by [data-reveal] on the card stage,
+   but we still keep this for instant show once ready */
 .ability-card-modal-backdrop[data-card-ready="true"] .ability-card-stage-wrap {
-  animation: ability-card-reveal 1050ms var(--ability-anim) both;
-}
-
-@keyframes ability-card-reveal {
-  from {
-    opacity: 0;
-    filter: blur(9px);
-    transform: translateY(14px) scale(.93);
-  }
-
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: translateY(-3px) scale(1);
-  }
+  opacity: 1;
 }
 
 .ability-card-stage {
@@ -211,11 +199,161 @@
   transform-style: preserve-3d;
   will-change: transform;
   backface-visibility: hidden;
+
+  /* CSS custom properties used by JS pointer tracking */
+  --foil-x: 50%;
+  --foil-y: 50%;
+  --portrait-pan-x: 0px;
+  --portrait-pan-y: 0px;
+  --portrait-subject-x: 0px;
+  --portrait-subject-y: 0px;
+  --glint-rotation: 0deg;
 }
 
 .ability-card-stage.is-dragging {
   cursor: grabbing;
 }
+
+/* =========================================================================
+   FIERY CINEMATIC REVEAL — driven by data-reveal attribute
+   Phases: "edge" → "sweeping" → "settling" → "resting"
+   ========================================================================= */
+
+/* Phase: edge — card starts nearly edge-on from dark stage */
+.ability-card-stage[data-reveal="edge"] .ability-card-body {
+  transform: rotateY(82deg) scale(.92);
+  opacity: 0;
+}
+
+/* Phase: sweeping — card rotates toward viewer, burn line crosses the face */
+.ability-card-stage[data-reveal="sweeping"] .ability-card-body {
+  transform: rotateY(0deg) scale(1);
+  opacity: 1;
+  transition:
+    transform 900ms cubic-bezier(.15, .8, .1, 1.06),
+    opacity   160ms ease;
+}
+
+/* Phase: settling — overshoot has damped, card is upright */
+.ability-card-stage[data-reveal="settling"] .ability-card-body {
+  transform: rotateY(0deg) scale(1);
+  opacity: 1;
+  transition: none;
+}
+
+/* Phase: resting — normal runtime state */
+.ability-card-stage[data-reveal="resting"] .ability-card-body {
+  transform: rotateY(0deg);
+  opacity: 1;
+  transition: transform 1080ms cubic-bezier(.19, .72, .15, 1);
+}
+
+/* Burn sweep overlay — a curved molten amber line crossing the card face */
+.ability-burn-sweep {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  background:
+    linear-gradient(
+      130deg,
+      transparent 0%,
+      transparent 30%,
+      rgba(255, 160, 30, .92) 44%,
+      rgba(255, 220, 90, 1) 48%,
+      rgba(255, 170, 40, .88) 52%,
+      transparent 66%,
+      transparent 100%
+    );
+  mix-blend-mode: screen;
+  transform: translateX(-120%);
+  will-change: transform, opacity;
+}
+
+/* Burn fires during the "sweeping" phase */
+.ability-card-stage[data-reveal="sweeping"] .ability-burn-sweep {
+  animation: ability-burn-cross 820ms cubic-bezier(.3, .0, .6, 1) both;
+}
+
+@keyframes ability-burn-cross {
+  0%   { transform: translateX(-120%); opacity: 0; }
+  10%  { opacity: 1; }
+  65%  { transform: translateX(0%);   opacity: 1; }
+  90%  { transform: translateX(60%);  opacity: .55; }
+  100% { transform: translateX(130%); opacity: 0; }
+}
+
+/* Ember sparks — 8 elements that trail along the burn edge */
+.ability-ember-sparks {
+  position: absolute;
+  inset: 0;
+  z-index: 51;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: visible;
+}
+
+.ability-ember {
+  position: absolute;
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffe590 0%, #ff8c1a 60%, transparent 100%);
+  opacity: 0;
+  /* i is 0–7; vertical spread = i * 12% + 10% */
+  top: calc(var(--ember-i) * 12% + 10%);
+  left: 20%;
+  will-change: transform, opacity;
+}
+
+.ability-card-stage[data-reveal="sweeping"] .ability-ember {
+  animation: ability-ember-trail 760ms ease-out both;
+  animation-delay: calc(var(--ember-i) * 40ms + 80ms);
+}
+
+@keyframes ability-ember-trail {
+  0%   { transform: translate(0, 0) scale(1);             opacity: 0; }
+  15%  { opacity: 1; }
+  60%  { transform: translate(calc(60vw + 60px), calc(var(--ember-i) * -4px - 10px)) scale(.55); opacity: .8; }
+  100% { transform: translate(calc(80vw + 80px), calc(var(--ember-i) * -8px - 25px)) scale(.2);  opacity: 0; }
+}
+
+/* During settling, a few embers drift and fade */
+.ability-card-stage[data-reveal="settling"] .ability-ember {
+  animation: ability-ember-drift 800ms ease-out both;
+  animation-delay: calc(var(--ember-i) * 60ms);
+}
+
+@keyframes ability-ember-drift {
+  0%   { transform: translate(0, 0);     opacity: .4; }
+  100% { transform: translate(calc(var(--ember-i) * 8px - 28px), -60px) scale(.15); opacity: 0; }
+}
+
+/* Rim pulse — single warm flash around the card edge after settling */
+.ability-rim-pulse {
+  position: absolute;
+  inset: -3px;
+  z-index: 49;
+  pointer-events: none;
+  border-radius: 20px;
+  opacity: 0;
+}
+
+.ability-card-stage[data-reveal="settling"] .ability-rim-pulse {
+  animation: ability-rim-pulse 700ms ease-out 200ms both;
+}
+
+@keyframes ability-rim-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 200, 60, .0);  opacity: 0; }
+  25%  { box-shadow: 0 0 24px 8px rgba(255, 170, 40, .72); opacity: 1; }
+  60%  { box-shadow: 0 0 40px 14px rgba(255, 130, 20, .38); opacity: .7; }
+  100% { box-shadow: 0 0 0 0 rgba(255, 100, 10, .0);  opacity: 0; }
+}
+
+/* ========================================================================= */
 
 .ability-card-body {
   position: relative;
@@ -223,13 +361,12 @@
   height: 100%;
   border-radius: 17px;
   transform-style: preserve-3d;
-  transform: rotateY(0deg);
-  transition: transform 1080ms cubic-bezier(.19, .72, .15, 1);
   will-change: transform;
 }
 
 .ability-card-body.flipped {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) !important;
+  transition: transform 1080ms cubic-bezier(.19, .72, .15, 1) !important;
 }
 
 .ability-card-face {
@@ -241,21 +378,20 @@
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   box-shadow:
-    0 0 1px 1px rgba(255, 242, 166, .86),
-    0 0 12px rgba(252, 207, 91, .58),
-    0 0 28px rgba(233, 146, 30, .32),
-    0 24px 48px rgba(0, 0, 0, .71),
-    0 40px 80px rgba(0, 0, 0, .38);
+    0 0 0 1px rgba(255, 244, 180, .95),
+    0 0 2px 2px rgba(224, 161, 66, .89),
+    0 0 10px 2px rgba(251, 193, 68, .67),
+    0 0 26px 4px rgba(243, 147, 26, .32),
+    0 32px 46px rgba(0, 0, 0, .64);
 }
 
-/* -- Front: pink-purple metallic print --------------------------------- */
+/* -- Front: charcoal + brushed-bronze metallic base --------------------- */
 .ability-card-face-front {
   background:
-    radial-gradient(ellipse 75% 25% at 45% 17%, rgba(255, 213, 222, .27), transparent 80%),
-    radial-gradient(ellipse 65% 85% at 96% 80%, rgba(49, 22, 29, .3), transparent 80%),
-    radial-gradient(ellipse 65% 60% at 7% 74%, rgba(209, 139, 125, .19), transparent 75%),
-    repeating-linear-gradient(148deg, rgba(255, 255, 255, .012) 0 1px, transparent 1px 4px),
-    linear-gradient(145deg, #bd8e9e 0%, #a77b86 32%, #855f6b 69%, #9a707b 100%);
+    radial-gradient(ellipse 52% 20% at 52% 12%, rgba(247, 200, 206, .59), transparent 92%),
+    radial-gradient(ellipse 31% 46% at 7% 53%, rgba(255, 185, 177, .28), transparent 87%),
+    radial-gradient(ellipse 48% 57% at 88% 77%, rgba(70, 31, 51, .28), transparent 93%),
+    linear-gradient(140deg, #c2959f 0%, #a57a89 38%, #8e6677 72%, #aa7a89 100%);
 }
 
 .ability-card-face-front::before {
@@ -264,10 +400,10 @@
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  opacity: .29;
+  opacity: .42;
   background:
-    repeating-linear-gradient(14deg, transparent 0 2px, rgba(36, 23, 23, .06) 2px 3px),
-    radial-gradient(ellipse at 50% 100%, rgba(54, 16, 23, .35), transparent 52%);
+    url("/images/foil-grain.png") 0 0 / 190px 190px repeat,
+    radial-gradient(ellipse at 50% 100%, rgba(55, 18, 27, .33), transparent 64%);
   mix-blend-mode: multiply;
 }
 
@@ -281,8 +417,7 @@
   border-radius: inherit;
 }
 
-/* The SVG is intentionally a foreground overlay: intricate gold flourishes
-   continue over all window and parchment edges, exactly like gilded embossing. */
+/* SVG frame is intentionally foreground overlay — gilded embossing */
 .ability-gilt-frame {
   position: absolute;
   z-index: 9;
@@ -291,27 +426,58 @@
   height: 100%;
   overflow: visible;
   pointer-events: none;
-  filter: drop-shadow(0 1px 1px rgba(23, 10, 7, .76)) drop-shadow(0 0 1px rgba(255, 233, 142, .5));
+  filter:
+    drop-shadow(0 1px .65px rgba(33, 10, 6, .86))
+    drop-shadow(0 -1px .45px rgba(255, 248, 190, .54))
+    drop-shadow(0 0 1px rgba(255, 220, 108, .26));
 }
 
 .ability-hologram-foil {
   position: absolute;
-  z-index: 10;
+  z-index: 11;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 47% 23% at var(--foil-x, 50%) var(--foil-y, 50%), rgba(255, 246, 193, .54), transparent 98%),
-    linear-gradient(116deg, transparent 8%, rgba(255, 251, 225, .06) 35%, rgba(255, 234, 158, .20) 48%, transparent 65%);
+    radial-gradient(ellipse 45% 30% at var(--foil-x, 50%) var(--foil-y, 50%), rgba(255, 248, 199, .34), transparent 83%),
+    linear-gradient(107deg, transparent 15%, rgba(255, 255, 255, .02) 31%, rgba(255, 245, 189, .18) 42%, transparent 53%);
   mix-blend-mode: screen;
-  opacity: .28;
+  opacity: .25;
   transition: opacity 250ms ease;
 }
 
 .ability-card-stage:hover .ability-hologram-foil {
-  opacity: .57;
+  opacity: .68;
 }
 
+.ability-metal-specular {
+  position: absolute;
+  inset: -4%;
+  z-index: 12;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(106deg, transparent 24%, rgba(255, 251, 220, .045) 34%, rgba(255, 253, 212, .18) 43%, transparent 51%);
+  transform: rotate(var(--glint-rotation, 0deg));
+  mix-blend-mode: screen;
+  transition: opacity 400ms ease;
+}
+
+.ability-card-stage:hover .ability-metal-specular {
+  opacity: .93;
+}
+
+.ability-print-grain {
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: url("/images/foil-grain.png") 0 0 / 256px 256px repeat;
+  opacity: .65;
+  mix-blend-mode: overlay;
+}
+
+/* Inner content frame */
 .card-inner-frame {
   position: absolute;
   z-index: 3;
@@ -327,19 +493,19 @@
 .card-nameplate-banner {
   position: absolute;
   z-index: 4;
-  top: 4.6%;
-  left: 17%;
-  width: 66%;
-  height: 7.3%;
+  top: 3.6%;
+  left: 15%;
+  width: 70%;
+  height: 6.4%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 13px;
   border-radius: 46% / 50%;
   background:
-    radial-gradient(ellipse at 48% 12%, rgba(255, 255, 241, .92), transparent 68%),
-    linear-gradient(#f8f0d9, #dfd0a8 88%, #d0bd91);
-  box-shadow: inset 0 0 12px #96764888, 0 2px 3px #43261433;
+    url("/images/paper-grain.png") 0 0 / 185px 185px repeat,
+    radial-gradient(ellipse at 50% 6%, #fff9de 0%, #f5eac8 48%, #d8bd8e 100%);
+  box-shadow: inset 0 0 12px rgba(111, 73, 33, .42), 0 2px 2px rgba(40, 20, 12, .19);
 }
 
 .card-gold-name {
@@ -349,80 +515,159 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: clamp(14px, 1.25vw, 19px);
+  font-size: clamp(13px, 1.17vw, 18px);
   font-weight: 800;
   line-height: 1.06;
   text-align: center;
-  letter-spacing: -.035em;
-  text-shadow: 0 1px #ffffff8a;
+  letter-spacing: -.024em;
+  color: #33241f;
+  text-shadow: 0 1px rgba(255, 255, 255, .76), 0 -1px rgba(121, 74, 47, .22);
 }
 
-/* -- Art window: warm bokeh and un-stretched WebP cutout ---------------- */
+/* -- Role subtitle beneath nameplate ------------------------------------ */
+.card-role-subtitle {
+  position: absolute;
+  z-index: 4;
+  top: 10.6%;
+  left: 20%;
+  width: 60%;
+  height: 3.5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-role-subtitle span {
+  font-size: clamp(7px, .72vw, 10px);
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #d4af37;
+  text-shadow: 0 0 8px rgba(212, 175, 55, .45);
+}
+
+/* -- Art window: 3D parallax portrait ----------------------------------- */
 .card-emblem-box {
   position: absolute;
   z-index: 3;
-  top: 14.9%;
+  top: 14.55%;
   left: 8.65%;
   width: 82.7%;
-  height: 35.8%;
-  overflow: hidden;
+  height: 36.5%;
+  /* Allow shoulders to overflow the lower frame edge */
+  overflow: visible;
+  clip-path: inset(0 0 -18% 0 round 2px);
   border-radius: 2px;
-  background: #493b3a;
+  background: #27222a;
   isolation: isolate;
-  box-shadow: inset 0 0 20px #2419178a;
+  box-shadow: inset 0 0 24px rgba(13, 6, 16, .66), 0 1px 4px rgba(26, 15, 12, .38);
 }
 
+/* Recessed background — bokeh blobs, slowest parallax */
 .card-portrait-bokeh {
   position: absolute;
-  inset: -5%;
+  inset: -8%;
   z-index: 0;
   background:
-    radial-gradient(circle at 89% 20%, #b99e84a8 0 4%, transparent 11%),
-    radial-gradient(circle at 92% 44%, #b39a6aad 0 9%, transparent 17%),
-    radial-gradient(circle at 74% 77%, #94744da8 0 8%, transparent 19%),
-    radial-gradient(circle at 20% 18%, #455644ab 0 5%, transparent 14%),
-    radial-gradient(circle at 14% 58%, #4b364c 0 17%, transparent 30%),
-    radial-gradient(circle at 37% 84%, #314c4280 0 12%, transparent 27%),
-    linear-gradient(110deg, #31353a, #625659 43%, #5a4b35 100%);
-  filter: blur(9px) saturate(.8);
-  transform: scale(1.1);
+    radial-gradient(circle at 89% 32%, rgba(254, 226, 166, .78) 0 2%, transparent 8%),
+    radial-gradient(circle at 81% 59%, rgba(218, 188, 143, .62) 0 8%, transparent 20%),
+    radial-gradient(circle at 97% 81%, rgba(168, 129, 104, .45) 0 11%, transparent 21%),
+    radial-gradient(circle at 15% 61%, rgba(58, 47, 83, .92) 0 15%, transparent 39%),
+    radial-gradient(circle at 48% 31%, rgba(97, 61, 85, .58) 0 10%, transparent 35%),
+    radial-gradient(circle at 34% 82%, rgba(46, 80, 64, .64) 0 11%, transparent 37%),
+    linear-gradient(114deg, #262432 0%, #423340 43%, #786048 80%, #382928 100%);
+  filter: blur(9px) saturate(.95);
+  transform: translate3d(var(--portrait-pan-x), var(--portrait-pan-y), 0);
+  transition: transform 180ms ease-out;
 }
 
-.card-emblem-box::after {
-  content: "";
+/* Light leaks — cinematic color fringing */
+.card-portrait-light-leaks {
   position: absolute;
-  z-index: 4;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(27, 17, 16, .12) 0%, transparent 36%, rgba(27, 14, 12, .28) 100%);
-  box-shadow: inset 0 0 22px rgba(31, 17, 17, .46);
+  z-index: 1;
+  inset: -4%;
+  background:
+    radial-gradient(ellipse 15% 62% at 72% 39%, rgba(244, 177, 73, .19), transparent 92%),
+    radial-gradient(ellipse 15% 55% at 35% 72%, rgba(151, 58, 155, .19), transparent 100%);
+  filter: blur(17px);
   pointer-events: none;
+  transform: translate3d(var(--portrait-pan-x), var(--portrait-pan-y), 0);
+  transition: transform 180ms ease-out;
 }
 
-.card-emblem-box>img {
+/* Subject wrapper — faster parallax than the background */
+.card-portrait-subject-wrap {
   position: absolute;
   z-index: 2;
+  inset: 0;
+  /* Shoulders may bleed below the lower frame edge */
+  bottom: -18%;
+  transform: translate3d(var(--portrait-subject-x, 0px), var(--portrait-subject-y, 0px), 0);
+  transition: transform 150ms ease-out;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: visible;
+}
+
+/* Portrait image — centred, object-fit cover for vertical crop */
+.card-portrait-subject-img {
   display: block;
-  top: 3%;
-  left: -23.5%;
-  width: 147%;
-  height: auto;
-  max-width: none;
-  object-fit: contain;
+  position: absolute;
+  /* Fill width and push top of head to top of window */
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 118%;
+  object-fit: cover;
   object-position: center top;
-  filter: saturate(.86) contrast(1.08) sepia(.07);
+  filter:
+    contrast(1.13) brightness(.95) saturate(.82) sepia(.10)
+    drop-shadow(0 8px 18px rgba(5, 3, 4, .55));
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
 }
 
-.card-emblem-svg {
+/* Warm rim light — right edge of the portrait subject */
+.card-portrait-rim-light {
   position: absolute;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  opacity: .94;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(to left, rgba(212, 175, 55, .18) 0%, transparent 30%),
+    linear-gradient(to right, rgba(60, 30, 80, .22) 0%, transparent 30%);
 }
 
+/* Contact shadow behind subject */
+.card-portrait-subject-wrap::after {
+  content: "";
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  width: 80%;
+  height: 30%;
+  background: radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, .6), transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Portrait overlay — vignette + grain + bottom fade */
+.card-portrait-overlay {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  pointer-events: none;
+  background:
+    url("/images/foil-grain.png") 0 0 / 170px 170px repeat,
+    radial-gradient(ellipse at 50% 48%, transparent 50%, rgba(18, 7, 10, .38) 100%),
+    linear-gradient(to bottom, rgba(21, 8, 15, .22), transparent 25%, transparent 60%, rgba(24, 8, 12, .42));
+  opacity: .75;
+}
+
+/* Badge */
 .card-emblem-badge {
   position: absolute;
   z-index: 4;
@@ -433,14 +678,48 @@
   pointer-events: none;
 }
 
-/* -- Decorative blank plate below portrait ------------------------------ */
+/* Fallback SVG */
+.card-emblem-svg {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  opacity: .94;
+}
+
+/* -- Bio line ----------------------------------------------------------- */
+.card-bio-line {
+  position: absolute;
+  z-index: 4;
+  top: 53%;
+  left: 8.5%;
+  width: 83%;
+  height: 5.2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card-bio-line p {
+  margin: 0;
+  font-size: clamp(6px, .58vw, 8.5px);
+  line-height: 1.4;
+  text-align: center;
+  color: #3d2f28;
+  font-style: italic;
+  letter-spacing: .01em;
+  font-family: "EB Garamond", Georgia, serif;
+}
+
+/* -- Decorative gold divider -------------------------------------------- */
 .card-filigree-divider {
   position: absolute;
   z-index: 4;
-  top: 53.3%;
+  top: 59.0%;
   left: 22%;
   width: 56%;
-  height: 3.8%;
+  height: 2.9%;
   display: flex;
   gap: 15px;
   align-items: center;
@@ -448,11 +727,12 @@
   overflow: hidden;
   border-radius: 18px;
   background:
-    linear-gradient(90deg, #e4cba4, #fbf1cf 30%, #e0c69a 82%, #c3a376);
+    url("/images/paper-grain.png") repeat,
+    linear-gradient(90deg, #e6d09f, #fff1ce 42%, #d9bd8e);
   box-shadow: inset 0 0 7px #7056386b;
   color: #b4904e;
   font-family: "EB Garamond", Georgia, serif;
-  font-size: 15px;
+  font-size: 11px;
   letter-spacing: .03em;
 }
 
@@ -463,36 +743,37 @@
   background: linear-gradient(90deg, transparent, #9c7945 50%, transparent);
 }
 
-/* -- Parchment stat block ------------------------------------------------ */
+/* -- Parchment stat block ----------------------------------------------- */
 .card-skills-table {
   position: absolute;
   z-index: 4;
-  top: 60.3%;
+  top: 63.2%;
   left: 9.1%;
   width: 81.8%;
-  height: 21.4%;
-  padding: 8px 16px 9px;
+  height: 20.8%;
+  padding: 7px 14px 8px;
   display: grid;
   grid-template-rows: repeat(4, 1fr);
   color: #27201b;
   background:
-    radial-gradient(ellipse 70% 90% at 50% 36%, #fcf2d4 0%, #e9d8b3 70%, #d7c49c 100%);
-  box-shadow: inset 0 0 15px #79572b43;
+    url("/images/paper-grain.png") repeat,
+    radial-gradient(ellipse 92% 100% at 50% 36%, #fff1cf 0%, #edd9ad 68%, #d7ba8d 100%);
+  box-shadow: inset 0 0 19px rgba(100, 57, 23, .37);
 }
 
 .card-skill-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(68px, 90px) 26px;
-  column-gap: 9px;
+  column-gap: 8px;
   align-items: center;
   white-space: nowrap;
-  font-size: clamp(10px, 1vw, 13px);
+  font-size: clamp(9px, .84vw, 12px);
   line-height: 1.18;
 }
 
 .card-skill-title {
   font-size: inherit;
-  font-weight: 780;
+  font-weight: 800;
   overflow: hidden;
   text-overflow: ellipsis;
   letter-spacing: -.025em;
@@ -502,11 +783,11 @@
   display: inline-flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 4px;
+  gap: 3.5px;
   padding: 0 1px;
 }
 
-.card-skill-dots>i {
+.card-skill-dots > i {
   display: inline-block;
   flex: 0 0 5px;
   width: 5px;
@@ -516,26 +797,26 @@
   transform: rotate(45deg);
 }
 
-.card-skill-dots>i[data-filled="true"] {
+.card-skill-dots > i[data-filled="true"] {
   background: #38291f;
 }
 
 .card-skill-score {
   justify-self: end;
-  font-size: clamp(12px, 1.1vw, 16px);
-  font-weight: 830;
+  font-size: clamp(11px, 1vw, 15px);
+  font-weight: 850;
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
 
-/* -- Bottom oval metadata ------------------------------------------------ */
+/* -- Bottom oval metadata ----------------------------------------------- */
 .card-bottom-meta-bar {
   position: absolute;
   z-index: 4;
-  top: 85.5%;
+  top: 87.5%;
   left: 16.1%;
   width: 67.8%;
-  height: 4.15%;
+  height: 3.5%;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -544,18 +825,20 @@
   overflow: hidden;
   border-radius: 20px;
   color: #3d3023;
-  background: linear-gradient(90deg, #ddcca8, #f8eacd 43%, #d5bf98);
+  background:
+    url("/images/paper-grain.png") repeat,
+    linear-gradient(90deg, #dbc499, #faf0d5 42%, #ddc59b);
   font-size: clamp(5px, .5vw, 7px);
   letter-spacing: -.015em;
   box-shadow: inset 0 0 8px #71512a4d;
 }
 
-.card-bottom-meta-bar>span {
+.card-bottom-meta-bar > span {
   white-space: nowrap;
 }
 
-.card-bottom-meta-bar>span:nth-child(2),
-.card-bottom-meta-bar>span:nth-child(4) {
+.card-bottom-meta-bar > span:nth-child(2),
+.card-bottom-meta-bar > span:nth-child(4) {
   opacity: .5;
 }
 
@@ -564,11 +847,12 @@
   font-weight: 800;
 }
 
-/* -- Back: ebony lattice and gold astrolabe ------------------------------ */
+/* -- Back: deep charcoal plate with QA emblem --------------------------- */
 .ability-card-face-back {
   transform: rotateY(180deg);
   background:
-    radial-gradient(ellipse at 50% 41%, #251c17 0%, #161210 58%, #0b0908 100%);
+    radial-gradient(ellipse 64% 58% at 50% 49%, rgba(45, 30, 24, .47), transparent 82%),
+    #0b0807;
 }
 
 .ability-card-face-back::before {
@@ -576,11 +860,12 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  opacity: .22;
+  opacity: .12;
   pointer-events: none;
   background:
-    repeating-linear-gradient(45deg, transparent 0 7px, rgba(217, 190, 132, .10) 7px 8px),
-    repeating-linear-gradient(-45deg, transparent 0 7px, rgba(217, 190, 132, .1) 7px 8px);
+    url("/images/foil-grain.png") repeat,
+    repeating-linear-gradient(45deg, transparent 0 6px, rgba(209, 177, 115, .12) 6px 7px),
+    repeating-linear-gradient(-45deg, transparent 0 6px, rgba(209, 177, 115, .12) 6px 7px);
 }
 
 .ability-card-face-back::after {
@@ -593,14 +878,15 @@
   box-shadow: inset 0 0 12px #c99d5f44;
 }
 
-.ability-compass-graphic {
+/* QA emblem SVG on back */
+.ability-qa-emblem {
   position: absolute;
   z-index: 2;
   width: 100%;
   height: 100%;
   inset: 0;
-  filter: drop-shadow(0 0 1px rgba(235, 192, 108, .38));
   pointer-events: none;
+  filter: drop-shadow(0 0 2px rgba(238, 204, 119, .34));
 }
 
 /* -- Instructions / interaction HUD ------------------------------------ */
@@ -608,7 +894,7 @@
   position: absolute;
   z-index: 25;
   left: 50%;
-  bottom: clamp(13px, 2.5vh, 25px);
+  bottom: clamp(13px, 2.6vh, 28px);
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
@@ -622,9 +908,9 @@
   display: block;
   text-align: center;
   white-space: nowrap;
-  color: rgba(223, 191, 135, .55);
-  font: 500 9px/1.4 "Onest", system-ui, sans-serif;
-  letter-spacing: .18em;
+  color: rgba(215, 188, 141, .7);
+  font: 500 10px/1.4 "Onest", system-ui, sans-serif;
+  letter-spacing: .22em;
   text-transform: uppercase;
 }
 
@@ -666,7 +952,7 @@
   border-color: #f5d494;
 }
 
-/* -- Loading system from original TSX ----------------------------------- */
+/* -- Loading system ----------------------------------------------------- */
 .ability-loader {
   position: absolute;
   z-index: 29;
@@ -703,7 +989,7 @@
   background: #5b4834;
 }
 
-.ability-loader-track>span {
+.ability-loader-track > span {
   display: block;
   width: 100%;
   height: 100%;
@@ -726,7 +1012,7 @@
   font-weight: 600;
 }
 
-/* -- Original credential panel on rear: preserved, not removed ---------- */
+/* -- Credential panel (rear card reveal) -------------------------------- */
 .ability-credentials {
   position: absolute;
   z-index: 22;
@@ -862,7 +1148,7 @@
   text-align: center;
 }
 
-/* -- Inline hero mode: preserve your original isInline + onExpand ------- */
+/* -- Inline hero mode --------------------------------------------------- */
 .ability-card-inline-container {
   position: relative;
   isolation: isolate;
@@ -918,7 +1204,7 @@
 }
 
 /* -- Tablet -------------------------------------------------------------- */
-@media (max-width: 1100px) {
+@media (max-width: 1100px) and (min-width: 761px) {
   .ability-credentials {
     left: auto;
     right: 16px;
@@ -926,25 +1212,26 @@
   }
 
   .ability-card-stage-wrap {
-    width: min(440px, 48vw, calc(74dvh * var(--ability-card-ratio)));
+    width: min(450px, 48vw, calc(79dvh * var(--ability-card-ratio)));
   }
 
   .card-skill-row {
-    font-size: clamp(10px, 1.16vw, 13px);
+    font-size: clamp(9px, 1.1vw, 12px);
   }
 }
 
+/* -- Mobile ------------------------------------------------------------- */
 @media (max-width: 760px) {
   .ability-card-modal-backdrop {
     background: radial-gradient(ellipse at 50% 70%, #3c1a0c, #070605 80%);
   }
 
   .ability-card-stage-wrap {
-    width: min(83vw, calc(69dvh * var(--ability-card-ratio)));
+    width: min(84vw, calc(75dvh * var(--ability-card-ratio)));
   }
 
   .ability-card-stage-wrap-inline {
-    width: min(74vw, calc(64dvh * var(--ability-card-ratio)));
+    width: min(72vw, calc(65dvh * var(--ability-card-ratio)));
   }
 
   .ability-hud-top {
@@ -1008,46 +1295,60 @@
   }
 
   .card-gold-name {
-    font-size: clamp(13px, 4vw, 19px);
+    font-size: clamp(12px, 4vw, 18px);
+  }
+
+  .card-role-subtitle span {
+    font-size: clamp(6px, 2.2vw, 9px);
+  }
+
+  .card-bio-line p {
+    font-size: clamp(5.5px, 1.5vw, 8px);
   }
 
   .card-skill-row {
-    grid-template-columns: minmax(0, 1fr) minmax(57px, 74px) 21px;
-    column-gap: 5px;
-    font-size: clamp(9px, 2.6vw, 12px);
+    grid-template-columns: minmax(0, 1fr) minmax(52px, 70px) 20px;
+    column-gap: 4px;
+    font-size: clamp(8px, 2.3vw, 11px);
   }
 
   .card-skill-dots {
-    gap: 2.5px;
+    gap: 2px;
   }
 
-  .card-skill-dots>i {
-    flex-basis: 4px;
-    width: 4px;
-    height: 4px;
+  .card-skill-dots > i {
+    width: 3px;
+    height: 3px;
+    flex-basis: 3px;
   }
 
   .card-skill-score {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .card-skills-table {
-    padding: 6px 11px;
+    padding: 5px 9px;
   }
 
   .card-bottom-meta-bar {
-    font-size: 5.4px;
+    font-size: 5px;
     padding: 0 5px;
   }
 
   .ability-inline-hud .ability-instructions {
     font-size: 6.8px;
   }
+
+  /* Burn sweep: simpler on small screens */
+  .ability-ember {
+    width: 3px;
+    height: 3px;
+  }
 }
 
 @media (max-width: 400px) {
   .ability-card-stage-wrap {
-    width: min(89vw, calc(66dvh * var(--ability-card-ratio)));
+    width: min(89vw, calc(73dvh * var(--ability-card-ratio)));
   }
 
   .ability-brand-name {
@@ -1055,20 +1356,20 @@
   }
 
   .card-skills-table {
-    padding: 4px 9px;
+    padding: 4px 8px;
   }
 
   .card-skill-row {
-    grid-template-columns: minmax(0, 1fr) 57px 17px;
-    column-gap: 3px;
-    font-size: 8.6px;
+    grid-template-columns: minmax(0, 1fr) 53px 16px;
+    gap: 3px;
+    font-size: 8.2px;
   }
 
   .card-skill-dots {
     gap: 1.8px;
   }
 
-  .card-skill-dots>i {
+  .card-skill-dots > i {
     flex-basis: 3px;
     width: 3px;
     height: 3px;
@@ -1089,7 +1390,7 @@
 
 @media (max-height: 675px) and (min-width: 761px) {
   .ability-card-stage-wrap {
-    width: min(370px, calc(69dvh * var(--ability-card-ratio)));
+    width: min(382px, calc(75dvh * var(--ability-card-ratio)));
   }
 
   .ability-hud-bottom {
@@ -1119,24 +1420,50 @@
 
 /* -- Accessibility ------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+  /* Collapse all reveal animations to immediate final state */
+  .ability-card-stage[data-reveal="edge"] .ability-card-body,
+  .ability-card-stage[data-reveal="sweeping"] .ability-card-body,
+  .ability-card-stage[data-reveal="settling"] .ability-card-body {
+    transform: rotateY(0deg) !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  .ability-burn-sweep,
+  .ability-ember-sparks,
+  .ability-ember,
+  .ability-rim-pulse {
+    display: none !important;
+  }
+
   .ability-card-modal-backdrop::before {
     animation: none;
   }
 
-  .ability-card-modal-backdrop[data-card-ready="true"] .ability-card-stage-wrap {
-    animation: none;
+  .ability-card-body {
+    transition-duration: .01ms !important;
   }
 
-  .ability-card-body,
-  .ability-card-stage-wrap,
-  .ability-hologram-foil,
-  .ability-loader-track>span {
+  .ability-card-stage-wrap {
     transition-duration: .01ms !important;
+  }
+
+  .ability-hologram-foil {
+    transition-duration: .01ms !important;
+  }
+
+  .ability-metal-specular {
+    display: none;
+  }
+
+  .card-portrait-bokeh,
+  .card-portrait-light-leaks,
+  .card-portrait-subject-wrap {
+    transition: none;
   }
 }
 
 @media (forced-colors: active) {
-
   .ability-close-btn,
   .ability-mobile-flip-btn,
   .ability-credentials-trigger {
@@ -1145,358 +1472,5 @@
 
   .ability-card-stage:focus-visible {
     outline: 3px solid Highlight;
-  }
-}
-
-/* =======================================================================
-   REFERENCE-MATCH PASS — 19 NOVEMBER 2026
-   The reference image is a ~470 x 700 collectible-card composition.
-   IMPORTANT: All earlier rules above remain; these are narrow refinements
-   so the original component, hooks, Three.js and both display modes survive.
-   ======================================================================= */
-
-:root {
-  --ability-card-ratio: .682;
-  --ability-perspective: 1350px;
-  --ability-stage-glow: rgba(247, 170, 54, .33);
-  --ability-frame-gold: #fff3b6;
-  --ability-print-rose: #9a6d7c;
-}
-
-/* Reference: black field, concentrated amber pool behind the lower card. */
-.ability-card-modal-backdrop {
-  background:
-    radial-gradient(ellipse 34% 50% at 50% 78%, rgba(102, 42, 6, .76), transparent 91%),
-    radial-gradient(ellipse 38% 55% at 50% 51%, rgba(75, 36, 13, .52), transparent 84%),
-    radial-gradient(ellipse 85% 94% at 50% 50%, #17100b 0%, #070606 70%, #020202 100%);
-}
-
-.ability-card-modal-backdrop::before {
-  opacity: .8;
-  background: radial-gradient(ellipse 21% 31% at 50% 70%, rgba(234, 122, 13, .29), transparent 87%);
-  filter: blur(32px);
-}
-
-.ability-card-modal-backdrop::after {
-  background:
-    radial-gradient(ellipse 68% 89% at 50% 55%, transparent 29%, rgba(0, 0, 0, .55) 97%);
-}
-
-.ability-card-stage-wrap {
-  width: min(475px, 33vw, calc(81dvh * var(--ability-card-ratio)));
-  aspect-ratio: 682 / 1000;
-  transform: translateY(1px);
-  filter: drop-shadow(0 18px 23px rgba(8, 4, 3, .46));
-}
-
-.ability-card-modal-backdrop[data-card-ready="true"] .ability-card-stage-wrap {
-  animation: ability-card-reveal-matched 1100ms cubic-bezier(.2, .8, .18, 1) both;
-}
-
-@keyframes ability-card-reveal-matched {
-  from {
-    opacity: 0;
-    filter: blur(10px);
-    transform: translateY(18px) scale(.91);
-  }
-
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: translateY(1px) scale(1);
-  }
-}
-
-.ability-card-stage {
-  --foil-x: 50%;
-  --foil-y: 50%;
-  --portrait-pan-x: 0px;
-  --portrait-pan-y: 0px;
-  --glint-rotation: 0deg;
-}
-
-.ability-card-face {
-  border-radius: 17px;
-  box-shadow:
-    0 0 0 1px rgba(255, 244, 180, .95),
-    0 0 2px 2px rgba(224, 161, 66, .89),
-    0 0 10px 2px rgba(251, 193, 68, .67),
-    0 0 26px 4px rgba(243, 147, 26, .32),
-    0 32px 46px rgba(0, 0, 0, .64);
-}
-
-.ability-card-face-front {
-  background:
-    radial-gradient(ellipse 52% 20% at 52% 12%, rgba(247, 200, 206, .59), transparent 92%),
-    radial-gradient(ellipse 31% 46% at 7% 53%, rgba(255, 185, 177, .28), transparent 87%),
-    radial-gradient(ellipse 48% 57% at 88% 77%, rgba(70, 31, 51, .28), transparent 93%),
-    linear-gradient(140deg, #c2959f 0%, #a57a89 38%, #8e6677 72%, #aa7a89 100%);
-}
-
-.ability-card-face-front::before {
-  opacity: .42;
-  background:
-    url("/images/foil-grain.png") 0 0 / 190px 190px repeat,
-    radial-gradient(ellipse at 50% 100%, rgba(55, 18, 27, .33), transparent 64%);
-}
-
-.ability-print-grain {
-  position: absolute;
-  z-index: 6;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: url("/images/foil-grain.png") 0 0 / 256px 256px repeat;
-  opacity: .65;
-  mix-blend-mode: overlay;
-}
-
-/* Real foil has both a broad drifting glow and a narrow directional glint. */
-.ability-hologram-foil {
-  z-index: 11;
-  background:
-    radial-gradient(ellipse 45% 30% at var(--foil-x) var(--foil-y), rgba(255, 248, 199, .34), transparent 83%),
-    linear-gradient(107deg, transparent 15%, rgba(255, 255, 255, .02) 31%, rgba(255, 245, 189, .18) 42%, transparent 53%);
-  opacity: .25;
-  transition: opacity 250ms ease;
-}
-
-.ability-metal-specular {
-  position: absolute;
-  inset: -4%;
-  z-index: 12;
-  pointer-events: none;
-  opacity: 0;
-  background: linear-gradient(106deg, transparent 24%, rgba(255, 251, 220, .045) 34%, rgba(255, 253, 212, .18) 43%, transparent 51%);
-  transform: rotate(var(--glint-rotation, 0deg));
-  mix-blend-mode: screen;
-  transition: opacity 400ms ease;
-}
-
-.ability-card-stage:hover .ability-metal-specular {
-  opacity: .93;
-}
-
-.ability-card-stage:hover .ability-hologram-foil {
-  opacity: .68;
-}
-
-.ability-gilt-frame {
-  filter:
-    drop-shadow(0 1px .65px rgba(33, 10, 6, .86)) drop-shadow(0 -1px .45px rgba(255, 248, 190, .54)) drop-shadow(0 0 1px rgba(255, 220, 108, .26));
-}
-
-/* Align the content with the embossed ornaments, not with a generic card. */
-.card-nameplate-banner {
-  top: 4.9%;
-  height: 6.9%;
-  background:
-    url("/images/paper-grain.png") 0 0 / 185px 185px repeat,
-    radial-gradient(ellipse at 50% 6%, #fff9de 0%, #f5eac8 48%, #d8bd8e 100%);
-  box-shadow: inset 0 0 12px rgba(111, 73, 33, .42), 0 2px 2px rgba(40, 20, 12, .19);
-}
-
-.card-gold-name {
-  color: #33241f;
-  font-size: clamp(14px, 1.17vw, 19px);
-  letter-spacing: -.024em;
-  text-shadow: 0 1px rgba(255, 255, 255, .76), 0 -1px rgba(121, 74, 47, .22);
-}
-
-.card-emblem-box {
-  top: 14.55%;
-  height: 36.0%;
-  background: #27222a;
-  box-shadow: inset 0 0 24px rgba(13, 6, 16, .66), 0 1px 4px rgba(26, 15, 12, .38);
-}
-
-.card-portrait-bokeh {
-  inset: -8%;
-  background:
-    radial-gradient(circle at 89% 32%, rgba(254, 226, 166, .78) 0 2%, transparent 8%),
-    radial-gradient(circle at 81% 59%, rgba(218, 188, 143, .62) 0 8%, transparent 20%),
-    radial-gradient(circle at 97% 81%, rgba(168, 129, 104, .45) 0 11%, transparent 21%),
-    radial-gradient(circle at 15% 61%, rgba(58, 47, 83, .92) 0 15%, transparent 39%),
-    radial-gradient(circle at 48% 31%, rgba(97, 61, 85, .58) 0 10%, transparent 35%),
-    radial-gradient(circle at 34% 82%, rgba(46, 80, 64, .64) 0 11%, transparent 37%),
-    linear-gradient(114deg, #262432 0%, #423340 43%, #786048 80%, #382928 100%);
-  filter: blur(9px) saturate(.95);
-}
-
-.card-portrait-light-leaks {
-  position: absolute;
-  z-index: 1;
-  inset: -4%;
-  background:
-    radial-gradient(ellipse 15% 62% at 72% 39%, rgba(244, 177, 73, .19), transparent 92%),
-    radial-gradient(ellipse 15% 55% at 35% 72%, rgba(151, 58, 155, .19), transparent 100%);
-  filter: blur(17px);
-  pointer-events: none;
-}
-
-.card-emblem-box>img {
-  top: 1%;
-  left: -23.5%;
-  width: 147%;
-  height: auto;
-  filter:
-    contrast(1.13) brightness(.96) saturate(.74) sepia(.13) drop-shadow(0 4px 14px rgba(5, 3, 4, .26));
-  transform: translate3d(var(--portrait-pan-x), var(--portrait-pan-y), 0);
-  transition: transform 180ms ease-out;
-}
-
-.card-emblem-box::after {
-  background:
-    url("/images/foil-grain.png") 0 0 / 170px 170px repeat,
-    radial-gradient(ellipse at 50% 48%, transparent 50%, rgba(18, 7, 10, .38) 100%),
-    linear-gradient(to bottom, rgba(21, 8, 15, .22), transparent 25%, transparent 61%, rgba(24, 8, 12, .31));
-  opacity: .75;
-}
-
-.card-filigree-divider {
-  top: 53.3%;
-  height: 3.85%;
-  background:
-    url("/images/paper-grain.png") repeat,
-    linear-gradient(90deg, #e6d09f, #fff1ce 42%, #d9bd8e);
-}
-
-.card-skills-table {
-  top: 58.4%;
-  height: 21.9%;
-  padding: 9px 16px;
-  background:
-    url("/images/paper-grain.png") repeat,
-    radial-gradient(ellipse 92% 100% at 50% 36%, #fff1cf 0%, #edd9ad 68%, #d7ba8d 100%);
-  box-shadow: inset 0 0 19px rgba(100, 57, 23, .37);
-}
-
-.card-skill-row {
-  grid-template-columns: minmax(0, 1fr) minmax(74px, 99px) 25px;
-  column-gap: 9px;
-  font-size: clamp(10px, .86vw, 13px);
-}
-
-.card-skill-title {
-  font-weight: 800;
-}
-
-.card-skill-score {
-  font-weight: 850;
-}
-
-.card-skill-dots>i {
-  width: 5px;
-  height: 5px;
-  flex-basis: 5px;
-}
-
-.card-bottom-meta-bar {
-  top: 84.4%;
-  height: 3.4%;
-  background:
-    url("/images/paper-grain.png") repeat,
-    linear-gradient(90deg, #dbc499, #faf0d5 42%, #ddc59b);
-}
-
-/* The back stays a quiet black metal plate with fine gold compass lines. */
-.ability-card-face-back {
-  background:
-    radial-gradient(ellipse 64% 58% at 50% 49%, rgba(45, 30, 24, .47), transparent 82%),
-    #0b0807;
-}
-
-.ability-card-face-back::before {
-  opacity: .12;
-  background:
-    url("/images/foil-grain.png") repeat,
-    repeating-linear-gradient(45deg, transparent 0 6px, rgba(209, 177, 115, .12) 6px 7px),
-    repeating-linear-gradient(-45deg, transparent 0 6px, rgba(209, 177, 115, .12) 6px 7px);
-}
-
-.ability-compass-graphic {
-  filter: drop-shadow(0 0 2px rgba(238, 204, 119, .34));
-}
-
-.ability-hud-bottom {
-  bottom: clamp(13px, 2.6vh, 28px);
-}
-
-.ability-instructions {
-  color: rgba(215, 188, 141, .7);
-  font-size: 10px;
-  letter-spacing: .22em;
-}
-
-/* Responsive geometry: preserve the same photo/card ratio on all screens. */
-@media (max-width: 1100px) and (min-width: 761px) {
-  .ability-card-stage-wrap {
-    width: min(450px, 48vw, calc(79dvh * var(--ability-card-ratio)));
-  }
-}
-
-@media (max-width: 760px) {
-  .ability-card-stage-wrap {
-    width: min(84vw, calc(75dvh * var(--ability-card-ratio)));
-  }
-
-  .ability-card-stage-wrap-inline {
-    width: min(72vw, calc(65dvh * var(--ability-card-ratio)));
-  }
-
-  .card-skills-table {
-    padding: 5px 9px;
-  }
-
-  .card-skill-row {
-    grid-template-columns: minmax(0, 1fr) minmax(52px, 70px) 20px;
-    column-gap: 4px;
-    font-size: clamp(9px, 2.5vw, 11px);
-  }
-
-  .card-skill-dots {
-    gap: 2px;
-  }
-
-  .card-skill-dots>i {
-    width: 3px;
-    height: 3px;
-    flex-basis: 3px;
-  }
-
-  .card-bottom-meta-bar {
-    font-size: 5px;
-  }
-}
-
-@media (max-width: 400px) {
-  .ability-card-stage-wrap {
-    width: min(89vw, calc(73dvh * var(--ability-card-ratio)));
-  }
-
-  .card-skill-row {
-    grid-template-columns: minmax(0, 1fr) 53px 16px;
-    gap: 3px;
-    font-size: 8.2px;
-  }
-}
-
-@media (max-height: 675px) and (min-width: 761px) {
-  .ability-card-stage-wrap {
-    width: min(382px, calc(75dvh * var(--ability-card-ratio)));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ability-metal-specular {
-    display: none;
-  }
-
-  .card-emblem-box>img {
-    transition: none;
-  }
-
-  .ability-card-modal-backdrop[data-card-ready="true"] .ability-card-stage-wrap {
-    animation: none;
   }
 }
