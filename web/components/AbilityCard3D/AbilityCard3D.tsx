@@ -14,9 +14,9 @@ interface AbilityCard3DProps {
   onExpand?: () => void;
 }
 
-// Portrait for the 3D card — vertical crop preferred for the portrait window.
-const PORTRAIT = "/images/shashank-portrait.jpg";
-const PORTRAIT_FALLBACK = "/images/premium_portfolio_portrait.webp";
+// Use the premium portrait — the high-quality professional headshot.
+const PORTRAIT = "/images/premium_portfolio_portrait.webp";
+const PORTRAIT_FALLBACK = "/images/hero-figure-color.webp";
 
 /** Ten engraved diamonds, reflecting the score printed on each row. */
 function RatingDots({ score }: { score: number }) {
@@ -586,96 +586,50 @@ function AbilityCardSession({
           <div className="card-inner-frame">
             {/* 1. Ornate Nameplate Banner */}
             <div className="card-nameplate-banner">
+              <span className="card-role-tag">QA Specialist</span>
               <h2 className="card-gold-name">Shashank Shinde</h2>
             </div>
 
-            {/* 2. Role subtitle below nameplate */}
-            <div className="card-role-subtitle">
-              <span>QA Specialist</span>
-            </div>
-
-            {/* 3. Portrait window — 3-layer 3D parallax */}
+            {/* 2. Portrait window — real photo with parallax */}
             <div className="card-emblem-box" ref={portraitRef}>
-              {/* Layer 0: bokeh background (slowest parallax) */}
               <div className="card-portrait-bokeh" aria-hidden="true" />
-              {/* Layer 1: light leaks */}
               <div className="card-portrait-light-leaks" aria-hidden="true" />
 
-              {/* Layer 2: subject image (faster parallax, slight shoulder overflow) */}
               {artworkFailed ? (
-                <svg
-                  className="card-emblem-svg"
-                  viewBox="0 0 280 180"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M20 90 H260 M140 10 V170"
-                    stroke="#D4AF37"
-                    strokeWidth="0.5"
-                    strokeOpacity="0.2"
-                    strokeDasharray="3 3"
-                  />
-                  <circle cx="140" cy="90" r="68" stroke="#D4AF37" strokeWidth="0.8" strokeOpacity="0.25" strokeDasharray="4 2" />
-                  <circle cx="140" cy="90" r="54" stroke="#D4AF37" strokeWidth="1.2" strokeOpacity="0.45" />
-                  <path
-                    d="M140 38 L170 52 V90 C170 114 156 130 140 138 C124 130 110 114 110 90 V52 L140 38 Z"
-                    fill="url(#crestGoldGrad)"
-                    stroke="#FFE8A3"
-                    strokeWidth="1.6"
-                  />
-                  <text x="140" y="84" fill="#1C1408" fontFamily="'EB Garamond', serif" fontSize="22" fontWeight="800" textAnchor="middle" letterSpacing="2">QA</text>
-                  <text x="140" y="102" fill="#3D290A" fontFamily="'Onest', sans-serif" fontSize="8" fontWeight="700" textAnchor="middle" letterSpacing="3">SPECIALIST</text>
-                  <defs>
-                    <linearGradient id="crestGoldGrad" x1="110" y1="38" x2="170" y2="138" gradientUnits="userSpaceOnUse">
-                      <stop offset="0%" stopColor="#FFF2CC" />
-                      <stop offset="35%" stopColor="#D4AF37" />
-                      <stop offset="70%" stopColor="#996515" />
-                      <stop offset="100%" stopColor="#D4AF37" />
-                    </linearGradient>
-                  </defs>
-                </svg>
+                <div className="card-portrait-fallback">
+                  <span>SS</span>
+                </div>
               ) : (
-                <div className="card-portrait-subject-wrap">
+                <>
                   <img
                     ref={artRef}
                     src={PORTRAIT}
                     alt="Professional portrait of Shashank Shinde"
                     draggable={false}
                     onError={(e) => {
-                      // Try fallback, then signal failure
                       const img = e.currentTarget as HTMLImageElement;
-                      if (img.src !== PORTRAIT_FALLBACK) {
+                      if (img.src.indexOf("premium") === -1) {
                         img.src = PORTRAIT_FALLBACK;
                       } else {
                         setArtworkFailed(true);
                       }
                     }}
-                    className="card-portrait-subject-img"
+                    className="card-portrait-img"
                   />
-                  {/* Warm rim light on the right edge of subject */}
                   <div className="card-portrait-rim-light" aria-hidden="true" />
-                </div>
+                </>
               )}
-
-              {/* Layer 3: overlay vignette + grain */}
               <div className="card-portrait-overlay" aria-hidden="true" />
-              <span className="card-emblem-badge" aria-hidden="true">✦</span>
             </div>
 
-            {/* 4. Bio line */}
-            <div className="card-bio-line">
-              <p>I test web and mobile flows, document defects, and verify fixes before release.</p>
+            {/* 3. Bio Plaque in the ornate middle slot */}
+            <div className="card-bio-plate">
+              <span className="card-bio-sparkle">✦</span>
+              <p className="card-bio-text">I test web and mobile flows, document defects, and verify fixes before release.</p>
+              <span className="card-bio-sparkle">✦</span>
             </div>
 
-            {/* 5. Ornate Gold Divider */}
-            <div className="card-filigree-divider">
-              <span className="card-filigree-line" />
-              <span>✦ ❖ ✦</span>
-              <span className="card-filigree-line" />
-            </div>
-
-            {/* 6. Specialization Ratings Table */}
+            {/* 4. Specialization Ratings Table */}
             <div className="card-skills-table">
               <div className="card-skill-row">
                 <span className="card-skill-title">Web &amp; Mobile Testing</span>
@@ -699,19 +653,13 @@ function AbilityCardSession({
               </div>
             </div>
 
-            {/* 7. Bottom Metadata Bar */}
+            {/* 6. Bottom Metadata Bar */}
             <div className="card-bottom-meta-bar">
-              <span>
-                Based: <strong>India (Pune)</strong>
-              </span>
+              <span>Pune, India</span>
               <span>·</span>
-              <span>
-                Work: <strong>Remotely / Hybrid</strong>
-              </span>
+              <span>Remote / Hybrid</span>
               <span>·</span>
-              <span>
-                Replies: <strong>&lt; 2 hours</strong>
-              </span>
+              <span>Replies &lt; 2h</span>
             </div>
           </div>
         </div>

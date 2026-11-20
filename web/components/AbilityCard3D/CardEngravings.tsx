@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Original SVG filigree made specifically for this portfolio card.
  * The source website was used only as a visual reference; its card
  * plate, photographs, background images and branding are not copied.
@@ -154,7 +154,6 @@ export function GiltFrame() {
       <g fill="none" stroke="url(#ac-gold-engraving)" strokeWidth="3.5">
         <rect x="139" y="532" width="438" height="44" rx="20" stroke="#643817" strokeWidth="8" />
         <rect x="139" y="532" width="438" height="44" rx="20" />
-        <path d="M 150 538 H 560 M 153 571 H 560" strokeWidth="1.1" />
       </g>
       <CScroll x={108} y={524} />
       <CScroll x={608} y={524} scaleX={-1} />
@@ -169,12 +168,6 @@ export function GiltFrame() {
       <CScroll x={675} y={834} scaleX={-1} scaleY={-1} />
       <HorizontalScroll y={593} from={131} to={588} />
       <HorizontalScroll y={824} from={131} to={588} />
-      <g stroke="#835d2d" fill="none" strokeWidth="1.1" opacity=".8">
-        <path d="M 130 715 H 587" />
-      </g>
-      <FiligreeDiamond x={357} y={715} size={8} />
-      <FiligreeDiamond x={50} y={716} size={10} />
-      <FiligreeDiamond x={665} y={716} size={10} />
 
       {/* Bottom location / work / reply metadata plaque. */}
       <rect x="104" y="852" width="506" height="46" rx="22" fill="none" stroke="#633918" strokeWidth="11" />

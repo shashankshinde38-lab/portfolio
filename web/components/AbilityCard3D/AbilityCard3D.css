@@ -1,24 +1,22 @@
 /* ========================================================================
-   ABILITY CARD 3D — REDESIGNED STYLES
-   Fiery cinematic launch · 3D portrait parallax · QA content
-   Charcoal + brushed-bronze frame, warm gold bevels, dark background.
+   ABILITY CARD 3D — CINEMATIC QA COLLECTIBLE CARD
+   Charcoal & brushed-bronze frame · 3D portrait parallax · Fiery launch
+   High-contrast, crystal-clear typography matching GiltFrame engravings.
    ======================================================================== */
 
-/* -- Design tokens ------------------------------------------------------- */
+/* -- Design Tokens ------------------------------------------------------- */
 :root {
-  --ability-gold-light: #fff0ad;
-  --ability-gold: #d9a74b;
-  --ability-gold-dark: #78491b;
-  --ability-parchment: #f1e2bb;
-  --ability-ink: #271e1b;
+  --ability-gold-light: #fff2c2;
+  --ability-gold: #d4af37;
+  --ability-gold-dark: #7a4f18;
+  --ability-parchment: #fdf5df;
+  --ability-ink: #221711;
   --ability-card-ratio: 0.682;
-  --ability-perspective: 1350px;
+  --ability-perspective: 1400px;
   --ability-anim: cubic-bezier(.22, .72, .11, 1);
-  --ability-stage-glow: rgba(247, 170, 54, .33);
-  --ability-frame-gold: #fff3b6;
 }
 
-/* -- Complete viewport: ambient soot and spotlight ---------------------- */
+/* -- Modal Backdrop & Dark Stage Atmosphere ----------------------------- */
 .ability-card-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -29,9 +27,9 @@
   min-height: 100dvh;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 34% 50% at 50% 78%, rgba(102, 42, 6, .76), transparent 91%),
-    radial-gradient(ellipse 38% 55% at 50% 51%, rgba(75, 36, 13, .52), transparent 84%),
-    radial-gradient(ellipse 85% 94% at 50% 50%, #17100b 0%, #070606 70%, #020202 100%);
+    radial-gradient(ellipse 40% 55% at 50% 75%, rgba(115, 48, 8, 0.72), transparent 88%),
+    radial-gradient(ellipse 45% 60% at 50% 50%, rgba(65, 30, 12, 0.48), transparent 85%),
+    radial-gradient(ellipse 90% 95% at 50% 50%, #150f0b 0%, #080605 65%, #020202 100%);
   color: #eee4cc;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior: contain;
@@ -43,10 +41,10 @@
   inset: -20%;
   z-index: 0;
   pointer-events: none;
-  opacity: .8;
-  background: radial-gradient(ellipse 21% 31% at 50% 70%, rgba(234, 122, 13, .29), transparent 87%);
-  filter: blur(32px);
-  animation: ability-fire-glow 9s ease-in-out infinite alternate;
+  opacity: 0.85;
+  background: radial-gradient(ellipse 24% 34% at 50% 70%, rgba(240, 125, 15, 0.28), transparent 85%);
+  filter: blur(34px);
+  animation: ability-fire-glow 8s ease-in-out infinite alternate;
 }
 
 .ability-card-modal-backdrop::after {
@@ -55,21 +53,15 @@
   z-index: 1;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse 68% 89% at 50% 55%, transparent 29%, rgba(0, 0, 0, .55) 97%);
+  background: radial-gradient(ellipse 68% 88% at 50% 55%, transparent 28%, rgba(0, 0, 0, 0.65) 96%);
 }
 
 @keyframes ability-fire-glow {
-  from {
-    opacity: .6;
-    transform: scale(.97);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1.06);
-  }
+  from { opacity: 0.65; transform: scale(0.96); }
+  to   { opacity: 1;    transform: scale(1.06); }
 }
 
-/* -- Three.js gold embers ------------------------------------------------ */
+/* -- Particle Canvas (Drifting Embers) ----------------------------------- */
 .ability-particles-canvas {
   position: absolute;
   z-index: 2;
@@ -78,16 +70,16 @@
   height: 100%;
   display: block;
   pointer-events: none;
-  opacity: .92;
+  opacity: 0.95;
 }
 
-/* -- Thin top heads-up display ------------------------------------------ */
+/* -- Top Heads-Up Display ------------------------------------------------ */
 .ability-hud-top {
   position: absolute;
   z-index: 30;
-  top: clamp(15px, 2.8vh, 30px);
-  left: clamp(18px, 1.75vw, 37px);
-  right: clamp(18px, 1.75vw, 37px);
+  top: clamp(14px, 2.6vh, 28px);
+  left: clamp(16px, 1.8vw, 36px);
+  right: clamp(16px, 1.8vw, 36px);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -97,26 +89,24 @@
 .ability-brand-group {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  opacity: .92;
+  gap: 5px;
+  opacity: 0.92;
   transition: opacity 600ms ease;
 }
 
-.ability-brand-group[aria-hidden="true"] {
-  opacity: 0;
-}
+.ability-brand-group[aria-hidden="true"] { opacity: 0; }
 
 .ability-brand-name {
-  color: #ece5d7;
+  color: #f0e8d8;
   font-family: "Onest", Inter, system-ui, sans-serif;
   font-size: 10px;
-  font-weight: 550;
+  font-weight: 600;
   line-height: 1.4;
-  letter-spacing: .32em;
+  letter-spacing: 0.3em;
 }
 
 .ability-brand-subtitle {
-  color: #aca09a;
+  color: #b5a89c;
   font-family: "EB Garamond", Georgia, serif;
   font-size: 13px;
   font-style: italic;
@@ -127,25 +117,25 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
-  min-width: 78px;
-  min-height: 37px;
+  gap: 8px;
+  min-width: 76px;
+  min-height: 36px;
   padding: 8px 14px;
-  border: 1px solid rgba(228, 225, 214, .24);
-  border-radius: 22px;
-  background: rgba(14, 13, 12, .7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: #f5f2ec;
+  border: 1px solid rgba(228, 225, 214, 0.28);
+  border-radius: 20px;
+  background: rgba(16, 13, 11, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #f7f4ed;
   font: 600 11px/1.2 "Onest", sans-serif;
   cursor: pointer;
-  transition: border-color 220ms ease, background 220ms ease, transform 220ms ease;
+  transition: border-color 200ms ease, background 200ms ease, transform 200ms ease;
 }
 
 .ability-close-btn:hover,
 .ability-close-btn:focus-visible {
-  border-color: rgba(247, 210, 143, .62);
-  background: rgba(62, 43, 26, .88);
+  border-color: rgba(247, 210, 143, 0.7);
+  background: rgba(65, 42, 22, 0.9);
   transform: translateY(-1px);
 }
 
@@ -154,15 +144,15 @@
 .ability-mobile-flip-btn:focus-visible,
 .ability-flip-pill-btn:focus-visible,
 .ability-expand-pill-btn:focus-visible {
-  outline: 2px solid #edcc84;
+  outline: 2px solid #ecc97b;
   outline-offset: 4px;
 }
 
-/* -- 3D scene and card size --------------------------------------------- */
+/* -- 3D Card Stage Wrap ------------------------------------------------- */
 .ability-card-stage-wrap {
   position: relative;
   z-index: 10;
-  width: min(475px, 33vw, calc(81dvh * var(--ability-card-ratio)));
+  width: min(440px, 31vw, calc(80dvh * var(--ability-card-ratio)));
   aspect-ratio: 682 / 1000;
   display: grid;
   place-items: center;
@@ -170,21 +160,14 @@
   perspective-origin: 50% 50%;
   transform-style: preserve-3d;
   transform: translateY(1px);
-  filter: drop-shadow(0 18px 23px rgba(8, 4, 3, .46));
+  filter: drop-shadow(0 24px 34px rgba(0, 0, 0, 0.75));
   opacity: 1;
-  transition: opacity 750ms ease, filter 750ms ease;
+  transition: opacity 600ms ease;
 }
 
 .ability-card-modal-backdrop[data-card-ready="false"] .ability-card-stage-wrap {
   opacity: 0;
-  filter: blur(7px);
   pointer-events: none;
-}
-
-/* Reveal animation is now driven by [data-reveal] on the card stage,
-   but we still keep this for instant show once ready */
-.ability-card-modal-backdrop[data-card-ready="true"] .ability-card-stage-wrap {
-  opacity: 1;
 }
 
 .ability-card-stage {
@@ -200,7 +183,6 @@
   will-change: transform;
   backface-visibility: hidden;
 
-  /* CSS custom properties used by JS pointer tracking */
   --foil-x: 50%;
   --foil-y: 50%;
   --portrait-pan-x: 0px;
@@ -210,82 +192,71 @@
   --glint-rotation: 0deg;
 }
 
-.ability-card-stage.is-dragging {
-  cursor: grabbing;
-}
+.ability-card-stage.is-dragging { cursor: grabbing; }
 
 /* =========================================================================
-   FIERY CINEMATIC REVEAL — driven by data-reveal attribute
-   Phases: "edge" → "sweeping" → "settling" → "resting"
+   FIERY CINEMATIC LAUNCH (4-Phase Reveal)
+   Phases: edge -> sweeping -> settling -> resting
    ========================================================================= */
 
-/* Phase: edge — card starts nearly edge-on from dark stage */
 .ability-card-stage[data-reveal="edge"] .ability-card-body {
-  transform: rotateY(82deg) scale(.92);
+  transform: rotateY(82deg) scale(0.92);
   opacity: 0;
 }
 
-/* Phase: sweeping — card rotates toward viewer, burn line crosses the face */
 .ability-card-stage[data-reveal="sweeping"] .ability-card-body {
   transform: rotateY(0deg) scale(1);
   opacity: 1;
-  transition:
-    transform 900ms cubic-bezier(.15, .8, .1, 1.06),
-    opacity   160ms ease;
+  transition: transform 900ms cubic-bezier(.16, .85, .12, 1.05), opacity 150ms ease;
 }
 
-/* Phase: settling — overshoot has damped, card is upright */
 .ability-card-stage[data-reveal="settling"] .ability-card-body {
   transform: rotateY(0deg) scale(1);
   opacity: 1;
   transition: none;
 }
 
-/* Phase: resting — normal runtime state */
 .ability-card-stage[data-reveal="resting"] .ability-card-body {
   transform: rotateY(0deg);
   opacity: 1;
-  transition: transform 1080ms cubic-bezier(.19, .72, .15, 1);
 }
 
-/* Burn sweep overlay — a curved molten amber line crossing the card face */
+/* Molten amber burn sweep line */
 .ability-burn-sweep {
   position: absolute;
   inset: 0;
   z-index: 50;
   pointer-events: none;
-  border-radius: inherit;
+  border-radius: 17px;
   opacity: 0;
-  background:
-    linear-gradient(
-      130deg,
-      transparent 0%,
-      transparent 30%,
-      rgba(255, 160, 30, .92) 44%,
-      rgba(255, 220, 90, 1) 48%,
-      rgba(255, 170, 40, .88) 52%,
-      transparent 66%,
-      transparent 100%
-    );
+  background: linear-gradient(
+    130deg,
+    transparent 0%,
+    transparent 28%,
+    rgba(255, 140, 20, 0.85) 43%,
+    rgba(255, 235, 120, 1) 48%,
+    rgba(255, 160, 30, 0.82) 53%,
+    transparent 68%,
+    transparent 100%
+  );
   mix-blend-mode: screen;
-  transform: translateX(-120%);
+  transform: translateX(-130%);
   will-change: transform, opacity;
 }
 
-/* Burn fires during the "sweeping" phase */
 .ability-card-stage[data-reveal="sweeping"] .ability-burn-sweep {
-  animation: ability-burn-cross 820ms cubic-bezier(.3, .0, .6, 1) both;
+  animation: ability-burn-cross 840ms cubic-bezier(.3, 0, .6, 1) both;
 }
 
 @keyframes ability-burn-cross {
-  0%   { transform: translateX(-120%); opacity: 0; }
+  0%   { transform: translateX(-130%); opacity: 0; }
   10%  { opacity: 1; }
-  65%  { transform: translateX(0%);   opacity: 1; }
-  90%  { transform: translateX(60%);  opacity: .55; }
-  100% { transform: translateX(130%); opacity: 0; }
+  65%  { transform: translateX(0%);    opacity: 1; }
+  90%  { transform: translateX(70%);   opacity: 0.55; }
+  100% { transform: translateX(140%);  opacity: 0; }
 }
 
-/* Ember sparks — 8 elements that trail along the burn edge */
+/* Trailing Ember Sparks */
 .ability-ember-sparks {
   position: absolute;
   inset: 0;
@@ -301,9 +272,8 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: radial-gradient(circle, #ffe590 0%, #ff8c1a 60%, transparent 100%);
+  background: radial-gradient(circle, #fff0a8 0%, #ff8c1a 60%, transparent 100%);
   opacity: 0;
-  /* i is 0–7; vertical spread = i * 12% + 10% */
   top: calc(var(--ember-i) * 12% + 10%);
   left: 20%;
   will-change: transform, opacity;
@@ -311,28 +281,27 @@
 
 .ability-card-stage[data-reveal="sweeping"] .ability-ember {
   animation: ability-ember-trail 760ms ease-out both;
-  animation-delay: calc(var(--ember-i) * 40ms + 80ms);
+  animation-delay: calc(var(--ember-i) * 40ms + 70ms);
 }
 
 @keyframes ability-ember-trail {
-  0%   { transform: translate(0, 0) scale(1);             opacity: 0; }
+  0%   { transform: translate(0, 0) scale(1); opacity: 0; }
   15%  { opacity: 1; }
-  60%  { transform: translate(calc(60vw + 60px), calc(var(--ember-i) * -4px - 10px)) scale(.55); opacity: .8; }
-  100% { transform: translate(calc(80vw + 80px), calc(var(--ember-i) * -8px - 25px)) scale(.2);  opacity: 0; }
+  60%  { transform: translate(calc(55vw + 50px), calc(var(--ember-i) * -4px - 8px)) scale(0.6); opacity: 0.85; }
+  100% { transform: translate(calc(75vw + 70px), calc(var(--ember-i) * -8px - 20px)) scale(0.2); opacity: 0; }
 }
 
-/* During settling, a few embers drift and fade */
 .ability-card-stage[data-reveal="settling"] .ability-ember {
   animation: ability-ember-drift 800ms ease-out both;
   animation-delay: calc(var(--ember-i) * 60ms);
 }
 
 @keyframes ability-ember-drift {
-  0%   { transform: translate(0, 0);     opacity: .4; }
-  100% { transform: translate(calc(var(--ember-i) * 8px - 28px), -60px) scale(.15); opacity: 0; }
+  0%   { transform: translate(0, 0); opacity: 0.45; }
+  100% { transform: translate(calc(var(--ember-i) * 8px - 26px), -55px) scale(0.15); opacity: 0; }
 }
 
-/* Rim pulse — single warm flash around the card edge after settling */
+/* Single Rim Pulse on Settling */
 .ability-rim-pulse {
   position: absolute;
   inset: -3px;
@@ -343,18 +312,19 @@
 }
 
 .ability-card-stage[data-reveal="settling"] .ability-rim-pulse {
-  animation: ability-rim-pulse 700ms ease-out 200ms both;
+  animation: ability-rim-pulse 720ms ease-out 180ms both;
 }
 
 @keyframes ability-rim-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(255, 200, 60, .0);  opacity: 0; }
-  25%  { box-shadow: 0 0 24px 8px rgba(255, 170, 40, .72); opacity: 1; }
-  60%  { box-shadow: 0 0 40px 14px rgba(255, 130, 20, .38); opacity: .7; }
-  100% { box-shadow: 0 0 0 0 rgba(255, 100, 10, .0);  opacity: 0; }
+  0%   { box-shadow: 0 0 0 0 rgba(255, 200, 60, 0); opacity: 0; }
+  25%  { box-shadow: 0 0 26px 8px rgba(255, 175, 45, 0.75); opacity: 1; }
+  60%  { box-shadow: 0 0 42px 14px rgba(255, 135, 25, 0.40); opacity: 0.7; }
+  100% { box-shadow: 0 0 0 0 rgba(255, 100, 10, 0); opacity: 0; }
 }
 
-/* ========================================================================= */
-
+/* =========================================================================
+   CARD BODY & 3D FACES
+   ========================================================================= */
 .ability-card-body {
   position: relative;
   width: 100%;
@@ -362,11 +332,11 @@
   border-radius: 17px;
   transform-style: preserve-3d;
   will-change: transform;
+  transition: transform 1080ms cubic-bezier(.19, .72, .15, 1);
 }
 
 .ability-card-body.flipped {
   transform: rotateY(180deg) !important;
-  transition: transform 1080ms cubic-bezier(.19, .72, .15, 1) !important;
 }
 
 .ability-card-face {
@@ -378,20 +348,20 @@
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   box-shadow:
-    0 0 0 1px rgba(255, 244, 180, .95),
-    0 0 2px 2px rgba(224, 161, 66, .89),
-    0 0 10px 2px rgba(251, 193, 68, .67),
-    0 0 26px 4px rgba(243, 147, 26, .32),
-    0 32px 46px rgba(0, 0, 0, .64);
+    0 0 0 1px rgba(255, 244, 180, 0.95),
+    0 0 3px 2px rgba(224, 161, 66, 0.90),
+    0 0 14px 3px rgba(251, 193, 68, 0.62),
+    0 0 32px 6px rgba(243, 147, 26, 0.28),
+    0 38px 54px rgba(0, 0, 0, 0.75);
 }
 
-/* -- Front: charcoal + brushed-bronze metallic base --------------------- */
+/* -- Front: Charcoal & Rose-Bronze Metallic Ground ---------------------- */
 .ability-card-face-front {
   background:
-    radial-gradient(ellipse 52% 20% at 52% 12%, rgba(247, 200, 206, .59), transparent 92%),
-    radial-gradient(ellipse 31% 46% at 7% 53%, rgba(255, 185, 177, .28), transparent 87%),
-    radial-gradient(ellipse 48% 57% at 88% 77%, rgba(70, 31, 51, .28), transparent 93%),
-    linear-gradient(140deg, #c2959f 0%, #a57a89 38%, #8e6677 72%, #aa7a89 100%);
+    radial-gradient(ellipse 55% 22% at 50% 10%, rgba(255, 215, 165, 0.24), transparent 90%),
+    radial-gradient(ellipse 35% 50% at 5% 55%,  rgba(215, 155, 135, 0.20), transparent 90%),
+    radial-gradient(ellipse 50% 60% at 90% 80%, rgba(55, 22, 40, 0.32),   transparent 95%),
+    linear-gradient(145deg, #a87989 0%, #906371 35%, #754c5d 70%, #946978 100%);
 }
 
 .ability-card-face-front::before {
@@ -400,10 +370,10 @@
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  opacity: .42;
+  opacity: 0.35;
   background:
     url("/images/foil-grain.png") 0 0 / 190px 190px repeat,
-    radial-gradient(ellipse at 50% 100%, rgba(55, 18, 27, .33), transparent 64%);
+    radial-gradient(ellipse at 50% 100%, rgba(55, 18, 27, 0.30), transparent 60%);
   mix-blend-mode: multiply;
 }
 
@@ -413,58 +383,55 @@
   inset: 0;
   z-index: 8;
   pointer-events: none;
-  box-shadow: inset 0 0 8px 2px #543719b3, inset 0 0 18px #edc56d66;
+  box-shadow: inset 0 0 10px 3px rgba(84, 55, 25, 0.65), inset 0 0 22px rgba(237, 197, 109, 0.35);
   border-radius: inherit;
 }
 
-/* SVG frame is intentionally foreground overlay — gilded embossing */
+/* -- Gilt Frame SVG Layer (Filigree borders & corners) ------------------ */
 .ability-gilt-frame {
   position: absolute;
-  z-index: 9;
+  z-index: 4;
   inset: 0;
   width: 100%;
   height: 100%;
   overflow: visible;
   pointer-events: none;
   filter:
-    drop-shadow(0 1px .65px rgba(33, 10, 6, .86))
-    drop-shadow(0 -1px .45px rgba(255, 248, 190, .54))
-    drop-shadow(0 0 1px rgba(255, 220, 108, .26));
+    drop-shadow(0 1px 0.65px rgba(33, 10, 6, 0.86))
+    drop-shadow(0 -1px 0.45px rgba(255, 248, 190, 0.54))
+    drop-shadow(0 0 1px rgba(255, 220, 108, 0.28));
 }
 
+/* -- Holographic Foil & Specular Light ----------------------------------- */
 .ability-hologram-foil {
   position: absolute;
-  z-index: 11;
+  z-index: 12;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 45% 30% at var(--foil-x, 50%) var(--foil-y, 50%), rgba(255, 248, 199, .34), transparent 83%),
-    linear-gradient(107deg, transparent 15%, rgba(255, 255, 255, .02) 31%, rgba(255, 245, 189, .18) 42%, transparent 53%);
+    radial-gradient(ellipse 45% 30% at var(--foil-x, 50%) var(--foil-y, 50%), rgba(255, 248, 199, 0.30), transparent 83%),
+    linear-gradient(107deg, transparent 15%, rgba(255, 255, 255, 0.02) 31%, rgba(255, 245, 189, 0.16) 42%, transparent 53%);
   mix-blend-mode: screen;
-  opacity: .25;
+  opacity: 0.22;
   transition: opacity 250ms ease;
 }
 
-.ability-card-stage:hover .ability-hologram-foil {
-  opacity: .68;
-}
+.ability-card-stage:hover .ability-hologram-foil { opacity: 0.62; }
 
 .ability-metal-specular {
   position: absolute;
   inset: -4%;
-  z-index: 12;
+  z-index: 13;
   pointer-events: none;
   opacity: 0;
-  background: linear-gradient(106deg, transparent 24%, rgba(255, 251, 220, .045) 34%, rgba(255, 253, 212, .18) 43%, transparent 51%);
+  background: linear-gradient(106deg, transparent 24%, rgba(255, 251, 220, 0.04) 34%, rgba(255, 253, 212, 0.16) 43%, transparent 51%);
   transform: rotate(var(--glint-rotation, 0deg));
   mix-blend-mode: screen;
   transition: opacity 400ms ease;
 }
 
-.ability-card-stage:hover .ability-metal-specular {
-  opacity: .93;
-}
+.ability-card-stage:hover .ability-metal-specular { opacity: 0.88; }
 
 .ability-print-grain {
   position: absolute;
@@ -473,14 +440,17 @@
   border-radius: inherit;
   pointer-events: none;
   background: url("/images/foil-grain.png") 0 0 / 256px 256px repeat;
-  opacity: .65;
+  opacity: 0.50;
   mix-blend-mode: overlay;
 }
 
-/* Inner content frame */
+/* =========================================================================
+   INNER CARD CONTENT — Z-INDEX 10 (Sits cleanly on top of gilt borders)
+   Aligned precisely with GiltFrame coordinates (viewBox 0 0 716 1000).
+   ========================================================================= */
 .card-inner-frame {
   position: absolute;
-  z-index: 3;
+  z-index: 10;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -489,23 +459,35 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* -- Name label --------------------------------------------------------- */
+/* 1. Nameplate Banner (x=117 y=43 w=483 h=77 -> top 4.3%, left 16.3%, w 67.4%, h 7.7%) */
 .card-nameplate-banner {
   position: absolute;
-  z-index: 4;
-  top: 3.6%;
-  left: 15%;
-  width: 70%;
-  height: 6.4%;
+  z-index: 10;
+  top: 4.3%;
+  left: 16.3%;
+  width: 67.4%;
+  height: 7.7%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 13px;
-  border-radius: 46% / 50%;
+  gap: 2px;
+  padding: 0 12px;
+  border-radius: 34px;
   background:
     url("/images/paper-grain.png") 0 0 / 185px 185px repeat,
-    radial-gradient(ellipse at 50% 6%, #fff9de 0%, #f5eac8 48%, #d8bd8e 100%);
-  box-shadow: inset 0 0 12px rgba(111, 73, 33, .42), 0 2px 2px rgba(40, 20, 12, .19);
+    radial-gradient(ellipse at 50% 6%, #fffbe6 0%, #f6e9c4 48%, #d9bc8d 100%);
+  box-shadow: inset 0 0 12px rgba(111, 73, 33, 0.42), 0 2px 3px rgba(40, 20, 12, 0.22);
+}
+
+.card-role-tag {
+  display: block;
+  font-size: clamp(6px, 0.58vw, 8px);
+  font-weight: 750;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #936015;
+  line-height: 1;
 }
 
 .card-gold-name {
@@ -513,148 +495,97 @@
   margin: 0;
   max-width: 100%;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: clamp(13px, 1.17vw, 18px);
+  overflow: visible;
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: clamp(14px, 1.25vw, 19px);
   font-weight: 800;
-  line-height: 1.06;
+  line-height: 1.05;
   text-align: center;
-  letter-spacing: -.024em;
-  color: #33241f;
-  text-shadow: 0 1px rgba(255, 255, 255, .76), 0 -1px rgba(121, 74, 47, .22);
+  letter-spacing: -0.015em;
+  color: #24160e;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75), 0 -1px 0 rgba(115, 68, 40, 0.20);
 }
 
-/* -- Role subtitle beneath nameplate ------------------------------------ */
-.card-role-subtitle {
-  position: absolute;
-  z-index: 4;
-  top: 10.6%;
-  left: 20%;
-  width: 60%;
-  height: 3.5%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.card-role-subtitle span {
-  font-size: clamp(7px, .72vw, 10px);
-  font-weight: 700;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: #d4af37;
-  text-shadow: 0 0 8px rgba(212, 175, 55, .45);
-}
-
-/* -- Art window: 3D parallax portrait ----------------------------------- */
+/* 2. Portrait Window (x=55 y=137 w=606 h=377 -> top 14.5%, left 8.8%, w 82.4%, h 36.2%) */
 .card-emblem-box {
   position: absolute;
-  z-index: 3;
-  top: 14.55%;
-  left: 8.65%;
-  width: 82.7%;
-  height: 36.5%;
-  /* Allow shoulders to overflow the lower frame edge */
-  overflow: visible;
-  clip-path: inset(0 0 -18% 0 round 2px);
-  border-radius: 2px;
-  background: #27222a;
+  z-index: 10;
+  top: 14.5%;
+  left: 8.8%;
+  width: 82.4%;
+  height: 36.2%;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #19141c;
   isolation: isolate;
-  box-shadow: inset 0 0 24px rgba(13, 6, 16, .66), 0 1px 4px rgba(26, 15, 12, .38);
+  box-shadow:
+    inset 0 0 26px rgba(10, 5, 15, 0.85),
+    0 2px 6px rgba(20, 10, 10, 0.50);
 }
 
-/* Recessed background — bokeh blobs, slowest parallax */
+/* Bokeh studio background */
 .card-portrait-bokeh {
   position: absolute;
-  inset: -8%;
+  inset: -12%;
   z-index: 0;
   background:
-    radial-gradient(circle at 89% 32%, rgba(254, 226, 166, .78) 0 2%, transparent 8%),
-    radial-gradient(circle at 81% 59%, rgba(218, 188, 143, .62) 0 8%, transparent 20%),
-    radial-gradient(circle at 97% 81%, rgba(168, 129, 104, .45) 0 11%, transparent 21%),
-    radial-gradient(circle at 15% 61%, rgba(58, 47, 83, .92) 0 15%, transparent 39%),
-    radial-gradient(circle at 48% 31%, rgba(97, 61, 85, .58) 0 10%, transparent 35%),
-    radial-gradient(circle at 34% 82%, rgba(46, 80, 64, .64) 0 11%, transparent 37%),
-    linear-gradient(114deg, #262432 0%, #423340 43%, #786048 80%, #382928 100%);
-  filter: blur(9px) saturate(.95);
+    radial-gradient(circle at 82% 26%, rgba(245, 195, 115, 0.65) 0 4%, transparent 12%),
+    radial-gradient(circle at 74% 68%, rgba(205, 160, 105, 0.52) 0 10%, transparent 24%),
+    radial-gradient(circle at 18% 58%, rgba(60, 42, 88, 0.95) 0 18%, transparent 44%),
+    radial-gradient(circle at 48% 28%, rgba(95, 58, 85, 0.60) 0 14%, transparent 40%),
+    linear-gradient(118deg, #201a2c 0%, #3a2b38 42%, #684a35 80%, #281a1a 100%);
+  filter: blur(10px) saturate(0.95);
   transform: translate3d(var(--portrait-pan-x), var(--portrait-pan-y), 0);
   transition: transform 180ms ease-out;
 }
 
-/* Light leaks — cinematic color fringing */
+/* Light leaks */
 .card-portrait-light-leaks {
   position: absolute;
   z-index: 1;
-  inset: -4%;
+  inset: -6%;
   background:
-    radial-gradient(ellipse 15% 62% at 72% 39%, rgba(244, 177, 73, .19), transparent 92%),
-    radial-gradient(ellipse 15% 55% at 35% 72%, rgba(151, 58, 155, .19), transparent 100%);
-  filter: blur(17px);
+    radial-gradient(ellipse 20% 68% at 76% 40%, rgba(245, 180, 75, 0.24), transparent 94%),
+    radial-gradient(ellipse 18% 55% at 30% 72%, rgba(145, 55, 145, 0.18), transparent 100%);
+  filter: blur(18px);
   pointer-events: none;
   transform: translate3d(var(--portrait-pan-x), var(--portrait-pan-y), 0);
   transition: transform 180ms ease-out;
 }
 
-/* Subject wrapper — faster parallax than the background */
-.card-portrait-subject-wrap {
+/* Shashank's Real Photo with 3D Depth */
+.card-portrait-img {
   position: absolute;
   z-index: 2;
-  inset: 0;
-  /* Shoulders may bleed below the lower frame edge */
-  bottom: -18%;
-  transform: translate3d(var(--portrait-subject-x, 0px), var(--portrait-subject-y, 0px), 0);
-  transition: transform 150ms ease-out;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  overflow: visible;
-}
-
-/* Portrait image — centred, object-fit cover for vertical crop */
-.card-portrait-subject-img {
-  display: block;
-  position: absolute;
-  /* Fill width and push top of head to top of window */
   top: 0;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate3d(calc(-50% + var(--portrait-subject-x, 0px)), var(--portrait-subject-y, 0px), 0);
   width: 100%;
-  height: 118%;
+  height: 108%;
   object-fit: cover;
-  object-position: center top;
+  object-position: center 10%;
   filter:
-    contrast(1.13) brightness(.95) saturate(.82) sepia(.10)
-    drop-shadow(0 8px 18px rgba(5, 3, 4, .55));
+    contrast(1.08) brightness(1.02) saturate(0.92) sepia(0.05)
+    drop-shadow(0 6px 18px rgba(0, 0, 0, 0.70));
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
+  transition: transform 140ms ease-out;
+  display: block;
 }
 
-/* Warm rim light — right edge of the portrait subject */
+/* Warm Rim Light on Subject */
 .card-portrait-rim-light {
   position: absolute;
   inset: 0;
   z-index: 3;
   pointer-events: none;
   background:
-    linear-gradient(to left, rgba(212, 175, 55, .18) 0%, transparent 30%),
-    linear-gradient(to right, rgba(60, 30, 80, .22) 0%, transparent 30%);
+    linear-gradient(to left,  rgba(212, 175, 55, 0.24) 0%, transparent 30%),
+    linear-gradient(to right, rgba(50, 20, 70, 0.22) 0%, transparent 30%);
 }
 
-/* Contact shadow behind subject */
-.card-portrait-subject-wrap::after {
-  content: "";
-  position: absolute;
-  bottom: 10%;
-  left: 10%;
-  width: 80%;
-  height: 30%;
-  background: radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, .6), transparent 70%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Portrait overlay — vignette + grain + bottom fade */
+/* Portrait Overlay Vignette */
 .card-portrait-overlay {
   position: absolute;
   z-index: 4;
@@ -662,121 +593,117 @@
   pointer-events: none;
   background:
     url("/images/foil-grain.png") 0 0 / 170px 170px repeat,
-    radial-gradient(ellipse at 50% 48%, transparent 50%, rgba(18, 7, 10, .38) 100%),
-    linear-gradient(to bottom, rgba(21, 8, 15, .22), transparent 25%, transparent 60%, rgba(24, 8, 12, .42));
-  opacity: .75;
+    linear-gradient(to bottom,
+      rgba(18, 8, 14, 0.16) 0%,
+      transparent 22%,
+      transparent 64%,
+      rgba(20, 8, 12, 0.55) 100%
+    );
+  opacity: 0.70;
 }
 
-/* Badge */
-.card-emblem-badge {
+/* Fallback Monogram */
+.card-portrait-fallback {
   position: absolute;
-  z-index: 4;
-  display: block;
-  left: 30%;
-  bottom: -100%;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Fallback SVG */
-.card-emblem-svg {
-  position: absolute;
+  inset: 0;
   z-index: 2;
-  width: 100%;
-  height: 100%;
-  opacity: .94;
-}
-
-/* -- Bio line ----------------------------------------------------------- */
-.card-bio-line {
-  position: absolute;
-  z-index: 4;
-  top: 53%;
-  left: 8.5%;
-  width: 83%;
-  height: 5.2%;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 40%, #382c44, #18131d);
 }
 
-.card-bio-line p {
-  margin: 0;
-  font-size: clamp(6px, .58vw, 8.5px);
-  line-height: 1.4;
-  text-align: center;
-  color: #3d2f28;
-  font-style: italic;
-  letter-spacing: .01em;
+.card-portrait-fallback span {
   font-family: "EB Garamond", Georgia, serif;
+  font-size: 52px;
+  font-weight: 800;
+  color: #d4af37;
+  opacity: 0.7;
 }
 
-/* -- Decorative gold divider -------------------------------------------- */
-.card-filigree-divider {
+/* 3. Bio Plaque (x=139 y=532 w=438 h=44 -> top 52.8%, left 18.5%, w 63.0%, h 4.8%) */
+.card-bio-plate {
   position: absolute;
-  z-index: 4;
-  top: 59.0%;
-  left: 22%;
-  width: 56%;
-  height: 2.9%;
+  z-index: 10;
+  top: 52.8%;
+  left: 18.5%;
+  width: 63.0%;
+  height: 4.8%;
   display: flex;
-  gap: 15px;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  border-radius: 18px;
+  gap: 8px;
+  padding: 0 10px;
+  border-radius: 20px;
   background:
     url("/images/paper-grain.png") repeat,
-    linear-gradient(90deg, #e6d09f, #fff1ce 42%, #d9bd8e);
-  box-shadow: inset 0 0 7px #7056386b;
-  color: #b4904e;
+    linear-gradient(90deg, #ddc594, #fff2cf 45%, #d9bd8b);
+  box-shadow: inset 0 0 8px rgba(112, 86, 56, 0.40), 0 1px 3px rgba(35, 18, 10, 0.22);
+}
+
+.card-bio-sparkle {
+  color: #a07835;
+  font-size: 9px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.card-bio-text {
+  margin: 0;
   font-family: "EB Garamond", Georgia, serif;
-  font-size: 11px;
-  letter-spacing: .03em;
+  font-size: clamp(7.5px, 0.72vw, 10px);
+  line-height: 1.25;
+  text-align: center;
+  color: #352518;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
-.card-filigree-line {
-  display: block;
-  width: 27%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #9c7945 50%, transparent);
-}
-
-/* -- Parchment stat block ----------------------------------------------- */
+/* 4. Skills Table (x=49 y=591 w=617 h=235 -> top 59.8%, left 8.0%, w 84.0%, h 22.8%) */
 .card-skills-table {
   position: absolute;
-  z-index: 4;
-  top: 63.2%;
-  left: 9.1%;
-  width: 81.8%;
-  height: 20.8%;
-  padding: 7px 14px 8px;
+  z-index: 10;
+  top: 59.8%;
+  left: 8.0%;
+  width: 84.0%;
+  height: 22.8%;
+  padding: 8px 16px;
   display: grid;
   grid-template-rows: repeat(4, 1fr);
-  color: #27201b;
+  row-gap: 2px;
+  color: #241c16;
+  border-radius: 8px;
   background:
     url("/images/paper-grain.png") repeat,
-    radial-gradient(ellipse 92% 100% at 50% 36%, #fff1cf 0%, #edd9ad 68%, #d7ba8d 100%);
-  box-shadow: inset 0 0 19px rgba(100, 57, 23, .37);
+    radial-gradient(ellipse 92% 100% at 50% 36%, #fff5d8 0%, #eedcaf 68%, #d8be92 100%);
+  box-shadow: inset 0 0 18px rgba(100, 57, 23, 0.35), 0 2px 4px rgba(35, 18, 10, 0.20);
 }
 
 .card-skill-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(68px, 90px) 26px;
+  grid-template-columns: 1fr auto 30px;
   column-gap: 8px;
   align-items: center;
   white-space: nowrap;
-  font-size: clamp(9px, .84vw, 12px);
-  line-height: 1.18;
+  overflow: visible;
+  font-size: clamp(9px, 0.86vw, 12.5px);
+  line-height: 1;
 }
 
 .card-skill-title {
   font-size: inherit;
-  font-weight: 800;
+  font-weight: 780;
+  color: #241a13;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  letter-spacing: -.025em;
+  min-width: 0;
 }
 
 .card-skill-dots {
@@ -784,75 +711,72 @@
   justify-content: flex-end;
   align-items: center;
   gap: 3.5px;
-  padding: 0 1px;
+  flex-shrink: 0;
 }
 
 .card-skill-dots > i {
   display: inline-block;
-  flex: 0 0 5px;
-  width: 5px;
-  height: 5px;
-  border: 1px solid #4f3b2a;
+  flex: 0 0 4.5px;
+  width: 4.5px;
+  height: 4.5px;
+  border: 1px solid #4a3624;
   background: transparent;
   transform: rotate(45deg);
 }
 
 .card-skill-dots > i[data-filled="true"] {
-  background: #38291f;
+  background: #35261a;
 }
 
 .card-skill-score {
   justify-self: end;
-  font-size: clamp(11px, 1vw, 15px);
+  font-size: clamp(11.5px, 1.05vw, 15px);
   font-weight: 850;
   font-variant-numeric: tabular-nums;
   line-height: 1;
+  color: #22160d;
+  flex-shrink: 0;
 }
 
-/* -- Bottom oval metadata ----------------------------------------------- */
+/* 5. Bottom Metadata Bar (x=104 y=852 w=506 h=46 -> top 85.0%, left 14.2%, w 71.6%, h 4.8%) */
 .card-bottom-meta-bar {
   position: absolute;
-  z-index: 4;
-  top: 87.5%;
-  left: 16.1%;
-  width: 67.8%;
-  height: 3.5%;
+  z-index: 10;
+  top: 85.0%;
+  left: 14.2%;
+  width: 71.6%;
+  height: 4.8%;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  gap: 3px;
-  padding: 2px 8px;
+  gap: 4px;
+  padding: 0 10px;
   overflow: hidden;
-  border-radius: 20px;
-  color: #3d3023;
+  border-radius: 22px;
+  color: #382a1d;
   background:
     url("/images/paper-grain.png") repeat,
-    linear-gradient(90deg, #dbc499, #faf0d5 42%, #ddc59b);
-  font-size: clamp(5px, .5vw, 7px);
-  letter-spacing: -.015em;
-  box-shadow: inset 0 0 8px #71512a4d;
-}
-
-.card-bottom-meta-bar > span {
+    linear-gradient(90deg, #d8bf8d, #faf0cf 44%, #d8bf8d);
+  font-size: clamp(5.5px, 0.52vw, 7.5px);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  box-shadow: inset 0 0 8px rgba(113, 81, 42, 0.32), 0 1px 3px rgba(35, 18, 10, 0.20);
   white-space: nowrap;
 }
 
 .card-bottom-meta-bar > span:nth-child(2),
 .card-bottom-meta-bar > span:nth-child(4) {
-  opacity: .5;
+  opacity: 0.45;
 }
 
-.card-bottom-meta-bar strong {
-  font-size: 1.22em;
-  font-weight: 800;
-}
-
-/* -- Back: deep charcoal plate with QA emblem --------------------------- */
+/* =========================================================================
+   BACK FACE — DEEP CHARCOAL WITH QA EMBLEM
+   ========================================================================= */
 .ability-card-face-back {
   transform: rotateY(180deg);
   background:
-    radial-gradient(ellipse 64% 58% at 50% 49%, rgba(45, 30, 24, .47), transparent 82%),
-    #0b0807;
+    radial-gradient(ellipse 64% 58% at 50% 49%, rgba(45, 30, 24, 0.47), transparent 82%),
+    #0a0807;
 }
 
 .ability-card-face-back::before {
@@ -860,12 +784,12 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  opacity: .12;
+  opacity: 0.12;
   pointer-events: none;
   background:
     url("/images/foil-grain.png") repeat,
-    repeating-linear-gradient(45deg, transparent 0 6px, rgba(209, 177, 115, .12) 6px 7px),
-    repeating-linear-gradient(-45deg, transparent 0 6px, rgba(209, 177, 115, .12) 6px 7px);
+    repeating-linear-gradient(45deg, transparent 0 6px, rgba(209, 177, 115, 0.12) 6px 7px),
+    repeating-linear-gradient(-45deg, transparent 0 6px, rgba(209, 177, 115, 0.12) 6px 7px);
 }
 
 .ability-card-face-back::after {
@@ -875,10 +799,9 @@
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  box-shadow: inset 0 0 12px #c99d5f44;
+  box-shadow: inset 0 0 12px rgba(201, 157, 95, 0.30);
 }
 
-/* QA emblem SVG on back */
 .ability-qa-emblem {
   position: absolute;
   z-index: 2;
@@ -886,21 +809,23 @@
   height: 100%;
   inset: 0;
   pointer-events: none;
-  filter: drop-shadow(0 0 2px rgba(238, 204, 119, .34));
+  filter: drop-shadow(0 0 2px rgba(238, 204, 119, 0.35));
 }
 
-/* -- Instructions / interaction HUD ------------------------------------ */
+/* =========================================================================
+   HUD BOTTOM & BUTTONS
+   ========================================================================= */
 .ability-hud-bottom {
   position: absolute;
   z-index: 25;
   left: 50%;
-  bottom: clamp(13px, 2.6vh, 28px);
+  bottom: clamp(12px, 2.5vh, 26px);
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  width: min(92vw, 630px);
+  width: min(92vw, 620px);
   pointer-events: none;
 }
 
@@ -908,15 +833,13 @@
   display: block;
   text-align: center;
   white-space: nowrap;
-  color: rgba(215, 188, 141, .7);
+  color: rgba(215, 188, 141, 0.70);
   font: 500 10px/1.4 "Onest", system-ui, sans-serif;
-  letter-spacing: .22em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
-.ability-touch-instructions {
-  display: none;
-}
+.ability-touch-instructions { display: none; }
 
 .ability-mobile-flip-btn,
 .ability-flip-pill-btn,
@@ -926,40 +849,38 @@
   justify-content: center;
   gap: 8px;
   padding: 9px 13px;
-  border: 1px solid rgba(218, 168, 90, .52);
+  border: 1px solid rgba(218, 168, 90, 0.52);
   border-radius: 20px;
-  background: rgba(23, 16, 12, .8);
+  background: rgba(23, 16, 12, 0.82);
   color: #eddaac;
   font: 650 10px/1.1 "Onest", sans-serif;
-  letter-spacing: .065em;
+  letter-spacing: 0.065em;
   cursor: pointer;
   transition: background 180ms ease, border-color 180ms ease;
 }
 
-.ability-mobile-flip-btn {
-  display: none;
-}
+.ability-mobile-flip-btn { display: none; }
 
 .ability-flip-pill-btn,
-.ability-expand-pill-btn {
-  display: inline-flex;
-}
+.ability-expand-pill-btn { display: inline-flex; }
 
 .ability-mobile-flip-btn:hover,
 .ability-flip-pill-btn:hover,
 .ability-expand-pill-btn:hover {
-  background: #4c2d15;
+  background: #4a2c14;
   border-color: #f5d494;
 }
 
-/* -- Loading system ----------------------------------------------------- */
+/* =========================================================================
+   LOADING INDICATOR
+   ========================================================================= */
 .ability-loader {
   position: absolute;
   z-index: 29;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(205px, 65vw);
+  width: min(200px, 64vw);
   display: grid;
   place-items: center;
   pointer-events: none;
@@ -974,10 +895,10 @@
 }
 
 .ability-loader-name {
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   color: #e5ddca;
   font: 650 9px/1.5 "Onest", sans-serif;
-  letter-spacing: .23em;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
 }
 
@@ -1005,48 +926,46 @@
   color: #baa080;
   text-transform: uppercase;
   font: 500 7px/1.5 "Onest", sans-serif;
-  letter-spacing: .09em;
+  letter-spacing: 0.09em;
 }
 
-.ability-loader-label b {
-  font-weight: 600;
-}
+.ability-loader-label b { font-weight: 600; }
 
-/* -- Credential panel (rear card reveal) -------------------------------- */
+/* =========================================================================
+   CREDENTIALS PANEL
+   ========================================================================= */
 .ability-credentials {
   position: absolute;
   z-index: 22;
   top: 50%;
-  left: calc(50% + min(25vw, 350px));
+  left: calc(50% + min(24vw, 340px));
   transform: translateY(-50%);
-  width: min(320px, 33vw);
+  width: min(310px, 32vw);
   color: #f1e8d1;
   font-family: "Onest", Inter, sans-serif;
   font-size: 12px;
 }
 
 .ability-credentials-trigger {
-  border: 1px solid #e5bc6a69;
+  border: 1px solid rgba(229, 188, 106, 0.42);
   border-radius: 19px;
-  background: #16100dce;
+  background: rgba(22, 16, 13, 0.82);
   color: #efd59b;
   padding: 9px 13px;
   font: 650 10px "Onest", sans-serif;
   cursor: pointer;
 }
 
-.ability-credentials-trigger:hover {
-  background: #3c2817;
-}
+.ability-credentials-trigger:hover { background: #3c2817; }
 
 .ability-credentials-panel {
   max-height: 66dvh;
   overflow: auto;
   margin-top: 10px;
-  border: 1px solid rgba(217, 167, 75, .36);
+  border: 1px solid rgba(217, 167, 75, 0.36);
   border-radius: 15px;
-  background: #130f0de6;
-  box-shadow: 0 18px 32px #0007;
+  background: rgba(19, 15, 13, 0.92);
+  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.46);
   backdrop-filter: blur(12px);
 }
 
@@ -1085,7 +1004,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  border: 1px solid #b48c4855;
+  border: 1px solid rgba(180, 140, 72, 0.33);
   padding: 9px;
   border-radius: 7px;
 }
@@ -1115,10 +1034,7 @@
   line-height: 1.45;
 }
 
-.card-cred-row svg {
-  flex: none;
-  color: #d4af37;
-}
+.card-cred-row svg { flex: none; color: #d4af37; }
 
 .card-tech-chips {
   display: flex;
@@ -1128,9 +1044,9 @@
 
 .card-tech-chip {
   padding: 5px 7px;
-  background: #c7983e17;
+  background: rgba(199, 152, 62, 0.10);
   color: #e9d2a3;
-  border: 1px solid #bd97403e;
+  border: 1px solid rgba(189, 151, 64, 0.24);
   border-radius: 15px;
   font-size: 9px;
 }
@@ -1141,14 +1057,16 @@
   justify-content: center;
   gap: 6px;
   padding: 10px;
-  border-top: 1px solid #caa45e55;
+  border-top: 1px solid rgba(202, 164, 94, 0.33);
   color: #eec987;
   font-size: 9px;
-  letter-spacing: .06em;
+  letter-spacing: 0.06em;
   text-align: center;
 }
 
-/* -- Inline hero mode --------------------------------------------------- */
+/* =========================================================================
+   INLINE HERO EMBED
+   ========================================================================= */
 .ability-card-inline-container {
   position: relative;
   isolation: isolate;
@@ -1158,17 +1076,15 @@
   overflow: hidden;
   border-radius: inherit;
   background:
-    radial-gradient(ellipse 50% 70% at 50% 63%, rgba(100, 47, 13, .49), transparent 78%),
+    radial-gradient(ellipse 50% 70% at 50% 63%, rgba(100, 47, 13, 0.49), transparent 78%),
     radial-gradient(ellipse at 50% 50%, #1d130e, #070706);
 }
 
-.ability-particles-inline {
-  z-index: 1;
-}
+.ability-particles-inline { z-index: 1; }
 
 .ability-card-stage-wrap-inline {
   z-index: 5;
-  width: min(365px, 39%, calc(67dvh * var(--ability-card-ratio)));
+  width: min(340px, 36%, calc(65dvh * var(--ability-card-ratio)));
   max-height: calc(100% - 65px);
   position: absolute;
   top: 46%;
@@ -1203,7 +1119,9 @@
   width: min(280px, 42%);
 }
 
-/* -- Tablet -------------------------------------------------------------- */
+/* =========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================= */
 @media (max-width: 1100px) and (min-width: 761px) {
   .ability-credentials {
     left: auto;
@@ -1212,161 +1130,90 @@
   }
 
   .ability-card-stage-wrap {
-    width: min(450px, 48vw, calc(79dvh * var(--ability-card-ratio)));
-  }
-
-  .card-skill-row {
-    font-size: clamp(9px, 1.1vw, 12px);
+    width: min(420px, 45vw, calc(78dvh * var(--ability-card-ratio)));
   }
 }
 
-/* -- Mobile ------------------------------------------------------------- */
 @media (max-width: 760px) {
   .ability-card-modal-backdrop {
     background: radial-gradient(ellipse at 50% 70%, #3c1a0c, #070605 80%);
   }
 
   .ability-card-stage-wrap {
-    width: min(84vw, calc(75dvh * var(--ability-card-ratio)));
+    width: min(84vw, calc(74dvh * var(--ability-card-ratio)));
   }
 
   .ability-card-stage-wrap-inline {
-    width: min(72vw, calc(65dvh * var(--ability-card-ratio)));
+    width: min(72vw, calc(64dvh * var(--ability-card-ratio)));
   }
 
   .ability-hud-top {
-    top: 17px;
+    top: 16px;
     left: 16px;
     right: 16px;
   }
 
-  .ability-brand-name {
-    font-size: 9px;
-  }
-
-  .ability-brand-subtitle {
-    font-size: 12px;
-  }
-
-  .ability-close-btn {
-    min-height: 36px;
-    padding: 8px 11px;
-  }
-
-  .ability-hud-bottom {
-    bottom: 16px;
-    gap: 9px;
-  }
-
-  .ability-desktop-instructions {
-    display: none;
-  }
-
-  .ability-touch-instructions {
-    display: block;
-  }
-
-  .ability-mobile-flip-btn {
-    display: inline-flex;
-  }
-
-  .ability-instructions {
-    font-size: 8px;
-    letter-spacing: .12em;
-  }
+  .ability-brand-name  { font-size: 9px; }
+  .ability-brand-subtitle { font-size: 12px; }
+  .ability-close-btn { min-height: 35px; padding: 7px 11px; }
+  .ability-hud-bottom { bottom: 15px; gap: 8px; }
+  .ability-desktop-instructions { display: none; }
+  .ability-touch-instructions { display: block; }
+  .ability-mobile-flip-btn { display: inline-flex; }
+  .ability-instructions { font-size: 8px; letter-spacing: 0.12em; }
 
   .ability-credentials {
     left: 50%;
     right: auto;
     top: auto;
-    bottom: 83px;
+    bottom: 80px;
     transform: translateX(-50%);
     width: min(320px, 86vw);
   }
 
-  .ability-credentials-panel {
-    max-height: 36dvh;
-  }
+  .ability-credentials-panel { max-height: 36dvh; }
 
   .ability-card-inline-container .ability-credentials {
-    bottom: 68px;
+    bottom: 66px;
     right: 10px;
     width: 70%;
   }
 
-  .card-gold-name {
-    font-size: clamp(12px, 4vw, 18px);
-  }
+  .card-gold-name { font-size: clamp(12px, 3.8vw, 17px); }
+  .card-role-tag  { font-size: clamp(5.5px, 1.8vw, 7.5px); }
+  .card-bio-text  { font-size: clamp(6.5px, 1.8vw, 8.5px); }
 
-  .card-role-subtitle span {
-    font-size: clamp(6px, 2.2vw, 9px);
-  }
-
-  .card-bio-line p {
-    font-size: clamp(5.5px, 1.5vw, 8px);
-  }
-
+  .card-skills-table { padding: 6px 12px; }
   .card-skill-row {
-    grid-template-columns: minmax(0, 1fr) minmax(52px, 70px) 20px;
-    column-gap: 4px;
-    font-size: clamp(8px, 2.3vw, 11px);
+    grid-template-columns: 1fr auto 24px;
+    column-gap: 5px;
+    font-size: clamp(8px, 2.4vw, 11px);
   }
 
-  .card-skill-dots {
-    gap: 2px;
-  }
-
+  .card-skill-dots { gap: 2.5px; }
   .card-skill-dots > i {
-    width: 3px;
-    height: 3px;
-    flex-basis: 3px;
+    width: 3.5px;
+    height: 3.5px;
+    flex-basis: 3.5px;
   }
 
-  .card-skill-score {
-    font-size: 11px;
-  }
-
-  .card-skills-table {
-    padding: 5px 9px;
-  }
-
-  .card-bottom-meta-bar {
-    font-size: 5px;
-    padding: 0 5px;
-  }
-
-  .ability-inline-hud .ability-instructions {
-    font-size: 6.8px;
-  }
-
-  /* Burn sweep: simpler on small screens */
-  .ability-ember {
-    width: 3px;
-    height: 3px;
-  }
+  .card-skill-score { font-size: 11px; }
+  .card-bottom-meta-bar { font-size: 5px; padding: 0 6px; }
+  .ability-inline-hud .ability-instructions { font-size: 6.8px; }
 }
 
 @media (max-width: 400px) {
   .ability-card-stage-wrap {
-    width: min(89vw, calc(73dvh * var(--ability-card-ratio)));
+    width: min(89vw, calc(72dvh * var(--ability-card-ratio)));
   }
 
-  .ability-brand-name {
-    letter-spacing: .15em;
-  }
-
-  .card-skills-table {
-    padding: 4px 8px;
-  }
+  .ability-brand-name { letter-spacing: 0.15em; }
+  .card-skills-table { padding: 4px 8px; }
 
   .card-skill-row {
-    grid-template-columns: minmax(0, 1fr) 53px 16px;
+    grid-template-columns: 1fr auto 20px;
     gap: 3px;
-    font-size: 8.2px;
-  }
-
-  .card-skill-dots {
-    gap: 1.8px;
+    font-size: 8px;
   }
 
   .card-skill-dots > i {
@@ -1375,52 +1222,27 @@
     height: 3px;
   }
 
-  .card-skill-score {
-    font-size: 10px;
-  }
-
-  .card-bottom-meta-bar {
-    font-size: 4.8px;
-  }
-
-  .ability-instructions {
-    font-size: 6.9px;
-  }
+  .card-skill-score { font-size: 10px; }
+  .card-bottom-meta-bar { font-size: 4.6px; }
 }
 
 @media (max-height: 675px) and (min-width: 761px) {
   .ability-card-stage-wrap {
-    width: min(382px, calc(75dvh * var(--ability-card-ratio)));
+    width: min(368px, calc(74dvh * var(--ability-card-ratio)));
   }
 
-  .ability-hud-bottom {
-    bottom: 8px;
-  }
-
-  .ability-hud-top {
-    top: 12px;
-  }
-
-  .card-gold-name {
-    font-size: 14px;
-  }
-
-  .card-skills-table {
-    padding: 5px 9px;
-  }
-
-  .card-skill-row {
-    font-size: 10px;
-  }
-
-  .card-skill-score {
-    font-size: 11px;
-  }
+  .ability-hud-bottom { bottom: 8px; }
+  .ability-hud-top { top: 12px; }
+  .card-gold-name { font-size: 13px; }
+  .card-skills-table { padding: 5px 10px; }
+  .card-skill-row { font-size: 10px; }
+  .card-skill-score { font-size: 11px; }
 }
 
-/* -- Accessibility ------------------------------------------------------- */
+/* =========================================================================
+   ACCESSIBILITY & PREFERS-REDUCED-MOTION
+   ========================================================================= */
 @media (prefers-reduced-motion: reduce) {
-  /* Collapse all reveal animations to immediate final state */
   .ability-card-stage[data-reveal="edge"] .ability-card-body,
   .ability-card-stage[data-reveal="sweeping"] .ability-card-body,
   .ability-card-stage[data-reveal="settling"] .ability-card-body {
@@ -1436,29 +1258,19 @@
     display: none !important;
   }
 
-  .ability-card-modal-backdrop::before {
-    animation: none;
-  }
+  .ability-card-modal-backdrop::before { animation: none; }
 
-  .ability-card-body {
-    transition-duration: .01ms !important;
-  }
-
-  .ability-card-stage-wrap {
-    transition-duration: .01ms !important;
-  }
-
+  .ability-card-body,
+  .ability-card-stage-wrap,
   .ability-hologram-foil {
-    transition-duration: .01ms !important;
+    transition-duration: 0.01ms !important;
   }
 
-  .ability-metal-specular {
-    display: none;
-  }
+  .ability-metal-specular { display: none; }
 
   .card-portrait-bokeh,
   .card-portrait-light-leaks,
-  .card-portrait-subject-wrap {
+  .card-portrait-img {
     transition: none;
   }
 }
