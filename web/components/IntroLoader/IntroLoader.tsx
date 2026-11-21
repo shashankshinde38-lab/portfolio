@@ -70,7 +70,7 @@ export default function IntroLoader({ onComplete }: IntroLoaderProps) {
       if (event.matches) complete();
     }
 
-    if (motion.matches || window.location.hash) {
+    if (window.location.hash) {
       complete();
       return;
     }
@@ -80,8 +80,13 @@ export default function IntroLoader({ onComplete }: IntroLoaderProps) {
     const previousPriority = bodyStyle.getPropertyPriority("overflow");
     restoreScroll = () => bodyStyle.setProperty("overflow", previousOverflow, previousPriority);
     bodyStyle.setProperty("overflow", "hidden", "important");
-    dialog.showModal();
-    motion.addEventListener("change", handleMotionChange);
+    try {
+      if (dialog && !dialog.open) {
+        dialog.showModal();
+      }
+    } catch {
+      if (dialog) dialog.setAttribute("open", "");
+    }
 
     const beginExit = (duration: number) => {
       if (leaving) return;
