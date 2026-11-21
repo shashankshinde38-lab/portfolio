@@ -8,6 +8,7 @@ import HeroSection from "@/web/sections/Hero/HeroSection";
 import QADoorsFrame from "@/web/components/QADoorsFrame/QADoorsFrame";
 import ExperienceTimeline from "@/web/components/ExperienceTimeline/ExperienceTimeline";
 import ProjectPreviews from "@/web/components/ProjectLaptopShowcase/ProjectPreviews";
+import FAQ from "@/web/sections/FAQ/FAQ";
 import SiteFooter from "@/web/components/SiteFooter/SiteFooter";
 
 const AbilityCard3D = dynamic(() => import("@/web/components/AbilityCard3D/AbilityCard3D"));
@@ -34,6 +35,7 @@ export default function HomePageContent() {
         <QADoorsFrame id="doors" />
         <ExperienceTimeline />
         <ProjectPreviews />
+        <FAQ />
       </main>
 
       <SiteFooter onOpenContact={openContact} />
