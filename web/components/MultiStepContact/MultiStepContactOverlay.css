@@ -18,6 +18,20 @@
   animation: overlayFadeIn 0.28s ease;
 }
 
+.contact-overlay-inline {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.contact-overlay-inline .contact-overlay-modal {
+  max-width: 100%;
+  margin: 0;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+}
+
 @keyframes overlayFadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }

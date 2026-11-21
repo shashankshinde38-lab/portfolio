@@ -16,8 +16,26 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-# OpenAI Search (AEO indexing & citation in ChatGPT Search)
+# OpenAI Search (ChatGPT Search & Citations)
 User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Anthropic Claude Search
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Perplexity AI Search
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Apple Search & Siri
+User-agent: Applebot
 Allow: /
 Disallow: /admin/
 Disallow: /api/

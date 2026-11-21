@@ -1,13 +1,9 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/web/seo/site";
 import SpecialtyLayout from "@/web/components/SpecialtyLayout/SpecialtyLayout";
 import ProjectHoverPreviewList from "@/web/components/ProjectHoverPreviewList/ProjectHoverPreviewList";
 import { CheckCircle2, Activity, Cpu, Gauge, AlertTriangle, Database } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Performance & Stress Testing | Shashank Shinde",
-  description:
-    "Apache JMeter distributed load testing, high-concurrency stress benchmarks up to 100k users, P99 latency SLA analysis, and database connection pool optimization.",
-};
+export const metadata = pageMetadata("/performance-testing");
 
 export default function PerformanceTestingPage() {
   return (

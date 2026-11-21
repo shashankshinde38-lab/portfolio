@@ -1,13 +1,9 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/web/seo/site";
 import SpecialtyLayout from "@/web/components/SpecialtyLayout/SpecialtyLayout";
 import ProjectHoverPreviewList from "@/web/components/ProjectHoverPreviewList/ProjectHoverPreviewList";
 import { CheckCircle2, ShieldCheck, Zap, Layers, Terminal, Sparkles } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Automation Testing & SDET | Shashank Shinde",
-  description:
-    "End-to-end test automation architecture using Playwright, Selenium, Java, and TypeScript. Page Object Model frameworks, CI/CD regression suites, and 40% execution time reductions.",
-};
+export const metadata = pageMetadata("/automation-testing");
 
 export default function AutomationTestingPage() {
   return (

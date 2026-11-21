@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import "./IntroLoader.css";
 
 interface IntroLoaderProps {
@@ -8,200 +9,168 @@ interface IntroLoaderProps {
 }
 
 const INTRO_CAPSULES = [
-  {
-    id: "identity",
-    title: "Shashank Shinde",
-    badge: "QA Specialist",
-    bg: "#2A2726",
-    border: "rgba(255,255,255,0.06)",
-    color: "#F5F2EE",
-  },
-  {
-    id: "automation",
-    title: "Automation testing",
-    badge: "Playwright · Selenium",
-    bg: "#1E2A3A",
-    border: "rgba(255,255,255,0.05)",
-    color: "#F5F2EE",
-  },
-  {
-    id: "mobile",
-    title: "Mobile testing",
-    badge: "Appium · Android · iOS",
-    bg: "#3A2A33",
-    border: "rgba(255,255,255,0.05)",
-    color: "#F5F2EE",
-  },
-  {
-    id: "manual",
-    title: "Manual QA",
-    badge: "STLC · Defect Analysis",
-    bg: "#4A5648",
-    border: "rgba(255,255,255,0.05)",
-    color: "#F5F2EE",
-  },
-  {
-    id: "api",
-    title: "API testing",
-    badge: "REST Assured · Postman",
-    bg: "#7A3F28",
-    border: "rgba(255,255,255,0.05)",
-    color: "#F5F2EE",
-  },
-  {
-    id: "performance",
-    title: "Performance QA",
-    badge: "JMeter · 100k+ Concurrency",
-    bg: "#6B5F5E",
-    border: "rgba(255,255,255,0.05)",
-    color: "#F5F2EE",
-  },
-];
+  { id: "identity", title: "Shashank Shinde", detail: "QA Specialist" },
+  { id: "automation", title: "Automation Testing", detail: "Playwright · Selenium" },
+  { id: "mobile", title: "Mobile Testing", detail: "Appium · Android · iOS" },
+  { id: "manual", title: "Manual QA", detail: "STLC · Defect Analysis" },
+  { id: "api", title: "API Testing", detail: "REST Assured · Postman" },
+  { id: "performance", title: "Performance QA", detail: "JMeter · 100k+ Concurrency" },
+] as const;
+
+const PROGRESS_MS = 1380;
+const HOLD_MS = 160;
+const EXIT_MS = 680;
+const SKIP_MS = 320;
 
 export default function IntroLoader({ onComplete }: IntroLoaderProps) {
-  const callback = useRef(onComplete);
-  callback.current = onComplete;
+  const titleId = useId();
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const onCompleteRef = useRef(onComplete);
+  const completedRef = useRef(false);
+  const skipRef = useRef<(() => void) | null>(null);
 
-  const [progress, setProgress] = useState(0);
-  const [exiting, setExiting] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [entered, setEntered] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [exitDuration, setExitDuration] = useState(0);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    if (
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      location.hash
-    ) {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog || completedRef.current) return;
+
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let timer = 0;
+    let leaving = false;
+    let restoreScroll: (() => void) | undefined;
+
+    const release = () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+      motion.removeEventListener("change", handleMotionChange);
+      skipRef.current = null;
+      if (dialog.open) dialog.close();
+      restoreScroll?.();
+      restoreScroll = undefined;
+    };
+
+    const complete = () => {
+      if (completedRef.current) return;
+      completedRef.current = true;
+      release();
       setHidden(true);
-      callback.current?.();
+      onCompleteRef.current?.();
+    };
+
+    function handleMotionChange(event: MediaQueryListEvent) {
+      if (event.matches) complete();
+    }
+
+    if (motion.matches || window.location.hash) {
+      complete();
       return;
     }
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const bodyStyle = document.body.style;
+    const previousOverflow = bodyStyle.getPropertyValue("overflow");
+    const previousPriority = bodyStyle.getPropertyPriority("overflow");
+    restoreScroll = () => bodyStyle.setProperty("overflow", previousOverflow, previousPriority);
+    bodyStyle.setProperty("overflow", "hidden", "important");
+    dialog.showModal();
+    motion.addEventListener("change", handleMotionChange);
 
-    // Small delay so the entrance animation can play
-    const enterTimer = setTimeout(() => setEntered(true), 40);
+    const beginExit = (duration: number) => {
+      if (leaving) return;
+      leaving = true;
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+      setExitDuration(duration);
+      timer = window.setTimeout(complete, duration + 40);
+    };
 
-    let animFrame = 0;
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    const duration = 1650;
-    const start = performance.now();
-
-    const tick = (now: number) => {
-      const elapsed = now - start;
-      const t = Math.min(elapsed / duration, 1);
-      // Soft cubic ease-out
-      const eased = 1 - Math.pow(1 - t, 2.6);
-      const currentVal = Math.min(Math.floor(eased * 100), 100);
-      setProgress(currentVal);
-
-      if (t < 1) {
-        animFrame = requestAnimationFrame(tick);
-      } else {
-        setProgress(100);
-        timers.push(
-          setTimeout(() => {
-            setExiting(true);
-            timers.push(
-              setTimeout(() => {
-                setHidden(true);
-                document.body.style.overflow = previousOverflow;
-                callback.current?.();
-              }, 780),
-            );
-          }, 180),
-        );
+    skipRef.current = () => {
+      if (leaving) {
+        complete();
+        return;
       }
+      beginExit(SKIP_MS);
     };
 
-    animFrame = requestAnimationFrame(tick);
+    // A frame boundary keeps the initial capsule positions available for the CSS transition.
+    frame = window.requestAnimationFrame(() => {
+      frame = window.requestAnimationFrame((start) => {
+        setEntered(true);
+        const tick = (now: number) => {
+          const elapsed = Math.min((now - start) / PROGRESS_MS, 1);
+          setProgress(Math.floor((1 - (1 - elapsed) ** 1.6) * 100));
 
-    return () => {
-      cancelAnimationFrame(animFrame);
-      clearTimeout(enterTimer);
-      timers.forEach(clearTimeout);
-      document.body.style.overflow = previousOverflow;
-    };
+          if (elapsed < 1) {
+            frame = window.requestAnimationFrame(tick);
+          } else {
+            timer = window.setTimeout(() => beginExit(EXIT_MS), HOLD_MS);
+          }
+        };
+        tick(start);
+      });
+    });
+
+    return release;
   }, []);
 
   if (hidden) return null;
 
-  const handleSkip = () => {
-    setExiting(true);
-    setTimeout(() => {
-      setHidden(true);
-      document.body.style.overflow = "";
-      callback.current?.();
-    }, 320);
-  };
-
   return (
-    <div
-      className={`intro-loader-backdrop ${exiting ? "intro-loader-exit" : ""} ${entered ? "is-entered" : ""}`}
-      aria-hidden="true"
-      onClick={handleSkip}
+    <dialog
+      ref={dialogRef}
+      className="qa-intro"
+      aria-labelledby={titleId}
+      data-entered={entered}
+      data-exiting={exitDuration > 0}
+      style={{ "--qa-exit": `${exitDuration || EXIT_MS}ms` } as CSSProperties}
+      onCancel={(event) => {
+        event.preventDefault();
+        skipRef.current?.();
+      }}
     >
-      {/* Soft edge vignette */}
-      <div className="intro-vignette" />
+      <div className="qa-intro__curtain" aria-hidden="true" />
 
-      <div className="intro-loader-content">
-        {/* Top Header */}
-        <header className="intro-loader-header">
-          <span className="intro-loader-brand">SHASHANK SHINDE · PORTFOLIO</span>
-          <span className="intro-loader-disciplines">
-            AUTOMATION · MOBILE · MANUAL · API · PERFORMANCE
-          </span>
+      <div className="qa-intro__layout">
+        <header className="qa-intro__header">
+          <span className="qa-intro__label">Portfolio</span>
+          <button className="qa-intro__skip" type="button" onClick={() => skipRef.current?.()}>
+            Skip intro <span aria-hidden="true">→</span>
+          </button>
         </header>
 
-        {/* Center stack */}
-        <div className="intro-capsules-center">
-          <div
-            className={`intro-capsules-stack ${exiting ? "stack-scattered" : ""}`}
-          >
-            {INTRO_CAPSULES.map((capsule, index) => (
-              <div
-                key={capsule.id}
-                className={`intro-capsule-pill pill-pos-${index}`}
-                style={{
-                  backgroundColor: capsule.bg,
-                  borderColor: capsule.border,
-                  color: capsule.color,
-                  zIndex: INTRO_CAPSULES.length - index,
-                  ["--i" as string]: index,
-                }}
-              >
-                <span className="intro-capsule-title">{capsule.title}</span>
-                <span className="intro-capsule-badge">{capsule.badge}</span>
-              </div>
+        <div className="qa-intro__stage">
+          <h2 className="qa-intro__title" id={titleId}>
+            Quality <em>Assurance</em>
+          </h2>
+
+          <ul className="qa-intro__capsules" aria-label="QA specializations" role="list">
+            {INTRO_CAPSULES.map(({ id, title, detail }) => (
+              <li className={`qa-intro__capsule qa-intro__capsule--${id}`} key={id}>
+                <span className="qa-intro__capsule-title">{title}</span>
+                <span className="qa-intro__capsule-detail">{detail}</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
-        {/* Bottom bar */}
-        <footer className="intro-loader-footer">
-          <div className="intro-footer-left">
-            <span className="intro-loader-indicator">OPENING UP THE WORK</span>
-            <div className="intro-loader-counter">
-              <span className="intro-loader-num">
-                {String(progress).padStart(3, "0")}
-              </span>
-            </div>
+        <footer className="qa-intro__footer">
+          <p className="qa-intro__status">
+            Opening portfolio <span aria-hidden="true">{String(progress).padStart(3, "0")}</span>
+          </p>
+          <div className="qa-intro__track" aria-hidden="true">
+            <div className="qa-intro__fill" style={{ transform: `scaleX(${progress / 100})` }} />
           </div>
-
-          <div className="intro-footer-right">
-            <span className="intro-loader-location">PUNE, IN · IST</span>
-            <div className="intro-loader-bar-wrap">
-              <div className="intro-loader-bar">
-                <div
-                  className="intro-loader-fill"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-            </div>
-          </div>
+          <span className="qa-intro__location">Pune, IN · IST</span>
         </footer>
       </div>
-    </div>
+    </dialog>
   );
 }

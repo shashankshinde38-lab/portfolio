@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   Activity,
@@ -15,38 +15,9 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/projects/ecommerce-testing-case-study";
+const pageUrl = `${siteOrigin}/projects/ecommerce-testing-case-study`;
 
-export const metadata: Metadata = {
-  title: "E-Commerce Marketplace QA Case Study | Shashank Shinde — Software Test Engineer",
-  description:
-    "QA case study for E-Commerce by Shashank Shinde: 5-browser test matrix, payment checkout regression, and refund webhook double-deduction mitigation.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "E-Commerce Marketplace QA Case Study | Shashank Shinde",
-    description:
-      "Cross-browser testing across 5 browser engines, payment checkout validation, and refund webhook idempotency mitigation by Shashank Shinde.",
-    url: pageUrl,
-    type: "article",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "E-Commerce QA Case Study — Shashank Shinde",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "E-Commerce Marketplace QA Case Study | Shashank Shinde",
-    description:
-      "Cross-browser testing across 5 browser engines and refund webhook idempotency mitigation by Shashank Shinde.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/projects/ecommerce-testing-case-study");
 
 export default function EcommerceCaseStudyPage() {
   return (

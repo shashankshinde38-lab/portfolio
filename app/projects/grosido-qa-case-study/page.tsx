@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -13,38 +13,9 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/projects/grosido-qa-case-study";
+const pageUrl = `${siteOrigin}/projects/grosido-qa-case-study`;
 
-export const metadata: Metadata = {
-  title: "Grosido Grocery Delivery QA Case Study | Shashank Shinde — Software Test Engineer",
-  description:
-    "QA case study for Grosido by Shashank Shinde: Selenium POM framework, 40% faster regression cycles, and distributed cache desync defect mitigation.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "Grosido Grocery Delivery QA Case Study | Shashank Shinde",
-    description:
-      "Selenium WebDriver POM automation framework, ~40% regression reduction, and distributed cache desynchronization mitigation by Shashank Shinde.",
-    url: pageUrl,
-    type: "article",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Grosido QA Case Study — Shashank Shinde",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Grosido Grocery Delivery QA Case Study | Shashank Shinde",
-    description:
-      "Selenium WebDriver POM automation framework, ~40% regression reduction, and distributed cache desync fix by Shashank Shinde.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/projects/grosido-qa-case-study");
 
 export default function GrosidoCaseStudyPage() {
   return (

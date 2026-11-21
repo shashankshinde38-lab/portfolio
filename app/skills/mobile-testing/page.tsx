@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -13,38 +13,9 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/skills/mobile-testing";
+const pageUrl = `${siteOrigin}/skills/mobile-testing`;
 
-export const metadata: Metadata = {
-  title: "Appium & Android Mobile Testing | Shashank Shinde — Software Test Engineer",
-  description:
-    "Mobile QA testing with Appium and Android native apps by Shashank Shinde: real-device testing, emulator suites, network throttling, and gesture automation.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "Appium & Android Mobile Testing | Shashank Shinde — Software Test Engineer",
-    description:
-      "Automated and manual mobile testing across Android real devices and emulators by Shashank Shinde in Pune, India.",
-    url: pageUrl,
-    type: "article",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Mobile Testing — Shashank Shinde",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Appium & Android Mobile Testing | Shashank Shinde",
-    description:
-      "Automated and manual mobile testing across Android real devices and emulators by Shashank Shinde.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/skills/mobile-testing");
 
 export default function MobileTestingPage() {
   return (

@@ -1,13 +1,9 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/web/seo/site";
 import SpecialtyLayout from "@/web/components/SpecialtyLayout/SpecialtyLayout";
 import ProjectHoverPreviewList from "@/web/components/ProjectHoverPreviewList/ProjectHoverPreviewList";
 import { CheckCircle2, Search, FileCheck, ClipboardList, ShieldAlert, GitBranch } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Manual & Exploratory QA | Shashank Shinde",
-  description:
-    "Systematic exploratory testing, Software Testing Life Cycle (STLC) governance, Boundary Value Analysis, Equivalence Partitioning, and JIRA defect lifecycle management.",
-};
+export const metadata = pageMetadata("/manual-testing");
 
 export default function ManualTestingPage() {
   return (

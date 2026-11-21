@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -13,38 +13,9 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/skills/selenium-automation";
+const pageUrl = `${siteOrigin}/skills/selenium-automation`;
 
-export const metadata: Metadata = {
-  title: "Selenium Automation Testing | Shashank Shinde — Software Test Engineer",
-  description:
-    "Selenium WebDriver automation in Java & TestNG by Shashank Shinde: Page Object Model, Cucumber BDD frameworks, and CI/CD regression test pipelines.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "Selenium Automation Testing | Shashank Shinde — Software Test Engineer",
-    description:
-      "Selenium WebDriver framework architecture, Page Object Model design, and cross-browser regression testing by Shashank Shinde.",
-    url: pageUrl,
-    type: "article",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Selenium Automation Testing — Shashank Shinde",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Selenium Automation Testing | Shashank Shinde",
-    description:
-      "Selenium WebDriver framework architecture, Page Object Model design, and regression testing by Shashank Shinde.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/skills/selenium-automation");
 
 export default function SeleniumAutomationPage() {
   return (

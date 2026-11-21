@@ -1,19 +1,24 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
 import {
-  ZoomIn,
-  ZoomOut,
-  RotateCcw,
-  Move,
-  X,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import type { PointerEvent as ReactPointerEvent } from "react";
+import {
   ArrowUpRight,
-  ShieldAlert,
-  Terminal,
-  FileCheck,
-  CheckCircle2,
+  Minus,
+  Plus,
+  RotateCcw,
+  Crosshair,
+  Move,
+  List,
+  LayoutGrid,
+  X,
 } from "lucide-react";
-import { useDialogFocus } from "@/web/hooks/useDialogFocus";
 import Link from "next/link";
 import "./QALabCanvas.css";
 
@@ -66,7 +71,8 @@ test('assert inventory reservation and voucher stack', async ({ page }) => {
       "Distributed load generator trace exposing PostgreSQL HikariCP connection pool exhaustion.",
     x: 2150,
     y: 820,
-    previewCode: "jmeter -n -t plan.jmx -R 10.120.4.11,10.120.4.12 -l results.jtl",
+    previewCode:
+      "jmeter -n -t plan.jmx -R 10.120.4.11,10.120.4.12 -l results.jtl",
     fullCode: `=== DISTRIBUTED JMETER STRESS SUMMARY ===
 Target: staging-api.mobility.internal:443
 Threads: 25,000 active concurrent simulated sessions (4 slave nodes)
@@ -80,7 +86,8 @@ RESULTS:
 - APDEX Score: 0.985 (Satisfied)`,
     metric: "P99 740ms SLA",
     statusBadge: "VERIFIED",
-    impact: "Uncovered DB connection limit crash prior to DRIWE production release flash sale.",
+    impact:
+      "Uncovered DB connection limit crash prior to DRIWE production release flash sale.",
   },
   {
     id: "ART-03",
@@ -91,7 +98,8 @@ RESULTS:
       "Cryptographic signature validation preventing fraudulent payment callback injections.",
     x: 1600,
     y: 1350,
-    previewCode: "given().header('X-Signature', hmac).post('/webhooks/payment');",
+    previewCode:
+      "given().header('X-Signature', hmac).post('/webhooks/payment');",
     fullCode: `// REST Assured HMAC-SHA256 Signature Verification
 String rawPayload = "{\\"transactionId\\":\\"tx_99214\\",\\"amount\\":499.00}";
 String hmac = HmacUtils.hmacSha256Hex(WEBHOOK_SECRET, rawPayload);
@@ -108,7 +116,8 @@ RestAssured.given()
     .body("reconciliationStatus", equalTo("ACCEPTED"));`,
     metric: "0 Replay Exploits",
     statusBadge: "ENCRYPTED",
-    impact: "Shielded Ride Sharing payment ingest service against unauthorized webhook replays.",
+    impact:
+      "Shielded Ride Sharing payment ingest service against unauthorized webhook replays.",
   },
   {
     id: "ART-04",
@@ -119,7 +128,8 @@ RestAssured.given()
       "Identified payment gateway race condition that debited users twice when clicking pay under 3G latency.",
     x: 1050,
     y: 1450,
-    previewCode: "ACTUAL: 2 identical POST requests dispatched with different UUIDs.",
+    previewCode:
+      "ACTUAL: 2 identical POST requests dispatched with different UUIDs.",
     fullCode: `JIRA DEFECT TICKET: DEF-419
 Severity: CRITICAL (Sev-1) | Priority: HIGH
 
@@ -135,7 +145,8 @@ Resolution:
 Implemented client-side pointer-event lock and server-side Redis idempotency key mutex.`,
     metric: "100% Resolved",
     statusBadge: "RESOLVED",
-    impact: "Prevented duplicate charges across 40,000+ monthly card transactions.",
+    impact:
+      "Prevented duplicate charges across 40,000+ monthly card transactions.",
   },
   {
     id: "ART-05",
@@ -164,7 +175,8 @@ driver.perform(Collections.singletonList(rapidDoubleTap));
 Assert.assertEquals(driver.findElements(By.id("pin_marker")).size(), 1);`,
     metric: "60 FPS Gesture",
     statusBadge: "AUTOMATED",
-    impact: "Fixed SQLite spatial index corruption across 12,000 active field blueprint audits.",
+    impact:
+      "Fixed SQLite spatial index corruption across 12,000 active field blueprint audits.",
   },
   {
     id: "ART-06",
@@ -197,7 +209,8 @@ Assert.assertEquals(driver.findElements(By.id("pin_marker")).size(), 1);`,
 }`,
     metric: "100% Conformance",
     statusBadge: "ENFORCED",
-    impact: "Zero contract drift across 22 high-throughput mobility microservices.",
+    impact:
+      "Zero contract drift across 22 high-throughput mobility microservices.",
   },
   {
     id: "ART-07",
@@ -208,7 +221,8 @@ Assert.assertEquals(driver.findElements(By.id("pin_marker")).size(), 1);`,
       "Apache POI integration feeding 5,000+ edge-case SKU records into parallel grid threads.",
     x: 2550,
     y: 980,
-    previewCode: "@DataProvider(parallel = true) public Object[][] getCatalogData()",
+    previewCode:
+      "@DataProvider(parallel = true) public Object[][] getCatalogData()",
     fullCode: `// Java TestNG + Apache POI Parallel Data Provider
 @DataProvider(name = "edgeCatalogMatrix", parallel = true)
 public Object[][] extractEdgeScenarios() throws IOException {
@@ -227,7 +241,8 @@ public void testDynamicInventoryCombinations(String sku, int quantity, String pr
 }`,
     metric: "5,000+ Datasets",
     statusBadge: "PRODUCTION",
-    impact: "Reduced manual regression effort by ~40% for the Grosido e-commerce catalog.",
+    impact:
+      "Reduced manual regression effort by ~40% for the Grosido e-commerce catalog.",
   },
   {
     id: "ART-08",
@@ -253,466 +268,404 @@ CORRECTION:
 Refactored entire billing pipeline to java.math.BigDecimal with RoundingMode.HALF_EVEN.`,
     metric: "₹0.00 Drift",
     statusBadge: "ISOLATED",
-    impact: "Eliminated quarterly merchant ledger balance discrepancies prior to statutory audit.",
+    impact:
+      "Eliminated quarterly merchant ledger balance discrepancies prior to statutory audit.",
   },
 ];
 
-export default function QALabCanvas() {
-  const [filter, setFilter] = useState<string>("all");
-  const [zoom, setZoom] = useState<number>(1);
-  const [pan, setPan] = useState<{ x: number; y: number }>({ x: -1100, y: -700 });
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [selectedArtifact, setSelectedArtifact] = useState<Artifact | null>(null);
+type Category = "all" | Artifact["category"];
+const filters: [Category, string][] = [
+  ["all", "All artifacts"],
+  ["automation", "Automation"],
+  ["api", "API & contracts"],
+  ["performance", "Load & stress"],
+  ["mobile", "Mobile"],
+  ["defects", "Defects"],
+];
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [linear, setLinear] = useState(false);
-  const dialogRef = useDialogFocus(!!selectedArtifact);
-  const pointer = useRef({ down: false, moved: false, x: 0, y: 0, vx: 0, vy: 0, time: 0 });
-  const panValue = useRef(pan);
-  panValue.current = pan;
-  const glideFrame = useRef(0);
-  const bound = useCallback(
-    (value: { x: number; y: number }) => {
-      const width = containerRef.current?.clientWidth ?? innerWidth,
-        height = containerRef.current?.clientHeight ?? innerHeight;
-      return {
-        x: Math.min(120, Math.max(width - 3600 * zoom - 120, value.x)),
-        y: Math.min(160, Math.max(height - 2400 * zoom - 100, value.y)),
-      };
-    },
-    [zoom],
-  );
-  useEffect(() => {
-    const motion = matchMedia("(prefers-reduced-motion: reduce)");
-    if (motion.matches) setLinear(true);
-    return () => cancelAnimationFrame(glideFrame.current);
-  }, []);
-  const beginPan = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (
-      linear ||
-      selectedArtifact ||
-      event.button !== 0 ||
-      (event.target as HTMLElement).closest("button,a,[role=dialog]")
-    )
-      return;
-    cancelAnimationFrame(glideFrame.current);
-    pointer.current = {
-      down: true,
-      moved: false,
-      x: event.clientX,
-      y: event.clientY,
-      vx: 0,
-      vy: 0,
-      time: performance.now(),
-    };
-    (event.target as HTMLElement).setPointerCapture(event.pointerId);
-    setIsDragging(true);
-  };
-  const movePan = (event: React.PointerEvent<HTMLDivElement>) => {
-    const drag = pointer.current;
-    if (!drag.down) return;
-    const now = performance.now(),
-      dt = Math.max(1, now - drag.time),
-      dx = event.clientX - drag.x,
-      dy = event.clientY - drag.y;
-    if (Math.abs(dx) + Math.abs(dy) > 3) drag.moved = true;
-    drag.x = event.clientX;
-    drag.y = event.clientY;
-    drag.time = now;
-    drag.vx = dx / dt;
-    drag.vy = dy / dt;
-    const next = bound({ x: panValue.current.x + dx, y: panValue.current.y + dy });
-    panValue.current = next;
-    setPan(next);
-  };
-  const endPan = () => {
-    const drag = pointer.current;
-    if (!drag.down) return;
-    drag.down = false;
-    setIsDragging(false);
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let last = performance.now();
-    const tick = (now: number) => {
-      const dt = Math.min(32, now - last);
-      last = now;
-      const decay = Math.pow(0.9, dt / 16.667);
-      drag.vx *= decay;
-      drag.vy *= decay;
-      const next = bound({
-        x: panValue.current.x + drag.vx * dt,
-        y: panValue.current.y + drag.vy * dt,
-      });
-      panValue.current = next;
-      setPan(next);
-      if (Math.hypot(drag.vx, drag.vy) > 0.015) glideFrame.current = requestAnimationFrame(tick);
-    };
-    glideFrame.current = requestAnimationFrame(tick);
-  };
-  // Zoom helpers
-  const zoomIn = () => setZoom((z) => Math.min(1.3, Number((z + 0.15).toFixed(2))));
-  const zoomOut = () => setZoom((z) => Math.max(0.65, Number((z - 0.15).toFixed(2))));
-  const resetView = () => {
-    cancelAnimationFrame(glideFrame.current);
-    setZoom(1);
-    setPan({ x: -1100, y: -700 });
-  };
+// Read across bands of the original map. CSS Grid supplies the final spacing for each screen.
+const mapOrder = [...ARTIFACTS].sort(
+  (a, b) => Math.floor(a.y / 320) - Math.floor(b.y / 320) || a.x - b.x,
+);
+const zoomSteps = [0.65, 0.8, 1, 1.15, 1.3];
 
-  // Close modal on Escape
+function Inspector({
+  artifact,
+  close,
+}: {
+  artifact: Artifact;
+  close: () => void;
+}) {
+  const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedArtifact(null);
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    const dialog = ref.current!;
+    dialog.showModal();
+    return () => dialog.close();
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className={`qa-lab-viewport ${isDragging ? "is-dragging" : ""} ${linear ? "is-linear" : ""}`}
-      id="main-content"
-      tabIndex={0}
-      role="region"
-      aria-label="Interactive QA evidence field. Use arrow keys to pan, plus and minus to zoom, or choose List view."
-      onPointerDown={beginPan}
-      onPointerMove={movePan}
-      onPointerUp={endPan}
-      onPointerCancel={() => {
-        pointer.current.down = false;
-        setIsDragging(false);
+    <dialog
+      ref={ref}
+      className="qa-inspector"
+      aria-labelledby="qa-inspect-title"
+      onCancel={(e) => {
+        e.preventDefault();
+        close();
       }}
-      onKeyDown={(e) => {
-        if (e.target !== e.currentTarget || linear) return;
-        const directions: Record<string, { x: number; y: number }> = {
-          ArrowLeft: { x: 120, y: 0 },
-          ArrowRight: { x: -120, y: 0 },
-          ArrowUp: { x: 0, y: 120 },
-          ArrowDown: { x: 0, y: -120 },
-        };
-        if (directions[e.key]) {
-          e.preventDefault();
-          const delta = directions[e.key];
-          setPan((old) => bound({ x: old.x + delta.x, y: old.y + delta.y }));
-        }
-        if (e.key === "+" || e.key === "=") zoomIn();
-        if (e.key === "-") zoomOut();
-        if (e.key === "Home") resetView();
+      onClick={(e) => {
+        if (e.target === e.currentTarget) close();
       }}
     >
-      {/* HUD Top Bar */}
-      <div className="qa-lab-hud-top">
-        <div className="qa-lab-hud-brand">
-          <div className="qa-lab-live-pulse" />
-          <h1 className="qa-lab-hud-title">Interactive QA Lab</h1>
-          <span style={{ color: "var(--border-subtle)" }}>|</span>
-          <span style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>
-            8 Evidence Artifacts Placed
-          </span>
+      <div className="qa-inspector-panel">
+        <header>
+          <div>
+            <small>
+              {artifact.categoryLabel} · {artifact.id}
+            </small>
+            <h2 id="qa-inspect-title">{artifact.title}</h2>
+          </div>
+          <button type="button" onClick={close} aria-label="Close inspector">
+            <X size={19} />
+          </button>
+        </header>
+        <div className="qa-inspector-body">
+          <section>
+            <h3>Scenario</h3>
+            <p>{artifact.description}</p>
+          </section>
+          <section>
+            <h3>Engineering impact</h3>
+            <p>{artifact.impact}</p>
+            <p className="qa-inspector-metric">
+              {artifact.statusBadge} · {artifact.metric}
+            </p>
+          </section>
+          <section>
+            <h3>Evidence</h3>
+            <pre tabIndex={0} aria-label="Evidence code or trace">
+              <code>{artifact.fullCode}</code>
+            </pre>
+          </section>
         </div>
+      </div>
+    </dialog>
+  );
+}
 
-        <div className="qa-lab-view-actions">
-          <Link href="/#doors">← Back to the doors</Link>
+export default function QALabCanvas() {
+  const [filter, setFilter] = useState<Category>("all");
+  const [linear, setLinear] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [selected, setSelected] = useState<Artifact | null>(null);
+  const [dragging, setDragging] = useState(false);
+  const stage = useRef<HTMLDivElement>(null);
+  const board = useRef<HTMLDivElement>(null);
+  const frame = useRef<HTMLDivElement>(null);
+  const drag = useRef<{
+    id: number;
+    x: number;
+    y: number;
+    left: number;
+    top: number;
+    moved: boolean;
+  } | null>(null);
+  const suppressClick = useRef(false);
+  const zoomAnchor = useRef<{ x: number; y: number } | null>(null);
+  const resetPending = useRef(false);
+  const shown = ARTIFACTS.filter(
+    (a) => filter === "all" || a.category === filter,
+  );
+
+  useEffect(() => {
+    const pref = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handleChange = () => {
+      if (pref.matches) setLinear(true);
+    };
+    handleChange();
+    pref.addEventListener("change", handleChange);
+    return () => pref.removeEventListener("change", handleChange);
+  }, []);
+
+  const positionMap = useCallback(() => {
+    const view = stage.current;
+    if (!view) return;
+    if (linear) {
+      view.scrollTo(0, 0);
+      return;
+    }
+    const compact = view.clientWidth < 1000 || view.clientHeight < 380;
+    const selector =
+      filter !== "all"
+        ? '[data-category="' + filter + '"]'
+        : compact
+          ? '[data-id="ART-01"]'
+          : ".qa-map-label";
+    const target = board.current?.querySelector<HTMLElement>(selector);
+    if (!target || !board.current) return;
+    const box = target.getBoundingClientRect();
+    const origin = view.getBoundingClientRect();
+    view.scrollBy(
+      box.left - origin.left - Math.max(12, (view.clientWidth - box.width) / 2),
+      box.top - origin.top - Math.max(12, (view.clientHeight - box.height) / 2),
+    );
+  }, [filter, linear]);
+
+  // Size the scrollable area to the transformed board; transforms alone leave phantom space.
+  useLayoutEffect(() => {
+    const map = board.current,
+      outer = frame.current,
+      view = stage.current;
+    if (!map || !outer || !view) return;
+    const sizeMap = () => {
+      outer.style.width = map.offsetWidth * zoom + "px";
+      outer.style.height = map.offsetHeight * zoom + "px";
+    };
+    sizeMap();
+    const observer = new ResizeObserver(sizeMap);
+    observer.observe(map);
+    const anchor = zoomAnchor.current;
+    if (anchor) {
+      view.scrollTo(
+        anchor.x * zoom - view.clientWidth / 2,
+        anchor.y * zoom - view.clientHeight / 2,
+      );
+      zoomAnchor.current = null;
+    }
+    return () => observer.disconnect();
+  }, [zoom, linear]);
+
+  useLayoutEffect(() => {
+    const view = stage.current;
+    if (!view) return;
+    positionMap();
+    let w = view.clientWidth,
+      h = view.clientHeight;
+    const observer = new ResizeObserver(() => {
+      if (view.clientWidth === w && view.clientHeight === h) return;
+      w = view.clientWidth;
+      h = view.clientHeight;
+      if (!linear) positionMap();
+    });
+    observer.observe(view);
+    return () => observer.disconnect();
+  }, [positionMap, linear]);
+
+  function changeZoom(delta: number) {
+    const view = stage.current;
+    if (!view) return;
+    const index = zoomSteps.indexOf(zoom);
+    const next = zoomSteps[index + delta];
+    if (!next) return;
+    zoomAnchor.current = {
+      x: (view.scrollLeft + view.clientWidth / 2) / zoom,
+      y: (view.scrollTop + view.clientHeight / 2) / zoom,
+    };
+    setZoom(next);
+  }
+
+  useLayoutEffect(() => {
+    if (zoom === 1 && resetPending.current) positionMap();
+    resetPending.current = false;
+  }, [zoom, positionMap]);
+  function reset() {
+    if (zoom === 1) positionMap();
+    else {
+      resetPending.current = true;
+      setZoom(1);
+    }
+  }
+
+  function startDrag(e: ReactPointerEvent<HTMLDivElement>) {
+    suppressClick.current = false;
+    if (linear || e.pointerType === "touch" || e.button !== 0) return;
+    drag.current = {
+      id: e.pointerId,
+      x: e.clientX,
+      y: e.clientY,
+      left: e.currentTarget.scrollLeft,
+      top: e.currentTarget.scrollTop,
+      moved: false,
+    };
+  }
+  function moveDrag(e: ReactPointerEvent<HTMLDivElement>) {
+    const active = drag.current;
+    if (!active || active.id !== e.pointerId || e.buttons !== 1) return;
+    const dx = e.clientX - active.x,
+      dy = e.clientY - active.y;
+    if (!active.moved && Math.hypot(dx, dy) < 5) return;
+    if (!active.moved) {
+      e.currentTarget.setPointerCapture(e.pointerId);
+      active.moved = true;
+      setDragging(true);
+    }
+    e.currentTarget.scrollTo(active.left - dx, active.top - dy);
+  }
+  function endDrag() {
+    if (!drag.current) return;
+    suppressClick.current = drag.current.moved;
+    drag.current = null;
+    setDragging(false);
+  }
+
+  function card(a: Artifact) {
+    const dim = filter !== "all" && filter !== a.category;
+    return (
+      <article
+        className="qa-lab-card"
+        key={a.id}
+        data-id={a.id}
+        data-category={a.category}
+        data-dim={dim}
+      >
+        <header>
+          <span>{a.categoryLabel}</span>
+          <code>{a.id}</code>
+        </header>
+        <h2>{a.title}</h2>
+        <p>{a.description}</p>
+        <div className="qa-preview">
+          <code>{a.previewCode}</code>
+        </div>
+        <footer>
+          <strong>{a.metric}</strong>
           <button
             type="button"
-            aria-pressed={linear}
-            onClick={() => {
-              cancelAnimationFrame(glideFrame.current);
-              setLinear((value) => !value);
-            }}
+            aria-label={"Inspect " + a.title}
+            disabled={dim}
+            onClick={() => setSelected(a)}
           >
+            Inspect <ArrowUpRight size={14} />
+          </button>
+        </footer>
+      </article>
+    );
+  }
+
+  return (
+    <section
+      className="qa-lab"
+      id="main-content"
+      aria-label="Interactive QA Lab"
+    >
+      <header className="qa-lab-header">
+        <div className="qa-lab-heading">
+          <h1>
+            Interactive <em>QA Lab</em>
+          </h1>
+          <span aria-live="polite">
+            {shown.length} {shown.length === 1 ? "artifact" : "artifacts"}
+          </span>
+        </div>
+        <nav aria-label="Lab navigation">
+          <Link href="/#doors">← Back to doors</Link>
+          <button type="button" onClick={() => setLinear(!linear)}>
+            {linear ? <LayoutGrid size={16} /> : <List size={16} />}
             {linear ? "Canvas view" : "List view"}
           </button>
+        </nav>
+        <div
+          className="qa-lab-filters"
+          role="group"
+          aria-label="Filter artifacts"
+        >
+          {filters.map(([key, label]) => (
+            <button
+              type="button"
+              key={key}
+              aria-pressed={filter === key}
+              onClick={() => setFilter(key)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
-        {/* Filter Bar */}
-        <div className="qa-lab-filter-bar">
-          <button
-            type="button"
-            className={`qa-filter-btn ${filter === "all" ? "active" : ""}`}
-            aria-pressed={filter === "all"}
-            onClick={() => setFilter("all")}
-          >
-            ALL ARTIFACTS
-          </button>
-          <button
-            type="button"
-            className={`qa-filter-btn ${filter === "automation" ? "active" : ""}`}
-            aria-pressed={filter === "automation"}
-            onClick={() => setFilter("automation")}
-          >
-            AUTOMATION
-          </button>
-          <button
-            type="button"
-            className={`qa-filter-btn ${filter === "api" ? "active" : ""}`}
-            aria-pressed={filter === "api"}
-            onClick={() => setFilter("api")}
-          >
-            API & CONTRACTS
-          </button>
-          <button
-            type="button"
-            className={`qa-filter-btn ${filter === "performance" ? "active" : ""}`}
-            aria-pressed={filter === "performance"}
-            onClick={() => setFilter("performance")}
-          >
-            LOAD & STRESS
-          </button>
-          <button
-            type="button"
-            className={`qa-filter-btn ${filter === "mobile" ? "active" : ""}`}
-            aria-pressed={filter === "mobile"}
-            onClick={() => setFilter("mobile")}
-          >
-            MOBILE GESTURES
-          </button>
-          <button
-            type="button"
-            className={`qa-filter-btn ${filter === "defects" ? "active" : ""}`}
-            aria-pressed={filter === "defects"}
-            onClick={() => setFilter("defects")}
-          >
-            DEFECT LOGS
-          </button>
-        </div>
-      </div>
-
-      {/* The 2D Canvas Surface */}
+      </header>
       <div
-        className="qa-lab-canvas"
-        style={{
-          transform: linear ? "none" : `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${zoom})`,
+        ref={stage}
+        className="qa-lab-stage"
+        data-linear={linear}
+        data-dragging={dragging}
+        tabIndex={0}
+        role="region"
+        aria-label={
+          linear
+            ? "Artifact list"
+            : "Evidence canvas. Use arrow keys to pan, plus and minus to zoom, and Home to reset."
+        }
+        onPointerDown={startDrag}
+        onPointerMove={moveDrag}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onLostPointerCapture={endDrag}
+        onClickCapture={(e) => {
+          if (suppressClick.current && e.detail > 0) {
+            e.stopPropagation();
+            suppressClick.current = false;
+          }
+        }}
+        onKeyDown={(e) => {
+          if (linear || e.target !== e.currentTarget) return;
+          if (["+", "=", "-", "Home"].includes(e.key)) {
+            e.preventDefault();
+            if (e.key === "Home") reset();
+            else changeZoom(e.key === "-" ? -1 : 1);
+          }
         }}
       >
-        {/* Canvas Center Landmark */}
-        <div className="qa-canvas-center-landmark">
-          <h2 className="qa-landmark-title font-serif">TEST LAB</h2>
-          <p className="qa-landmark-sub font-mono">Evidence Grid & Diagnostic Plane</p>
-        </div>
-
-        {/* Artifact Cards */}
-        {ARTIFACTS.map((art) => {
-          const isDimmed = filter !== "all" && filter !== art.category;
-          return (
+        {linear ? (
+          <div className="qa-lab-list">{shown.map(card)}</div>
+        ) : (
+          <div className="qa-map-frame" ref={frame}>
             <div
-              key={art.id}
-              role="button"
-              tabIndex={0}
-              aria-label={`Inspect ${art.title}`}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  setSelectedArtifact(art);
-                }
-              }}
-              className={`qa-artifact-card ${isDimmed ? "dimmed" : ""}`}
-              style={{
-                left: `${art.x}px`,
-                top: `${art.y}px`,
-              }}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!pointer.current.moved) setSelectedArtifact(art);
-              }}
+              className="qa-map"
+              ref={board}
+              style={{ transform: "scale(" + zoom + ")" }}
             >
-              <div className="qa-card-head">
-                <span className="qa-card-category">{art.categoryLabel}</span>
-                <span className="qa-card-id">{art.id}</span>
+              <div className="qa-map-label">
+                <Crosshair size={31} strokeWidth={1.25} aria-hidden="true" />
+                <h2>Test Lab</h2>
+                <p>QA evidence map</p>
               </div>
-
-              <h3 className="qa-card-title">{art.title}</h3>
-              <p className="qa-card-desc">{art.description}</p>
-
-              <div className="qa-card-preview-box">
-                <code>{art.previewCode}</code>
-              </div>
-
-              <div className="qa-card-footer">
-                <span className="qa-card-metric">{art.metric}</span>
-                <span className="qa-card-action">
-                  <span>INSPECT</span>
-                  <ArrowUpRight size={13} />
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* HUD Bottom Bar */}
-      <div className="qa-lab-hud-bottom">
-        <div className="qa-lab-instructions">
-          <Move size={14} className="text-[#A4552C]" />
-          <span>DRAG CANVAS TO PAN · CLICK ANY CARD TO INSPECT</span>
-        </div>
-
-        <div className="qa-lab-zoom-controls">
-          <button
-            type="button"
-            className="qa-zoom-btn"
-            onClick={zoomOut}
-            aria-label="Zoom Out"
-            title="Zoom Out"
-          >
-            <ZoomOut size={16} />
-          </button>
-          <span style={{ fontSize: "0.75rem", fontWeight: 600, padding: "0 0.25rem" }}>
-            {Math.round(zoom * 100)}%
-          </span>
-          <button
-            type="button"
-            className="qa-zoom-btn"
-            onClick={zoomIn}
-            aria-label="Zoom In"
-            title="Zoom In"
-          >
-            <ZoomIn size={16} />
-          </button>
-          <button
-            type="button"
-            className="qa-zoom-btn"
-            onClick={resetView}
-            aria-label="Reset View"
-            title="Reset Pan & Zoom"
-          >
-            <RotateCcw size={14} />
-          </button>
-        </div>
-      </div>
-
-      {/* Inspection Drawer / Lightbox Modal */}
-      {selectedArtifact && (
-        <div
-          ref={dialogRef}
-          aria-label="QA artifact inspector"
-          className="qa-inspect-overlay"
-          onClick={() => setSelectedArtifact(null)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <div
-            className="qa-inspect-modal"
-            onClick={(e) => e.stopPropagation()}
-            onPointerDown={(e) => e.stopPropagation()}
-          >
-            <div className="qa-inspect-header">
-              <div>
-                <span
-                  style={{
-                    fontSize: "0.72rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.12em",
-                    color: "var(--secondary)",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {selectedArtifact.categoryLabel} · {selectedArtifact.id}
-                </span>
-                <h2
-                  style={{
-                    fontSize: "1.35rem",
-                    fontWeight: 600,
-                    margin: "0.25rem 0 0",
-                    color: "var(--text-primary)",
-                  }}
-                >
-                  {selectedArtifact.title}
-                </h2>
-              </div>
-              <button
-                type="button"
-                className="qa-inspect-close"
-                onClick={() => setSelectedArtifact(null)}
-                aria-label="Close Inspector"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            <div className="qa-inspect-body">
-              <div>
-                <h4
-                  style={{
-                    fontSize: "0.85rem",
-                    fontWeight: 600,
-                    margin: "0 0 0.5rem",
-                    color: "var(--text-muted)",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Defect & Scenario Overview
-                </h4>
-                <p
-                  style={{
-                    fontSize: "0.95rem",
-                    lineHeight: 1.6,
-                    margin: 0,
-                    color: "var(--text-primary)",
-                  }}
-                >
-                  {selectedArtifact.description}
-                </p>
-              </div>
-
-              <div>
-                <h4
-                  style={{
-                    fontSize: "0.85rem",
-                    fontWeight: 600,
-                    margin: "0 0 0.5rem",
-                    color: "var(--text-muted)",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Engineering Impact & Metric
-                </h4>
-                <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
-                  <CheckCircle2 size={18} className="text-[#2E7D32]" />
-                  <span
-                    style={{ fontSize: "0.92rem", fontWeight: 500, color: "var(--text-primary)" }}
-                  >
-                    {selectedArtifact.impact}
-                  </span>
-                </div>
-              </div>
-
-              <div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "0.5rem",
-                  }}
-                >
-                  <h4
-                    style={{
-                      fontSize: "0.85rem",
-                      fontWeight: 600,
-                      margin: 0,
-                      color: "var(--text-muted)",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    Production Evidence / Stack Trace
-                  </h4>
-                  <span
-                    style={{
-                      fontSize: "0.75rem",
-                      fontFamily: "monospace",
-                      color: "var(--secondary)",
-                    }}
-                  >
-                    Verified Artifact
-                  </span>
-                </div>
-                <pre className="qa-inspect-code">
-                  <code>{selectedArtifact.fullCode}</code>
-                </pre>
-              </div>
+              {mapOrder.map(card)}
             </div>
           </div>
-        </div>
+        )}
+      </div>
+      <footer className="qa-lab-tools">
+        <span>
+          {linear ? <List size={16} /> : <Move size={16} />}
+          {linear
+            ? "Select an artifact to inspect"
+            : "Drag or swipe to explore"}
+        </span>
+        {!linear && (
+          <div role="group" aria-label="Canvas zoom">
+            <button
+              type="button"
+              aria-label="Zoom out"
+              disabled={zoom === zoomSteps[0]}
+              onClick={() => changeZoom(-1)}
+            >
+              <Minus size={17} />
+            </button>
+            <output aria-label="Zoom level">{Math.round(zoom * 100)}%</output>
+            <button
+              type="button"
+              aria-label="Zoom in"
+              disabled={zoom === zoomSteps[zoomSteps.length - 1]}
+              onClick={() => changeZoom(1)}
+            >
+              <Plus size={17} />
+            </button>
+            <button type="button" aria-label="Reset view" onClick={reset}>
+              <RotateCcw size={16} />
+            </button>
+          </div>
+        )}
+      </footer>
+      {selected && (
+        <Inspector artifact={selected} close={() => setSelected(null)} />
       )}
-    </div>
+    </section>
   );
 }

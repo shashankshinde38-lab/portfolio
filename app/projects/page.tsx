@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -18,38 +18,9 @@ import { ALL_PROJECTS } from "@/web/data/portfolio-data";
 import { projectPreviews } from "@/web/data/project-previews";
 import ProjectPreviewList from "@/web/components/laptopshowcase/ProjectPreviewList";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/projects";
+const pageUrl = `${siteOrigin}/projects`;
 
-export const metadata: Metadata = {
-  title: "Software Testing Projects & QA Case Studies | Shashank Shinde",
-  description:
-    "Explore 5 QA case studies by Shashank Shinde: automated regression, distributed JMeter load testing, REST API validation, and defect investigations.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "Software Testing Projects & QA Case Studies | Shashank Shinde",
-    description:
-      "Explore 5 real-world QA case studies by Shashank Shinde. End-to-end automation, distributed JMeter load testing, API validation, and critical defect discoveries.",
-    url: pageUrl,
-    type: "website",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "QA Projects & Case Studies — Shashank Shinde",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Software Testing Projects & QA Case Studies | Shashank Shinde",
-    description:
-      "Explore 5 real-world QA case studies by Shashank Shinde. End-to-end automation, distributed JMeter load testing, API validation, and critical defect discoveries.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/projects");
 
 const CASE_STUDY_ROUTES: Record<string, string> = {
   "TC-001": "/projects/driwe-qa-case-study",

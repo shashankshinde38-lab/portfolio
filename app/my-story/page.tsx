@@ -21,7 +21,7 @@ export default function MyStoryPage() {
         onOpenContact={() => setIsContactOpen(true)}
       />
 
-      <main className="story-main">
+      <main id="main-content" className="story-main">
         {/* Navigation / Breadcrumb */}
         <div className="specialty-nav-bar">
           <div className="specialty-container specialty-nav-inner">

@@ -17,7 +17,7 @@ import MultiStepContactOverlay from "@/web/components/MultiStepContact/MultiStep
 import AbilityCard3D from "@/web/components/AbilityCard3D/AbilityCard3D";
 import "./SubpageLayout.css";
 
-const siteUrl = "https://shashankportfolio-jet.vercel.app";
+const siteUrl = "https://shashankportfolio-jet.vercel.app/";
 
 export interface BreadcrumbItem {
   label: string;
@@ -40,7 +40,6 @@ export default function SubpageLayout({
   badge = "QA ENGINEERING",
   breadcrumbs,
   pageUrl,
-  description,
   children,
 }: SubpageLayoutProps) {
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -50,7 +49,7 @@ export default function SubpageLayout({
   const breadcrumbListSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "@id": `${pageUrl}/#breadcrumbs`,
+    "@id": `${pageUrl}#breadcrumbs`,
     itemListElement: breadcrumbs.map((crumb, idx) => ({
       "@type": "ListItem",
       position: idx + 1,
@@ -58,34 +57,9 @@ export default function SubpageLayout({
       item: crumb.href
         ? crumb.href.startsWith("http")
           ? crumb.href
-          : `${siteUrl}${crumb.href}`
+          : `new URL(crumb.href, siteUrl).href`
         : pageUrl,
     })),
-  };
-
-  const webPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": `${pageUrl}/#webpage`,
-    url: pageUrl,
-    name: title,
-    description: description,
-    inLanguage: "en-US",
-    isPartOf: {
-      "@id": `${siteUrl}/#website`,
-    },
-    about: {
-      "@id": `${siteUrl}/#person`,
-    },
-    author: {
-      "@id": `${siteUrl}/#person`,
-    },
-    creator: {
-      "@id": `${siteUrl}/#person`,
-    },
-    publisher: {
-      "@id": `${siteUrl}/#person`,
-    },
   };
 
   return (
@@ -94,17 +68,9 @@ export default function SubpageLayout({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [breadcrumbListSchema, webPageSchema],
-          }),
+          __html: JSON.stringify(breadcrumbListSchema).replace(/</g, "\\u003c"),
         }}
       />
-
-      {/* Skip Link */}
-      <a href="#subpage-content" className="skip-link">
-        Skip to content
-      </a>
 
       {/* Global Fixed Header (Replica of therishithakor.com with live clock, bulb toggle & routing) */}
       <SiteHeader
@@ -113,7 +79,7 @@ export default function SubpageLayout({
       />
 
       {/* Main Content Area */}
-      <main id="subpage-content" className="subpage-main">
+      <main id="main-content" className="subpage-main">
         {/* Breadcrumb Navigation Bar */}
         <div className="subpage-breadcrumbs-wrapper">
           <nav aria-label="Breadcrumbs" className="subpage-breadcrumbs">

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   Activity,
@@ -17,38 +17,9 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/projects/ride-sharing-testing-case-study";
+const pageUrl = `${siteOrigin}/projects/ride-sharing-testing-case-study`;
 
-export const metadata: Metadata = {
-  title: "Ride Sharing Application QA Case Study | Shashank Shinde — Software Test Engineer",
-  description:
-    "QA case study for Ride Sharing by Shashank Shinde: 22 REST API endpoints, seat matching validation, and concurrent over-allocation race condition fix.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "Ride Sharing Application QA Case Study | Shashank Shinde",
-    description:
-      "REST API testing, geospatial coordinate validation, and concurrent seat allocation race condition fix by Shashank Shinde.",
-    url: pageUrl,
-    type: "article",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Ride Sharing QA Case Study — Shashank Shinde",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Ride Sharing Application QA Case Study | Shashank Shinde",
-    description:
-      "REST API testing and concurrent seat reservation race condition mitigation by Shashank Shinde.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/projects/ride-sharing-testing-case-study");
 
 export default function RideSharingCaseStudyPage() {
   return (

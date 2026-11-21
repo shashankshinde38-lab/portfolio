@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { siteName } from "@/web/seo/site";
 import { Activity, ArrowLeft, Layers, Mail, ScanSearch, Send } from "lucide-react";
 import "./not-found.css";
 
 export const metadata: Metadata = {
-  title: "404: Edge Case Not Found | Shashank Shinde — Software Test Engineer",
+  title: { absolute: `Page Not Found | ${siteName}` },
   description: "The requested route does not exist. Return to Shashank Shinde's QA Automation & Testing portfolio.",
   robots: {
     index: false,
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <main className="not-found-page" role="main">
+    <main id="main-content" className="not-found-page" role="main">
       <div className="surface not-found-panel surface-glass">
         <span className="icon-tile icon-amber" aria-hidden="true">
           <ScanSearch size={24} />
@@ -39,7 +40,7 @@ export default function NotFound() {
           <Link href="/skills" className="btn-secondary btn-3d-glass" aria-label="View QA skills">
             <Activity size={16} /> QA Skills Directory
           </Link>
-          <Link href="/#contact" className="btn-secondary btn-3d-glass" aria-label="Contact Shashank Shinde">
+          <Link href="/contact" className="btn-secondary btn-3d-glass" aria-label="Contact Shashank Shinde">
             <Send size={15} /> Contact Me
           </Link>
           <a

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   BriefcaseBusiness,
@@ -12,38 +12,9 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/experience";
+const pageUrl = `${siteOrigin}/experience`;
 
-export const metadata: Metadata = {
-  title: "Work Experience | Shashank Shinde — Software Test Engineer",
-  description:
-    "Explore Shashank Shinde's QA work history at Profcyma Solutions in Pune: STLC test execution, CI/CD gates, automated regression, and release sign-offs.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "Work Experience | Shashank Shinde — Software Test Engineer",
-    description:
-      "Professional software testing work experience, STLC responsibilities, and client project engineering delivered by Shashank Shinde in Pune, India.",
-    url: pageUrl,
-    type: "profile",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Work Experience — Shashank Shinde",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Work Experience | Shashank Shinde — Software Test Engineer",
-    description:
-      "Professional software testing work experience, STLC responsibilities, and client project engineering delivered by Shashank Shinde.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/experience");
 
 export default function ExperiencePage() {
   return (

@@ -1,13 +1,9 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/web/seo/site";
 import SpecialtyLayout from "@/web/components/SpecialtyLayout/SpecialtyLayout";
 import ProjectHoverPreviewList from "@/web/components/ProjectHoverPreviewList/ProjectHoverPreviewList";
 import { CheckCircle2, ShieldCheck, KeyRound, Network, RefreshCw, FileCode } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "API & Backend Testing | Shashank Shinde",
-  description:
-    "REST Assured and Postman API automation suites, JSON Schema contract testing, OAuth2 validation, and webhook idempotency across distributed microservices.",
-};
+export const metadata = pageMetadata("/api-testing");
 
 export default function ApiTestingPage() {
   return (

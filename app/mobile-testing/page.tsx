@@ -1,13 +1,9 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/web/seo/site";
 import SpecialtyLayout from "@/web/components/SpecialtyLayout/SpecialtyLayout";
 import ProjectHoverPreviewList from "@/web/components/ProjectHoverPreviewList/ProjectHoverPreviewList";
 import { CheckCircle2, Smartphone, WifiOff, Fingerprint, Layers, Cpu } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Mobile App Testing | Shashank Shinde",
-  description:
-    "Native Android and iOS mobile app testing with Appium 2.0, UIAutomator2, XCUITest, offline data synchronization, biometric authentication, and gesture automation.",
-};
+export const metadata = pageMetadata("/mobile-testing");
 
 export default function MobileTestingPage() {
   return (

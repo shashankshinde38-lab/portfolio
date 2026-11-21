@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   Activity,
@@ -13,38 +13,9 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/skills/performance-testing";
+const pageUrl = `${siteOrigin}/skills/performance-testing`;
 
-export const metadata: Metadata = {
-  title: "Apache JMeter Performance & Load Testing | Shashank Shinde — Software Test Engineer",
-  description:
-    "Apache JMeter performance testing by Shashank Shinde: distributed load simulation, 100k virtual users, latency SLA benchmarks, and bottleneck isolation.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "Apache JMeter Performance & Load Testing | Shashank Shinde — Software Test Engineer",
-    description:
-      "Distributed load testing, stress simulation up to 100,000 concurrent virtual users, and API throughput analysis by Shashank Shinde in Pune, India.",
-    url: pageUrl,
-    type: "article",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Performance Testing — Shashank Shinde",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Apache JMeter Performance & Load Testing | Shashank Shinde",
-    description:
-      "Distributed load testing, stress simulation up to 100,000 concurrent virtual users, and API throughput analysis by Shashank Shinde.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/skills/performance-testing");
 
 export default function PerformanceTestingPage() {
   return (

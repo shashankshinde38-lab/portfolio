@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { JsonLd, pageMetadata, profileStructuredData, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   Award,
@@ -15,38 +15,9 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/about";
+const pageUrl = `${siteOrigin}/about`;
 
-export const metadata: Metadata = {
-  title: "About Shashank Shinde | Software Test Engineer & QA Automation Specialist",
-  description:
-    "Learn about Shashank Shinde: QA background, SDET qualifications, University of Pune education, automation approach, and testing philosophy.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "About Shashank Shinde | Software Test Engineer & QA Automation Specialist",
-    description:
-      "Professional profile, testing philosophy, and engineering qualifications of Shashank Shinde, Software Test Engineer in Pune, India.",
-    url: pageUrl,
-    type: "profile",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "About Shashank Shinde — Software Test Engineer",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "About Shashank Shinde | Software Test Engineer & QA Automation Specialist",
-    description:
-      "Professional profile and testing philosophy of Shashank Shinde, Software Test Engineer in Pune, India.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/about");
 
 export default function AboutPage() {
   return (
@@ -58,6 +29,8 @@ export default function AboutPage() {
       pageUrl={pageUrl}
       description="Professional profile, testing philosophy, and engineering qualifications of Shashank Shinde, Software Test Engineer in Pune, India."
     >
+      <JsonLd data={profileStructuredData} />
+
       {/* Direct Answer Box for AEO */}
       <section className="aeo-direct-answer-card" aria-label="Direct answer overview">
         <div className="aeo-direct-answer-header">

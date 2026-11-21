@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -13,38 +13,9 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/skills/api-testing";
+const pageUrl = `${siteOrigin}/skills/api-testing`;
 
-export const metadata: Metadata = {
-  title: "REST API Testing & Postman Validation | Shashank Shinde — Software Test Engineer",
-  description:
-    "REST API testing expertise by Shashank Shinde: Postman, REST Assured, JSON schema validation, webhook idempotency, and contract assertion pipelines.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "REST API Testing & Postman Validation | Shashank Shinde — Software Test Engineer",
-    description:
-      "RESTful API test architectures, Postman collections, schema assertions, and webhook idempotency engineering by Shashank Shinde in Pune, India.",
-    url: pageUrl,
-    type: "article",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "REST API Testing — Shashank Shinde",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "REST API Testing & Postman Validation | Shashank Shinde",
-    description:
-      "RESTful API test architectures, Postman collections, and webhook idempotency engineering by Shashank Shinde.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/skills/api-testing");
 
 export default function ApiTestingPage() {
   return (

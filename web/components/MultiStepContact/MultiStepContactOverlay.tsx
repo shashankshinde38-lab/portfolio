@@ -17,7 +17,8 @@ import "./MultiStepContactOverlay.css";
 
 interface MultiStepContactOverlayProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
+  inline?: boolean;
 }
 
 const SERVICE_OPTIONS = [
@@ -66,9 +67,13 @@ const TIMELINE_OPTIONS = [
   },
 ];
 
-export default function MultiStepContactOverlay({ isOpen, onClose }: MultiStepContactOverlayProps) {
+export default function MultiStepContactOverlay({
+  isOpen,
+  onClose = () => {},
+  inline = false,
+}: MultiStepContactOverlayProps) {
   const [currentStep, setCurrentStep] = useState(1);
-  const dialogRef = useDialogFocus(isOpen);
+  const dialogRef = useDialogFocus(isOpen && !inline);
   const [selectedService, setSelectedService] = useState("");
   const [selectedTimeline, setSelectedTimeline] = useState("");
   const [fullName, setFullName] = useState("");
@@ -214,13 +219,13 @@ export default function MultiStepContactOverlay({ isOpen, onClose }: MultiStepCo
 
   return (
     <div
-      ref={dialogRef}
-      className="contact-overlay-backdrop"
+      ref={inline ? undefined : dialogRef}
+      className={inline ? "contact-overlay-inline" : "contact-overlay-backdrop"}
       onMouseDown={(e) => {
-        if (e.target === e.currentTarget && !isSubmitting) onClose();
+        if (!inline && e.target === e.currentTarget && !isSubmitting) onClose();
       }}
-      role="dialog"
-      aria-modal="true"
+      role={inline ? "region" : "dialog"}
+      aria-modal={inline ? undefined : "true"}
       aria-label="Start QA Enquiry"
     >
       <div className="contact-overlay-modal">
@@ -235,14 +240,16 @@ export default function MultiStepContactOverlay({ isOpen, onClose }: MultiStepCo
             </span>
           </div>
 
-          <button
-            type="button"
-            className="contact-close-btn"
-            onClick={resetForm}
-            aria-label="Close Contact Overlay"
-          >
-            <X size={18} />
-          </button>
+          {!inline && (
+            <button
+              type="button"
+              className="contact-close-btn"
+              onClick={resetForm}
+              aria-label="Close Contact Overlay"
+            >
+              <X size={18} />
+            </button>
+          )}
         </div>
 
         {/* Content Area */}

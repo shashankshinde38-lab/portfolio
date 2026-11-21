@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -12,38 +12,9 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/skills/playwright-automation";
+const pageUrl = `${siteOrigin}/skills/playwright-automation`;
 
-export const metadata: Metadata = {
-  title: "Playwright E2E Automation Testing | Shashank Shinde — Software Test Engineer",
-  description:
-    "Playwright test automation engineering in TypeScript by Shashank Shinde: auto-waiting assertions, browser contexts, network mocking, and CI/CD gates.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "Playwright E2E Automation Testing | Shashank Shinde — Software Test Engineer",
-    description:
-      "Playwright end-to-end browser automation architecture, TypeScript test runner, and failure triage engineering by Shashank Shinde in Pune, India.",
-    url: pageUrl,
-    type: "article",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Playwright Automation Testing — Shashank Shinde",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Playwright Automation Testing | Shashank Shinde",
-    description:
-      "Playwright end-to-end browser automation architecture and TypeScript test runner by Shashank Shinde.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/skills/playwright-automation");
 
 export default function PlaywrightAutomationPage() {
   return (
@@ -217,7 +188,7 @@ test.describe('E-Commerce Multi-Vendor Checkout Suite', () => {
               testing simulator.
             </p>
           </div>
-          <Link href="/#simulator" className="btn-primary">
+          <Link href="/qa-lab" className="btn-primary">
             <span>Open Testing Lab</span>
             <ArrowUpRight size={15} />
           </Link>

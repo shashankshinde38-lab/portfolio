@@ -21,7 +21,7 @@ export default function LegalPage() {
         onOpenContact={() => setIsContactOpen(true)}
       />
 
-      <main className="legal-main">
+      <main id="main-content" className="legal-main">
         {/* Navigation / Breadcrumb */}
         <div className="specialty-nav-bar">
           <div className="specialty-container specialty-nav-inner">

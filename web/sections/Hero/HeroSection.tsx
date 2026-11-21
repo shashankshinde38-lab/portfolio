@@ -1,22 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ArrowDown, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowRight, Sparkles } from "lucide-react";
 import FlipCalendar from "@/web/components/FlipCalendar/FlipCalendar";
 import LiquidReveal from "@/web/components/LiquidReveal/LiquidReveal";
 import "./HeroSection.css";
 
 interface HeroSectionProps {
   onOpenCard?: () => void;
-  onOpenContact?: () => void;
+  onOpenIntro?: () => void;
 }
 
-// Grammatically correct roles matching "I am a ...":
-// "I am a QA Automation Engineer"
-// "I am a Software Test Engineer"
-// "I am a Mobile QA Engineer"
-// "I am a Manual Test Engineer"
-// "I am a Performance QA Engineer"
 const QA_ROLES = [
   "QA Automation Engineer",
   "Software Test Engineer",
@@ -25,179 +19,148 @@ const QA_ROLES = [
   "Performance QA Engineer",
 ];
 
-export default function HeroSection({ onOpenCard, onOpenContact }: HeroSectionProps) {
-  const scrollToDoors = () => {
-    const el = document.getElementById("doors");
-    if (el) {
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      el.scrollIntoView({ behavior: reduced ? "instant" : "smooth" });
-    }
-  };
+const METRICS = [
+  [
+    "~40%",
+    "Automation",
+    "Regression Cycle Cut",
+    "Selenium & Appium POM Test Frameworks",
+  ],
+  [
+    "100k+",
+    "Performance",
+    "Virtual Concurrency",
+    "Distributed JMeter Stress & Spike Testing",
+  ],
+  [
+    "240+",
+    "STLC Rigor",
+    "Defects Isolated",
+    "Zero Severity-1 Leaks into Production",
+  ],
+  [
+    "99.4%",
+    "CI/CD Gates",
+    "Pipeline Pass Rate",
+    "Flake-Free Jenkins & GitHub Actions",
+  ],
+];
 
+const DISCIPLINES = [
+  ["/automation-testing", "Automation Testing"],
+  ["/mobile-testing", "Mobile Testing"],
+  ["/manual-testing", "Manual QA"],
+  ["/performance-testing", "Performance Testing"],
+  ["/api-testing", "API Testing"],
+];
+
+export default function HeroSection({
+  onOpenCard,
+  onOpenIntro,
+}: HeroSectionProps) {
   return (
-    <section id="home" className="hero-section" aria-label="Introduction & Identity">
-      <div className="hero-main-container">
-        <div className="hero-copy">
-          {/* TOP STATUS & IDENTITY EYEBROW */}
-          <div className="hero-eyebrow-container">
-            <div className="hero-status-pill">
-              <span className="hero-status-dot" aria-hidden="true" />
-              <span className="hero-status-text">Available for QA Projects &amp; SDET Roles</span>
-            </div>
-            <span className="hero-eyebrow-sep">/</span>
-            <span className="hero-eyebrow-role">Profcyma Solutions &bull; Pune, MH, India</span>
+    <section
+      id="home"
+      className="sh-hero"
+      aria-labelledby="sh-introduction"
+    >
+      <div className="sh-hero__layout">
+        <div className="sh-hero__intro">
+          <div className="sh-hero__availability">
+            <i aria-hidden="true" />
+            Available for QA Projects &amp; SDET Roles
           </div>
 
-          {/* GRAND EDITORIAL HEADLINE WITH EXACT 3D DESK FLIP CALENDAR */}
-          <h1 className="hero-h1">
-            <span className="hero-h1-line">Hi, I&apos;m Shashank.</span>
-            <span className="hero-h1-line">
-              <span className="soft">I am a</span>
-            </span>
-            <span className="hero-calendar-wrap">
-              <FlipCalendar skills={QA_ROLES} />
-            </span>
+          <p className="sh-hero__location">
+            Profcyma Solutions · Pune, MH, India
+          </p>
+
+          <h1 id="sh-introduction">
+            Hi, I’m <em>Shashank Shinde.</em>
           </h1>
 
-          {/* HERO CALLS TO ACTION */}
-          <div className="hero-cta-group">
-            <button
-              type="button"
-              className="pill pill--dark pill--arrow"
-              onClick={onOpenContact}
-              aria-label="Start an enquiry"
-            >
-              <span className="pill__in">
-                <span>Hire me</span>
-                <span className="pill__badge" aria-hidden="true">
-                  <ArrowRight size={14} />
-                </span>
-              </span>
-            </button>
+          <p className="sh-hero__summary">
+            Software test engineer in Pune. I test web apps, mobile apps, and APIs, build automated
+            regression suites, and investigate defects before release.
+          </p>
 
-            <button
-              type="button"
-              className="pill pill--outline"
-              onClick={scrollToDoors}
-              aria-label="See my QA work"
-            >
-              <span className="pill__in">See my work</span>
-            </button>
-
-            {onOpenCard && (
-              <button
-                type="button"
-                className="pill pill--card-trigger"
-                onClick={onOpenCard}
-                aria-label="View interactive 3D Ability Card"
-              >
-                <span className="pill__in">
-                  <Sparkles size={14} className="pill__sparkle-icon" />
-                  <span>3D Ability Card</span>
-                </span>
-              </button>
-            )}
+          <div className="sh-hero__calendar" aria-hidden="true">
+            <FlipCalendar skills={QA_ROLES} />
           </div>
-          <details className="hero-practice-notes">
-            <summary>
-              My QA practice <span aria-hidden="true">↗</span>
-            </summary>
-            <div className="hero-practice-body">
-              {" "}
-              {/* COMPELLING QA MANIFESTO & VALUE PROPOSITION */}
-              <p className="hero-description">
-                Quality isn&apos;t an afterthought &mdash; it&apos;s engineered into every release.
-                I design, automate, and execute comprehensive software testing strategies to deliver
-                high-confidence, zero-defect production web, mobile, and API systems.
-              </p>
-              {/* LARGE & ATTRACTIVE EDITORIAL QA METRICS SHOWCASE */}
-              <div className="hero-metrics-grid" role="region" aria-label="Key QA Impact Metrics">
-                <div className="hero-metric-card">
-                  <div className="hero-metric-top">
-                    <span className="hero-metric-num font-serif">~40%</span>
-                    <span className="hero-metric-tag">Automation</span>
-                  </div>
-                  <span className="hero-metric-title">Regression Cycle Cut</span>
-                  <span className="hero-metric-desc">
-                    Selenium &amp; Appium POM Test Frameworks
-                  </span>
-                </div>
-
-                <div className="hero-metric-card">
-                  <div className="hero-metric-top">
-                    <span className="hero-metric-num font-serif">100k+</span>
-                    <span className="hero-metric-tag">Performance</span>
-                  </div>
-                  <span className="hero-metric-title">Virtual Concurrency</span>
-                  <span className="hero-metric-desc">
-                    Distributed JMeter Stress &amp; Spike Testing
-                  </span>
-                </div>
-
-                <div className="hero-metric-card">
-                  <div className="hero-metric-top">
-                    <span className="hero-metric-num font-serif">240+</span>
-                    <span className="hero-metric-tag">STLC Rigor</span>
-                  </div>
-                  <span className="hero-metric-title">Defects Isolated</span>
-                  <span className="hero-metric-desc">Zero Severity-1 Leaks into Production</span>
-                </div>
-
-                <div className="hero-metric-card">
-                  <div className="hero-metric-top">
-                    <span className="hero-metric-num font-serif">99.4%</span>
-                    <span className="hero-metric-tag">CI/CD Gates</span>
-                  </div>
-                  <span className="hero-metric-title">Pipeline Pass Rate</span>
-                  <span className="hero-metric-desc">Flake-Free Jenkins &amp; GitHub Actions</span>
-                </div>
-              </div>
-              {/* CORE QA DISCIPLINES PILLS */}
-              <div className="hero-doors-preview">
-                <span className="hero-doors-label">Key QA Disciplines:</span>
-                <div className="hero-doors-pills">
-                  <Link href="/automation-testing" className="hero-door-chip">
-                    <span className="door-chip-dot door-navy" />
-                    <span>Automation Testing</span>
-                  </Link>
-                  <Link href="/mobile-testing" className="hero-door-chip">
-                    <span className="door-chip-dot door-burgundy" />
-                    <span>Mobile Testing</span>
-                  </Link>
-                  <Link href="/manual-testing" className="hero-door-chip">
-                    <span className="door-chip-dot door-sage" />
-                    <span>Manual QA</span>
-                  </Link>
-                  <Link href="/performance-testing" className="hero-door-chip">
-                    <span className="door-chip-dot door-terracotta" />
-                    <span>Performance Testing</span>
-                  </Link>
-                  <Link href="/api-testing" className="hero-door-chip">
-                    <span className="door-chip-dot door-terracotta" />
-                    <span>API Testing</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </details>
         </div>
-        <LiquidReveal
-          baseSrc="/images/hero-figure-cream.webp"
-          colorSrc="/images/hero-figure-color.webp"
-          alt="Shashank Shinde · Software Test Engineer"
-          onOpenCard={onOpenCard}
-        />
+
+        <div className="sh-hero__portrait">
+          <LiquidReveal
+            baseSrc="/images/hero-figure-cream.webp"
+            colorSrc="/images/hero-figure-color.webp"
+            alt="Shashank Shinde · Software Test Engineer"
+            onOpenCard={onOpenCard}
+          />
+        </div>
+
+        <div className="sh-hero__actions">
+          <Link href="/projects" className="sh-hero__primary">
+            View QA case studies
+            <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+
+          <Link href="/contact">Contact Shashank</Link>
+
+          {onOpenCard && (
+            <button
+              type="button"
+              className="sh-hero__card-trigger"
+              onClick={onOpenCard}
+            >
+              <Sparkles size={15} aria-hidden="true" />
+              3D Ability Card
+            </button>
+          )}
+        </div>
+
+        <details className="sh-hero__notes" open>
+          <summary>My QA practice</summary>
+
+          <div className="sh-hero__notes-body">
+            <p>
+              In the <Link href="/projects/grosido-qa-case-study">Grosido case study</Link>, I describe the
+              inventory and checkout regression coverage I built. The <Link href="/projects/driwe-qa-case-study">DRIWE case study</Link>{" "}
+              covers booking flows and JMeter load testing. The <Link href="/qa-lab">QA Lab</Link> shows
+              how I document test results and investigate defects.
+            </p>
+
+            <div className="sh-hero__metrics">
+              {METRICS.map(([value, category, title, detail]) => (
+                <div key={title}>
+                  <span className="sh-hero__metric-tag">{category}</span>
+                  <strong>{value}</strong>
+                  <h3>{title}</h3>
+                  <p>{detail}</p>
+                </div>
+              ))}
+            </div>
+
+            <nav
+              className="sh-hero__disciplines"
+              aria-label="Key QA disciplines"
+            >
+              {DISCIPLINES.map(([href, label]) => (
+                <Link key={href} href={href}>
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </details>
       </div>
 
-      {/* HERO BOTTOM STATUS BAR */}
-      <div className="hero-bottom-bar">
-        <span>AVAILABLE FOR WORK</span>
-        <span>PUNE, MAHARASHTRA, INDIA</span>
-        <button type="button" className="hero-bottom-scroll-trigger" onClick={scrollToDoors}>
-          <span>SCROLL TO EXPLORE</span>
-          <ArrowDown size={13} />
-        </button>
-      </div>
+      <footer className="sh-hero__footer">
+        {onOpenIntro && <button type="button" onClick={onOpenIntro}>Play portfolio intro</button>}
+        <a href="#doors">
+          Explore QA disciplines
+          <ArrowDown size={14} aria-hidden="true" />
+        </a>
+      </footer>
     </section>
   );
 }

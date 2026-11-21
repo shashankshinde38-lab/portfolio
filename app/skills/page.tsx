@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   Activity,
@@ -18,38 +18,9 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/skills";
+const pageUrl = `${siteOrigin}/skills`;
 
-export const metadata: Metadata = {
-  title: "QA Automation & Software Testing Skills | Shashank Shinde",
-  description:
-    "Comprehensive QA skills directory of Shashank Shinde in Pune. Deep-dive into Selenium WebDriver, Playwright, Postman API validation, JMeter, and Appium.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "QA Automation & Software Testing Skills | Shashank Shinde",
-    description:
-      "Technical testing capabilities, automation frameworks, API validation, and performance load engineering by Shashank Shinde in Pune, India.",
-    url: pageUrl,
-    type: "website",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "QA Skills — Shashank Shinde",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "QA Automation & Software Testing Skills | Shashank Shinde",
-    description:
-      "Technical testing capabilities, automation frameworks, API validation, and performance load engineering by Shashank Shinde.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/skills");
 
 export default function SkillsPage() {
   return (

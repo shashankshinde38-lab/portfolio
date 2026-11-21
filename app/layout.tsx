@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import SkipLink from "@/web/components/SkipLink/SkipLink";
 import SpecialtyDoorNavigation from "@/web/components/QADoorsFrame/SpecialtyDoorNavigation";
 import SmoothScroll from "@/web/components/SmoothScroll/SmoothScroll";
@@ -10,8 +11,8 @@ const siteUrl = "https://shashankportfolio-jet.vercel.app";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Shashank Shinde | Software Test Engineer & QA Automation Engineer",
-    template: "%s | Shashank Shinde",
+    default: "Shashank Shinde Portfolio",
+    template: "%s | Shashank Shinde Portfolio",
   },
   description:
     "Shashank Shinde is a Software Test Engineer & QA Automation specialist in Pune, skilled in Selenium, Playwright, API testing, Postman, JMeter, and Appium.",
@@ -32,29 +33,29 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   openGraph: {
-    title: "Shashank Shinde | Software Test Engineer & QA Automation Engineer",
+    title: "Shashank Shinde Portfolio",
     description:
       "Shashank Shinde is a Software Test Engineer & QA Automation specialist in Pune, skilled in Selenium, Playwright, API testing, Postman, JMeter, and Appium.",
     type: "profile",
     url: siteUrl,
     siteName: "Shashank Shinde Portfolio",
-    locale: "en_US",
+    locale: "en_IN",
     images: [
       {
-        url: `${siteUrl}/images/og-image.png`,
+        url: `${siteUrl}/images/portfolio-social.jpg`,
         width: 1200,
         height: 630,
-        alt: "Shashank Shinde | Software Test Engineer & QA Automation Engineer",
-        type: "image/png",
+        alt: "Shashank Shinde Portfolio",
+        type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shashank Shinde | Software Test Engineer & QA Automation Engineer",
+    title: "Shashank Shinde Portfolio",
     description:
       "Shashank Shinde is a Software Test Engineer & QA Automation specialist in Pune, skilled in Selenium, Playwright, API testing, Postman, JMeter, and Appium.",
-    images: [`${siteUrl}/images/og-image.png`],
+    images: [`${siteUrl}/images/portfolio-social.jpg`],
   },
   robots: {
     index: true,
@@ -447,6 +448,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
         />
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
+          </>
+        )}
       </head>
       <body className="antialiased min-h-screen selection:bg-[#A4552C]/20 selection:text-[#1A1818]">
         <SkipLink />

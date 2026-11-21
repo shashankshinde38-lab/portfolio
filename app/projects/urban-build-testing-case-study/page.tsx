@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   Activity,
@@ -16,38 +16,9 @@ import {
 } from "lucide-react";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
-const pageUrl = "https://shashankportfolio-jet.vercel.app/projects/urban-build-testing-case-study";
+const pageUrl = `${siteOrigin}/projects/urban-build-testing-case-study`;
 
-export const metadata: Metadata = {
-  title: "Urban Build Lead Generation QA Case Study | Shashank Shinde — Software Test Engineer",
-  description:
-    "QA case study for Urban Build by Shashank Shinde: Android lead capture, high-latency network testing, and rapid multi-tap duplicate lead prevention.",
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: "Urban Build Lead Generation QA Case Study | Shashank Shinde",
-    description:
-      "Android mobile QA, network latency throttling, and rapid multi-tap duplicate lead generation mitigation by Shashank Shinde.",
-    url: pageUrl,
-    type: "article",
-    images: [
-      {
-        url: "https://shashankportfolio-jet.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Urban Build QA Case Study — Shashank Shinde",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Urban Build Lead Generation QA Case Study | Shashank Shinde",
-    description:
-      "Android mobile QA and rapid multi-tap duplicate lead generation mitigation by Shashank Shinde.",
-    images: ["https://shashankportfolio-jet.vercel.app/images/og-image.png"],
-  },
-};
+export const metadata = pageMetadata("/projects/urban-build-testing-case-study");
 
 export default function UrbanBuildCaseStudyPage() {
   return (

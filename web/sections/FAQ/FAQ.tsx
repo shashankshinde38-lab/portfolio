@@ -196,7 +196,7 @@ const FAQ_ITEMS: FaqItem[] = [
     ],
     link: {
       text: "Open contact form and direct communication channels",
-      href: "/#contact",
+      href: "/contact",
     },
   },
 ];
