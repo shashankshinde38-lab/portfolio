@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { siteName } from "@/web/seo/site";
 import { canonicalPortfolioPath } from "@/web/utils/routes";
 import { usePathname, useRouter } from "next/navigation";
 import { Sparkles } from "lucide-react";
@@ -155,9 +156,12 @@ export default function SiteHeader({ onOpenContact, onOpenCard }: SiteHeaderProp
 
   // Click Handlers
   const handleHomeClick = (e: React.MouseEvent) => {
-    if (pathname === "/") {
+    if (pathname === "/" && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({
+        top: 0,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+      });
     }
   };
 
@@ -198,18 +202,19 @@ export default function SiteHeader({ onOpenContact, onOpenCard }: SiteHeaderProp
           {/* Brand Logo / Name */}
           <Link
             href="/"
+            prefetch={false}
             className="site-header-brand"
             onClick={handleHomeClick}
-            aria-label="Shashank Shinde Homepage"
           >
             <span className="brand-dot" aria-hidden="true" />
-            <span className="brand-text">SHASHANK SHINDE.</span>
+            <span className="brand-text">{siteName}</span>
           </Link>
 
           {/* DESKTOP DIRECT NAVIGATION LINKS (Direct routes with active states) */}
           <nav className="header-nav-desktop" aria-label="Desktop Main Navigation">
             <Link
               href="/"
+              prefetch={false}
               className={`header-nav-link ${pathname === "/" ? "is-active" : ""}`}
               onClick={handleHomeClick}
             >
@@ -217,41 +222,51 @@ export default function SiteHeader({ onOpenContact, onOpenCard }: SiteHeaderProp
             </Link>
             <Link
               href="/automation-testing"
+              prefetch={false}
               className={`header-nav-link ${pathname === "/automation-testing" ? "is-active" : ""}`}
             >
               QA Automation
             </Link>
             <Link
               href="/mobile-testing"
+              prefetch={false}
               className={`header-nav-link ${pathname === "/mobile-testing" ? "is-active" : ""}`}
             >
               Mobile Testing
             </Link>
             <Link
               href="/manual-testing"
+              prefetch={false}
               className={`header-nav-link ${pathname === "/manual-testing" ? "is-active" : ""}`}
             >
               Manual QA
             </Link>
             <Link
               href="/api-testing"
+              prefetch={false}
               className={`header-nav-link ${pathname === "/api-testing" ? "is-active" : ""}`}
             >
               API Testing
             </Link>
             <Link
               href="/my-story"
+              prefetch={false}
               className={`header-nav-link ${pathname === "/my-story" ? "is-active" : ""}`}
             >
               My story
             </Link>
-            <button
-              type="button"
-              className="header-nav-link header-nav-link-btn"
-              onClick={handleContactClick}
+            <Link
+              href="/contact"
+              prefetch={false}
+              className={`header-nav-link ${pathname === "/contact" ? "is-active" : ""}`}
+              onClick={(event) => {
+                if (onOpenContact && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+                  handleContactClick(event);
+                }
+              }}
             >
               Contact
-            </button>
+            </Link>
           </nav>
 
           {/* RIGHT SIDE: TIME CAPSULE, 3D CARD, START ENQUIRY & MENU BUTTON */}

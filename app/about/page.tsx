@@ -1,4 +1,5 @@
-import { JsonLd, pageMetadata, profileStructuredData, siteOrigin } from "@/web/seo/site";
+import JsonLd from "@/web/seo/JsonLd";
+import { pageMetadata, profileStructuredData, siteOrigin } from "@/web/seo/site";
 import Link from "next/link";
 import {
   Award,

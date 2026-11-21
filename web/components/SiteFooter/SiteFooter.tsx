@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { siteName } from "@/web/seo/site";
 import { ArrowUp, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 import "./SiteFooter.css";
 
@@ -33,7 +34,10 @@ export default function SiteFooter({ onOpenContact }: SiteFooterProps) {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+    });
   };
 
   return (
@@ -174,10 +178,12 @@ export default function SiteFooter({ onOpenContact }: SiteFooterProps) {
               © {new Date().getFullYear()}{" "}
               <Link
                 href="/admin/login"
+                prefetch={false}
+                rel="nofollow"
                 className="footer-brand-secret-link"
-                title="Shashank Shinde"
+                title={siteName}
               >
-                Shashank Shinde
+                {siteName}
               </Link>
               .
             </span>

@@ -10,6 +10,7 @@
   --hero-pad: clamp(1rem, 5vw, 5rem);
 
   position: relative;
+  z-index: 2;
   isolation: isolate;
   display: flex;
   flex-direction: column;

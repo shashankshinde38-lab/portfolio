@@ -215,3 +215,23 @@ body.dark-theme .credit-note {
     grid-template-columns: 1fr;
   }
 }
+#analytics-preferences {
+  scroll-margin-top: calc(var(--header-height) + 1rem);
+}
+
+.analytics-preferences {
+  display: grid;
+  gap: 0.25rem;
+  margin-block: 0.8rem;
+}
+
+.analytics-preferences legend {
+  font-weight: 600;
+}
+
+.analytics-preferences label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+}

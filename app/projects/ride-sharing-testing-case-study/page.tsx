@@ -15,6 +15,7 @@ import {
   Terminal,
   Zap,
 } from "lucide-react";
+import CaseStudyArtwork from "@/web/components/SubpageLayout/CaseStudyArtwork";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
 const pageUrl = `${siteOrigin}/projects/ride-sharing-testing-case-study`;
@@ -52,6 +53,8 @@ export default function RideSharingCaseStudyPage() {
           vehicle).
         </p>
       </section>
+
+      <CaseStudyArtwork project="ridesharing" alt="Ride sharing app testing case study illustration" />
 
       {/* Scope Overview */}
       <section className="content-section">

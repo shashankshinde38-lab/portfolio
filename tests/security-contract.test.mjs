@@ -13,21 +13,19 @@ test("admin PIN is never shipped in client-facing source", async () => {
     "admin/components/Shell/AdminShell.tsx",
   ];
   const bundle = (await Promise.all(clientFiles.map(read))).join("\n");
-  assert.doesNotMatch(bundle, /752002/);
   assert.doesNotMatch(bundle, /ADMIN_PIN/);
   assert.doesNotMatch(bundle, /signInWithPassword/);
 });
 
-test("server login delegates the PIN check to Supabase Auth", async () => {
+test("admin sign-in uses configured server credentials or Supabase Auth", async () => {
   const login = await read("app/api/admin/[...slug]/route.ts");
   const auth = await read("server/api/services/admin-auth.ts");
   assert.match(auth, /signInWithPassword/);
   assert.match(auth, /ADMIN_EMAIL/);
   assert.match(auth, /ADMIN_USER_ID/);
-  assert.doesNotMatch(auth, /process\.env\.ADMIN_PIN/);
-  assert.doesNotMatch(auth, /timingSafeEqual/);
-  assert.doesNotMatch(login, /752002/);
-  assert.doesNotMatch(`${login}\n${auth}`, /password === ["']752002["']/);
+  assert.match(auth, /process\.env\.ADMIN_PIN\?\.trim\(\)/);
+  assert.match(auth, /timingSafeEqual\(Buffer\.from\(pin\), Buffer\.from\(configuredPin\)\)/);
+  assert.doesNotMatch(`${login}\n${auth}`, /["']\d{6}["']/);
 });
 
 test("admin cookies are opaque and backed by a revocable server-side session", async () => {

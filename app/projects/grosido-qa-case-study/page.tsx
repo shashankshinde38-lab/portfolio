@@ -11,6 +11,7 @@ import {
   Terminal,
   Zap,
 } from "lucide-react";
+import CaseStudyArtwork from "@/web/components/SubpageLayout/CaseStudyArtwork";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
 const pageUrl = `${siteOrigin}/projects/grosido-qa-case-study`;
@@ -47,6 +48,8 @@ export default function GrosidoCaseStudyPage() {
           retained stale baseline prices when flash promotions expired, leading to checkout billing discrepancies.
         </p>
       </section>
+
+      <CaseStudyArtwork project="grosido" alt="Grosido grocery delivery testing case study illustration" />
 
       {/* Project Overview */}
       <section className="content-section">

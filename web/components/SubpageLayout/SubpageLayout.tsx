@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import {
@@ -13,10 +14,10 @@ import {
 } from "lucide-react";
 import SiteHeader from "@/web/components/SiteHeader/SiteHeader";
 import SiteFooter from "@/web/components/SiteFooter/SiteFooter";
-import MultiStepContactOverlay from "@/web/components/MultiStepContact/MultiStepContactOverlay";
-import AbilityCard3D from "@/web/components/AbilityCard3D/AbilityCard3D";
 import "./SubpageLayout.css";
 
+const MultiStepContactOverlay = dynamic(() => import("@/web/components/MultiStepContact/MultiStepContactOverlay"));
+const AbilityCard3D = dynamic(() => import("@/web/components/AbilityCard3D/AbilityCard3D"));
 const siteUrl = "https://shashankportfolio-jet.vercel.app/";
 
 export interface BreadcrumbItem {
@@ -54,11 +55,7 @@ export default function SubpageLayout({
       "@type": "ListItem",
       position: idx + 1,
       name: crumb.label,
-      item: crumb.href
-        ? crumb.href.startsWith("http")
-          ? crumb.href
-          : `new URL(crumb.href, siteUrl).href`
-        : pageUrl,
+      item: crumb.href ? new URL(crumb.href, siteUrl).href : pageUrl,
     })),
   };
 
@@ -149,14 +146,10 @@ export default function SubpageLayout({
               </p>
             </div>
             <div className="subpage-cta-actions">
-              <button
-                type="button"
-                onClick={() => setIsContactOpen(true)}
-                className="btn-primary"
-              >
-                <span>Get in Touch</span>
+              <Link href="/contact" className="btn-primary" prefetch={false}>
+                <span>Contact Shashank</span>
                 <ArrowUpRight size={16} aria-hidden="true" />
-              </button>
+              </Link>
               <a
                 href="/files/Shashank_Shinde_Resume.pdf"
                 target="_blank"
@@ -176,16 +169,10 @@ export default function SubpageLayout({
       <SiteFooter onOpenContact={() => setIsContactOpen(true)} />
 
       {/* 5-Step Project Enquiry & Contact Overlay */}
-      <MultiStepContactOverlay
-        isOpen={isContactOpen}
-        onClose={() => setIsContactOpen(false)}
-      />
+      {isContactOpen && <MultiStepContactOverlay isOpen onClose={() => setIsContactOpen(false)} />}
 
       {/* 3D Holographic Ability Card */}
-      <AbilityCard3D
-        isOpen={isCardOpen}
-        onClose={() => setIsCardOpen(false)}
-      />
+      {isCardOpen && <AbilityCard3D isOpen onClose={() => setIsCardOpen(false)} />}
     </div>
   );
 }

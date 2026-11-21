@@ -14,6 +14,7 @@ import {
   Terminal,
   Zap,
 } from "lucide-react";
+import CaseStudyArtwork from "@/web/components/SubpageLayout/CaseStudyArtwork";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
 const pageUrl = `${siteOrigin}/projects/driwe-qa-case-study`;
@@ -51,6 +52,8 @@ export default function DriweCaseStudyPage() {
           re-application during surge demand produced negative ride totals (-₹45), mistakenly crediting rider wallets.
         </p>
       </section>
+
+      <CaseStudyArtwork project="driwe" alt="DRIWE cab and courier testing case study illustration" />
 
       {/* Project Overview Grid */}
       <section className="content-section">

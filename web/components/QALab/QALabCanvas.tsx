@@ -289,19 +289,52 @@ const mapOrder = [...ARTIFACTS].sort(
 );
 const zoomSteps = [0.65, 0.8, 1, 1.15, 1.3];
 
+const relatedCaseStudies = [
+  {
+    href: "/projects/grosido-qa-case-study",
+    name: "Grosido QA case study",
+    summary: "Selenium regression coverage for inventory, cart pricing, and checkout.",
+  },
+  {
+    href: "/projects/driwe-qa-case-study",
+    name: "DRIWE QA case study",
+    summary: "Booking and payment checks alongside distributed JMeter load testing.",
+  },
+  {
+    href: "/projects/ride-sharing-testing-case-study",
+    name: "Ride Sharing QA case study",
+    summary: "REST API checks and concurrent seat reservation testing.",
+  },
+  {
+    href: "/projects/urban-build-testing-case-study",
+    name: "Urban Build QA case study",
+    summary: "Android lead-form testing and duplicate notification checks.",
+  },
+  {
+    href: "/projects/ecommerce-testing-case-study",
+    name: "E-Commerce QA case study",
+    summary: "Cross-role checkout testing and refund webhook validation.",
+  },
+];
+
 function Inspector({
   artifact,
   close,
+  trigger,
 }: {
   artifact: Artifact;
   close: () => void;
+  trigger: HTMLButtonElement | null;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const dialog = ref.current!;
     dialog.showModal();
-    return () => dialog.close();
-  }, []);
+    return () => {
+      dialog.close();
+      if (trigger?.isConnected) trigger.focus({ preventScroll: true });
+    };
+  }, [trigger]);
 
   return (
     <dialog
@@ -356,7 +389,7 @@ export default function QALabCanvas() {
   const [filter, setFilter] = useState<Category>("all");
   const [linear, setLinear] = useState(false);
   const [zoom, setZoom] = useState(1);
-  const [selected, setSelected] = useState<Artifact | null>(null);
+  const [selected, setSelected] = useState<{ artifact: Artifact; trigger: HTMLButtonElement } | null>(null);
   const [dragging, setDragging] = useState(false);
   const stage = useRef<HTMLDivElement>(null);
   const board = useRef<HTMLDivElement>(null);
@@ -532,7 +565,7 @@ export default function QALabCanvas() {
             type="button"
             aria-label={"Inspect " + a.title}
             disabled={dim}
-            onClick={() => setSelected(a)}
+            onClick={(event) => setSelected({ artifact: a, trigger: event.currentTarget })}
           >
             Inspect <ArrowUpRight size={14} />
           </button>
@@ -544,7 +577,6 @@ export default function QALabCanvas() {
   return (
     <section
       className="qa-lab"
-      id="main-content"
       aria-label="Interactive QA Lab"
     >
       <header className="qa-lab-header">
@@ -636,7 +668,7 @@ export default function QALabCanvas() {
           {linear ? <List size={16} /> : <Move size={16} />}
           {linear
             ? "Select an artifact to inspect"
-            : "Drag or swipe to explore"}
+            : "Drag or swipe"}
         </span>
         {!linear && (
           <div role="group" aria-label="Canvas zoom">
@@ -662,10 +694,33 @@ export default function QALabCanvas() {
             </button>
           </div>
         )}
+        <a
+          href="#lab-case-studies"
+          className="qa-lab-case-link"
+          onClick={() => document.getElementById("lab-case-studies")?.focus({ preventScroll: true })}
+        >
+          Case studies
+        </a>
       </footer>
       {selected && (
-        <Inspector artifact={selected} close={() => setSelected(null)} />
+        <Inspector artifact={selected.artifact} close={() => setSelected(null)} trigger={selected.trigger} />
       )}
+    </section>
+  );
+}
+
+export function QALabCaseStudies() {
+  return (
+    <section id="lab-case-studies" className="qa-lab-case-studies" aria-labelledby="lab-case-studies-heading" tabIndex={-1}>
+      <h2 id="lab-case-studies-heading">QA case studies related to the lab</h2>
+      <ul>
+        {relatedCaseStudies.map(({ href, name, summary }) => (
+          <li key={href}>
+            <Link href={href} prefetch={false}>{name}</Link>
+            <p>{summary}</p>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

@@ -7,6 +7,8 @@ import SiteHeader from "@/web/components/SiteHeader/SiteHeader";
 import SiteFooter from "@/web/components/SiteFooter/SiteFooter";
 import AbilityCard3D from "@/web/components/AbilityCard3D/AbilityCard3D";
 import MultiStepContactOverlay from "@/web/components/MultiStepContact/MultiStepContactOverlay";
+import AnalyticsPreferences from "@/web/components/PortfolioAnalytics/AnalyticsPreferences";
+import { analyticsMeasurementId } from "@/web/utils/analytics";
 import "./legal.css";
 
 export default function LegalPage() {
@@ -54,20 +56,20 @@ export default function LegalPage() {
           <div className="specialty-container">
             <div className="legal-grid">
               {/* Privacy Principles */}
-              <div className="legal-card">
+              <div className="legal-card" id="analytics-preferences">
                 <div className="legal-card-header">
                   <Shield size={24} className="text-[#A4552C]" />
-                  <h2 className="legal-card-title">Zero Tracking & Privacy by Design</h2>
+                  <h2 className="legal-card-title">Privacy and Analytics</h2>
                 </div>
                 <div className="legal-card-content">
                   <p>
-                    This portfolio does not utilize third-party tracking pixels, invasive cookies,
-                    or advertising trackers. Any preference data (such as having already viewed the
-                    introductory animation or dismissed a modal) is stored in your browser: the
-                    theme choice persists in <code>localStorage</code> under <code>theme</code>, and
-                    the introductory animation preference uses <code>sessionStorage</code> under{" "}
-                    <code>ss_intro_viewed</code>. You can clear these in your browser settings.
+                    The site stores your theme and optional analytics choice in your browser.
+                    Google Analytics is off by default. When enabled by the site and allowed by you,
+                    it measures page visits, case-study views, résumé downloads, and enquiry
+                    completions. Your name, contact details, and enquiry message are excluded from
+                    analytics. You can change your choice here or clear it in your browser settings.
                   </p>
+                  {analyticsMeasurementId() && <AnalyticsPreferences />}
                   <p>
                     When you submit an enquiry through the 5-step modal, your input (name, work
                     email, project timeline, and testing scope) is transmitted securely over HTTPS

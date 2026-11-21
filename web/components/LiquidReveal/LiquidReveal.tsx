@@ -27,9 +27,8 @@ export default function LiquidReveal({
     const base = baseImgRef.current;
     if (!stage || !canvas || !base) return;
 
-    // Check reduced motion or small screens / touch without hover
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) {
+    const canReveal = window.matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)").matches;
+    if (!canReveal) {
       canvas.style.display = "none";
       return;
     }
@@ -49,12 +48,7 @@ export default function LiquidReveal({
     const [mask, mX] = mk();
     const [tmp, tX] = mk();
 
-    const bwImg = new Image();
     const colImg = new Image();
-    bwImg.crossOrigin = "anonymous";
-    colImg.crossOrigin = "anonymous";
-    bwImg.src = baseSrc;
-    colImg.src = colorSrc;
 
     const brushRadius = 140;
     let radius = brushRadius * dpr;
@@ -114,7 +108,7 @@ export default function LiquidReveal({
     }
 
     function measure() {
-      if (!stage) return;
+      if (!stage || !base) return;
       const r = stage.getBoundingClientRect();
       W = Math.max(1, Math.round(r.width * dpr));
       H = Math.max(1, Math.round(r.height * dpr));
@@ -125,12 +119,13 @@ export default function LiquidReveal({
         }
       }
       radius = brushRadius * dpr;
-      fitDraw(bwX, bwImg);
+      fitDraw(bwX, base);
       fitDraw(colX, colImg);
       hide();
     }
 
-    bwImg.onload = () => fitDraw(bwX, bwImg);
+    const drawBase = () => fitDraw(bwX, base);
+    base.addEventListener("load", drawBase);
     colImg.onload = () => fitDraw(colX, colImg);
 
     function stamp(x: number, y: number) {
@@ -175,9 +170,11 @@ export default function LiquidReveal({
     }
 
     const onPointerMove = (e: PointerEvent) => {
-      if (!colImg.naturalWidth || !bwImg.naturalWidth) return;
       if (!stage) return;
       const r = stage.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) return;
+      if (!colImg.getAttribute("src")) colImg.src = colorSrc;
+      if (!colImg.naturalWidth || !base.naturalWidth) return;
       const x = (e.clientX - r.left) * dpr;
       const y = (e.clientY - r.top) * dpr;
 
@@ -214,6 +211,7 @@ export default function LiquidReveal({
 
     return () => {
       window.removeEventListener("pointermove", onPointerMove);
+      base.removeEventListener("load", drawBase);
       ro.disconnect();
       cancelAnimationFrame(animId);
       hide();
@@ -226,27 +224,19 @@ export default function LiquidReveal({
         className="fig"
         id="fig"
         ref={stageRef}
-        onClick={(e) => {
-          if (onOpenCard) onOpenCard();
-        }}
-        onKeyDown={(e) => {
-          if ((e.key === "Enter" || e.key === " ") && onOpenCard) {
-            e.preventDefault();
-            onOpenCard();
-          }
-        }}
-        role="button"
-        tabIndex={0}
-        aria-label="View Shashank Shinde's 3D Ability Card"
+        onClick={onOpenCard}
       >
         <img
           id="figBase"
           ref={baseImgRef}
           src={baseSrc}
+          srcSet="/images/hero-figure-cream-320.webp 320w, /images/hero-figure-cream-480.webp 480w, /images/hero-figure-cream-640.webp 640w, /images/hero-figure-cream.webp 766w"
+          sizes="(max-width: 560px) 180px, (max-width: 780px) 220px, 400px"
           alt={alt}
+          width={766}
+          height={1024}
           fetchPriority="high"
           decoding="async"
-          aria-hidden="true"
         />
         <canvas id="figCanvas" ref={canvasRef} aria-hidden="true" />
         {onOpenCard && (

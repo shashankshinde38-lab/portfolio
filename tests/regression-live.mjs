@@ -45,7 +45,7 @@ const message = `Regression check ${stamp}: dashboard, enquiries, and database.`
 try {
   const home = await req("/");
   record("GET / loads", home.res.status === 200, `status=${home.res.status}`);
-  record("Home HTML has no admin PIN", !home.text.includes(pin || "752002"));
+  record("Home HTML has no admin PIN", !pin || !home.text.includes(pin));
   record("Footer admin entry exists", home.text.includes('href="/admin/login"'));
   record("Home still has contact form", /id="contact"/.test(home.text) && /name="fullName"/.test(home.text));
   record("Home still has project cases", /id="cases"/.test(home.text));

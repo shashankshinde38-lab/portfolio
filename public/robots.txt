@@ -1,48 +1,43 @@
 # Standard Search Engine Crawlers
 User-agent: *
 Allow: /
-Disallow: /admin/
+Disallow: /admin
 Disallow: /api/
 
 # Google Search
 User-agent: Googlebot
 Allow: /
-Disallow: /admin/
+Disallow: /admin
 Disallow: /api/
 
 # Bing & Copilot Search
 User-agent: Bingbot
 Allow: /
-Disallow: /admin/
+Disallow: /admin
 Disallow: /api/
 
 # OpenAI Search (ChatGPT Search & Citations)
 User-agent: OAI-SearchBot
 Allow: /
-Disallow: /admin/
+Disallow: /admin
 Disallow: /api/
 
 # Anthropic Claude Search
 User-agent: Claude-SearchBot
 Allow: /
-Disallow: /admin/
+Disallow: /admin
 Disallow: /api/
 
 # Perplexity AI Search
 User-agent: PerplexityBot
 Allow: /
-Disallow: /admin/
+Disallow: /admin
 Disallow: /api/
 
 # Apple Search & Siri
 User-agent: Applebot
 Allow: /
-Disallow: /admin/
+Disallow: /admin
 Disallow: /api/
-
-# Machine-readable portfolio resources
-Allow: /llms.txt
-Allow: /llms-full.txt
-Allow: /files/Shashank_Shinde_Resume.pdf
 
 Sitemap: https://shashankportfolio-jet.vercel.app/sitemap.xml

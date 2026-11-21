@@ -125,8 +125,8 @@ body.dark-theme .step-bar-fill {
 }
 
 .contact-close-btn {
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background-color: transparent;
   border: 1px solid #D5CDCA;
@@ -493,6 +493,8 @@ body.dark-theme .contact-error-banner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
   padding-top: 14px;
   border-top: 1px solid rgba(213, 205, 202, 0.6);
 }
@@ -576,6 +578,10 @@ html.dark-theme .contact-btn-primary:hover:not(:disabled) {
 .contact-btn-primary:disabled {
   opacity: 0.65;
   cursor: not-allowed;
+}
+
+.contact-overlay-inline :is(.step-heading, .success-title) {
+  scroll-margin-top: calc(var(--header-height, 64px) + 12px);
 }
 
 /* -- Success State ------------------------------------------------------ */

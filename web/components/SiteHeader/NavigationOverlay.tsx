@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { siteName } from "@/web/seo/site";
 import { canonicalPortfolioPath } from "@/web/utils/routes";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Github, Linkedin, Mail, X, Sparkles } from "lucide-react";
@@ -15,15 +16,18 @@ interface NavigationOverlayProps {
 }
 
 const NAV_LINKS = [
-  { num: "01", label: "Home", href: "/" },
-  { num: "02", label: "QA Automation", href: "/automation-testing" },
-  { num: "03", label: "Mobile Testing", href: "/mobile-testing" },
-  { num: "04", label: "Manual QA", href: "/manual-testing" },
-  { num: "05", label: "API Testing", href: "/api-testing" },
-  { num: "06", label: "Performance Testing", href: "/performance-testing" },
-  { num: "07", label: "My Story", href: "/my-story" },
-  { num: "08", label: "3D Ability Card", href: "/work" },
-  { num: "09", label: "Legal & Credits", href: "/legal" },
+  { label: "Home", href: "/" },
+  { label: "QA Case Studies", href: "/projects" },
+  { label: "QA Lab", href: "/qa-lab" },
+  { label: "Contact", href: "/contact" },
+  { label: "QA Automation", href: "/automation-testing" },
+  { label: "Mobile Testing", href: "/mobile-testing" },
+  { label: "Manual QA", href: "/manual-testing" },
+  { label: "API Testing", href: "/api-testing" },
+  { label: "Performance Testing", href: "/performance-testing" },
+  { label: "My Story", href: "/my-story" },
+  { label: "3D Ability Card", href: "/work" },
+  { label: "Legal & Credits", href: "/legal" },
 ];
 
 export default function NavigationOverlay({
@@ -48,10 +52,14 @@ export default function NavigationOverlay({
   if (!isOpen) return null;
 
   const handleLinkClick = (e: React.MouseEvent, item: (typeof NAV_LINKS)[0]) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     onClose();
     if (item.href === "/" && pathname === "/") {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({
+        top: 0,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+      });
     }
   };
 
@@ -65,7 +73,7 @@ export default function NavigationOverlay({
     >
       {/* Top Bar with Brand & Explicit Close Button */}
       <div className="nav-overlay-topbar">
-        <span className="nav-overlay-brand">SHASHANK SHINDE.</span>
+        <span className="nav-overlay-brand">{siteName}</span>
         <button
           type="button"
           className="nav-overlay-close-btn"
@@ -88,11 +96,13 @@ export default function NavigationOverlay({
                 <Link
                   key={item.href}
                   href={item.href}
+                  prefetch={false}
                   className={`nav-overlay-item ${isActive ? "is-active" : ""}`}
+                  aria-current={isActive ? "page" : undefined}
                   onClick={(e) => handleLinkClick(e, item)}
                   style={{ animationDelay: `${index * 40}ms` }}
                 >
-                  <span className="nav-item-num font-serif">{item.num}</span>
+                  <span aria-hidden="true" className="nav-item-num font-serif">{String(index + 1).padStart(2, "0")}</span>
                   <span className="nav-item-label">{item.label}</span>
                   <span className="nav-item-arrow" aria-hidden="true">
                     {item.href === "/work" ? (

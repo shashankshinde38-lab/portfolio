@@ -40,6 +40,7 @@
 .nav-overlay-close-btn {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
   gap: 0.5rem;
   padding: 0.45rem 1rem;
   border-radius: 9999px;
@@ -89,6 +90,7 @@
   align-items: baseline;
   gap: clamp(16px, 2.5vw, 28px);
   padding-block: clamp(10px, 1.5vh, 16px);
+  min-height: 44px;
   border-bottom: 1px solid rgba(246, 243, 240, 0.08);
   color: #D5CDCA;
   text-decoration: none;
@@ -274,6 +276,15 @@
   }
   .nav-overlay-sidebar {
     padding-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-overlay-backdrop,
+  .nav-overlay-item,
+  .nav-item-arrow {
+    animation: none;
+    transition: none;
   }
 }
 

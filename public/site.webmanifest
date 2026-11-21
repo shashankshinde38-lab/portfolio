@@ -1,6 +1,6 @@
 {
   "id": "/",
-  "name": "Shashank Shinde — Software Test Engineer & QA Automation",
+  "name": "Shashank Shinde Portfolio",
   "short_name": "Shashank QA",
   "description": "Professional portfolio of Shashank Shinde, Software Test Engineer and QA Automation specialist experienced in Selenium, Playwright, API testing, mobile testing, Appium, Postman, REST Assured, and Apache JMeter.",
   "start_url": "/",
@@ -32,6 +32,18 @@
     {
       "src": "/favicon-32x32.png",
       "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },

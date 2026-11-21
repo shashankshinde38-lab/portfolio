@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import confetti from "canvas-confetti";
 import {
   ArrowLeft,
@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { useDialogFocus } from "@/web/hooks/useDialogFocus";
+import { trackEvent } from "@/web/utils/analytics";
 import "./MultiStepContactOverlay.css";
 
 interface MultiStepContactOverlayProps {
@@ -69,7 +70,7 @@ const TIMELINE_OPTIONS = [
 
 export default function MultiStepContactOverlay({
   isOpen,
-  onClose = () => {},
+  onClose,
   inline = false,
 }: MultiStepContactOverlayProps) {
   const [currentStep, setCurrentStep] = useState(1);
@@ -85,26 +86,50 @@ export default function MultiStepContactOverlay({
   const [errorMsg, setErrorMsg] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const started = useRef(false);
+  const submitting = useRef(false);
+  const stepHeading = useRef<HTMLHeadingElement>(null);
+  const focusStep = useRef(false);
 
-  // Automatically close the success modal after 3 seconds
+  const resetForm = useCallback(() => {
+    started.current = false;
+    setCurrentStep(1);
+    setSelectedService("");
+    setSelectedTimeline("");
+    setFullName("");
+    setEmail("");
+    setMobile("");
+    setCompany("");
+    setMessage("");
+    setErrorMsg("");
+    setIsSuccess(false);
+    onClose?.();
+  }, [onClose]);
+
+  // The modal closes after confirmation. Inline confirmation stays until dismissed.
   useEffect(() => {
-    if (!isSuccess) return;
-    const timer = setTimeout(() => {
-      resetForm();
-    }, 3000);
+    if (!isSuccess || inline) return;
+    const timer = setTimeout(resetForm, 3000);
     return () => clearTimeout(timer);
-  }, [isSuccess]);
+  }, [inline, isSuccess, resetForm]);
+
+  useEffect(() => {
+    if (!focusStep.current) return;
+    focusStep.current = false;
+    stepHeading.current?.focus();
+  }, [currentStep, isSuccess]);
 
   // Close on Escape key
   useEffect(() => {
+    if (!isOpen || inline || !onClose) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen && !isSubmitting) {
+      if (e.key === "Escape" && !submitting.current) {
         onClose();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose, isSubmitting]);
+  }, [inline, isOpen, onClose]);
 
   // Validation
   const validateStep = (step: number) => {
@@ -144,18 +169,25 @@ export default function MultiStepContactOverlay({
 
   const handleNext = () => {
     if (validateStep(currentStep)) {
+      if (currentStep === 1 && !started.current) {
+        started.current = true;
+        trackEvent("contact_start", { location: inline ? "contact_page" : "contact_overlay" });
+      }
+      focusStep.current = true;
       setCurrentStep((prev) => Math.min(prev + 1, 5));
     }
   };
 
   const handleBack = () => {
     setErrorMsg("");
+    focusStep.current = true;
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
   // Submit to existing backend enquiry API
   const handleSubmit = async () => {
-    if (!validateStep(4)) return;
+    if (submitting.current || !validateStep(4)) return;
+    submitting.current = true;
     setIsSubmitting(true);
     setErrorMsg("");
 
@@ -181,11 +213,13 @@ export default function MultiStepContactOverlay({
       }
 
       const result = await res.json();
-      if (!result.success)
+      if (result.success !== true)
         throw new Error(
           result.error || "The server did not confirm your enquiry. Please try again.",
         );
+      focusStep.current = true;
       setIsSuccess(true);
+      trackEvent("contact_submit_success", { location: inline ? "contact_page" : "contact_overlay" });
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches)
         confetti({
           particleCount: 80,
@@ -197,22 +231,9 @@ export default function MultiStepContactOverlay({
       const error = err as Error;
       setErrorMsg(error.message || "Something went wrong. Please try again.");
     } finally {
+      submitting.current = false;
       setIsSubmitting(false);
     }
-  };
-
-  const resetForm = () => {
-    setCurrentStep(1);
-    setSelectedService("");
-    setSelectedTimeline("");
-    setFullName("");
-    setEmail("");
-    setMobile("");
-    setCompany("");
-    setMessage("");
-    setErrorMsg("");
-    setIsSuccess(false);
-    onClose();
   };
 
   if (!isOpen) return null;
@@ -222,7 +243,7 @@ export default function MultiStepContactOverlay({
       ref={inline ? undefined : dialogRef}
       className={inline ? "contact-overlay-inline" : "contact-overlay-backdrop"}
       onMouseDown={(e) => {
-        if (!inline && e.target === e.currentTarget && !isSubmitting) onClose();
+        if (!inline && e.target === e.currentTarget && !submitting.current) onClose?.();
       }}
       role={inline ? "region" : "dialog"}
       aria-modal={inline ? undefined : "true"}
@@ -245,6 +266,7 @@ export default function MultiStepContactOverlay({
               type="button"
               className="contact-close-btn"
               onClick={resetForm}
+              disabled={isSubmitting}
               aria-label="Close Contact Overlay"
             >
               <X size={18} />
@@ -260,7 +282,7 @@ export default function MultiStepContactOverlay({
               <div className="success-icon-wrap">
                 <CheckCircle2 size={48} className="text-terracotta" />
               </div>
-              <h3 className="success-title">Enquiry Received Successfully!</h3>
+              <h3 className="success-title" ref={stepHeading} tabIndex={-1}>Enquiry Received Successfully!</h3>
               <p className="success-desc">
                 Thank you, <strong>{fullName}</strong>. Your enquiry regarding{" "}
                 <em>{selectedService}</em> has been securely logged. I typically review inbound
@@ -270,9 +292,18 @@ export default function MultiStepContactOverlay({
                 <span>Direct Email: shashankshinde38@gmail.com</span>
                 <span>Location: Pune, Maharashtra, India (IST)</span>
               </div>
-              <p className="success-autoclose font-mono">Closing automatically in 3 seconds...</p>
-              <button type="button" className="contact-btn-primary" onClick={resetForm}>
-                <span>CLOSE NOW</span>
+              {!inline && (
+                <p className="success-autoclose font-mono">Closing automatically in 3 seconds...</p>
+              )}
+              <button
+                type="button"
+                className="contact-btn-primary"
+                onClick={() => {
+                  focusStep.current = inline;
+                  resetForm();
+                }}
+              >
+                <span>{inline ? "Start another enquiry" : "Close now"}</span>
               </button>
             </div>
           ) : (
@@ -283,7 +314,7 @@ export default function MultiStepContactOverlay({
                   <span className="step-tag font-serif italic">
                     Step 01 · Area of Collaboration
                   </span>
-                  <h3 className="step-heading">
+                  <h3 className="step-heading" ref={stepHeading} tabIndex={-1}>
                     What testing capability are you looking to engage?
                   </h3>
                   <p className="step-subheading">
@@ -319,7 +350,7 @@ export default function MultiStepContactOverlay({
               {currentStep === 2 && (
                 <div className="contact-step-content">
                   <span className="step-tag font-serif italic">Step 02 · Timing &amp; Urgency</span>
-                  <h3 className="step-heading">When are you looking to begin?</h3>
+                  <h3 className="step-heading" ref={stepHeading} tabIndex={-1}>When are you looking to begin?</h3>
                   <p className="step-subheading">
                     Helps me plan testing cycles and sprint allocation.
                   </p>
@@ -353,7 +384,7 @@ export default function MultiStepContactOverlay({
               {currentStep === 3 && (
                 <div className="contact-step-content">
                   <span className="step-tag font-serif italic">Step 03 · Identification</span>
-                  <h3 className="step-heading">How should I address you and reply?</h3>
+                  <h3 className="step-heading" ref={stepHeading} tabIndex={-1}>How should I address you and reply?</h3>
                   <p className="step-subheading">
                     I respond directly to verify technical specifications.
                   </p>
@@ -369,7 +400,6 @@ export default function MultiStepContactOverlay({
                         placeholder="e.g. Elena Vance"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        autoFocus
                       />
                     </div>
 
@@ -424,7 +454,7 @@ export default function MultiStepContactOverlay({
               {currentStep === 4 && (
                 <div className="contact-step-content">
                   <span className="step-tag font-serif italic">Step 04 · Scope &amp; Details</span>
-                  <h3 className="step-heading">Tell me about your testing requirements</h3>
+                  <h3 className="step-heading" ref={stepHeading} tabIndex={-1}>Tell me about your testing requirements</h3>
                   <p className="step-subheading">
                     Include details on the target platforms, repositories, current defect pain
                     points, or latency targets.
@@ -440,7 +470,6 @@ export default function MultiStepContactOverlay({
                         placeholder="e.g. We are building an on-demand mobility platform and need automated Playwright E2E suites for our dispatching portal, plus JMeter load testing for 50k peak booking surges..."
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
-                        autoFocus
                       />
                     </div>
                   </div>
@@ -451,7 +480,7 @@ export default function MultiStepContactOverlay({
               {currentStep === 5 && (
                 <div className="contact-step-content">
                   <span className="step-tag font-serif italic">Step 05 · Final Confirmation</span>
-                  <h3 className="step-heading">Review your enquiry before dispatch</h3>
+                  <h3 className="step-heading" ref={stepHeading} tabIndex={-1}>Review your enquiry before dispatch</h3>
                   <p className="step-subheading">
                     Your details will be transmitted securely to Shashank Shinde.
                   </p>
@@ -486,7 +515,7 @@ export default function MultiStepContactOverlay({
               )}
 
               {/* Error Callout */}
-              {errorMsg && <p className="contact-error-banner font-mono">{errorMsg}</p>}
+              {errorMsg && <p className="contact-error-banner font-mono" role="alert">{errorMsg}</p>}
 
               {/* Navigation Controls */}
               <div className="contact-modal-actions">

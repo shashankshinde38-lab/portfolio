@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createHash, randomBytes } from "crypto";
+import { createHash, randomBytes, timingSafeEqual } from "crypto";
 import type { User } from "@supabase/supabase-js";
 import { ADMIN_ACCESS_COOKIE, adminAccessCookieOptions } from "@/api/helpers/admin-cookie";
 import { getSupabaseAdmin, getSupabaseAuthClient } from "@/api/helpers/supabase";
@@ -49,7 +49,7 @@ function readCookie(req: Request, name: string) {
 function adminConfig() {
   const email = (process.env.ADMIN_EMAIL || "").trim().toLowerCase();
   const userId = (process.env.ADMIN_USER_ID || "portfolio_admin_shashank").trim();
-  const pin = (process.env.ADMIN_PIN || "752002").trim();
+  const pin = process.env.ADMIN_PIN?.trim();
   return { email, userId, pin };
 }
 
@@ -139,8 +139,10 @@ export type AdminLoginResult =
 export async function signInAdmin(pin: string): Promise<AdminLoginResult> {
   const { email, userId, pin: configuredPin } = adminConfig();
 
-  // Primary authentication: 6-digit PIN verification (from ADMIN_PIN env or 752002)
-  if (pin === configuredPin) {
+  if (
+    configuredPin && /^\d{6}$/.test(configuredPin) && /^\d{6}$/.test(pin) &&
+    timingSafeEqual(Buffer.from(pin), Buffer.from(configuredPin))
+  ) {
     try {
       const session = await createAdminSession(userId);
       return { ok: true, ...session };

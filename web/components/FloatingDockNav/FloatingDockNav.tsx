@@ -14,7 +14,6 @@ import {
   Sparkles,
   User,
 } from "lucide-react";
-import { initAnalyticsListener } from "@/web/utils/analytics";
 import "./FloatingDockNav.css";
 
 /* ------------------------------------------------------------------ */
@@ -123,8 +122,6 @@ export default function FloatingDockNav({
   /* ---------------------------------------------------------------- */
 
   useEffect(() => {
-    initAnalyticsListener();
-
     const handleScroll = () => {
       setScrolled(window.scrollY > 80);
     };

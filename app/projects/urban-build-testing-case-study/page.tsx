@@ -14,6 +14,7 @@ import {
   Terminal,
   Zap,
 } from "lucide-react";
+import CaseStudyArtwork from "@/web/components/SubpageLayout/CaseStudyArtwork";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
 const pageUrl = `${siteOrigin}/projects/urban-build-testing-case-study`;
@@ -50,6 +51,8 @@ export default function UrbanBuildCaseStudyPage() {
           dispatches and corrupted contractor CRM records under slow mobile data connections.
         </p>
       </section>
+
+      <CaseStudyArtwork project="urbanbuild" alt="Urban Build mobile lead form testing case study illustration" />
 
       {/* Scope Overview */}
       <section className="content-section">

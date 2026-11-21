@@ -13,6 +13,7 @@ import {
   Terminal,
   Zap,
 } from "lucide-react";
+import CaseStudyArtwork from "@/web/components/SubpageLayout/CaseStudyArtwork";
 import SubpageLayout from "@/web/components/SubpageLayout/SubpageLayout";
 
 const pageUrl = `${siteOrigin}/projects/ecommerce-testing-case-study`;
@@ -49,6 +50,8 @@ export default function EcommerceCaseStudyPage() {
           (ECO-DEF-2024-032) where seller commissions were subtracted twice during partial order return retries.
         </p>
       </section>
+
+      <CaseStudyArtwork project="ecommerce" alt="E-commerce marketplace testing case study illustration" />
 
       {/* Platform Architecture */}
       <section className="content-section">

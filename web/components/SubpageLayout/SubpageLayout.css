@@ -534,3 +534,13 @@ body.dark-theme .btn-secondary {
   border-color: #3D352F;
   color: #EDE8E4;
 }
+.case-study-artwork {
+  max-width: 750px;
+  margin: 1.5rem auto;
+}
+
+.case-study-artwork img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-panel);
+}
