@@ -1,5 +1,7 @@
 # AEO (Answer Engine Optimization) & GEO (Generative Engine Optimization) Strategy
 
+See [Current verification](VERIFICATION.md) for observed visibility and Google?s current publisher guidance.
+
 **Domain**: [https://shashankportfolio-jet.vercel.app/](https://shashankportfolio-jet.vercel.app/)  
 **Public Site Name**: `Shashank Shinde Portfolio`  
 **Target Search Systems**: Google Search Generative Experience (SGE), Perplexity AI, ChatGPT Search (OAI-SearchBot), Claude (Anthropic), Apple Intelligence / Siri (Applebot)  

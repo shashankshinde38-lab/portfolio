@@ -1,5 +1,7 @@
 # MCP Integrations & Tool Connectivity Status
 
+[Current connection and API evidence](VERIFICATION.md#current-search-verification)
+
 **Environment**: Google Antigravity IDE  
 **Host System**: Windows x64  
 **Date**: November 22, 2026  
@@ -12,8 +14,8 @@
 | :--- | :--- | :--- | :--- | :--- |
 | **Semrush Plugin** | `antigravity-plugins-partners/plugin/semrush` | Live Semrush keyword research, technical site audits, backlink analysis, competitor SERP tracking, and AI brand visibility | Available in Agent Marketplace | Add from UI plugin card (`<plugin-card catalog-id="antigravity-plugins-partners/plugin/semrush"></plugin-card>`) & authenticate OAuth |
 | **Google Developer Knowledge MCP** | `antigravity-plugins-official/plugin/google-developer-knowledge` | Official real-time documentation retrieval across Google Search Central, indexing rules, structured data guidelines, and Core Web Vitals | Available in Agent Marketplace | Add from UI plugin card (`<plugin-card catalog-id="antigravity-plugins-official/plugin/google-developer-knowledge"></plugin-card>`) & authenticate ADC/API Key |
-| **Google Search Console** | Google Search Console Web & API | Live indexing status, search queries, impressions, CTR, average search position, and sitemap crawling | Direct Verification Active | Submit live sitemap `/sitemap.xml` in verified Search Console property |
-| **IndexNow Protocol** | Bing / Yandex IndexNow Engine | Instant automated URL submission upon deployment | Configured in `scripts/submit_indexnow.js` | Automated ping active |
+| **Google Search Console** | Google Search Console Web & API | Live indexing status, search queries, impressions, CTR, average search position, and sitemap crawling | API disabled for configured Cloud project | Submit live sitemap `/sitemap.xml` in verified Search Console property |
+| **IndexNow Protocol** | Bing / Yandex IndexNow Engine | Instant automated URL submission upon deployment | Configured in `scripts/submit_indexnow.js` | Manual submission accepted in release evidence |
 | **Google Analytics 4** | GA4 Global Tag Engine | Real-time traffic, landing page sessions, user engagement, and custom conversion events | Client Code Active | Provide `NEXT_PUBLIC_GA_MEASUREMENT_ID` in Vercel environment variables |
 
 ---

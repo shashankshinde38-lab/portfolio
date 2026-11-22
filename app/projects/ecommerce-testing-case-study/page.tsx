@@ -51,7 +51,7 @@ export default function EcommerceCaseStudyPage() {
         </p>
       </section>
 
-      <CaseStudyArtwork project="ecommerce" alt="E-commerce marketplace testing case study illustration" />
+      <CaseStudyArtwork path="/projects/ecommerce-testing-case-study" alt="E-commerce marketplace testing case study illustration" />
 
       {/* Platform Architecture */}
       <section className="content-section">

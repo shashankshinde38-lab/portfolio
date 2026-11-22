@@ -14,7 +14,7 @@ type PageDetails = {
 
 export const pages = {
   "/": {
-    title: siteName,
+    title: `${siteName} | QA Engineer in Pune`,
     description: "Shashank Shinde is a software test engineer in Pune, India. Explore his QA automation, API, mobile, and performance testing case studies, and get in touch.",
   },
   "/about": {
@@ -126,7 +126,7 @@ export type PortfolioPath = keyof typeof pages;
 
 export function pageMetadata(path: PortfolioPath): Metadata {
   const page: PageDetails = pages[path];
-  const title = path === "/" ? siteName : `${page.title} | ${siteName}`;
+  const title = path === "/" ? page.title : `${page.title} | ${siteName}`;
   const url = new URL(path, siteOrigin).href;
   const image = {
     url: page.projectImage
@@ -169,8 +169,31 @@ const person = {
   sameAs: [
     "https://www.linkedin.com/in/shashank-shinde7/",
     "https://github.com/shashankshinde38-lab",
+    "https://www.salesforce.com/trailblazer/shashankshinde",
   ],
 };
+
+export type CaseStudyPath = {
+  [Path in PortfolioPath]: (typeof pages)[Path] extends { projectImage: string } ? Path : never;
+}[PortfolioPath];
+
+export function caseStudyStructuredData(path: CaseStudyPath) {
+  const page = pages[path];
+  const url = new URL(path, siteOrigin).href;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${url}#case-study`,
+    url,
+    mainEntityOfPage: url,
+    headline: page.title,
+    description: page.description,
+    image: `${siteOrigin}/images/projects/${page.projectImage}-case-study.webp`,
+    author: person,
+    inLanguage: "en-IN",
+  };
+}
 
 export const homeStructuredData = {
   "@context": "https://schema.org",

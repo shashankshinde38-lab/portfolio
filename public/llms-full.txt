@@ -1,4 +1,4 @@
-# Shashank Shinde — Software Test Engineer & QA Automation Specialist — Technical Dossier
+# Shashank Shinde Portfolio ? Technical Reference
 
 > Detailed machine-readable professional profile covering software testing methodology, QA automation frameworks, API testing, performance engineering, mobile testing, selected project case studies, experience, credentials, and contact information for Shashank Shinde.
 
@@ -963,6 +963,8 @@ expect(submitBtn.getAttribute('disabled')).toBe('true');
 13. E-Commerce QA Case Study: https://shashankportfolio-jet.vercel.app/projects/ecommerce-testing-case-study
 14. Ride-Sharing QA Case Study: https://shashankportfolio-jet.vercel.app/projects/ride-sharing-testing-case-study
 15. Urban Build QA Case Study: https://shashankportfolio-jet.vercel.app/projects/urban-build-testing-case-study
+16. Interactive QA Lab: https://shashankportfolio-jet.vercel.app/qa-lab
+17. Contact and r?sum?: https://shashankportfolio-jet.vercel.app/contact
 
 
 

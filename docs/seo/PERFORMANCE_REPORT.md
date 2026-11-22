@@ -1,5 +1,7 @@
 # Core Web Vitals, Performance & Asset Optimization Report
 
+The figures in this report are historical estimates. See [Current verification](VERIFICATION.md) for measured production results and field-data availability.
+
 **Target Domain**: [https://shashankportfolio-jet.vercel.app/](https://shashankportfolio-jet.vercel.app/)  
 **Standard**: Google Core Web Vitals (Mobile-First)  
 **Report Date**: November 22, 2026  

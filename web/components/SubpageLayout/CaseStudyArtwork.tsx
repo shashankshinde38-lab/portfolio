@@ -1,14 +1,19 @@
+import JsonLd from "@/web/seo/JsonLd";
+import { caseStudyStructuredData, type CaseStudyPath } from "@/web/seo/site";
+
 export default function CaseStudyArtwork({
-  project,
+  path,
   alt,
 }: {
-  project: string;
+  path: CaseStudyPath;
   alt: string;
 }) {
+  const article = caseStudyStructuredData(path);
   return (
     <figure className="case-study-artwork">
+      <JsonLd data={article} />
       <img
-        src={`/images/projects/${project}-case-study.webp`}
+        src={article.image}
         alt={alt}
         width={1200}
         height={630}
