@@ -1,15 +1,6 @@
 import Link from "next/link";
-import {
-  BadgeCheck,
-  ChevronDown,
-  CircleHelp,
-  HelpCircle,
-  SearchCheck,
-  ShieldCheck,
-  Sparkles,
-  ArrowUpRight,
-} from "lucide-react";
-
+import { ChevronDown } from "lucide-react";
+import JsonLd from "@/web/seo/JsonLd";
 import "./FAQ.css";
 
 interface FaqItem {
@@ -203,293 +194,54 @@ const FAQ_ITEMS: FaqItem[] = [
 
 export default function FAQ() {
   return (
-    <section
-      id="faq"
-      className="section section-lined faq-section"
-      aria-labelledby="faq-heading"
-    >
+    <section id="faq" className="faq-section" aria-labelledby="faq-heading">
       <div className="faq-container">
-        {/* =====================================================
-            SECTION HEADING
-        ===================================================== */}
-
-        <div className="faq-section-heading">
-          <div className="faq-heading-copy">
-            <div className="faq-kicker">
-              <span
-                className="faq-kicker-icon"
-                aria-hidden="true"
-              >
-                <CircleHelp
-                  size={16}
-                  strokeWidth={1.8}
-                />
-              </span>
-
-              <span>
-                AEO &amp; QA INSIGHTS
-              </span>
-            </div>
-
-            <h2 id="faq-heading">
-              <span className="faq-title-label">
-                Questions &amp; Answers
-              </span>
-
-              <span className="faq-title-main">
-                Clear answers.
-              </span>
-
-              <span className="faq-title-accent">
-                High-trust engineering.
-              </span>
-            </h2>
-          </div>
-
-          {/* =================================================
-              RIGHT INTRO CARD
-          ================================================= */}
-
-          <div className="faq-heading-side">
-            <span
-              className="faq-heading-side-icon"
-              aria-hidden="true"
-            >
-              <Sparkles size={16} />
-            </span>
-
-            <div>
-              <strong>
-                QA Knowledge Base
-              </strong>
-
-              <p>
-                Direct answers about my testing experience,
-                automation stack, API validation,
-                performance engineering and professional
-                background.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* =====================================================
-            STATUS / CONTEXT BAR
-        ===================================================== */}
-
-        <div className="faq-status-bar">
-          <div className="faq-status-left">
-            <span className="faq-status-pill">
-              <span
-                className="faq-status-dot"
-                aria-hidden="true"
-              />
-
-              QA KNOWLEDGE ACTIVE
-            </span>
-
-            <span className="faq-status-copy">
-              <SearchCheck
-                size={13}
-                aria-hidden="true"
-              />
-
-              Direct answers · Supporting context · Technical topics
-            </span>
-          </div>
-
-          <div className="faq-status-right">
-            <ShieldCheck
-              size={14}
-              aria-hidden="true"
-            />
-
-            <span>
-              Structured for quick understanding
-            </span>
-          </div>
-        </div>
-
-        {/* =====================================================
-            FAQ LIST
-        ===================================================== */}
+        <header className="faq-section-heading">
+          <p className="faq-eyebrow">Questions &amp; answers</p>
+          <h2 id="faq-heading">
+            Clear answers. <em>High-trust engineering.</em>
+          </h2>
+        </header>
 
         <div className="faq-grid">
-          {FAQ_ITEMS.map(
-            (item, index) => (
-              <details
-                className="faq-item"
-                key={item.q}
-                open
-              >
-                <summary className="faq-question">
-                  <span className="faq-question-left">
-                    <span
-                      className="faq-question-icon"
-                      aria-hidden="true"
-                    >
-                      <HelpCircle
-                        size={16}
-                        strokeWidth={1.8}
-                      />
-                    </span>
-
-                    <span className="faq-question-copy">
-                      <span className="faq-question-meta">
-                        QUESTION{" "}
-                        {String(
-                          index + 1
-                        ).padStart(
-                          2,
-                          "0"
-                        )}
-                      </span>
-
-                      <h3 className="faq-question-text">
-                        {item.q}
-                      </h3>
-                    </span>
-                  </span>
-
-                  <span className="faq-question-actions">
-                    <span className="faq-answer-status">
-                      <BadgeCheck
-                        size={12}
-                        aria-hidden="true"
-                      />
-
-                      ANSWERED
-                    </span>
-
-                    <span
-                      className="faq-chevron-wrap"
-                      aria-hidden="true"
-                    >
-                      <ChevronDown
-                        size={16}
-                        className="faq-chevron"
-                      />
-                    </span>
-                  </span>
-                </summary>
-
-                <div className="faq-answer">
-                  {/* =========================================
-                      DIRECT ANSWER
-                  ========================================= */}
-
-                  <div className="faq-direct-answer-box">
-                    <div className="faq-direct-answer-heading">
-                      <span
-                        className="faq-direct-answer-dot"
-                        aria-hidden="true"
-                      />
-
-                      <span>
-                        Direct Answer:
-                      </span>
-                    </div>
-
-                    <p className="faq-direct-answer">
-                      {item.directAnswer}
-                    </p>
-                  </div>
-
-                  {/* =========================================
-                      SUPPORTING DETAIL
-                  ========================================= */}
-
-                  <div className="faq-supporting-block">
-                    <span className="faq-supporting-label">
-                      CONTEXT &amp; EXPERIENCE
-                    </span>
-
-                    <p className="faq-supporting-detail">
-                      {item.detail}
-                    </p>
-                  </div>
-
-                  {/* =========================================
-                      EVIDENCE & CITATION LINK
-                  ========================================= */}
-
-                  {item.link && (
-                    <div
-                      className="faq-link-area"
-                      style={{
-                        marginTop: "12px",
-                        paddingTop: "12px",
-                        borderTop: "1px solid rgba(110, 124, 251, 0.12)",
-                      }}
-                    >
-                      <Link
-                        href={item.link.href}
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "6px",
-                          color: "#93c5fd",
-                          fontSize: "0.82rem",
-                          fontWeight: 600,
-                          textDecoration: "none",
-                        }}
-                      >
-                        <span>{item.link.text}</span>
-                        <ArrowUpRight size={13} aria-hidden="true" />
-                      </Link>
-                    </div>
-                  )}
-
-                  {/* =========================================
-                      TAGS
-                  ========================================= */}
-
-                  {item.tags &&
-                    item.tags.length >
-                    0 && (
-                      <div className="faq-tags-area">
-                        <span className="faq-tags-label">
-                          RELATED TOPICS
-                        </span>
-
-                        <div className="faq-tags-row">
-                          {item.tags.map(
-                            (tag) => (
-                              <span
-                                className="faq-tag"
-                                key={tag}
-                              >
-                                {tag}
-                              </span>
-                            )
-                          )}
-                        </div>
-                      </div>
-                    )}
-                </div>
-              </details>
-            )
-          )}
+          {FAQ_ITEMS.map((item, index) => (
+            <details key={item.q} className="faq-item" open={index === 0}>
+              <summary className="faq-question">
+                <span>{item.q}</span>
+                <ChevronDown size={20} className="faq-chevron" aria-hidden="true" />
+              </summary>
+              <div className="faq-answer">
+                <p className="faq-direct-answer">{item.directAnswer}</p>
+                <p>{item.detail}</p>
+                {item.link && (
+                  <Link href={item.link.href} className="faq-answer-link" prefetch={false}>
+                    {item.link.text}
+                  </Link>
+                )}
+                {item.tags && item.tags.length > 0 && (
+                  <ul className="faq-tags" aria-label="Related topics">
+                    {item.tags.map((tag) => (
+                      <li key={tag}>{tag}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </details>
+          ))}
         </div>
 
-        {/* FAQPage JSON-LD Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": FAQ_ITEMS.map((item) => ({
-                "@type": "Question",
-                "name": item.q,
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": `${item.directAnswer} ${item.detail}`,
-                },
-              })),
-            }),
-          }}
-        />
+        <JsonLd data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: FAQ_ITEMS.map((item) => ({
+            "@type": "Question",
+            name: item.q,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: `${item.directAnswer} ${item.detail}`,
+            },
+          })),
+        }} />
       </div>
     </section>
   );
