@@ -1,20 +1,19 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import SiteHeader from "@/web/components/SiteHeader/SiteHeader";
 import HeroSection from "@/web/sections/Hero/HeroSection";
 import QADoorsFrame from "@/web/components/QADoorsFrame/QADoorsFrame";
 import ExperienceTimeline from "@/web/components/ExperienceTimeline/ExperienceTimeline";
 import ProjectPreviews from "@/web/components/ProjectLaptopShowcase/ProjectPreviews";
-import FAQ from "@/web/sections/FAQ/FAQ";
 import SiteFooter from "@/web/components/SiteFooter/SiteFooter";
 
 const AbilityCard3D = dynamic(() => import("@/web/components/AbilityCard3D/AbilityCard3D"));
 const IntroLoader = dynamic(() => import("@/web/components/IntroLoader/IntroLoader"));
 const MultiStepContactOverlay = dynamic(() => import("@/web/components/MultiStepContact/MultiStepContactOverlay"));
 
-export default function HomePageContent() {
+export default function HomePageContent({ faq }: { faq: ReactNode }) {
   const [isIntroOpen, setIsIntroOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -35,7 +34,7 @@ export default function HomePageContent() {
         <QADoorsFrame id="doors" />
         <ExperienceTimeline />
         <ProjectPreviews />
-        <FAQ />
+        {faq}
       </main>
 
       <SiteFooter onOpenContact={openContact} />
