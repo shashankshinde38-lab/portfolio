@@ -86,3 +86,4 @@ async redirects() {
   - Core Hubs & Specialty Doors: Priority 0.85 (monthly)
   - Sub-Skills & Legal: Priority 0.75 (monthly)
 - Verified active at `https://shashankportfolio-jet.vercel.app/sitemap.xml`.
+

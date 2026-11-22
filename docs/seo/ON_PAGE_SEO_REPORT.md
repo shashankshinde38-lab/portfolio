@@ -56,3 +56,4 @@ The site architecture eliminates dead-ends and ensures all pages are accessible 
 - **Global Navigation Overlay**: Links to `/about`, `/projects`, `/skills`, `/experience`, `/qa-lab`, `/contact`, and all 5 specialty doors.
 - **Contextual In-Content Linking**: Each case study links directly back to relevant sub-skills (`/skills/selenium-automation`, `/skills/performance-testing`, etc.).
 - **Semantic Footer**: Comprehensive sitemap grid linking to all major technical hubs, résumé download, and official profiles.
+

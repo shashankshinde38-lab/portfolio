@@ -99,3 +99,4 @@ All legacy entry points have been confirmed to return **HTTP 308 Permanent Redir
 - `sitemap.xml`:
   - Generates valid XML for 24 canonical pages.
   - Priority mapping: 1.0 (Homepage), 0.9 (Case Studies), 0.85 (Discipline Doors & Core Hubs), 0.75 (Sub-skills & Legal).
+
