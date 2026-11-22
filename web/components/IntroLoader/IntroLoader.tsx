@@ -70,7 +70,7 @@ export default function IntroLoader({ onComplete }: IntroLoaderProps) {
       if (event.matches) complete();
     }
 
-    if (window.location.hash) {
+    if (motion.matches) {
       complete();
       return;
     }

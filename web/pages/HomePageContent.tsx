@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import IntroLoader from "@/web/components/IntroLoader/IntroLoader";
 import SiteHeader from "@/web/components/SiteHeader/SiteHeader";
 import HeroSection from "@/web/sections/Hero/HeroSection";
 import QADoorsFrame from "@/web/components/QADoorsFrame/QADoorsFrame";
@@ -12,10 +11,11 @@ import FAQ from "@/web/sections/FAQ/FAQ";
 import SiteFooter from "@/web/components/SiteFooter/SiteFooter";
 
 const AbilityCard3D = dynamic(() => import("@/web/components/AbilityCard3D/AbilityCard3D"));
+const IntroLoader = dynamic(() => import("@/web/components/IntroLoader/IntroLoader"));
 const MultiStepContactOverlay = dynamic(() => import("@/web/components/MultiStepContact/MultiStepContactOverlay"));
 
 export default function HomePageContent() {
-  const [isIntroOpen, setIsIntroOpen] = useState(true);
+  const [isIntroOpen, setIsIntroOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const openContact = () => setIsContactOpen(true);
