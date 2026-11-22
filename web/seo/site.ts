@@ -32,8 +32,8 @@ export const pages = {
     description: "Shashank Shinde explains how he became a software test engineer and how his approach to automation, defect investigation, and release testing developed.",
   },
   "/projects": {
-    title: "QA Projects and Case Studies",
-    description: "Explore Shashank Shinde’s QA case studies for DRIWE, Grosido, an e-commerce marketplace, ride sharing, and Urban Build. See what he tested and how.",
+    title: "Software Testing Portfolio",
+    description: "Explore five software testing case studies by QA engineer Shashank Shinde, covering test automation, API validation, mobile QA, and JMeter load testing.",
   },
   "/qa-lab": {
     title: "Interactive QA Lab",

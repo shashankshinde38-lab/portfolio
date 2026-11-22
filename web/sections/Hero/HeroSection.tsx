@@ -101,7 +101,7 @@ export default function HeroSection({
 
         <div className="sh-hero__actions">
           <Link href="/projects" className="sh-hero__primary">
-            View QA case studies
+            View testing portfolio
             <ArrowRight size={16} aria-hidden="true" />
           </Link>
 

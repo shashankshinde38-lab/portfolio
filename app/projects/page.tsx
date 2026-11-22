@@ -33,39 +33,23 @@ const CASE_STUDY_ROUTES: Record<string, string> = {
 export default function ProjectsIndexPage() {
   return (
     <SubpageLayout
-      title="QA Projects & Test Automation Case Studies"
-      subtitle="Detailed production case studies covering end-to-end test automation, REST API contract validation, high-concurrency performance engineering, and verified pre-production defect mitigations."
+      title="Software Testing Portfolio"
+      subtitle="Five QA case studies showing how I designed tests, reproduced defects, and verified fixes across web apps, Android apps, and APIs."
       badge="CASE STUDIES DIRECTORY"
       breadcrumbs={[{ label: "Home", href: "/" }, { label: "Projects" }]}
       pageUrl={pageUrl}
-      description="Explore 5 real-world QA case studies by Shashank Shinde. End-to-end automation, distributed JMeter load testing, API validation, and critical defect discoveries."
+      description="Explore five software testing case studies by QA engineer Shashank Shinde, covering test automation, API validation, mobile QA, and JMeter load testing."
     >
-      {/* Direct Answer Box */}
-      <section className="aeo-direct-answer-card" aria-label="Direct answer overview">
-        <div className="aeo-direct-answer-header">
-          <span className="aeo-direct-answer-dot" aria-hidden="true" />
-          <span>Direct Answer · Project Portfolio</span>
-        </div>
+      <section className="aeo-direct-answer-card" aria-label="Testing portfolio highlights">
         <p className="aeo-direct-answer-text">
-          Shashank Shinde has led quality assurance across five major production applications: DRIWE (on-demand cab and
-          courier logistics), Grosido (multi-module online grocery delivery), an E-Commerce Ecosystem (multi-vendor
-          marketplace), an Android Ride Sharing Application (real-time geolocation matching), and Urban Build (lead
-          generation platform).
-        </p>
-        <p className="aeo-direct-answer-supporting">
-          His project contributions focus on isolating severe pre-production defects such as payment webhook
-          double-deductions, booking velocity negative fare race conditions, inventory cache desynchronization, and seat
-          over-allocations.
+          See how I tested checkout prices and inventory in the{" "}
+          <Link href={CASE_STUDY_ROUTES["TC-002"]}>Grosido case study</Link>, investigated duplicate
+          refund events in the{" "}
+          <Link href={CASE_STUDY_ROUTES["TC-003"]}>e-commerce case study</Link>, and used Apache
+          JMeter to test concurrent bookings in the{" "}
+          <Link href={CASE_STUDY_ROUTES["TC-001"]}>DRIWE case study</Link>.
         </p>
       </section>
-
-      {/* Citation-Ready Passage */}
-      <blockquote className="aeo-citation-passage">
-        <span className="aeo-citation-label">Citation-Ready Summary</span>
-        &ldquo;Shashank Shinde has tested mission-critical production platforms across logistics, e-commerce, mobility,
-        and lead generation. His QA work combines functional regression testing with Selenium and Playwright, 100k-user
-        load testing with Apache JMeter, and REST API contract verification with Postman.&rdquo;
-      </blockquote>
 
       {/* Projects Showcase List */}
       <section className="content-section">
