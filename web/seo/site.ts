@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 export const siteName = "Shashank Shinde Portfolio";
 export const siteOrigin = "https://shashankportfolio-jet.vercel.app";
 export const siteUrl = `${siteOrigin}/`;
+export const brandImagePath = "/android-chrome-512x512.png";
 
 type PageDetails = {
   title: string;
@@ -204,6 +205,15 @@ export const homeStructuredData = {
       url: siteUrl,
       name: siteName,
       inLanguage: "en-IN",
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${siteUrl}#webpage`,
+      url: siteUrl,
+      name: pages["/"].title,
+      isPartOf: { "@id": `${siteUrl}#website` },
+      about: { "@id": person["@id"] },
+      primaryImageOfPage: `${siteOrigin}${brandImagePath}`,
     },
     person,
   ],

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { heroPortraitUrl, pages, siteOrigin } from "@/web/seo/site";
+import { brandImagePath, heroPortraitUrl, pages, siteOrigin } from "@/web/seo/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return Object.entries(pages).flatMap(([path, page]) => {
@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       "projectImage" in page && page.projectImage
         ? [`${siteOrigin}/images/projects/${page.projectImage}-case-study.webp`]
         : path === "/"
-          ? [heroPortraitUrl]
+          ? [`${siteOrigin}${brandImagePath}`, heroPortraitUrl]
           : undefined;
 
     return [{ url: new URL(path, siteOrigin).href, images }];

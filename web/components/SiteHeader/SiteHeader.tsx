@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { siteName } from "@/web/seo/site";
+import { brandImagePath, siteName } from "@/web/seo/site";
 import { canonicalPortfolioPath } from "@/web/utils/routes";
 import { usePathname, useRouter } from "next/navigation";
 import { Sparkles } from "lucide-react";
@@ -206,7 +206,11 @@ export default function SiteHeader({ onOpenContact, onOpenCard }: SiteHeaderProp
             className="site-header-brand"
             onClick={handleHomeClick}
           >
-            <span className="brand-dot" aria-hidden="true" />
+            {pathname === "/" ? (
+              <img src={brandImagePath} alt="" width={20} height={20} decoding="async" />
+            ) : (
+              <span className="brand-dot" aria-hidden="true" />
+            )}
             <span className="brand-text">{siteName}</span>
           </Link>
 
