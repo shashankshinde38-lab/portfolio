@@ -80,8 +80,9 @@ export default function HeroSection({
           </h1>
 
           <p className="sh-hero__summary">
-            Software test engineer in Pune. I test web apps, mobile apps, and APIs, build automated
-            regression suites, and investigate defects before release.
+            I’m a software test engineer based in Pune. I design tests for critical user journeys,
+            automate regression coverage with Playwright and Selenium, and investigate defects
+            across web apps, mobile apps, and APIs.
           </p>
 
           <div className="sh-hero__calendar" aria-hidden="true">

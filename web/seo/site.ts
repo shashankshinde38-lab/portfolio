@@ -15,8 +15,8 @@ type PageDetails = {
 
 export const pages = {
   "/": {
-    title: `${siteName} | QA Engineer in Pune`,
-    description: "Shashank Shinde is a software test engineer in Pune, India. Explore his QA automation, API, mobile, and performance testing case studies, and get in touch.",
+    title: `${siteName} | Software Test Engineer`,
+    description: "Explore QA case studies by Shashank Shinde, a software test engineer in Pune. See web automation with Playwright and Selenium, API validation, and mobile QA.",
   },
   "/about": {
     title: "About Shashank Shinde",
@@ -204,6 +204,7 @@ export const homeStructuredData = {
       "@id": `${siteUrl}#website`,
       url: siteUrl,
       name: siteName,
+      alternateName: "Shashank Shinde",
       inLanguage: "en-IN",
     },
     {
