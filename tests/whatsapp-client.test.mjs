@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
 import http from "node:http";
+import ts from "typescript";
 
 // Minimal mock server utility for unit testing
 function createMockServer(handler) {
@@ -58,7 +59,7 @@ test("Phone normalization handles domestic, international, and prefixed numbers"
   assert.equal(normalize("14155552671"), "14155552671");
 });
 
-test("WhatsApp API client sends Authorization, x-api-key, and Idempotency-Key headers", async () => {
+test("WhatsApp API client sends a single Bearer authentication header", async () => {
   let receivedHeaders = null;
   let receivedBody = null;
 
@@ -77,24 +78,21 @@ test("WhatsApp API client sends Authorization, x-api-key, and Idempotency-Key he
 
   try {
     const token = "wat_live_test_mock_token";
-    const res = await fetch(`${mock.baseURL}/send`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "x-api-key": token,
-        "Content-Type": "application/json",
-        "Idempotency-Key": "req_mock_123",
-      },
-      body: JSON.stringify({
-        to: "918080852689",
-        message: "Hello unit test",
-      }),
+    const source = await readFile(new URL("../server/api/services/whatsapp-client.ts", import.meta.url), "utf8");
+    const { outputText } = ts.transpileModule(source.replace(/^import "server-only";/m, ""), {
+      compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
     });
-
-    const data = await res.json();
+    const moduleUrl = `data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`;
+    const { WhatsAppApiClient } = await import(moduleUrl);
+    const client = new WhatsAppApiClient({ baseURL: mock.baseURL, token });
+    const data = await client.sendMessage({
+      to: "8080852689",
+      message: "Hello unit test",
+    }, "req_mock_123");
     assert.equal(data.success, true);
     assert.equal(receivedHeaders.authorization, `Bearer ${token}`);
-    assert.equal(receivedHeaders["x-api-key"], token);
+    assert.equal(receivedHeaders["x-api-key"], undefined);
+    assert.equal(receivedHeaders["content-type"], "application/json");
     assert.equal(receivedHeaders["idempotency-key"], "req_mock_123");
     assert.equal(receivedBody.to, "918080852689");
   } finally {

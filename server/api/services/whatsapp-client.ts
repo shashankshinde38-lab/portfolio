@@ -106,15 +106,14 @@ export class WhatsAppApiClient {
     }
     this.baseURL = rawUrl.replace(/\/+$/, "");
 
-    const token = (
-      options?.token ||
-      process.env.WHATSAPP_API_KEY ||
-      process.env.WHATSAPP_API_TOKEN
-    )?.trim();
+    const token =
+      options?.token?.trim() ||
+      process.env.WHATSAPP_API_TOKEN?.trim() ||
+      process.env.WHATSAPP_API_KEY?.trim();
 
     if (!token) {
       throw new Error(
-        "[WhatsAppApiClient] WHATSAPP_API_KEY or WHATSAPP_API_TOKEN is required in server environment variables."
+        "[WhatsAppApiClient] WHATSAPP_API_TOKEN is required in server environment variables."
       );
     }
     this.token = token;
@@ -166,13 +165,12 @@ export class WhatsAppApiClient {
   }
 
   /**
-   * Safe headers factory. Sends Authorization header, x-api-key, and optional Idempotency-Key.
+   * Uses Bearer authentication with an optional idempotency key.
    * Authorization secrets are NEVER logged.
    */
   private buildHeaders(idempotencyKey?: string): Headers {
     const headers = new Headers();
     headers.set("Authorization", `Bearer ${this.token}`);
-    headers.set("x-api-key", this.token);
     headers.set("Content-Type", "application/json");
     headers.set("bypass-tunnel-reminder", "true");
     if (idempotencyKey) {
@@ -561,7 +559,7 @@ export class WhatsAppApiClient {
 let cachedClient: WhatsAppApiClient | null = null;
 
 export function getWhatsAppClient(): WhatsAppApiClient | null {
-  if (!process.env.WHATSAPP_API_KEY && !process.env.WHATSAPP_API_TOKEN) {
+  if (!process.env.WHATSAPP_API_TOKEN?.trim() && !process.env.WHATSAPP_API_KEY?.trim()) {
     return null;
   }
   if (!cachedClient) {
