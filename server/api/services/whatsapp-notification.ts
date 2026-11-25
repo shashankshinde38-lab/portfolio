@@ -9,6 +9,7 @@ export interface EnquiryNotificationParams {
   reason?: string;
   message: string;
   imageUrl?: string | null;
+  adminPhone?: string;
 }
 
 export interface WhatsAppNotificationResult {
@@ -19,6 +20,7 @@ export interface WhatsAppNotificationResult {
 }
 
 const DEFAULT_ADMIN_PHONE = "918999246557";
+export const CONTACT_ENQUIRY_WHATSAPP_PHONE = "918080852689";
 
 function formatISTTimestamp(): string {
   try {
@@ -55,7 +57,7 @@ export async function sendEnquiryWhatsAppNotifications(
     senderDelivered: false,
   };
 
-  const adminPhone = process.env.ADMIN_WHATSAPP_PHONE || DEFAULT_ADMIN_PHONE;
+  const adminPhone = params.adminPhone || process.env.ADMIN_WHATSAPP_PHONE || DEFAULT_ADMIN_PHONE;
   const safeReason = params.reason?.trim() || "General Enquiry";
   const timestamp = formatISTTimestamp();
 
@@ -82,13 +84,13 @@ export async function sendEnquiryWhatsAppNotifications(
     // If an image URL is attached, attempt to send as media message first
     if (params.imageUrl && /^https?:\/\//i.test(params.imageUrl)) {
       try {
-        await client.sendMessage({
+        const mediaResult = await client.sendMessage({
           to: adminPhone,
           message: adminCaption,
           type: "image",
           mediaUrl: params.imageUrl,
         });
-        adminSent = true;
+        adminSent = mediaResult.success;
       } catch (mediaErr) {
         console.warn(
           "[whatsapp-notification] Media send to admin failed, falling back to text dispatch:",
@@ -101,15 +103,16 @@ export async function sendEnquiryWhatsAppNotifications(
       const adminRes = await client.sendMessage({
         to: adminPhone,
         message: adminCaption,
-        type: "text",
       });
-      if (adminRes.success) {
-        result.adminDelivered = true;
-        console.log(`[whatsapp-notification] Successfully alerted admin on WhatsApp (${adminPhone}).`);
-      } else {
+      adminSent = adminRes.success;
+      if (!adminSent) {
         result.adminError = adminRes.error || adminRes.message || "Delivery skipped";
         console.warn(`[whatsapp-notification] Admin alert skipped or unconfirmed: ${result.adminError}`);
       }
+    }
+    result.adminDelivered = adminSent;
+    if (adminSent) {
+      console.log("[whatsapp-notification] WhatsApp gateway accepted the admin alert.");
     }
   } catch (err: unknown) {
     const msg = (err as Error)?.message || String(err);

@@ -6,7 +6,10 @@ import { noStoreJson, publicError, safeApiMessage } from "@/api/helpers/api-resp
 import { insertEnquiry } from "@/api/services/enquiries";
 import { enquiryCreateSchema } from "@/api/schemas/enquiry-schema";
 import { sendContactNotification } from "@/api/services/mailer";
-import { sendEnquiryWhatsAppNotifications } from "@/api/services/whatsapp-notification";
+import {
+  CONTACT_ENQUIRY_WHATSAPP_PHONE,
+  sendEnquiryWhatsAppNotifications,
+} from "@/api/services/whatsapp-notification";
 import { getSupabaseAdmin } from "@/api/helpers/supabase";
 
 const MAX_REQUEST_BYTES = 524_288; // 512 KB
@@ -127,7 +130,6 @@ export async function submitEnquiry(req: Request) {
     });
 
     after(async () => {
-      // 1. Send Email Notification
       try {
         await sendContactNotification({
           full_name: name,
@@ -139,8 +141,9 @@ export async function submitEnquiry(req: Request) {
       } catch (mailErr) {
         console.warn("[enquiries] Email notification delivery failed:", mailErr);
       }
+    });
 
-      // 2. Send WhatsApp Notifications (both sender & admin)
+    after(async () => {
       try {
         await sendEnquiryWhatsAppNotifications({
           name,
@@ -149,6 +152,7 @@ export async function submitEnquiry(req: Request) {
           reason: safeReason,
           message,
           imageUrl: resolvedImageUrl,
+          adminPhone: CONTACT_ENQUIRY_WHATSAPP_PHONE,
         });
       } catch (waErr) {
         console.warn("[enquiries] WhatsApp notification delivery failed:", waErr);
