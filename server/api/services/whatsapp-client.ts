@@ -88,6 +88,7 @@ function isDisconnected(code: string, message: string): boolean {
 export class WhatsAppApiClient {
   private baseURL: string;
   private token: string;
+  private requestTimeoutMs: number;
   private defaultInstanceId?: string;
   private defaultSessionId?: string;
   private cachedResolvedInstanceId?: string;
@@ -98,6 +99,7 @@ export class WhatsAppApiClient {
     defaultInstanceId?: string;
     defaultSessionId?: string;
     useTokenInstance?: boolean;
+    requestTimeoutMs?: number;
   }) {
     let rawUrl = (
       options?.baseURL ||
@@ -123,6 +125,7 @@ export class WhatsAppApiClient {
       );
     }
     this.token = token;
+    this.requestTimeoutMs = options?.requestTimeoutMs ?? REQUEST_TIMEOUT_MS;
 
     const envInstanceId = options?.useTokenInstance ? "" : (
       options?.defaultInstanceId ||
@@ -220,7 +223,7 @@ export class WhatsAppApiClient {
       const headers = this.buildHeaders(options.idempotencyKey);
 
       try {
-        const signal = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
+        const signal = AbortSignal.timeout(this.requestTimeoutMs);
 
         const response = await fetch(url, {
           method: options.method,
@@ -308,7 +311,7 @@ export class WhatsAppApiClient {
           attempt++;
           const waitTime = this.calculateDelay(attempt);
           console.warn(
-            `[WhatsAppApiClient] Network/Timeout error (${isAbort ? "Request timed out after 20s" : "Network error"}). Retrying attempt ${attempt}/${maxRetries} in ${waitTime}ms...`
+            `[WhatsAppApiClient] ${isAbort ? `Request timed out after ${this.requestTimeoutMs}ms` : "Network error"}. Retrying attempt ${attempt}/${maxRetries} in ${waitTime}ms...`
           );
           await new Promise((resolve) => setTimeout(resolve, waitTime));
           continue;
@@ -316,7 +319,7 @@ export class WhatsAppApiClient {
 
         throw new WhatsAppApiError(
           isAbort
-            ? "WhatsApp API request timed out after 20 seconds."
+            ? `WhatsApp API request timed out after ${this.requestTimeoutMs}ms.`
             : (err as Error)?.message || "Failed to communicate with WhatsApp Gateway.",
           isAbort ? 408 : 500
         );

@@ -18,7 +18,10 @@ export async function processEnquiryWhatsAppJobs(enquiryId?: string) {
 
   const jobs = (data ?? []) as WhatsAppJob[];
   const token = process.env.WHATSAPP_API_TOKEN?.trim();
-  const client = token ? new WhatsAppApiClient({ token, useTokenInstance: true }) : null;
+  // Cold gateway sessions can take around 40 seconds to connect and send.
+  const client = token
+    ? new WhatsAppApiClient({ token, useTokenInstance: true, requestTimeoutMs: 75_000 })
+    : null;
   const outcomes = await Promise.allSettled(jobs.map(async (job) => {
     const idempotencyKey = `enquiry-${job.enquiry_id}-${job.recipient}`;
     const result = await client?.sendMessage(job.payload, idempotencyKey, 0);

@@ -4,6 +4,7 @@ import { listEnquiries } from "@/api/services/enquiries";
 import { submitEnquiry } from "@/api/services/enquiry-submission";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 100;
 
 export async function POST(req: Request) {
   return submitEnquiry(req);

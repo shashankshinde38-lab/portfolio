@@ -144,6 +144,27 @@ test("Queued sends rely on the token's instance and distinguish an outage from a
   }
 });
 
+test("Queued sends can wait for a delayed gateway confirmation", async () => {
+  const mock = await createMockServer(async (_req, res) => {
+    await new Promise((resolve) => setTimeout(resolve, 60));
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ success: true, messageId: "delayed-confirmation" }));
+  });
+
+  try {
+    const { WhatsAppApiClient } = await loadClient();
+    const options = { baseURL: mock.baseURL, token: "test", useTokenInstance: true };
+    const payload = { to: "918080852689", message: "Delayed acknowledgement test" };
+    const shortClient = new WhatsAppApiClient({ ...options, requestTimeoutMs: 20 });
+    const patientClient = new WhatsAppApiClient({ ...options, requestTimeoutMs: 1000 });
+
+    assert.equal((await shortClient.sendMessage(payload, "delay-test", 0)).error, "HTTP_408");
+    assert.equal((await patientClient.sendMessage(payload, "delay-test", 0)).messageId, "delayed-confirmation");
+  } finally {
+    await mock.close();
+  }
+});
+
 test("WhatsApp API client handles 429 / 503 transient status codes", async () => {
   let attempts = 0;
 
