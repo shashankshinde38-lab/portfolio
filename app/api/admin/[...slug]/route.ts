@@ -21,7 +21,11 @@ export async function GET(
   }
 
   if (action === "session") {
-    return noStoreJson({ success: true, authenticated: await isAdminRequest(req) });
+    try {
+      return noStoreJson({ success: true, authenticated: await isAdminRequest(req) });
+    } catch (error) {
+      return publicError(safeApiMessage(error, "Admin session verification is temporarily unavailable."), 503);
+    }
   }
 
   return publicError("Not Found", 404);
@@ -68,8 +72,8 @@ export async function POST(
     if (!isSameOrigin(req)) return publicError("Request origin is not allowed.", 403);
     try {
       await revokeAdminRequest(req);
-    } catch {
-      console.warn("[admin] Supabase session revocation failed; clearing the local cookie.");
+    } catch (error) {
+      return publicError(safeApiMessage(error, "Unable to sign out. Please try again."), 503);
     }
     const response = noStoreJson({ success: true });
     clearAdminAccessCookie(response);

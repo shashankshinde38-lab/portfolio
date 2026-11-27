@@ -10,38 +10,11 @@ const ADMIN_SESSION_TABLE = "admin_sessions";
 const SESSION_TTL_SECONDS = 60 * 60 * 8;
 const OPAQUE_TOKEN_PATTERN = /^[A-Za-z0-9_-]{43}$/;
 
-type AdminSessionRow = {
-  user_id: string;
-  expires_at: string;
-};
-
-const sessionStoreGlobal = globalThis as unknown as {
-  __adminFallbackSessions?: Map<string, AdminSessionRow>;
-};
-const fallbackSessions =
-  sessionStoreGlobal.__adminFallbackSessions || new Map<string, AdminSessionRow>();
-sessionStoreGlobal.__adminFallbackSessions = fallbackSessions;
-
-function isMissingTableError(error: unknown): boolean {
-  if (!error || typeof error !== "object") return false;
-  const err = error as { code?: string; message?: string };
-  return (
-    err.code === "PGRST205" ||
-    err.code === "PGRST204" ||
-    err.code === "42P01" ||
-    (typeof err.message === "string" &&
-      (err.message.includes("schema cache") ||
-        err.message.includes(ADMIN_SESSION_TABLE) ||
-        err.message.includes("does not exist") ||
-        err.message.includes("relation")))
-  );
-}
-
 function readCookie(req: Request, name: string) {
   const cookie = req.headers.get("cookie") || "";
   for (const part of cookie.split(";")) {
     const [key, ...value] = part.trim().split("=");
-    if (key === name) return decodeURIComponent(value.join("="));
+    if (key === name) return value.join("=");
   }
   return "";
 }
@@ -67,25 +40,11 @@ function hashSessionToken(token: string) {
 }
 
 async function removeSession(token: string) {
-  const tokenHash = hashSessionToken(token);
-  fallbackSessions.delete(tokenHash);
-  try {
-    const { error } = await getSupabaseAdmin()
-      .from(ADMIN_SESSION_TABLE)
-      .delete()
-      .eq("token_hash", tokenHash);
-    if (error && !isMissingTableError(error)) throw error;
-  } catch {
-    // Non-fatal if Supabase table is absent
-  }
-}
-
-async function removeSessionQuietly(token: string) {
-  try {
-    await removeSession(token);
-  } catch {
-    console.warn("[admin] Unable to remove an invalid or expired admin session.");
-  }
+  const { error } = await getSupabaseAdmin()
+    .from(ADMIN_SESSION_TABLE)
+    .delete()
+    .eq("token_hash", hashSessionToken(token));
+  if (error) throw error;
 }
 
 async function revokeSupabaseSession(accessToken: string) {
@@ -103,31 +62,17 @@ async function createAdminSession(userId: string) {
   const expiresAt = new Date(Date.now() + expiresIn * 1000).toISOString();
   const tokenHash = hashSessionToken(sessionToken);
 
-  // In-memory fallback guarantees immediate authentication resilience
-  fallbackSessions.set(tokenHash, { user_id: userId, expires_at: expiresAt });
+  const admin = getSupabaseAdmin();
+  const { error } = await admin.from(ADMIN_SESSION_TABLE).insert({
+    token_hash: tokenHash,
+    user_id: userId,
+    expires_at: expiresAt,
+  });
+  if (error) throw error;
 
-  try {
-    const admin = getSupabaseAdmin();
-    const { error } = await admin.from(ADMIN_SESSION_TABLE).insert({
-      token_hash: tokenHash,
-      user_id: userId,
-      expires_at: expiresAt,
-    });
-    if (error && !isMissingTableError(error)) {
-      console.warn("[admin] Session DB notice:", error.message);
-    }
-
-    void admin
-      .from(ADMIN_SESSION_TABLE)
-      .delete()
-      .lt("expires_at", new Date().toISOString())
-      .then(
-        () => {},
-        () => {}
-      );
-  } catch {
-    // Database table missing or offline; fallbackSessions handles the request
-  }
+  const cleanup = await admin.from(ADMIN_SESSION_TABLE).delete()
+    .lt("expires_at", new Date().toISOString());
+  if (cleanup.error) console.warn("[admin] Unable to remove expired sessions.");
 
   return { sessionToken, expiresIn };
 }
@@ -146,14 +91,9 @@ export async function signInAdmin(pin: string): Promise<AdminLoginResult> {
     try {
       const session = await createAdminSession(userId);
       return { ok: true, ...session };
-    } catch {
-      // In-memory fallback
-      const sessionToken = randomBytes(32).toString("base64url");
-      const expiresIn = SESSION_TTL_SECONDS;
-      const expiresAt = new Date(Date.now() + expiresIn * 1000).toISOString();
-      const tokenHash = hashSessionToken(sessionToken);
-      fallbackSessions.set(tokenHash, { user_id: userId, expires_at: expiresAt });
-      return { ok: true, sessionToken, expiresIn };
+    } catch (error) {
+      console.error("[admin] Unable to persist the admin session:", error);
+      return { ok: false, reason: "unavailable" };
     }
   }
 
@@ -164,14 +104,15 @@ export async function signInAdmin(pin: string): Promise<AdminLoginResult> {
       const authResult = await auth.auth.signInWithPassword({ email, password: pin });
       const { data, error } = authResult;
       if (!error && data?.session && isAllowedAdmin(data.user, userId)) {
-        const session = await createAdminSession(userId);
         if (data.session.access_token) {
           await revokeSupabaseSession(data.session.access_token);
         }
+        const session = await createAdminSession(userId);
         return { ok: true, ...session };
       }
-    } catch {
-      // Continue to invalid return
+    } catch (error) {
+      console.error("[admin] Supabase admin sign-in failed:", error);
+      return { ok: false, reason: "unavailable" };
     }
   }
 
@@ -210,67 +151,20 @@ export function clearAdminAccessCookie(response: {
   response.cookies.set(ADMIN_ACCESS_COOKIE, "", adminAccessCookieOptions(0));
 }
 
-export async function getAdminRequest(req: Request) {
-  const token = readCookie(req, ADMIN_ACCESS_COOKIE);
-  if (!OPAQUE_TOKEN_PATTERN.test(token)) return null;
-
-  const { userId: expectedUserId } = adminConfig();
-  const tokenHash = hashSessionToken(token);
-  let session: AdminSessionRow | null = null;
-
-  try {
-    const admin = getSupabaseAdmin();
-    const { data: stored, error: sessionError } = await admin
-      .from(ADMIN_SESSION_TABLE)
-      .select("user_id,expires_at")
-      .eq("token_hash", tokenHash)
-      .maybeSingle();
-
-    if (sessionError) {
-      session = fallbackSessions.get(tokenHash) || null;
-    } else if (stored) {
-      session = stored as AdminSessionRow;
-    } else {
-      session = fallbackSessions.get(tokenHash) || null;
-    }
-  } catch {
-    session = fallbackSessions.get(tokenHash) || null;
-  }
-
-  if (!session) return null;
-
-  if (session.user_id !== expectedUserId || Date.parse(session.expires_at) <= Date.now()) {
-    fallbackSessions.delete(tokenHash);
-    await removeSessionQuietly(token);
-    return null;
-  }
-
-  // If Supabase Auth is enabled with custom user ID, verify through Supabase Auth
-  if (process.env.ADMIN_EMAIL && process.env.ADMIN_USER_ID && session.user_id === process.env.ADMIN_USER_ID) {
-    try {
-      const admin = getSupabaseAdmin();
-      const { data, error: userError } = await admin.auth.admin.getUserById(session.user_id);
-      if (!userError && isAllowedAdmin(data.user, expectedUserId)) {
-        return { token, user: data.user };
-      }
-    } catch {
-      // Fallback to verified admin session object
-    }
-  }
-
-  // Verified admin session
-  return {
-    token,
-    user: {
-      id: expectedUserId,
-      email: process.env.ADMIN_EMAIL || "admin@shashankportfolio.com",
-      app_metadata: { role: ADMIN_ROLE },
-    } as unknown as User,
-  };
-}
-
 export async function isAdminRequest(req: Request) {
-  return Boolean(await getAdminRequest(req));
+  const token = readCookie(req, ADMIN_ACCESS_COOKIE);
+  if (!OPAQUE_TOKEN_PATTERN.test(token)) return false;
+
+  const { userId } = adminConfig();
+  const { data, error } = await getSupabaseAdmin()
+    .from(ADMIN_SESSION_TABLE)
+    .select("token_hash")
+    .eq("token_hash", hashSessionToken(token))
+    .eq("user_id", userId)
+    .gt("expires_at", new Date().toISOString())
+    .maybeSingle();
+  if (error) throw error;
+  return Boolean(data);
 }
 
 export async function revokeAdminRequest(req: Request) {

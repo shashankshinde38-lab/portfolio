@@ -51,11 +51,17 @@ test("admin login creates a protected Supabase-backed session and logout clears 
   assert.equal(session.status, 200);
   assert.equal((await session.json()).authenticated, true);
 
+  const dashboard = await request("/api/admin/dashboard", { headers: { cookie } });
+  assert.equal(dashboard.status, 200);
+
   const enquiries = await request("/api/enquiries", { headers: { cookie } });
   assert.equal(enquiries.status, 200);
   const payload = await enquiries.json();
   assert.equal(payload.success, true);
   assert.equal(payload.count, payload.data.length);
+
+  const dashboardAgain = await request("/api/admin/dashboard", { headers: { cookie } });
+  assert.equal(dashboardAgain.status, 200);
 
   const logout = await request("/api/admin/logout", {
     method: "POST",
@@ -63,4 +69,11 @@ test("admin login creates a protected Supabase-backed session and logout clears 
   });
   assert.equal(logout.status, 200);
   assert.match(logout.headers.get("set-cookie") || "", /Max-Age=0/i);
+
+  const [revokedDashboard, revokedEnquiries] = await Promise.all([
+    request("/api/admin/dashboard", { headers: { cookie } }),
+    request("/api/enquiries", { headers: { cookie } }),
+  ]);
+  assert.equal(revokedDashboard.status, 401);
+  assert.equal(revokedEnquiries.status, 401);
 });
