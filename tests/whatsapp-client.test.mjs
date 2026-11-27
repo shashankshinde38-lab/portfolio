@@ -4,6 +4,14 @@ import { readFile } from "node:fs/promises";
 import http from "node:http";
 import ts from "typescript";
 
+async function loadClient() {
+  const source = await readFile(new URL("../server/api/services/whatsapp-client.ts", import.meta.url), "utf8");
+  const { outputText } = ts.transpileModule(source.replace(/^import "server-only";/m, ""), {
+    compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
+  });
+  return import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
+}
+
 // Minimal mock server utility for unit testing
 function createMockServer(handler) {
   const server = http.createServer((req, res) => {
@@ -78,12 +86,7 @@ test("WhatsApp API client sends a single Bearer authentication header", async ()
 
   try {
     const token = "wat_live_test_mock_token";
-    const source = await readFile(new URL("../server/api/services/whatsapp-client.ts", import.meta.url), "utf8");
-    const { outputText } = ts.transpileModule(source.replace(/^import "server-only";/m, ""), {
-      compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
-    });
-    const moduleUrl = `data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`;
-    const { WhatsAppApiClient } = await import(moduleUrl);
+    const { WhatsAppApiClient } = await loadClient();
     const client = new WhatsAppApiClient({ baseURL: mock.baseURL, token });
     const data = await client.sendMessage({
       to: "8080852689",
@@ -95,6 +98,47 @@ test("WhatsApp API client sends a single Bearer authentication header", async ()
     assert.equal(receivedHeaders["content-type"], "application/json");
     assert.equal(receivedHeaders["idempotency-key"], "req_mock_123");
     assert.equal(receivedBody.to, "918080852689");
+  } finally {
+    await mock.close();
+  }
+});
+
+test("Queued sends rely on the token's instance and distinguish an outage from a disconnect", async () => {
+  const requests = [];
+  const replies = [
+    [503, { success: false, error: "SERVICE_UNAVAILABLE" }],
+    [503, { success: false, error: { code: "INSTANCE_NOT_CONNECTED" } }],
+    [400, { success: false, error: "WhatsApp instance wa_test is not connected." }],
+    [200, { success: false, error: "SESSION_DISCONNECTED" }],
+    [200, { message: "OK without a delivery result" }],
+    [200, { success: true, messageId: "accepted" }],
+  ];
+  const mock = await createMockServer((req, res) => {
+    const [status, body] = replies[requests.length] ?? [500, {}];
+    requests.push({ url: req.url, method: req.method, body: req.parsedBody, key: req.headers["idempotency-key"] });
+    res.writeHead(status, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(body));
+  });
+
+  try {
+    const { WhatsAppApiClient } = await loadClient();
+    const client = new WhatsAppApiClient({
+      baseURL: mock.baseURL + "/send",
+      token: "test",
+      defaultInstanceId: "legacy-instance",
+      useTokenInstance: true,
+    });
+    const payload = { to: "918080852689", message: "Queued enquiry test" };
+    const send = () => client.sendMessage(payload, "enquiry-1-admin", 0);
+    assert.equal((await send()).error, "SERVICE_UNAVAILABLE");
+    assert.equal((await send()).error, "SESSION_DISCONNECTED");
+    assert.equal((await send()).error, "SESSION_DISCONNECTED");
+    assert.equal((await send()).error, "SESSION_DISCONNECTED");
+    assert.equal((await send()).success, false);
+    assert.equal((await send()).success, true);
+    assert.deepEqual(requests, replies.map(() => ({
+      url: "/api/v1/send", method: "POST", body: payload, key: "enquiry-1-admin",
+    })));
   } finally {
     await mock.close();
   }

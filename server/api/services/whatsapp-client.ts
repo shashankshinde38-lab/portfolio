@@ -80,6 +80,11 @@ const MAX_RETRIES = 3;
 const INITIAL_RETRY_DELAY_MS = 1_000;
 const MAX_RETRY_DELAY_MS = 10_000;
 
+function isDisconnected(code: string, message: string): boolean {
+  return /^(?:SESSION|INSTANCE)_(?:DISCONNECTED|NOT_CONNECTED)$/i.test(code.trim()) ||
+    /\b(?:session|instance)\b[^\r\n.]{0,120}\b(?:disconnected|not (?:currently )?connected)\b/i.test(message);
+}
+
 export class WhatsAppApiClient {
   private baseURL: string;
   private token: string;
@@ -92,6 +97,7 @@ export class WhatsAppApiClient {
     token?: string;
     defaultInstanceId?: string;
     defaultSessionId?: string;
+    useTokenInstance?: boolean;
   }) {
     let rawUrl = (
       options?.baseURL ||
@@ -118,7 +124,7 @@ export class WhatsAppApiClient {
     }
     this.token = token;
 
-    const envInstanceId = (
+    const envInstanceId = options?.useTokenInstance ? "" : (
       options?.defaultInstanceId ||
       options?.defaultSessionId ||
       process.env.WHATSAPP_INSTANCE_ID ||
@@ -202,41 +208,45 @@ export class WhatsAppApiClient {
       method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
       body?: unknown;
       idempotencyKey?: string;
+      maxRetries?: number;
     }
   ): Promise<WhatsAppApiResponse<T>> {
     const url = `${this.baseURL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
+    const maxRetries = options.maxRetries ?? MAX_RETRIES;
     let attempt = 0;
 
-    while (attempt <= MAX_RETRIES) {
+    while (attempt <= maxRetries) {
       const startTime = Date.now();
       const headers = this.buildHeaders(options.idempotencyKey);
 
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+        const signal = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
 
         const response = await fetch(url, {
           method: options.method,
           headers,
           body: options.body ? JSON.stringify(options.body) : undefined,
-          signal: controller.signal,
+          signal,
           cache: "no-store",
         });
 
-        clearTimeout(timeoutId);
         const latencyMs = Date.now() - startTime;
 
         let payload: Record<string, unknown> = {};
         const rawText = await response.text();
         if (rawText) {
           try {
-            payload = JSON.parse(rawText);
+            const parsed: unknown = JSON.parse(rawText);
+            if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+              payload = parsed as Record<string, unknown>;
+            }
           } catch {
             payload = { raw: rawText };
           }
         }
 
-        const isSuccess = response.ok && payload.success !== false;
+        const isSuccess = response.ok &&
+          (endpoint === "/send" ? payload.success === true : payload.success !== false);
 
         // Structured sanitary logging (never log credentials or sensitive PII)
         console.log(
@@ -247,30 +257,34 @@ export class WhatsAppApiClient {
           return payload as unknown as WhatsAppApiResponse<T>;
         }
 
+        const nestedError = payload.error && typeof payload.error === "object"
+          ? payload.error as Record<string, unknown>
+          : {};
         const errorCode =
-          (payload.error as string) ||
-          (payload.code as string) ||
+          (typeof payload.code === "string" && payload.code) ||
+          (typeof nestedError.code === "string" && nestedError.code) ||
+          (typeof payload.error === "string" && payload.error) ||
           `HTTP_${response.status}`;
         const errorMessage =
-          (payload.message as string) ||
+          (typeof payload.message === "string" && payload.message) ||
+          (typeof nestedError.message === "string" && nestedError.message) ||
           (typeof payload.error === "string" ? payload.error : "") ||
           `WhatsApp API error (${response.status})`;
 
-        // Special handling for SESSION_DISCONNECTED: fail fast without burning retry budget
-        if (response.status === 503 && (errorCode === "SESSION_DISCONNECTED" || payload.error === "SESSION_DISCONNECTED")) {
+        if (isDisconnected(errorCode, errorMessage)) {
           throw new WhatsAppApiError(
             errorMessage,
-            503,
+            response.status,
             "SESSION_DISCONNECTED",
             payload
           );
         }
 
-        if (this.isRetryable(response.status, errorCode) && attempt < MAX_RETRIES) {
+        if (this.isRetryable(response.status, errorCode) && attempt < maxRetries) {
           attempt++;
           const waitTime = this.calculateDelay(attempt);
           console.warn(
-            `[WhatsAppApiClient] Retryable error ${response.status} (${errorCode}). Retrying attempt ${attempt}/${MAX_RETRIES} in ${waitTime}ms...`
+            `[WhatsAppApiClient] Retryable error ${response.status} (${errorCode}). Retrying attempt ${attempt}/${maxRetries} in ${waitTime}ms...`
           );
           await new Promise((resolve) => setTimeout(resolve, waitTime));
           continue;
@@ -288,13 +302,13 @@ export class WhatsAppApiClient {
         const isAbort =
           err &&
           typeof err === "object" &&
-          ("name" in err && (err as { name: string }).name === "AbortError");
+          ("name" in err && (err.name === "AbortError" || err.name === "TimeoutError"));
 
-        if (attempt < MAX_RETRIES) {
+        if (attempt < maxRetries) {
           attempt++;
           const waitTime = this.calculateDelay(attempt);
           console.warn(
-            `[WhatsAppApiClient] Network/Timeout error (${isAbort ? "Request timed out after 20s" : "Network error"}). Retrying attempt ${attempt}/${MAX_RETRIES} in ${waitTime}ms...`
+            `[WhatsAppApiClient] Network/Timeout error (${isAbort ? "Request timed out after 20s" : "Network error"}). Retrying attempt ${attempt}/${maxRetries} in ${waitTime}ms...`
           );
           await new Promise((resolve) => setTimeout(resolve, waitTime));
           continue;
@@ -346,7 +360,8 @@ export class WhatsAppApiClient {
    */
   public async sendMessage(
     payload: SendMessagePayload,
-    idempotencyKey?: string
+    idempotencyKey?: string,
+    maxRetries?: number
   ): Promise<WhatsAppApiResponse> {
     const to = WhatsAppApiClient.normalizePhone(payload.to);
     if (!to) {
@@ -382,10 +397,11 @@ export class WhatsAppApiClient {
         method: "POST",
         body,
         idempotencyKey: key,
+        maxRetries,
       });
     } catch (err: unknown) {
       if (err instanceof WhatsAppApiError) {
-        if (err.status === 503 || err.errorCode === "SESSION_DISCONNECTED") {
+        if (err.errorCode === "SESSION_DISCONNECTED") {
           console.warn(`[WhatsApp] Session disconnected, skipping delivery: ${err.message}`);
           return {
             success: false,

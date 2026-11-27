@@ -2,6 +2,7 @@ import "server-only";
 
 import { getSupabaseAdmin } from "@/api/helpers/supabase";
 import type { Enquiry, EnquiryStatus } from "@/api/schemas/enquiry-schema";
+import type { WebsiteWhatsAppMessage } from "@/api/services/whatsapp-notification";
 
 type EnquiryRow = {
   id: string;
@@ -40,7 +41,7 @@ export async function insertEnquiry(input: {
   message: string;
   reason?: string;
   image_url?: string | null;
-}) {
+}, notifications?: WebsiteWhatsAppMessage[]) {
   const safeMobile =
     input.mobile && /^[0-9]{10}$/.test(input.mobile) ? input.mobile : null;
   const safeName = input.name.slice(0, 120).trim();
@@ -57,6 +58,15 @@ export async function insertEnquiry(input: {
     reason: safeReason,
     status: "new",
   };
+
+  if (notifications) {
+    const { data, error } = await getSupabaseAdmin().rpc("insert_enquiry_with_whatsapp", {
+      enquiry: { ...basePayload, image_url: safeImageUrl },
+      notifications,
+    });
+    if (error) throw error;
+    return { id: String(data) };
+  }
 
   // Attempt insert with image_url first
   if (safeImageUrl) {

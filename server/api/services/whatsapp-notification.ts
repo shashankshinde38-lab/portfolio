@@ -1,6 +1,6 @@
 import "server-only";
 
-import { getWhatsAppClient } from "@/api/services/whatsapp-client";
+import { getWhatsAppClient, type SendMessagePayload } from "@/api/services/whatsapp-client";
 
 export interface EnquiryNotificationParams {
   name: string;
@@ -22,6 +22,11 @@ export interface WhatsAppNotificationResult {
 const DEFAULT_ADMIN_PHONE = "918999246557";
 export const CONTACT_ENQUIRY_WHATSAPP_PHONE = "918080852689";
 
+export type WebsiteWhatsAppMessage = {
+  recipient: "admin" | "sender";
+  payload: Pick<SendMessagePayload, "to"> & { message: string };
+};
+
 function formatISTTimestamp(): string {
   try {
     return new Intl.DateTimeFormat("en-IN", {
@@ -36,6 +41,58 @@ function formatISTTimestamp(): string {
   } catch {
     return new Date().toISOString();
   }
+}
+
+function formatAdminMessage(params: EnquiryNotificationParams): string {
+  const safeReason = params.reason?.trim() || "General Enquiry";
+  const timestamp = formatISTTimestamp();
+  return [
+    "🔔 *New Portfolio Enquiry*",
+    "━━━━━━━━━━━━━━━━━━━",
+    `👤 *Name:* ${params.name.trim()}`,
+    `📧 *Email:* ${params.email.trim()}`,
+    `📱 *Mobile:* ${params.mobile?.trim() || "Not provided"}`,
+    `🏷️ *Topic:* ${safeReason}`,
+    "━━━━━━━━━━━━━━━━━━━",
+    "📝 *Message:*",
+    params.message.trim(),
+    ...(params.imageUrl ? ["", `🖼️ *Attachment:* ${params.imageUrl}`] : []),
+    "━━━━━━━━━━━━━━━━━━━",
+    `⏰ *Received:* ${timestamp}`,
+    "📂 *Admin Portal:* https://shashankportfolio-jet.vercel.app/admin/enquiries",
+  ].join("\n");
+}
+
+function formatSenderMessage(params: EnquiryNotificationParams): string {
+  const firstName = params.name.trim().split(" ")[0] || params.name.trim();
+
+  return [
+    `Hey *${firstName}*,`,
+    "",
+    "Your message has been sent to *Shashank*! He will respond back to you shortly. 🚀",
+    "",
+    "You can continue the conversation right here if you have any questions or want to share more details.",
+    "",
+    "Best regards,",
+    "*Shashank Shinde*",
+    "🌐 https://shashankportfolio-jet.vercel.app",
+  ].join("\n");
+}
+
+export function websiteEnquiryWhatsAppMessages(params: EnquiryNotificationParams): WebsiteWhatsAppMessage[] {
+  const messages: WebsiteWhatsAppMessage[] = [
+    {
+      recipient: "admin",
+      payload: { to: CONTACT_ENQUIRY_WHATSAPP_PHONE, message: formatAdminMessage(params) },
+    },
+  ];
+  if (params.mobile?.trim()) {
+    messages.push({
+      recipient: "sender",
+      payload: { to: params.mobile.trim(), message: formatSenderMessage(params) },
+    });
+  }
+  return messages;
 }
 
 /**
@@ -58,26 +115,10 @@ export async function sendEnquiryWhatsAppNotifications(
   };
 
   const adminPhone = params.adminPhone || process.env.ADMIN_WHATSAPP_PHONE || DEFAULT_ADMIN_PHONE;
-  const safeReason = params.reason?.trim() || "General Enquiry";
-  const timestamp = formatISTTimestamp();
 
   // 1. ADMIN NOTIFICATION DISPATCH
   try {
-    const adminCaption = [
-      "🔔 *New Portfolio Enquiry*",
-      "━━━━━━━━━━━━━━━━━━━",
-      `👤 *Name:* ${params.name.trim()}`,
-      `📧 *Email:* ${params.email.trim()}`,
-      `📱 *Mobile:* ${params.mobile?.trim() || "Not provided"}`,
-      `🏷️ *Topic:* ${safeReason}`,
-      "━━━━━━━━━━━━━━━━━━━",
-      "📝 *Message:*",
-      params.message.trim(),
-      ...(params.imageUrl ? ["", `🖼️ *Attachment:* ${params.imageUrl}`] : []),
-      "━━━━━━━━━━━━━━━━━━━",
-      `⏰ *Received:* ${timestamp}`,
-      "📂 *Admin Portal:* https://shashankportfolio-jet.vercel.app/admin/enquiries",
-    ].join("\n");
+    const adminCaption = formatAdminMessage(params);
 
     let adminSent = false;
 
@@ -123,19 +164,7 @@ export async function sendEnquiryWhatsAppNotifications(
   // 2. SENDER CONFIRMATION DISPATCH (if sender supplied a phone number)
   if (params.mobile && params.mobile.trim()) {
     try {
-      const firstName = params.name.trim().split(" ")[0] || params.name.trim();
-
-      const senderText = [
-        `Hey *${firstName}*,`,
-        "",
-        "Your message has been sent to *Shashank*! He will respond back to you shortly. 🚀",
-        "",
-        "You can continue the conversation right here if you have any questions or want to share more details.",
-        "",
-        "Best regards,",
-        "*Shashank Shinde*",
-        "🌐 https://shashankportfolio-jet.vercel.app",
-      ].join("\n");
+      const senderText = formatSenderMessage(params);
 
       const senderRes = await client.sendMessage({
         to: params.mobile.trim(),

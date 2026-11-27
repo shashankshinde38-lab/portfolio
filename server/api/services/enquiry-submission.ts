@@ -6,10 +6,8 @@ import { noStoreJson, publicError, safeApiMessage } from "@/api/helpers/api-resp
 import { insertEnquiry } from "@/api/services/enquiries";
 import { enquiryCreateSchema } from "@/api/schemas/enquiry-schema";
 import { sendContactNotification } from "@/api/services/mailer";
-import {
-  CONTACT_ENQUIRY_WHATSAPP_PHONE,
-  sendEnquiryWhatsAppNotifications,
-} from "@/api/services/whatsapp-notification";
+import { websiteEnquiryWhatsAppMessages } from "@/api/services/whatsapp-notification";
+import { processEnquiryWhatsAppJobs } from "@/api/services/whatsapp-outbox";
 import { getSupabaseAdmin } from "@/api/helpers/supabase";
 
 const MAX_REQUEST_BYTES = 524_288; // 512 KB
@@ -127,7 +125,14 @@ export async function submitEnquiry(req: Request) {
       message: storedMessage,
       reason: safeReason,
       image_url: resolvedImageUrl,
-    });
+    }, websiteEnquiryWhatsAppMessages({
+      name,
+      email,
+      mobile: rawMobile || dbMobile,
+      reason: safeReason,
+      message,
+      imageUrl: resolvedImageUrl,
+    }));
 
     after(async () => {
       try {
@@ -145,15 +150,7 @@ export async function submitEnquiry(req: Request) {
 
     after(async () => {
       try {
-        await sendEnquiryWhatsAppNotifications({
-          name,
-          email,
-          mobile: rawMobile || dbMobile,
-          reason: safeReason,
-          message,
-          imageUrl: resolvedImageUrl,
-          adminPhone: CONTACT_ENQUIRY_WHATSAPP_PHONE,
-        });
+        await processEnquiryWhatsAppJobs(id);
       } catch (waErr) {
         console.warn("[enquiries] WhatsApp notification delivery failed:", waErr);
       }
