@@ -4,6 +4,8 @@ export const siteName = "Shashank Shinde Portfolio";
 export const siteOrigin = "https://shashankportfolio-jet.vercel.app";
 export const siteUrl = `${siteOrigin}/`;
 export const brandImagePath = "/android-chrome-512x512.png";
+export const faviconPath = "/android-chrome-192x192.png";
+const portfolioSocialImagePath = "/images/portfolio-social.jpg";
 
 type PageDetails = {
   title: string;
@@ -15,11 +17,11 @@ type PageDetails = {
 
 export const pages = {
   "/": {
-    title: `${siteName} | Software Test Engineer`,
-    description: "Explore QA case studies by Shashank Shinde, a software test engineer in Pune. See web automation with Playwright and Selenium, API validation, and mobile QA.",
+    title: "Shashank Shinde | QA Automation Engineer & Software Testing Portfolio",
+    description: "Explore Shashank Shinde's professional QA and software testing portfolio, featuring Playwright, Selenium, automation testing, manual testing, API testing, mobile testing and performance testing.",
   },
   "/about": {
-    title: "About Shashank Shinde",
+    title: "About Shashank Shinde, QA Engineer in Pune",
     description: "Meet Shashank Shinde, a software test engineer in Pune. Read about his QA background, education, credentials, and testing approach.",
     profile: true,
   },
@@ -32,8 +34,8 @@ export const pages = {
     description: "Shashank Shinde explains how he became a software test engineer and how his approach to automation, defect investigation, and release testing developed.",
   },
   "/projects": {
-    title: "Software Testing Portfolio",
-    description: "Explore five software testing case studies by QA engineer Shashank Shinde, covering test automation, API validation, mobile QA, and JMeter load testing.",
+    title: "Software Testing Case Studies",
+    description: "Explore five QA projects covering checkout regression, concurrent seat reservations, Android lead forms, API webhooks, and JMeter load testing.",
   },
   "/qa-lab": {
     title: "Interactive QA Lab",
@@ -41,27 +43,27 @@ export const pages = {
   },
   "/contact": {
     title: "Contact Shashank Shinde",
-    description: "Contact Pune-based software test engineer Shashank Shinde about QA, SDET roles, or testing projects. Send an enquiry or find his professional links.",
+    description: "Contact Pune-based software test engineer Shashank Shinde about QA or SDET roles, freelance software testing, and test automation projects.",
   },
   "/skills": {
     title: "Software Testing Skills",
     description: "Explore Shashank Shinde’s QA toolkit, from Selenium and Playwright automation to API validation, mobile testing with Appium, and performance testing with JMeter.",
   },
   "/automation-testing": {
-    title: "Automation Testing",
+    title: "Web Test Automation and Regression Testing",
     description: "See how Shashank Shinde designs test automation with Selenium, Playwright, Page Object Models, and CI regression suites, with links to QA projects.",
   },
   "/manual-testing": {
-    title: "Manual and Exploratory Testing",
+    title: "Manual QA and Exploratory Testing",
     description: "See Shashank Shinde’s approach to manual QA, exploratory testing, test design, and defect triage, with examples from his software testing projects.",
   },
   "/api-testing": {
-    title: "API Testing",
+    title: "REST API Testing and Contract Validation",
     description: "Explore Shashank Shinde’s API testing work on REST contracts, authentication, payment webhooks, and regression checks with Postman and REST Assured.",
   },
   "/mobile-testing": {
     title: "Mobile App Testing",
-    description: "Explore how Shashank Shinde tests mobile app workflows, device variations, and unreliable networks, with examples from his Android QA projects.",
+    description: "Explore mobile QA for app workflows, device variations and unreliable networks, with Android case studies and approaches for iOS testing.",
   },
   "/performance-testing": {
     title: "Performance and Load Testing",
@@ -76,7 +78,7 @@ export const pages = {
     description: "Read how Shashank Shinde uses Playwright and TypeScript for browser automation, isolated test contexts, reliable fixtures, and CI regression checks.",
   },
   "/skills/api-testing": {
-    title: "Postman and REST Assured",
+    title: "API Test Automation with Postman and REST Assured",
     description: "See how Shashank Shinde uses Postman and REST Assured for API assertions, schema validation, authentication checks, and repeatable contract testing.",
   },
   "/skills/performance-testing": {
@@ -132,10 +134,10 @@ export function pageMetadata(path: PortfolioPath): Metadata {
   const image = {
     url: page.projectImage
       ? `${siteOrigin}/images/projects/${page.projectImage}-social.jpg`
-      : `${siteOrigin}/images/portfolio-social.jpg`,
+      : `${siteOrigin}${portfolioSocialImagePath}`,
     width: 1200,
     height: 630,
-    alt: page.projectImage ? `${page.title} preview` : "Shashank Shinde, software test engineer",
+    alt: page.projectImage ? `${page.title} preview` : "Shashank Shinde Portfolio preview with a portrait and QA case studies branding",
     type: "image/jpeg",
   };
 
@@ -165,12 +167,20 @@ const person = {
   name: "Shashank Shinde",
   jobTitle: "Software Test Engineer",
   description: "Software test engineer in Pune, India, working in QA automation, API, mobile, and performance testing.",
-  url: `${siteOrigin}/about`,
+  url: siteUrl,
   image: heroPortraitUrl,
+  homeLocation: {
+    "@type": "Place",
+    name: "Pune, Maharashtra, India",
+  },
+  knowsAbout: [
+    "Software quality assurance", "Manual and exploratory testing", "Playwright", "Selenium WebDriver",
+    "REST API testing", "Postman", "REST Assured", "Appium", "Apache JMeter",
+  ],
   sameAs: [
     "https://www.linkedin.com/in/shashank-shinde7/",
     "https://github.com/shashankshinde38-lab",
-    "https://www.salesforce.com/trailblazer/shashankshinde",
+    "https://trailblazer.me/id/shashankshinde",
   ],
 };
 
@@ -205,6 +215,7 @@ export const homeStructuredData = {
       url: siteUrl,
       name: siteName,
       alternateName: "Shashank Shinde",
+      publisher: { "@id": person["@id"] },
       inLanguage: "en-IN",
     },
     {
@@ -214,7 +225,7 @@ export const homeStructuredData = {
       name: pages["/"].title,
       isPartOf: { "@id": `${siteUrl}#website` },
       about: { "@id": person["@id"] },
-      primaryImageOfPage: `${siteOrigin}${brandImagePath}`,
+      primaryImageOfPage: heroPortraitUrl,
     },
     person,
   ],
@@ -226,7 +237,38 @@ export const profileStructuredData = {
   "@id": `${siteOrigin}/about#profile`,
   url: `${siteOrigin}/about`,
   name: pages["/about"].title,
+  isPartOf: { "@id": `${siteUrl}#website` },
   description: pages["/about"].description,
   mainEntity: person,
 };
+
+export function pageStructuredData(path: PortfolioPath, type = "WebPage") {
+  const page = pages[path];
+  const url = new URL(path, siteUrl).href;
+  return {
+    "@context": "https://schema.org",
+    "@type": type,
+    "@id": `${url}#webpage`,
+    url,
+    name: page.title,
+    description: page.description,
+    isPartOf: { "@id": `${siteUrl}#website` },
+    inLanguage: "en-IN",
+  };
+}
+
+export function breadcrumbStructuredData(pageUrl: string, breadcrumbs: { label: string; href?: string }[]) {
+  const trail = breadcrumbs.filter((crumb) => !crumb.href?.includes("#"));
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": `${pageUrl}#breadcrumbs`,
+    itemListElement: trail.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.label,
+      item: index === trail.length - 1 ? pageUrl : new URL(crumb.href ?? "/", siteUrl).href,
+    })),
+  };
+}
 

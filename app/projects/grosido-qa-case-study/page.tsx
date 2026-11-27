@@ -49,7 +49,7 @@ export default function GrosidoCaseStudyPage() {
         </p>
       </section>
 
-      <CaseStudyArtwork path="/projects/grosido-qa-case-study" alt="Grosido grocery delivery testing case study illustration" />
+      <CaseStudyArtwork path="/projects/grosido-qa-case-study" alt="Grosido grocery delivery QA case study cover for cart pricing, inventory and checkout regression" />
 
       {/* Project Overview */}
       <section className="content-section">

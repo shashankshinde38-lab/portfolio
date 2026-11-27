@@ -80,9 +80,9 @@ export default function HeroSection({
           </h1>
 
           <p className="sh-hero__summary">
-            I’m a software test engineer based in Pune. I design tests for critical user journeys,
-            automate regression coverage with Playwright and Selenium, and investigate defects
-            across web apps, mobile apps, and APIs.
+            I’m a software test engineer in Pune. I design manual tests for critical user journeys,
+            automate regression tests with Playwright and Selenium, and investigate defects across
+            web apps, mobile apps, and REST APIs.
           </p>
 
           <div className="sh-hero__calendar" aria-hidden="true">
@@ -94,7 +94,7 @@ export default function HeroSection({
           <LiquidReveal
             baseSrc="/images/hero-figure-cream.webp"
             colorSrc="/images/hero-figure-color.webp"
-            alt="Shashank Shinde · Software Test Engineer"
+            alt="Portrait of Shashank Shinde, software test engineer"
             onOpenCard={onOpenCard}
           />
         </div>

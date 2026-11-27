@@ -52,7 +52,7 @@ export default function UrbanBuildCaseStudyPage() {
         </p>
       </section>
 
-      <CaseStudyArtwork path="/projects/urban-build-testing-case-study" alt="Urban Build mobile lead form testing case study illustration" />
+      <CaseStudyArtwork path="/projects/urban-build-testing-case-study" alt="Urban Build Android QA case study cover for lead forms, CRM updates and slow networks" />
 
       {/* Scope Overview */}
       <section className="content-section">

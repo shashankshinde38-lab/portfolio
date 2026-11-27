@@ -51,7 +51,7 @@ export default function EcommerceCaseStudyPage() {
         </p>
       </section>
 
-      <CaseStudyArtwork path="/projects/ecommerce-testing-case-study" alt="E-commerce marketplace testing case study illustration" />
+      <CaseStudyArtwork path="/projects/ecommerce-testing-case-study" alt="E-commerce marketplace QA case study cover for checkout, refunds and role-based testing" />
 
       {/* Platform Architecture */}
       <section className="content-section">

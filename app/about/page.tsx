@@ -39,7 +39,7 @@ export default function AboutPage() {
           <span>Direct Answer · Entity Profile</span>
         </div>
         <p className="aeo-direct-answer-text">
-          Shashank Shinde is a Software Test Engineer and QA Automation Engineer based in Pune, Maharashtra, India.
+          Shashank Shinde is a software test engineer and QA automation engineer based in Pune, Maharashtra, India.
           Currently working at Profcyma Solutions Pvt. Ltd., he specializes in end-to-end web automation (Selenium
           WebDriver, Playwright), REST API validation (Postman, REST Assured), distributed performance testing (Apache
           JMeter), and mobile application testing (Appium).

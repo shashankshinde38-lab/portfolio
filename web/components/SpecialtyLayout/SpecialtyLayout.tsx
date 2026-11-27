@@ -8,14 +8,17 @@ import SiteFooter from "@/web/components/SiteFooter/SiteFooter";
 import AbilityCard3D from "@/web/components/AbilityCard3D/AbilityCard3D";
 import MultiStepContactOverlay from "@/web/components/MultiStepContact/MultiStepContactOverlay";
 import SpecialtyProjectShowcase from "./SpecialtyProjectShowcase";
+import JsonLd from "@/web/seo/JsonLd";
+import { breadcrumbStructuredData, siteUrl, type PortfolioPath } from "@/web/seo/site";
 import "./SpecialtyLayout.css";
 
 interface SpecialtyLayoutProps {
   disciplineNumber: string;
   tag: string;
   title: string;
+  path: PortfolioPath;
   subtitle: string;
-  description: string;
+  description: ReactNode;
   breadcrumbs: { label: string; href?: string }[];
   children: ReactNode;
 }
@@ -24,6 +27,7 @@ export default function SpecialtyLayout({
   disciplineNumber,
   tag,
   title,
+  path,
   subtitle,
   description,
   breadcrumbs,
@@ -34,6 +38,7 @@ export default function SpecialtyLayout({
 
   return (
     <div className="specialty-page-root">
+      <JsonLd data={breadcrumbStructuredData(new URL(path, siteUrl).href, breadcrumbs)} />
       {/* Fixed Site Header */}
       <SiteHeader
         onOpenCard={() => setIsCardOpen(true)}

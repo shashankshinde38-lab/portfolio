@@ -1,18 +1,21 @@
+import Link from "next/link";
 import { pageMetadata } from "@/web/seo/site";
 import SpecialtyLayout from "@/web/components/SpecialtyLayout/SpecialtyLayout";
 import ProjectHoverPreviewList from "@/web/components/ProjectHoverPreviewList/ProjectHoverPreviewList";
 import { CheckCircle2, Smartphone, WifiOff, Fingerprint, Layers, Cpu } from "lucide-react";
 
-export const metadata = pageMetadata("/mobile-testing");
+const path = "/mobile-testing";
+export const metadata = pageMetadata(path);
 
 export default function MobileTestingPage() {
   return (
     <SpecialtyLayout
+      path={path}
       disciplineNumber="04"
       tag="DISCIPLINE 04 · MOBILE APP & CROSS-DEVICE TESTING"
-      title="Cross-Platform Native & Hybrid App Verification"
+      title="Mobile App Testing Across Devices"
       subtitle="Appium 2.x, UIAutomator2, XCUITest, Gesture Automation & Device Fragmentation"
-      description="Ensuring flawless native experiences across the fragmented spectrum of real Android and iOS devices. Validating complex multi-touch gestures, offline SQLite synchronization, hardware sensors, biometric auth, and dynamic display aspect ratios."
+      description={<>Mobile QA covers gestures, offline sync, and device differences on Android and iOS. See the <Link className="underline underline-offset-2" href="/skills/mobile-testing">Appium testing workflow</Link> for practical examples from Android devices and emulators.</>}
       breadcrumbs={[
         { label: "INDEX", href: "/" },
         { label: "DISCIPLINES", href: "/#doors" },

@@ -1,18 +1,21 @@
+import Link from "next/link";
 import { pageMetadata } from "@/web/seo/site";
 import SpecialtyLayout from "@/web/components/SpecialtyLayout/SpecialtyLayout";
 import ProjectHoverPreviewList from "@/web/components/ProjectHoverPreviewList/ProjectHoverPreviewList";
 import { CheckCircle2, Search, FileCheck, ClipboardList, ShieldAlert, GitBranch } from "lucide-react";
 
-export const metadata = pageMetadata("/manual-testing");
+const path = "/manual-testing";
+export const metadata = pageMetadata(path);
 
 export default function ManualTestingPage() {
   return (
     <SpecialtyLayout
+      path={path}
       disciplineNumber="05"
       tag="DISCIPLINE 05 · MANUAL, EXPLORATORY & STLC"
-      title="Cognitive Exploratory Testing & STLC Governance"
+      title="Manual QA and Exploratory Testing"
       subtitle="Boundary Value Analysis, Equivalence Partitioning, JIRA Defect Lifecycle & Production Release Gates"
-      description="Automation verifies what is anticipated; human exploratory testing investigates the complex unknown. Applying cognitive heuristics, edge-case vulnerability mining, and rigorous Software Testing Life Cycle (STLC) release gatekeeping."
+      description={<>I design test cases, investigate defects, and verify fixes across functional and exploratory test cycles. The <Link className="underline underline-offset-2" href="/projects/ecommerce-testing-case-study">e-commerce QA case study</Link> shows how these methods apply to checkout and refunds.</>}
       breadcrumbs={[
         { label: "INDEX", href: "/" },
         { label: "DISCIPLINES", href: "/#doors" },

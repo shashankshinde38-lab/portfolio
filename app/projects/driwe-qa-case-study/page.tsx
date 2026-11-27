@@ -53,7 +53,7 @@ export default function DriweCaseStudyPage() {
         </p>
       </section>
 
-      <CaseStudyArtwork path="/projects/driwe-qa-case-study" alt="DRIWE cab and courier testing case study illustration" />
+      <CaseStudyArtwork path="/projects/driwe-qa-case-study" alt="DRIWE cab and courier QA case study cover for load testing and payment webhooks" />
 
       {/* Project Overview Grid */}
       <section className="content-section">

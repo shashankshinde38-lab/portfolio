@@ -1,18 +1,21 @@
+import Link from "next/link";
 import { pageMetadata } from "@/web/seo/site";
 import SpecialtyLayout from "@/web/components/SpecialtyLayout/SpecialtyLayout";
 import ProjectHoverPreviewList from "@/web/components/ProjectHoverPreviewList/ProjectHoverPreviewList";
 import { CheckCircle2, ShieldCheck, KeyRound, Network, RefreshCw, FileCode } from "lucide-react";
 
-export const metadata = pageMetadata("/api-testing");
+const path = "/api-testing";
+export const metadata = pageMetadata(path);
 
 export default function ApiTestingPage() {
   return (
     <SpecialtyLayout
+      path={path}
       disciplineNumber="02"
       tag="DISCIPLINE 02 · API & CONTRACT TESTING"
-      title="Contract, Security & Idempotency Testing"
+      title="REST API and Contract Testing"
       subtitle="Postman Collections, REST Assured Frameworks, HMAC-SHA256 Signatures & JSON Schema Guardrails"
-      description="Validating the invisible nervous system of modern microservices. Enforcing strict OpenAPI/JSON Schema contracts, payload serialization fuzzing, webhook idempotency keys, and OAuth 2.0 multi-tenant token isolation."
+      description={<>I test REST API contracts, authentication, webhook retries, and duplicate requests. See <Link className="underline underline-offset-2" href="/skills/api-testing">API test automation with Postman and REST Assured</Link> for examples of repeatable assertions and schema validation.</>}
       breadcrumbs={[
         { label: "INDEX", href: "/" },
         { label: "DISCIPLINES", href: "/#doors" },

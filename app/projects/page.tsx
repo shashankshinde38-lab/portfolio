@@ -34,7 +34,7 @@ export default function ProjectsIndexPage() {
   return (
     <SubpageLayout
       title="Software Testing Portfolio"
-      subtitle="Five QA case studies showing how I designed tests, reproduced defects, and verified fixes across web apps, Android apps, and APIs."
+      subtitle="Five software testing projects showing how I designed tests, reproduced defects, and verified fixes across web apps, Android apps, and APIs."
       badge="CASE STUDIES DIRECTORY"
       breadcrumbs={[{ label: "Home", href: "/" }, { label: "Projects" }]}
       pageUrl={pageUrl}
@@ -43,11 +43,11 @@ export default function ProjectsIndexPage() {
       <section className="aeo-direct-answer-card" aria-label="Testing portfolio highlights">
         <p className="aeo-direct-answer-text">
           See how I tested checkout prices and inventory in the{" "}
-          <Link href={CASE_STUDY_ROUTES["TC-002"]}>Grosido case study</Link>, investigated duplicate
+          <Link href={CASE_STUDY_ROUTES["TC-002"]}>Grosido checkout regression case study</Link>, investigated duplicate
           refund events in the{" "}
-          <Link href={CASE_STUDY_ROUTES["TC-003"]}>e-commerce case study</Link>, and used Apache
+          <Link href={CASE_STUDY_ROUTES["TC-003"]}>e-commerce marketplace testing case study</Link>, and used Apache
           JMeter to test concurrent bookings in the{" "}
-          <Link href={CASE_STUDY_ROUTES["TC-001"]}>DRIWE case study</Link>.
+          <Link href={CASE_STUDY_ROUTES["TC-001"]}>DRIWE load testing case study</Link>.
         </p>
       </section>
 

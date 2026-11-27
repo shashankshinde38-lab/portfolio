@@ -5,7 +5,7 @@ import SkipLink from "@/web/components/SkipLink/SkipLink";
 import SpecialtyDoorNavigation from "@/web/components/QADoorsFrame/SpecialtyDoorNavigation";
 import SmoothScroll from "@/web/components/SmoothScroll/SmoothScroll";
 import { analyticsMeasurementId } from "@/web/utils/analytics";
-import { pages, siteName, siteUrl } from "@/web/seo/site";
+import { faviconPath, pages, siteName, siteUrl } from "@/web/seo/site";
 import "./globals.css";
 import "@/web/styles/reference-fidelity.css";
 
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Shashank Shinde", url: siteUrl }],
   applicationName: siteName,
   icons: {
-    icon: { url: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+    icon: [{ url: faviconPath, sizes: "192x192", type: "image/png" }],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   manifest: "/site.webmanifest",

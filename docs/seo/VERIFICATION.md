@@ -1,4 +1,6 @@
-# Current search verification
+# Search verification on 22 November 2026
+
+See [Search branding and keyword map](SEARCH_BRANDING_AND_KEYWORDS.md) for the latest release.
 
 November 22, 2026 IST · [Shashank Shinde Portfolio](https://shashankportfolio-jet.vercel.app/)
 

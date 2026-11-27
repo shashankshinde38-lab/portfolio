@@ -1,18 +1,21 @@
+import Link from "next/link";
 import { pageMetadata } from "@/web/seo/site";
 import SpecialtyLayout from "@/web/components/SpecialtyLayout/SpecialtyLayout";
 import ProjectHoverPreviewList from "@/web/components/ProjectHoverPreviewList/ProjectHoverPreviewList";
 import { CheckCircle2, ShieldCheck, Zap, Layers, Terminal, Sparkles } from "lucide-react";
 
-export const metadata = pageMetadata("/automation-testing");
+const path = "/automation-testing";
+export const metadata = pageMetadata(path);
 
 export default function AutomationTestingPage() {
   return (
     <SpecialtyLayout
+      path={path}
       disciplineNumber="01"
       tag="DISCIPLINE 01 · AUTOMATION TESTING"
-      title="Deterministic Test Automation Engineering"
+      title="Web Test Automation Engineering"
       subtitle="Page Object Model, Playwright & Selenium Architectures with ~40% Regression Reductions"
-      description="Designing resilient, non-flaky automated test frameworks across complex web applications. Leveraging custom fixtures, intelligent auto-waiting locators, and parallel cloud grid execution to deliver fast, deterministic CI/CD release confidence."
+      description={<>I build maintainable test automation frameworks for critical web workflows. Explore <Link className="underline underline-offset-2" href="/skills/playwright-automation">Playwright test automation</Link> and <Link className="underline underline-offset-2" href="/skills/selenium-automation">Selenium regression testing</Link> for examples of fixtures, locators, and CI execution.</>}
       breadcrumbs={[
         { label: "INDEX", href: "/" },
         { label: "DISCIPLINES", href: "/#doors" },

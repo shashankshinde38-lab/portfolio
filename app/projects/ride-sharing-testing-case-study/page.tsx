@@ -54,7 +54,7 @@ export default function RideSharingCaseStudyPage() {
         </p>
       </section>
 
-      <CaseStudyArtwork path="/projects/ride-sharing-testing-case-study" alt="Ride sharing app testing case study illustration" />
+      <CaseStudyArtwork path="/projects/ride-sharing-testing-case-study" alt="Ride Sharing mobile booking QA case study cover for seat reservations, trip workflows and REST APIs" />
 
       {/* Scope Overview */}
       <section className="content-section">

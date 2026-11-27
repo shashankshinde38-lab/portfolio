@@ -14,11 +14,12 @@ import {
 } from "lucide-react";
 import SiteHeader from "@/web/components/SiteHeader/SiteHeader";
 import SiteFooter from "@/web/components/SiteFooter/SiteFooter";
+import JsonLd from "@/web/seo/JsonLd";
+import { breadcrumbStructuredData } from "@/web/seo/site";
 import "./SubpageLayout.css";
 
 const MultiStepContactOverlay = dynamic(() => import("@/web/components/MultiStepContact/MultiStepContactOverlay"));
 const AbilityCard3D = dynamic(() => import("@/web/components/AbilityCard3D/AbilityCard3D"));
-const siteUrl = "https://shashankportfolio-jet.vercel.app/";
 
 export interface BreadcrumbItem {
   label: string;
@@ -46,28 +47,9 @@ export default function SubpageLayout({
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
 
-  // Breadcrumb schema list
-  const breadcrumbListSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "@id": `${pageUrl}#breadcrumbs`,
-    itemListElement: breadcrumbs.map((crumb, idx) => ({
-      "@type": "ListItem",
-      position: idx + 1,
-      name: crumb.label,
-      item: crumb.href ? new URL(crumb.href, siteUrl).href : pageUrl,
-    })),
-  };
-
   return (
     <div className="subpage-shell">
-      {/* Schema Injection */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbListSchema).replace(/</g, "\\u003c"),
-        }}
-      />
+      <JsonLd data={breadcrumbStructuredData(pageUrl, breadcrumbs)} />
 
       {/* Global Fixed Header (Replica of therishithakor.com with live clock, bulb toggle & routing) */}
       <SiteHeader

@@ -1,18 +1,21 @@
+import Link from "next/link";
 import { pageMetadata } from "@/web/seo/site";
 import SpecialtyLayout from "@/web/components/SpecialtyLayout/SpecialtyLayout";
 import ProjectHoverPreviewList from "@/web/components/ProjectHoverPreviewList/ProjectHoverPreviewList";
 import { CheckCircle2, Activity, Cpu, Gauge, AlertTriangle, Database } from "lucide-react";
 
-export const metadata = pageMetadata("/performance-testing");
+const path = "/performance-testing";
+export const metadata = pageMetadata(path);
 
 export default function PerformanceTestingPage() {
   return (
     <SpecialtyLayout
+      path={path}
       disciplineNumber="03"
       tag="DISCIPLINE 03 · PERFORMANCE & STRESS ENGINEERING"
-      title="High-Concurrency Load & Resilience Engineering"
+      title="Performance, Load and Stress Testing"
       subtitle="Apache JMeter, Distributed Thread Groups, P99 Latency SLAs & 100k Virtual Users"
-      description="Exposing microservice bottlenecks before traffic spikes hit production. Simulating up to 100,000 concurrent virtual users, diagnosing database lock contention, memory leaks, and enforcing sub-second P99 tail latencies under extreme load."
+      description={<>I use load and stress tests to measure response times, throughput, and failures under concurrency. Explore the <Link className="underline underline-offset-2" href="/skills/performance-testing">Apache JMeter performance testing workflow</Link> for workload design and latency analysis.</>}
       breadcrumbs={[
         { label: "INDEX", href: "/" },
         { label: "DISCIPLINES", href: "/#doors" },
